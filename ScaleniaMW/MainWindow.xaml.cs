@@ -85,6 +85,9 @@ namespace ScaleniaMW
                     for (int i = 0; i < listaBezPustychLinii.Count; i++)
                     {
                         string[] wartosciZlini = pobranieWartoscZLinii(listaBezPustychLinii[i]);
+                        Console.WriteLine(wartosciZlini.Length);
+
+
 
                     }
 
