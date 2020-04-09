@@ -10,7 +10,7 @@
         <Menu>
             <MenuItem Header="PLIK" Background="LightGray">
                 <MenuItem Header="_OTWÓRZ" Click="otworzEDZ"></MenuItem>
-            <MenuItem Header="_ZAPISZ"></MenuItem>
+            <MenuItem Header="_ZAPISZ" Click="ZapiszDoPliku"></MenuItem>
                 
             </MenuItem>
         </Menu>
