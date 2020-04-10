@@ -5,14 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SCALENIAMW" Height="450" Width="800" x:Name="oknoProgramu">
     <Grid>
-        <Menu>
-            <MenuItem Header="PLIK" Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="PLIK" >
                 <MenuItem Header="_OTWÓRZ" Click="otworzEDZ"></MenuItem>
-            <MenuItem Header="_ZAPISZ" Click="ZapiszDoPliku"></MenuItem>
-                
+                <MenuItem Header="_ZAPISZ" Click="ZapiszDoPliku"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="USTAWIENIA">
+                <MenuItem Header="USTWAC ŚCIEŻKĘ DO PLIKU SCALENIA FDB" Click="ustawSciezkeFDB"></MenuItem>
             </MenuItem>
         </Menu>
+        <StackPanel Grid.Row="1">
+            <Label>Login:</Label>
+            <TextBox Margin="10,0,0,0" HorizontalAlignment="Left" Width="100" Text=""></TextBox>
+            <Label>Hasło:</Label>
+            <TextBox Margin="10,0,0,0" HorizontalAlignment="Left" Width="100" Text=""></TextBox>
+            <Button Margin="60,10" Width="50" HorizontalAlignment="Left" Click="zapiszLogowanie"> ZAPISZ</Button>
+        </StackPanel>
+    
+        
+        <DataGrid Grid.Row="1" Visibility="Hidden"  x:Name="dataGrid" ItemsSource="{Binding}" 
+          AutoGenerateColumns="True">></DataGrid>
     </Grid>
 </Window>

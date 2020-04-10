@@ -25,50 +25,83 @@ namespace ScaleniaMW
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static FbConnection connection = new FbConnection(@"User=SYSDBA;Password=wbg;Database= C:\Users\User\source\repos\ScaleniaMW\ScaleniaMW\bin\Debug\PLANTA I INNE.FDB;" + "DataSource=localhost; Port=3050;Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
-                                           "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;");
-       
-        public MainWindow()
+        //  public static FbConnection connection;
+        //FbCommand command;
+        //FbTransaction transaction;
+        //FbDataAdapter adapter;
+        public static string connectionString;
+        public static void aktualizujSciezkeZPropertis()
         {
-          
+            connectionString = @"User=SYSDBA;Password=wbg1;Database= " + Properties.Settings.Default.PathFDB + "; DataSource=localhost; Port=3050;Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
+                                  "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
+        }
 
-            DataTable dt = null;
-            connection.Open();
-            FbCommand command = new FbCommand();
-           
-            FbTransaction transaction = connection.BeginTransaction();
-            command.Connection = connection;
-            command.Transaction = transaction;
-            command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-            
-            FbDataAdapter adapter = new FbDataAdapter(command);
-            dt = new DataTable();
-            //  adapter.Fill(dt);
-            adapter.Fill(dt);
-            foreach (var item in dt.Columns)
-            {
+        //public void polacz()
+        //{
+        //    using (var conn = new FbConnection(connectionString)) {
+        //        connection.Open();
+        //    }
+        //}
 
-                Console.Write(item + " ");
-            }
-           Console.WriteLine();
-            for (int i = 0; i < dt.Rows.Count; i++)
+        public void odczytajCos()
+        {
+            aktualizujSciezkeZPropertis();
+            Console.WriteLine(connectionString);
+            using (var connection = new FbConnection(connectionString))
             {
-                for (int j = 0; j < dt.Columns.Count; j++)
+                connection.Open();
+                DataTable dt = null;
+                FbCommand command = new FbCommand();
+
+                FbTransaction transaction = connection.BeginTransaction();
+
+                command.Connection = connection;
+                command.Transaction = transaction;
+                command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                dt = new DataTable();
+
+                adapter.Fill(dt);
+                //dataGrid.ItemsSource = dt.DefaultView;
+                foreach (var item in dt.Columns)
                 {
-                    Console.Write(dt.Rows[i][j] + " \t");
+
+                    Console.Write(item + " ");
                 }
                 Console.WriteLine();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        Console.Write(dt.Rows[i][j] + " \t");
+                    }
+                    Console.WriteLine();
 
 
-                //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
+                    //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
 
+                }
+                connection.Close();
             }
 
+        }
 
 
-            connection.Close();
-          
+        public MainWindow()
+        {
+
             InitializeComponent();
+            try
+            {
+                oknoProgramu.Title = "SCALENIAMW " + Properties.Settings.Default.PathFDB;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e + " problem z oknem");
+            }
+           
+            odczytajCos();
         }
 
         public static string[] odczytZPlikuLinie(string a) //odczyt z pliku z wyjatkami niepowodzenia należy podać ścieżkę, zwraca tablicę odczytaną z pliku
@@ -99,6 +132,7 @@ namespace ScaleniaMW
         List<Punkt> listaPunktów = new List<Punkt>();
         private void otworzEDZ(object sender, RoutedEventArgs e)
         {
+            odczytajCos();
             listaPunktów = new List<Punkt>();
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.DefaultExt = ".edz";
@@ -108,15 +142,15 @@ namespace ScaleniaMW
             {
                 try
                 {
-                   string[] calyOdczzytanyTextLinie = odczytZPlikuLinie(dlg.FileName);
+                    string[] calyOdczzytanyTextLinie = odczytZPlikuLinie(dlg.FileName);
 
                     List<string> listaBezPustychLinii = new List<string>();
                     for (int i = 0; i < calyOdczzytanyTextLinie.Length; i++)
                     {
-                       if(calyOdczzytanyTextLinie[i].Trim() == "" || calyOdczzytanyTextLinie[i].Trim().Equals(null))
-                       {
+                        if (calyOdczzytanyTextLinie[i].Trim() == "" || calyOdczzytanyTextLinie[i].Trim().Equals(null))
+                        {
                             continue;
-                       }
+                        }
                         else
                         {
                             listaBezPustychLinii.Add(calyOdczzytanyTextLinie[i].Trim().Replace(".", ","));
@@ -136,25 +170,26 @@ namespace ScaleniaMW
                             }
                             else
                             {
-                                listTmp.Add(item.Trim()); 
+                                listTmp.Add(item.Trim());
                             }
                         }
 
-                        if (przekierownik>8 && listTmp.Count.Equals(1))
+                        if (przekierownik > 8 && listTmp.Count.Equals(1))
                         {
                             przekierownik = 0; Console.WriteLine("ustaw 0");
                         }
 
                         przekierownik += listTmp.Count;
-                        if(przekierownik==1)
+                        if (przekierownik == 1)
                         {
                             listaPunktów.Add(new Punkt() { NazwaDz = listTmp[0] });
-                        }else if(przekierownik == 7)
-                        {
-                            listaPunktów[listaPunktów.Count - 1].DzX1 = float.Parse(listTmp[0], CultureInfo.InvariantCulture); 
-                            listaPunktów[listaPunktów.Count - 1].DzY1= float.Parse(listTmp[1], CultureInfo.InvariantCulture); 
                         }
-                        else if(przekierownik == 8)
+                        else if (przekierownik == 7)
+                        {
+                            listaPunktów[listaPunktów.Count - 1].DzX1 = float.Parse(listTmp[0], CultureInfo.InvariantCulture);
+                            listaPunktów[listaPunktów.Count - 1].DzY1 = float.Parse(listTmp[1], CultureInfo.InvariantCulture);
+                        }
+                        else if (przekierownik == 8)
                         {
                             listaPunktów[listaPunktów.Count - 1].ilePktow = int.Parse(listTmp[0], CultureInfo.InvariantCulture);
                         }
@@ -171,9 +206,9 @@ namespace ScaleniaMW
                         Console.WriteLine(item.NazwaDz + " " + item.DzX1 + " " + item.DzY1 + " ile: " + item.ilePktow);
                         foreach (var items in listaPunktów[listaPunktów.Count - 1].listaWspPktu)
                         {
-                            Console.WriteLine( "NRP " + items.NR + " PX " + items.X + " PY " + items.Y);
+                            Console.WriteLine("NRP " + items.NR + " PX " + items.X + " PY " + items.Y);
                         }
-                     
+
                     }
 
                 }
@@ -230,6 +265,45 @@ namespace ScaleniaMW
                     }
 
             }
+        }
+
+        public void ustawProperties(string FileName)
+        {
+            Properties.Settings.Default.PathFDB = FileName;
+            oknoProgramu.Title = "SCALENIAMW " + Properties.Settings.Default.PathFDB;
+            Properties.Settings.Default.Save();
+        }
+
+        private void ustawSciezkeFDB(object sender, RoutedEventArgs e)
+        {
+       
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.DefaultExt = ".edz";
+            dlg.Filter = "All files(*.*) | *.*|TXT Files (*.txt)|*.txt| CSV(*.csv)|*.csv| EDZ(*.edz)|*.edz";
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                try
+                {
+                    ustawProperties(dlg.FileName);
+                }
+                catch (Exception esa)
+                {
+                    var resultat = MessageBox.Show(esa.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+
+                    if (resultat == MessageBoxResult.Yes)
+                    {
+                        Application.Current.Shutdown();
+                    }
+
+                    Console.WriteLine(esa + "Błędny format importu działek");
+                }
+            }
+        }
+
+        private void zapiszLogowanie(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
