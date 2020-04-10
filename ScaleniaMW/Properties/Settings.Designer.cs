@@ -34,5 +34,29 @@ namespace ScaleniaMW.Properties {
                 this["PathFDB"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Login {
+            get {
+                return ((string)(this["Login"]));
+            }
+            set {
+                this["Login"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Haslo {
+            get {
+                return ((string)(this["Haslo"]));
+            }
+            set {
+                this["Haslo"] = value;
+            }
+        }
     }
 }

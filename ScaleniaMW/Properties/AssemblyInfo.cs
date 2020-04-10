@@ -8,12 +8,12 @@ using System.Windows;
 // zestaw atrybutów. Zmień wartości tych atrybutów, aby zmodyfikować informacje
 // powiązane z zestawem.
 [assembly: AssemblyTitle("ScaleniaMW")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Marek Wojciechowicz")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Marek Wojciechowicz")]
 [assembly: AssemblyProduct("ScaleniaMW")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright ©  2020 Marek Wojciechowicz")]
+[assembly: AssemblyTrademark("Marek Wojciechowicz")]
 [assembly: AssemblyCulture("")]
 
 // Ustawienie elementu ComVisible na wartość false sprawia, że typy w tym zestawie są niewidoczne

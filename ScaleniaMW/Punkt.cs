@@ -9,10 +9,21 @@ namespace ScaleniaMW
     public class Punkt
     {
         public string NazwaDz;
-        public float DzX1;
-        public float DzY1;
+        public double DzX1;
+        public double DzY1;
+        public double DzX2;
+        public double DzY2;
         public int ilePktow;
 
+        public void wypiszWszytko()
+        {
+            Console.WriteLine( NazwaDz + " " + DzX1 + " " + DzY1+ " " + DzX2 + " " + DzY2 + " " + ilePktow);
+            foreach (var item in listaWspPktu)
+            {
+                Console.WriteLine(item.NR + " " + item.X + " " + item.Y);
+            }
+            
+        }
 
         public List<WspPktu> listaWspPktu = new List<WspPktu>();
 
@@ -20,24 +31,26 @@ namespace ScaleniaMW
         public class WspPktu
         {
             public string NR;
-            public float X;
-            public float Y;
+            public double X;
+            public double Y;
+
         }
 
-        float dlZeWsp(float x1, float y1, float x2, float y2)
+
+        double dlZeWsp(double x1, double y1, double x2, double y2)
         {
             double dlugoscMiedzPktami = Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-            return (float)dlugoscMiedzPktami;
+            return dlugoscMiedzPktami;
         }
 
-        public float podajeKatUstawienia()
+        public double podajeKatUstawienia()
         {
-            float tmpDlugosc = 0;
-            float tmpAzymut = 0;
+            double tmpDlugosc = 0;
+            double tmpAzymut = 0;
             for (int i = 0; i < listaWspPktu.Count - 1; i++)
             {
-                float oblDl = dlZeWsp(listaWspPktu[i].X, listaWspPktu[i].Y, listaWspPktu[i + 1].X, listaWspPktu[i + 1].Y);
-                float azymut = (float)oblAzymut(listaWspPktu[i].X, listaWspPktu[i].Y, listaWspPktu[i + 1].X, listaWspPktu[i + 1].Y);
+                double oblDl = dlZeWsp(listaWspPktu[i].X, listaWspPktu[i].Y, listaWspPktu[i + 1].X, listaWspPktu[i + 1].Y);
+                double azymut = oblAzymut(listaWspPktu[i].X, listaWspPktu[i].Y, listaWspPktu[i + 1].X, listaWspPktu[i + 1].Y);
                 if (tmpDlugosc < oblDl)
                 {
                     tmpDlugosc = oblDl;
@@ -45,7 +58,7 @@ namespace ScaleniaMW
                 }
             }
 
-            float katObrotu = tmpAzymut + 300;
+            double katObrotu = tmpAzymut + 300;
             while (katObrotu > 400)
             {
                 katObrotu = katObrotu - 400;
@@ -60,10 +73,10 @@ namespace ScaleniaMW
             {
                 katObrotu = katObrotu - 400;
             }
-            return katObrotu;
+            return katObrotu*180/200;
         }
 
-        double oblAzymut(float x1, float y1, float x2, float y2)
+        double oblAzymut(double x1, double y1, double x2, double y2)
         {
             double tgCzwartaka = 0;
             double czwartak = 0;
@@ -134,7 +147,8 @@ namespace ScaleniaMW
                     azymut = 0;
                 }
             }
-            return azymut*180/200;
+
+            return azymut;
         }
     }
 }
