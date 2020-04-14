@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ScaleniaMW
 {
-    public class Punkt
+    public class DzialkaEDZ
     {
-        public string NazwaDz;
+        public string Nr_Dz { get; set; } 
+       
         public double DzX1;
         public double DzY1;
         public double DzX2;
@@ -17,7 +18,7 @@ namespace ScaleniaMW
 
         public void wypiszWszytko()
         {
-            Console.WriteLine( NazwaDz + " " + DzX1 + " " + DzY1+ " " + DzX2 + " " + DzY2 + " " + ilePktow);
+            Console.WriteLine( Nr_Dz + " " + DzX1 + " " + DzY1+ " " + DzX2 + " " + DzY2 + " " + ilePktow);
             foreach (var item in listaWspPktu)
             {
                 Console.WriteLine(item.NR + " " + item.X + " " + item.Y);

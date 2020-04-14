@@ -6,6 +6,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Deployment;
 
 namespace ScaleniaMW
 {
@@ -25,8 +27,9 @@ namespace ScaleniaMW
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Punkt> listaPunktów = new List<Punkt>();
+        List<DzialkaEDZ> listaZEDZ = new List<DzialkaEDZ>();
         List<DzialkaNkrZSQL> listaDzNkrzSQL = new List<DzialkaNkrZSQL>();
+        DataTable dt;
         //  public static FbConnection connection;
         //FbCommand command;
         //FbTransaction transaction;
@@ -39,14 +42,7 @@ namespace ScaleniaMW
                                   "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
         }
 
-        //public void polacz()
-        //{
-        //    using (var conn = new FbConnection(connectionString)) {
-        //        connection.Open();
-        //    }
-        //}
-
-        public void odczytajCos()
+        public void odczytajZSql()
         {
             listaDzNkrzSQL = new List<DzialkaNkrZSQL>();
             aktualizujSciezkeZPropertis();
@@ -54,7 +50,7 @@ namespace ScaleniaMW
             using (var connection = new FbConnection(connectionString))
             {
                 connection.Open();
-                DataTable dt = null;
+
                 FbCommand command = new FbCommand();
 
                 FbTransaction transaction = connection.BeginTransaction();
@@ -65,55 +61,67 @@ namespace ScaleniaMW
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 dt = new DataTable();
-
+             
                 adapter.Fill(dt);
-                //dataGrid.ItemsSource = dt.DefaultView;
                 foreach (var item in dt.Columns)
                 {
 
                     Console.Write(item + " << ");
                 }
-                Console.WriteLine();
                 Console.WriteLine("row count:" + dt.Rows.Count);
                 Console.WriteLine("column count:" + dt.Columns.Count);
+
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     
                       listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), dt.Rows[i][1].ToString()));
                 }
-                Console.WriteLine("LISTA DZIALKA NKR");
-                //foreach (var item in listaDzNkrzSQL)
-                //{
-                //    Console.WriteLine(item.Obr_Dzialka + " " + item.NKR);
-                //}
-                  
-                 
 
 
-                    //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
+                try
+                {
+                    //dataGrid.ItemsSource = dt.AsDataView();
+                    //dataGrid.Visibility = Visibility.Visible;
+                    //dataGrid.Items.Refresh();
+                    dgNkrFDB.ItemsSource = dt.AsDataView();
+                    dgNkrFDB.Visibility = Visibility.Visible;
+                    dgNkrFDB.Items.Refresh();
 
-               
+                    Console.WriteLine("ustawiam SOURCE");
+                }
+                catch (Exception excp)
+                {
+                    Console.WriteLine(excp);
+                }
+
+                //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
+
+
                 connection.Close();
             }
 
         }
 
 
-        public MainWindow()
+
+
+    public MainWindow()
         {
 
             InitializeComponent();
-
+          
             try
             {
-
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
+                checkBoxIgnorujKropkeIPrzecinej.IsChecked = Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek;
+                Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                windowScaleniaMW.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e + " problem z oknem");
             }
-
         }
 
         public static string[] odczytZPlikuLinie(string a) //odczyt z pliku z wyjatkami niepowodzenia należy podać ścieżkę, zwraca tablicę odczytaną z pliku
@@ -139,13 +147,15 @@ namespace ScaleniaMW
             string[] wartosciZlini = LiniaTekstu.Trim().Split(charSeparators);
             return wartosciZlini;
         }
-
-
         
         private void otworzEDZ(object sender, RoutedEventArgs e)
         {
-            listaPunktów = new List<Punkt>();
+            listaZEDZ = new List<DzialkaEDZ>();
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            if (!(Properties.Settings.Default.PathEDZ.Equals("") || Properties.Settings.Default.PathEDZ.Equals(null)))
+            {
+                dlg.InitialDirectory = Properties.Settings.Default.PathEDZ.ToString();
+            }
             dlg.DefaultExt = ".edz";
             dlg.Filter = "All files(*.*) | *.*|TXT Files (*.txt)|*.txt| CSV(*.csv)|*.csv| EDZ(*.edz)|*.edz";
             Nullable<bool> result = dlg.ShowDialog();
@@ -166,12 +176,14 @@ namespace ScaleniaMW
                         {
                             listaBezPustychLinii.Add(calyOdczzytanyTextLinie[i].Trim());
                             //listaBezPustychLinii.Add(calyOdczzytanyTextLinie[i].Trim().Replace(".", ","));
+                         
                         }
                     }
 
                     int przekierownik = 0;
                     for (int i = 0; i < listaBezPustychLinii.Count; i++)
                     {
+
                         textBlockLogInfo.Text = listaBezPustychLinii[i];
                         string[] wartosciZlini = pobranieWartoscZLinii(listaBezPustychLinii[i]);
                         List<string> listTmp = new List<string>();
@@ -195,29 +207,30 @@ namespace ScaleniaMW
                         przekierownik += listTmp.Count;
                         if (przekierownik == 1)
                         {
-                            listaPunktów.Add(new Punkt() { NazwaDz = listTmp[0] });
+                            listaZEDZ.Add(new DzialkaEDZ() { Nr_Dz = listTmp[0] });
                         }
                         else if (przekierownik == 7)
                         {
 
 
-                            listaPunktów[listaPunktów.Count - 1].DzX1 = double.Parse(listTmp[0], CultureInfo.InvariantCulture);
-                            listaPunktów[listaPunktów.Count - 1].DzY1 = double.Parse(listTmp[1], CultureInfo.InvariantCulture);
-                            listaPunktów[listaPunktów.Count - 1].DzX2 = double.Parse(listTmp[2], CultureInfo.InvariantCulture);
-                            listaPunktów[listaPunktów.Count - 1].DzY2 = double.Parse(listTmp[3], CultureInfo.InvariantCulture);
+                            listaZEDZ[listaZEDZ.Count - 1].DzX1 = double.Parse(listTmp[0], CultureInfo.InvariantCulture);
+                            listaZEDZ[listaZEDZ.Count - 1].DzY1 = double.Parse(listTmp[1], CultureInfo.InvariantCulture);
+                            listaZEDZ[listaZEDZ.Count - 1].DzX2 = double.Parse(listTmp[2], CultureInfo.InvariantCulture);
+                            listaZEDZ[listaZEDZ.Count - 1].DzY2 = double.Parse(listTmp[3], CultureInfo.InvariantCulture);
                         }
                         else if (przekierownik == 8)
                         {
-                            listaPunktów[listaPunktów.Count - 1].ilePktow = int.Parse(listTmp[0], CultureInfo.InvariantCulture);
+                            listaZEDZ[listaZEDZ.Count - 1].ilePktow = int.Parse(listTmp[0], CultureInfo.InvariantCulture);
                         }
                         else if (przekierownik > 8)
                         {
-                            listaPunktów[listaPunktów.Count - 1].listaWspPktu.Add(new Punkt.WspPktu() { NR = listTmp[0], X = double.Parse(listTmp[1], CultureInfo.InvariantCulture), Y = double.Parse(listTmp[2], CultureInfo.InvariantCulture) });
+                            listaZEDZ[listaZEDZ.Count - 1].listaWspPktu.Add(new DzialkaEDZ.WspPktu() { NR = listTmp[0], X = double.Parse(listTmp[1], CultureInfo.InvariantCulture), Y = double.Parse(listTmp[2], CultureInfo.InvariantCulture) });
                         }
-                        foreach (var item in listaPunktów)
-                        {
-                           // Console.WriteLine(item.);
-                        }
+
+                        //foreach (var item in listaZEDZ)
+                        //{
+                        //   // Console.WriteLine(item.);
+                        //}
                     }
 
 
@@ -230,7 +243,20 @@ namespace ScaleniaMW
                     //        Console.WriteLine("NRP " + items.NR + " PX " + items.X + " PY " + items.Y);
                     //    }
                     //}
-                    textBlockLogInfo.Text = "Wczytano EDZ.";
+
+                    textBlockLogInfo.Text = "Wczytane działki: " + listaZEDZ.Count + ", z pliku " + dlg.FileName.Substring(dlg.FileName.LastIndexOf('\\')+1);
+                    //dataGrid.ItemsSource = listaZEDZ;
+                    //dataGrid.Visibility = Visibility.Visible;
+                    //dataGrid.Items.Refresh();
+
+                    dgDzialkiEdz.ItemsSource = listaZEDZ;
+                    dgDzialkiEdz.Visibility = Visibility.Visible;
+                    dgDzialkiEdz.Items.Refresh();
+
+                    Properties.Settings.Default.PathEDZ =dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\"));     
+                    Properties.Settings.Default.Save();
+              
+                    
                 }
                 catch (Exception esa)
                 {
@@ -266,7 +292,7 @@ namespace ScaleniaMW
                             //    sb.AppendLine(item.NazwaDz + "\t" + item.podajeKatUstawienia());
                             //}
                             string loginfo = "";
-                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaPunktów,listaDzNkrzSQL, ref loginfo));
+                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ,listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek));
                             textBlockLogInfo.Text = loginfo;
                             sw.Close();
                         }
@@ -299,8 +325,15 @@ namespace ScaleniaMW
         {
        
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            if(!(Properties.Settings.Default.PathFDB.Equals("") || Properties.Settings.Default.PathFDB.Equals(null)))
+            {
+                dlg.InitialDirectory = Properties.Settings.Default.PathFDB.ToString().Substring(0, Properties.Settings.Default.PathFDB.LastIndexOf("\\"));
+            }
+     
+            //dlg.InitialDirectory = @"C:\";
             dlg.DefaultExt = ".edz";
             dlg.Filter = "All files(*.*) | *.*|TXT Files (*.txt)|*.txt| CSV(*.csv)|*.csv| EDZ(*.edz)|*.edz";
+         
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
@@ -326,14 +359,16 @@ namespace ScaleniaMW
         {
             try
             {
-                odczytajCos();
+                odczytajZSql();
                 itemPolaczZBaza.Background = Brushes.LightSeaGreen;
-                textBlockLogInfo.Text = "Połączono z bazą FDB";
+               
+                textBlockLogInfo.Text = "Połączono z bazą FDB. Ilość wczytanych linii: " + dt.Rows.Count + ".";
+                itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
             }
             catch(Exception ex)
             {
                 itemPolaczZBaza.Background = Brushes.Red;
-                
+                itemPolaczZBaza.Header = "Połącz z bazą";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex;
 
             }
@@ -343,7 +378,9 @@ namespace ScaleniaMW
         private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
         {
             textBoxLogin.Text = Properties.Settings.Default.Login;
+
             panelLogowania.Visibility = Visibility.Visible;
+            tabControl.Visibility = Visibility.Hidden;
         }
 
         private void ButtonZapiszLogIHaslo(object sender, RoutedEventArgs e)
@@ -353,12 +390,28 @@ namespace ScaleniaMW
             Properties.Settings.Default.Save();
             textBoxHaslo.Text = "";
             panelLogowania.Visibility = Visibility.Hidden;
+            //dataGrid.Visibility = Visibility.Visible;
+            tabControl.Visibility = Visibility.Visible;
+
         }
 
         private void Button_Anuluj(object sender, RoutedEventArgs e)
         {
             panelLogowania.Visibility = Visibility.Hidden;
+            //dataGrid.Visibility = Visibility.Visible;
+            tabControl.Visibility = Visibility.Visible;
         }
-        
+
+        private void CheckBoxIgnorujKropkeIPrzecinej_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek = (bool)checkBoxIgnorujKropkeIPrzecinej.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void CheckBoxIgnorujKropkeIPrzecinej_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek = (bool)checkBoxIgnorujKropkeIPrzecinej.IsChecked;
+            Properties.Settings.Default.Save();
+        }
     }
 }

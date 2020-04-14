@@ -58,5 +58,41 @@ namespace ScaleniaMW.Properties {
                 this["Haslo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathEDZ {
+            get {
+                return ((string)(this["PathEDZ"]));
+            }
+            set {
+                this["PathEDZ"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathGeneruj {
+            get {
+                return ((string)(this["PathGeneruj"]));
+            }
+            set {
+                this["PathGeneruj"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool checkBoxignorujKropkeIPrzecinek {
+            get {
+                return ((bool)(this["checkBoxignorujKropkeIPrzecinek"]));
+            }
+            set {
+                this["checkBoxignorujKropkeIPrzecinek"] = value;
+            }
+        }
     }
 }

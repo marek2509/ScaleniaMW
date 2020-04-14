@@ -13,7 +13,8 @@ namespace ScaleniaMW
             Obr_Dzialka = obrDz;
             NKR = nkr;
         }
-        public string Obr_Dzialka;
-        public string NKR;
+        
+        public string Obr_Dzialka { get; set; } 
+        public string NKR { get; set; }
     }
 }
