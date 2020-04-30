@@ -449,7 +449,7 @@ namespace ScaleniaMW
         {
             checkDopiszBlad.IsChecked = Properties.Settings.Default.checkBoxDopiszBlad;
             checkWypiszBrakKW.IsChecked = Properties.Settings.Default.checkBoxBrakKW;
-            panelOpcje.Visibility = Visibility.Visible;
+            panelOpcje.Visibility = Visibility.Visible; // zrobić tak żeby te checkboxy dzialaly
         }
     }
 }
