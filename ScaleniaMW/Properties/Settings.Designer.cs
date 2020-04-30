@@ -94,5 +94,29 @@ namespace ScaleniaMW.Properties {
                 this["checkBoxignorujKropkeIPrzecinek"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool checkBoxBrakKW {
+            get {
+                return ((bool)(this["checkBoxBrakKW"]));
+            }
+            set {
+                this["checkBoxBrakKW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool checkBoxDopiszBlad {
+            get {
+                return ((bool)(this["checkBoxDopiszBlad"]));
+            }
+            set {
+                this["checkBoxDopiszBlad"] = value;
+            }
+        }
     }
 }

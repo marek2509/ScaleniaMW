@@ -9,7 +9,7 @@ namespace ScaleniaMW
 {
     public static class Obliczenia
     {
-        public static string DopasujNkrDoDziałkiGenerujtxtDoEWM(List<DzialkaEDZ> punkt, List<DzialkaNkrZSQL> dzialkaNkrZSQL, ref string logInfo, bool czyIgnorowacPrzecinkiIKropki)
+        public static string DopasujNkrDoDziałkiGenerujtxtDoEWM(List<DzialkaEDZ> punkt, List<DzialkaNkrZSQL> dzialkaNkrZSQL, ref string logInfo, bool czyIgnorowacPrzecinkiIKropki, int intKodExpo0NKR1KW)
         {
 
             StringBuilder sb = new StringBuilder();
@@ -55,7 +55,22 @@ namespace ScaleniaMW
                         nkrZSQL = dzialkaNkrZSQL.Find(x => x.Obr_Dzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
                         Console.WriteLine(nkrZSQL.Obr_Dzialka);
                         ileDopasowano++;
-                        sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.NKR + "\" _");
+                        switch (intKodExpo0NKR1KW)
+                        {
+                            case 0:
+                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.NKR + "\" _");
+                                break;
+                            case 1:
+                                if (nkrZSQL.KW.Equals(""))
+                                {
+                                    nkrZSQL.KW = "Brak KW";
+                                }
+                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.KW + "\" _");
+                                break;
+                            default:
+                                Console.WriteLine("Default case");
+                                break;
+                        }  
                     }
                     else
                     {
@@ -73,7 +88,23 @@ namespace ScaleniaMW
                     {
                         nkrZSQL = dzialkaNkrZSQL.Find(x => x.Obr_Dzialka.Trim().Equals(item.Nr_Dz.Trim()));
                         ileDopasowano++;
-                        sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.NKR + "\" _");
+                        switch (intKodExpo0NKR1KW)
+                        {
+                            case 0:
+                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.NKR + "\" _");
+                                break;
+                            case 1:
+                                if (nkrZSQL.KW.Equals(""))
+                                {
+                                    nkrZSQL.KW = "Brak KW";
+                                }
+                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.KW + "\" _");
+                                break;
+                            default:
+                                Console.WriteLine("Default case");
+                                break;
+                        }
+                       
                     }
                     else
                     {
@@ -83,7 +114,19 @@ namespace ScaleniaMW
                 }
             }
 
-            logInfo = "Dopasowano " + ileDopasowano + " z " + punkt.Count + " NKR dla działek z pliku. Niedopasowano: " + ileNieZnaleziono;
+            switch (intKodExpo0NKR1KW)
+            {
+                case 0:
+                    logInfo = "Dopasowano " + ileDopasowano + " z " + punkt.Count + " NKR dla działek z pliku. Niedopasowano: " + ileNieZnaleziono;
+                    break;
+                case 1:
+                    logInfo = "Dopasowano " + ileDopasowano + " z " + punkt.Count + "KW";
+                    break;
+                default:
+                    Console.WriteLine("Default case");
+                    break;
+            }
+           
             return sb.ToString();
         }
     }
