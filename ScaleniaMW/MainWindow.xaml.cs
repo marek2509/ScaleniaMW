@@ -302,7 +302,7 @@ namespace ScaleniaMW
                                 kodRodzajuNKRczyKW = 1;
                             }
 
-                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW));
+                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
                             textBlockLogInfo.Text = loginfo;
                             sw.Close();
                         }
@@ -436,20 +436,47 @@ namespace ScaleniaMW
             Properties.Settings.Default.Save();
         }
 
+
+
         private void ZapiszUstawienia_Click(object sender, RoutedEventArgs e)
         {
-            checkDopiszBlad.IsChecked = Properties.Settings.Default.checkBoxDopiszBlad;
-            checkWypiszBrakKW.IsChecked = Properties.Settings.Default.checkBoxBrakKW;
+            Properties.Settings.Default.checkBoxDopiszBlad = (bool)checkDopiszBlad.IsChecked;
+            Properties.Settings.Default.checkBoxBrakKW = (bool)checkWypiszBrakKW.IsChecked;
             Properties.Settings.Default.Save();
             panelOpcje.Visibility = Visibility.Hidden;
 
         }
+
 
         private void MenuItem_Opcje(object sender, RoutedEventArgs e)
         {
             checkDopiszBlad.IsChecked = Properties.Settings.Default.checkBoxDopiszBlad;
             checkWypiszBrakKW.IsChecked = Properties.Settings.Default.checkBoxBrakKW;
             panelOpcje.Visibility = Visibility.Visible; // zrobić tak żeby te checkboxy dzialaly
+        }
+
+        private void CheckWypiszBrakKW_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.checkBoxBrakKW = (bool)checkWypiszBrakKW.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void CheckWypiszBrakKW_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.checkBoxBrakKW = (bool)checkWypiszBrakKW.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void CheckDopiszBlad_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.checkBoxDopiszBlad = (bool)checkDopiszBlad.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void CheckDopiszBlad_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.checkBoxDopiszBlad = (bool)checkDopiszBlad.IsChecked;
+            Properties.Settings.Default.Save();
         }
     }
 }

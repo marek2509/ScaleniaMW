@@ -20,8 +20,8 @@
         <Menu Grid.Row="1">
             <MenuItem Header="Plik" >
                 <MenuItem Header="_Otwórz Działki.edz" Click="otworzEDZ"></MenuItem>
-                <MenuItem x:Name="obrNKR" Header="_Generuj plik z obroconym NKRem" Click="ZapiszDoPliku"></MenuItem>
-                <MenuItem x:Name="obrKW" Header="_Generuj plik z obroconym nr KW" Click="ZapiszDoPliku"></MenuItem>
+                <MenuItem x:Name="obrNKR" Header="_Generuj plik z obróconym nr NKR" Click="ZapiszDoPliku"></MenuItem>
+                <MenuItem x:Name="obrKW" Header="_Generuj plik z obróconym nr KW" Click="ZapiszDoPliku"></MenuItem>
             </MenuItem>
             <MenuItem Header="Opcje" Click="MenuItem_Opcje">
             </MenuItem>
@@ -47,8 +47,8 @@
                     <GroupBox Width="500" HorizontalAlignment="Left">
                         <GroupBox.Header>Eksport KW</GroupBox.Header>
                         <StackPanel>
-                            <CheckBox x:Name="checkWypiszBrakKW" IsChecked="True">Wypisz "Brak KW" dla działek bez Księgi.</CheckBox>
-                            <CheckBox x:Name="checkDopiszBlad" IsChecked="True">Dopisuj "@Błąd" w przypadku numerów KW dla których program uznał za niepoprawne.</CheckBox>
+                            <CheckBox x:Name="checkWypiszBrakKW" Checked="CheckWypiszBrakKW_Checked" Unchecked="CheckWypiszBrakKW_Unchecked" >Wypisz "Brak KW" dla działek bez Księgi.</CheckBox>
+                            <CheckBox x:Name="checkDopiszBlad" Checked="CheckDopiszBlad_Checked" Unchecked="CheckDopiszBlad_Unchecked">Dopisuj "@Błąd" w przypadku numerów KW dla których program uznał za niepoprawne.</CheckBox>
                         </StackPanel>
 
                     </GroupBox>

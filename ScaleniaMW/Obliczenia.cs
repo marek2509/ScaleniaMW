@@ -9,7 +9,7 @@ namespace ScaleniaMW
 {
     public static class Obliczenia
     {
-        public static string DopasujNkrDoDziałkiGenerujtxtDoEWM(List<DzialkaEDZ> punkt, List<DzialkaNkrZSQL> dzialkaNkrZSQL, ref string logInfo, bool czyIgnorowacPrzecinkiIKropki, int intKodExpo0NKR1KW)
+        public static string DopasujNkrDoDziałkiGenerujtxtDoEWM(List<DzialkaEDZ> punkt, List<DzialkaNkrZSQL> dzialkaNkrZSQL, ref string logInfo, bool czyIgnorowacPrzecinkiIKropki, int intKodExpo0NKR1KW, bool czyDopisacBrakKw, bool czyDopisacBlad)
         {
 
             StringBuilder sb = new StringBuilder();
@@ -36,7 +36,7 @@ namespace ScaleniaMW
             //    dzialkaNkrZSQLsBEZkropIprzec = 
             //}
 
-
+            Console.WriteLine("czy dopisac brak kw " + czyDopisacBrakKw + " czy błąd: " + czyDopisacBlad + " ignor przecinek " + czyIgnorowacPrzecinkiIKropki);
             Console.WriteLine(dzialkaNkrZSQL.Count);
             Console.WriteLine(punkt.Count);
             DzialkaNkrZSQL nkrZSQL;
@@ -53,24 +53,53 @@ namespace ScaleniaMW
                     if (dzialkaNkrZSQL.Exists(x => x.Obr_Dzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
                     {
                         nkrZSQL = dzialkaNkrZSQL.Find(x => x.Obr_Dzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
-                        Console.WriteLine(nkrZSQL.Obr_Dzialka);
+                        string KW = nkrZSQL.KW;
                         ileDopasowano++;
                         switch (intKodExpo0NKR1KW)
                         {
                             case 0:
+                                { 
                                 sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.NKR + "\" _");
                                 break;
+                                }
                             case 1:
+                                { 
                                 if (nkrZSQL.KW.Equals(""))
                                 {
-                                    nkrZSQL.KW = "Brak KW";
+                                    if (czyDopisacBrakKw) {
+                                        KW = "Brak KW";
+
+                                            sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
+                                            break;
+                                        }
+                                        else
+                                    {
+                                        Console.WriteLine("break KW" );
+                                        break;
+                                    }
+
                                 }
-                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.KW + "\" _");
+
+                                if (czyDopisacBlad)
+                                {
+
+
+                                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(nkrZSQL.KW))
+                                    {
+                                        KW = nkrZSQL.KW + "@Błąd";
+                                        Console.WriteLine(KW);
+                                    }
+                                }
+                              
+                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
+
                                 break;
+                                }
                             default:
                                 Console.WriteLine("Default case");
                                 break;
-                        }  
+                        } 
+                        
                     }
                     else
                     {
