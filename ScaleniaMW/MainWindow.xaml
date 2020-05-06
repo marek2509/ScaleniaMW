@@ -22,6 +22,8 @@
                 <MenuItem Header="_Otwórz Działki.edz" Click="otworzEDZ"></MenuItem>
                 <MenuItem x:Name="obrNKR" Header="_Generuj plik z obróconym nr NKR" Click="ZapiszDoPliku"></MenuItem>
                 <MenuItem x:Name="obrKW" Header="_Generuj plik z obróconym nr KW" Click="ZapiszDoPliku"></MenuItem>
+                <Separator></Separator>
+                <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Header="Zapisz dopasowanie jednostek" Click="Zapisz_Dopasowanie_Jedn_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Opcje" Click="MenuItem_Opcje">
             </MenuItem>
@@ -84,7 +86,10 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Niedopasowane jednostki">
+            <TabItem Header="Znaleziono Błędy KW!" Foreground="Red" Visibility="Hidden" x:Name="logBledowKW" >
+                <TextBox x:Name="textBlockBledy" ></TextBox>
+            </TabItem>
+            <TabItem Header="Niedopasowane jednostki" x:Name="tabItemNiedopasowJedn">
                 <DockPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -92,28 +97,42 @@
                             <ColumnDefinition Width="auto"></ColumnDefinition>
                             <ColumnDefinition Width="auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        
+
                         <Label Grid.Column="0">NKR</Label>
                         <DockPanel Margin="0,20,0,0" Grid.Column="0">
                             <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
                         </DockPanel>
-                        
+
                         <Label Grid.Column="1">NR DZIAŁKI</Label>
                         <DockPanel  Margin="0,20,0,0" Grid.Column="1">
                             <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
                         </DockPanel>
-                        
+
                         <Label Grid.Column="2">NR REJ. GRUNTU</Label>
                         <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
                             <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left"/>
                         </DockPanel>
-
                     </Grid>
+                    <StackPanel>
+                    <Button Height="65" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" >
+                        <StackPanel HorizontalAlignment="Center">
+                            <Label HorizontalAlignment="Center">Przypisz zaznaczoną</Label>
+                            <Label HorizontalAlignment="Center">jednostkę</Label>
+                        </StackPanel>
+                    </Button>
+
+                        <Button Height="65" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_ZaladujDoBazy"  >
+                        <StackPanel HorizontalAlignment="Center">
+                            <Label HorizontalAlignment="Center">Załaduj przypiasne</Label>
+                            <Label HorizontalAlignment="Center">jednostki do bazy</Label>
+                        </StackPanel>
+                    </Button>
+                    </StackPanel>
+                    <DataGrid Margin="5,0" x:Name="dgNiedopJednostki"></DataGrid>
                 </DockPanel>
+
             </TabItem>
-            <TabItem Header="Znaleziono Błędy KW!" Foreground="Red" Visibility="Hidden" x:Name="logBledowKW" >
-                <TextBox x:Name="textBlockBledy" ></TextBox>
-            </TabItem>
+
 
 
         </TabControl>

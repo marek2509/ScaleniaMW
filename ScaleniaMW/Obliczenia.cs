@@ -59,48 +59,49 @@ namespace ScaleniaMW
                         switch (intKodExpo0NKR1KW)
                         {
                             case 0:
-                                { 
-                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.NKR + "\" _");
-                                break;
+                                {
+                                    sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + nkrZSQL.NKR + "\" _");
+                                    break;
                                 }
                             case 1:
-                                { 
-                                if (nkrZSQL.KW.Equals(""))
                                 {
-                                    if (czyDopisacBrakKw) {
-                                        KW = "Brak KW";
+                                    if (nkrZSQL.KW.Equals(""))
+                                    {
+                                        if (czyDopisacBrakKw)
+                                        {
+                                            KW = "Brak KW";
 
                                             sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
                                             break;
                                         }
                                         else
-                                    {
-                                        Console.WriteLine("break KW" );
-                                        break;
+                                        {
+                                            Console.WriteLine("break KW");
+                                            break;
+                                        }
+
                                     }
 
-                                }
-
-                                if (czyDopisacBlad)
-                                {
-
-
-                                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(nkrZSQL.KW))
+                                    if (czyDopisacBlad)
                                     {
-                                        KW = nkrZSQL.KW + "@Błąd";
-                                        Console.WriteLine(KW);
-                                    }
-                                }
-                              
-                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
 
-                                break;
+
+                                        if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(nkrZSQL.KW))
+                                        {
+                                            KW = nkrZSQL.KW + "@Błąd";
+                                            Console.WriteLine(KW);
+                                        }
+                                    }
+
+                                    sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
+
+                                    break;
                                 }
                             default:
                                 Console.WriteLine("Default case");
                                 break;
-                        } 
-                        
+                        }
+
                     }
                     else
                     {
@@ -134,7 +135,7 @@ namespace ScaleniaMW
                                 Console.WriteLine("Default case");
                                 break;
                         }
-                       
+
                     }
                     else
                     {
@@ -156,63 +157,113 @@ namespace ScaleniaMW
                     Console.WriteLine("Default case");
                     break;
             }
-           
+
             return sb.ToString();
         }
 
 
-        public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek>  listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej)
+        public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, object sender=null)
         {
-            for (int i = listaJednostekZSQL[0].IdJednN; i <= listaJednostekZSQL[listaJednostekZSQL.Count - 1].IdJednN; i++)
+            if (listaJednostekZSQL.Count > 0)
             {
-                List<DopasowanieJednostek> tmpListaJednostek = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(i));
 
 
-                if (tmpListaJednostek.Count == tmpListaJednostek.FindAll(x => x.IdJednS.Equals(tmpListaJednostek[0].IdJednS)).Count)
+                for (int i = listaJednostekZSQL[0].IdJednN; i <= listaJednostekZSQL[listaJednostekZSQL.Count - 1].IdJednN; i++)
                 {
-                    foreach (var item in tmpListaJednostek)
+                    List<DopasowanieJednostek> tmpListaJednostek = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(i));
+
+
+                    if (tmpListaJednostek.Count == tmpListaJednostek.FindAll(x => x.IdJednS.Equals(tmpListaJednostek[0].IdJednS)).Count)
                     {
-                        item.PrzypisanyNrRej = item.NrJednEwopis;
+                        foreach (var item in tmpListaJednostek)
+                        {
+                            if (item.PrzypisanyNrRej.Equals(null))
+                            {
+                                item.PrzypisanyNrRej = item.IdJednS;
+                            }
+
+                        }
                     }
                 }
+
+
+
+                if (listaJednostekZSQL.Exists(x => x.PrzypisanyNrRej.Equals(null)))
+                {
+
+                    List<int> NowyNkr = new List<int>();
+                    List<DopasowanieJednostek> tmpListNKRbezJednRej = listaJednostekZSQL.FindAll(x => x.PrzypisanyNrRej.Equals(null));
+                    foreach (var item in tmpListNKRbezJednRej.GroupBy(x => x.NowyNKR))
+                    {
+                        NowyNkr.Add(item.Key);
+                    }
+                    listBoxNkr.ItemsSource = NowyNkr;
+
+
+                    List<string> NowyNrDz = new List<string>();
+                    // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
+                    listBoxNkr.SelectedIndex= listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+                    List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
+                    foreach (var item in tmpListNKRbezJednRejNRDZ.GroupBy(a => a.NrDzialki))
+                    {
+                        NowyNrDz.Add(item.Key);
+                    }
+                    listBoxNoweDzialki.ItemsSource = NowyNrDz;
+
+
+                    List<int> NrRejGr = new List<int>();
+                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+                    List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
+                    //foreach (var item in tmpListGrRej.GroupBy(x => x.NrJednEwopis))
+                    //{
+                    //    NrRejGr.Add(item.Key);
+
+                    //}
+                    //  listBoxNrRej.ItemsSource = NrRejGr;
+                    listBoxNrRej.ItemsSource = tmpListGrRej.GroupBy(x => x.NrJednEwopis).Select(x => x.Key);
+                    if (sender == (null))
+                    {
+                        Console.WriteLine("sender null");
+                    }
+                    else
+                    {
+                        Console.WriteLine("sender jetsst " + sender.GetHashCode());
+
+                        foreach (var item in listaJednostekZSQL)
+                        {
+                            if (item.NowyNKR.Equals(listBoxNkr.SelectedValue)&&item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
+                            {
+                                Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
+                                item.wypiszWConsoli();
+                                item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
+
+                            }
+
+                        }
+
+                        if (listBoxNoweDzialki.Items.Count == 1 || listBoxNoweDzialki.Items.Count == 0)
+                        {
+                            Console.WriteLine("to teraz");
+                            listBoxNkr.SelectedIndex = 0;
+                        }
+
+                        Obliczenia.DopasujNrRejDoNowychDzialek(ref listaJednostekZSQL, listBoxNkr, listBoxNoweDzialki, listBoxNrRej);
+                        listBoxNrRej.SelectedIndex = 0;
+                        listBoxNoweDzialki.SelectedIndex = 0;
+
+                    }
+
+                }
+                else
+                {
+                    List<string> lll = new List<string>();
+                    lll.Add("WSZYSTKIE DOPASOWANO");
+                    listBoxNrRej.ItemsSource = lll;
+                    listBoxNoweDzialki.ItemsSource = lll;
+                    listBoxNkr.ItemsSource = lll;
+                }
+
             }
-
-
-            List<int> NowyNkr = new List<int>();
-            List<DopasowanieJednostek> tmpListNKRbezJednRej = listaJednostekZSQL.FindAll(x => x.PrzypisanyNrRej.Equals(null));
-
-            foreach (var item in tmpListNKRbezJednRej.GroupBy(x=> x.NowyNKR))
-            {
-                NowyNkr.Add(item.Key);
-            }
-            listBoxNkr.ItemsSource = NowyNkr;
-
-
-            List<string> NowyNrDz = new List<string>();
-           // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-            List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-            foreach (var item in tmpListNKRbezJednRejNRDZ.GroupBy(a => a.NrDzialki))
-            {
-                NowyNrDz.Add(item.Key);
-            }
-            listBoxNoweDzialki.ItemsSource = NowyNrDz;
-
-
-            List<int> NrRejGr = new List<int>();
-            List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-            //foreach (var item in tmpListGrRej.GroupBy(x => x.NrJednEwopis))
-            //{
-            //    NrRejGr.Add(item.Key);
-
-            //}
-          //  listBoxNrRej.ItemsSource = NrRejGr;
-            listBoxNrRej.ItemsSource = tmpListGrRej.GroupBy(x => x.NrJednEwopis).Select(x => x.Key);
-            foreach (var item in tmpListGrRej.Select(x => x.NrJednEwopis))
-            {
-                Console.WriteLine(item);
-            }
-          
-
         }
     }
 }

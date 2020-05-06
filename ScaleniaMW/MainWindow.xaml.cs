@@ -110,6 +110,7 @@ namespace ScaleniaMW
 
             InitializeComponent();
 
+
             try
             {
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
@@ -437,8 +438,6 @@ namespace ScaleniaMW
             Properties.Settings.Default.Save();
         }
 
-
-
         private void ZapiszUstawienia_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.checkBoxDopiszBlad = (bool)checkDopiszBlad.IsChecked;
@@ -447,8 +446,7 @@ namespace ScaleniaMW
             panelOpcje.Visibility = Visibility.Hidden;
 
         }
-
-
+        
         private void MenuItem_Opcje(object sender, RoutedEventArgs e)
         {
             checkDopiszBlad.IsChecked = Properties.Settings.Default.checkBoxDopiszBlad;
@@ -487,6 +485,15 @@ namespace ScaleniaMW
             aktualizujSciezkeZPropertis();
             using (var connection = new FbConnection(connectionString))
             {
+                if (itemImportJednostkiSN.Background.Equals(Brushes.LightSeaGreen))
+                {
+                    var resultat = MessageBox.Show("Czy chcesz nadpisać obecnie załadowany plik?", "UWAGA!", MessageBoxButton.YesNo);
+
+                    if (resultat == MessageBoxResult.No)
+                    {
+                        goto koniec;
+                    }
+                }
                 connection.Open();
 
                 FbCommand command = new FbCommand();
@@ -516,16 +523,18 @@ namespace ScaleniaMW
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
 
-                  listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5]));
+                  listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5],  dt.Rows[i][6]));
                 }
                 try
                 {
                     //dataGrid.ItemsSource = dt.AsDataView();
                     //dataGrid.Visibility = Visibility.Visible;
                     //dataGrid.Items.Refresh();
-                    dgNkrFDB.ItemsSource = dt.AsDataView();
-                    dgNkrFDB.Visibility = Visibility.Visible;
-                    dgNkrFDB.Items.Refresh();
+                    //dgNkrFDB.ItemsSource = dt.AsDataView();
+                    dgNiedopJednostki.ItemsSource = listaDopasowJednos;
+                    dgNiedopJednostki.Items.Refresh();
+                   // dgNkrFDB.Visibility = Visibility.Visible;
+                   // dgNkrFDB.Items.Refresh();
 
                     Console.WriteLine("ustawiam SOURCE");
                 }
@@ -543,7 +552,9 @@ namespace ScaleniaMW
                 Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
 
                 connection.Close();
-                tabControl.SelectedIndex = 1;
+                tabControl.SelectedIndex = 3;
+                itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
+                koniec:;
             }
         }
 
@@ -551,11 +562,127 @@ namespace ScaleniaMW
         {
             Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
             listBoxDzialkiNowe.SelectedIndex = 0;
+
         }
 
         private void ListBoxDzialkiNowe_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+            listBoxNrRej.SelectedIndex = 0;
+
+        }
+
+        private void Button_PrzypiszZaznJedn(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(" super ");
+            Console.WriteLine(sender.GetHashCode());
+            Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, sender);
+            dgNkrFDB.ItemsSource = listaDopasowJednos;
+            dgNkrFDB.Items.Refresh();
+
+            listBoxNkr.Items.Refresh();
+            listBoxDzialkiNowe.Visibility = Visibility.Hidden;
+            listBoxDzialkiNowe.Visibility = Visibility.Visible;
+            listBoxDzialkiNowe.Items.Refresh();
+            listBoxNrRej.Items.Refresh();
+
+            tabItemNiedopasowJedn.Visibility = Visibility.Hidden;
+            tabItemNiedopasowJedn.Visibility = Visibility.Visible;
+            dgNiedopJednostki.Items.Refresh();
+        }
+
+        private void Zapisz_Dopasowanie_Jedn_Click(object sender, RoutedEventArgs e)
+        {
+
+            SaveFileDialog svd = new SaveFileDialog();
+            svd.DefaultExt = ".txt";
+            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (svd.ShowDialog() == true)
+            {
+                using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                    try
+                    {
+                        try
+                        {
+                            StringBuilder stringBuilder = new StringBuilder();
+                            stringBuilder.AppendLine("[IddN] [idJednS] [NKRN] [NrDzN] [NrRejGr]");
+                            foreach (var item in listaDopasowJednos)
+                            {
+                                stringBuilder.AppendLine(item.IdDz + "\t"+item.IdJednS+"\t"+ item.NowyNKR + "\t" + item.NrDzialki + "\t" + item.NrJednEwopis);
+                            }
+
+                            sw.Write(stringBuilder.ToString());
+
+                            sw.Close();
+                        }
+                        catch (Exception exc)
+                        {
+                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+
+                        if (resultat == MessageBoxResult.Yes)
+                        {
+                            Application.Current.Shutdown();
+                        }
+                    }
+
+            }
+        }
+
+        private void Button_ZaladujDoBazy(object sender, RoutedEventArgs e)
+        {
+            var resultat = MessageBox.Show("Czy chcesz rozpocząć ładowanie do bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+
+            if (resultat == MessageBoxResult.Yes)
+            {
+                aktualizujSciezkeZPropertis();
+                using (var connection = new FbConnection(connectionString))
+                {
+                    connection.Open();
+
+                    FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id WHEN @IDDZ THEN @RJDRPRZED else RJDRPRZED END", connection);
+
+                    writeCommand.Parameters.Add("@IDDZ", "660");
+                    writeCommand.Parameters.Add("@RJDRPRZED", "123");
+                    writeCommand.ExecuteNonQuery();
+                    writeCommand.Parameters.Clear();
+                    writeCommand.Parameters.Add("@IDDZ", "661");
+                    writeCommand.Parameters.Add("@RJDRPRZED", "333");
+                    writeCommand.ExecuteNonQuery();
+
+                    /*
+                    FbCommand command = new FbCommand();
+
+                    FbTransaction transaction = connection.BeginTransaction();
+
+                    command.Connection = connection;
+                    command.Transaction = transaction;
+                    Console.WriteLine("jestem sss");
+                    command.CommandText = "UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id WHEN 660 THEN 22 else RJDRPRZED END";
+
+                    FbDataAdapter adapter = new FbDataAdapter(command);
+
+                    dt = new DataTable();
+
+                    adapter.Fill(dt);*/
+                    connection.Close();
+                }
+
+
+            }
+
+
+            /*UPDATE DZIALKI_N 
+SET RJDRPRZED = CASE Id_Id
+WHEN 660 THEN 999 
+else RJDRPRZED
+END*/
         }
     }
 }
