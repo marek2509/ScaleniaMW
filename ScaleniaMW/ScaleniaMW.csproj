@@ -95,6 +95,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BadanieKsiagWieczystych.cs" />
+    <Compile Include="DopasowanieJednostek.cs" />
     <Compile Include="DzialkaNkrZSQL.cs" />
     <Compile Include="Obliczenia.cs" />
     <Compile Include="DzialkaEDZ.cs" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ScaleniaMW
 {
@@ -157,6 +158,61 @@ namespace ScaleniaMW
             }
            
             return sb.ToString();
+        }
+
+
+        public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek>  listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej)
+        {
+            for (int i = listaJednostekZSQL[0].IdJednN; i <= listaJednostekZSQL[listaJednostekZSQL.Count - 1].IdJednN; i++)
+            {
+                List<DopasowanieJednostek> tmpListaJednostek = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(i));
+
+
+                if (tmpListaJednostek.Count == tmpListaJednostek.FindAll(x => x.IdJednS.Equals(tmpListaJednostek[0].IdJednS)).Count)
+                {
+                    foreach (var item in tmpListaJednostek)
+                    {
+                        item.PrzypisanyNrRej = item.NrJednEwopis;
+                    }
+                }
+            }
+
+
+            List<int> NowyNkr = new List<int>();
+            List<DopasowanieJednostek> tmpListNKRbezJednRej = listaJednostekZSQL.FindAll(x => x.PrzypisanyNrRej.Equals(null));
+
+            foreach (var item in tmpListNKRbezJednRej.GroupBy(x=> x.NowyNKR))
+            {
+                NowyNkr.Add(item.Key);
+            }
+            listBoxNkr.ItemsSource = NowyNkr;
+
+
+            List<string> NowyNrDz = new List<string>();
+           // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
+            List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
+            foreach (var item in tmpListNKRbezJednRejNRDZ.GroupBy(a => a.NrDzialki))
+            {
+                NowyNrDz.Add(item.Key);
+            }
+            listBoxNoweDzialki.ItemsSource = NowyNrDz;
+
+
+            List<int> NrRejGr = new List<int>();
+            List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
+            //foreach (var item in tmpListGrRej.GroupBy(x => x.NrJednEwopis))
+            //{
+            //    NrRejGr.Add(item.Key);
+
+            //}
+          //  listBoxNrRej.ItemsSource = NrRejGr;
+            listBoxNrRej.ItemsSource = tmpListGrRej.GroupBy(x => x.NrJednEwopis).Select(x => x.Key);
+            foreach (var item in tmpListGrRej.Select(x => x.NrJednEwopis))
+            {
+                Console.WriteLine(item);
+            }
+          
+
         }
     }
 }

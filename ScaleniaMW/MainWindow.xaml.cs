@@ -109,7 +109,7 @@ namespace ScaleniaMW
         {
 
             InitializeComponent();
-          
+
             try
             {
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
@@ -122,6 +122,7 @@ namespace ScaleniaMW
             {
                 Console.WriteLine(e + " problem z oknem");
             }
+
         }
 
         public static string[] odczytZPlikuLinie(string a) //odczyt z pliku z wyjatkami niepowodzenia należy podać ścieżkę, zwraca tablicę odczytaną z pliku
@@ -255,8 +256,8 @@ namespace ScaleniaMW
 
                     Properties.Settings.Default.PathEDZ =dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\"));     
                     Properties.Settings.Default.Save();
-              
-                    
+
+                    tabControl.SelectedIndex = 0;
                 }
                 catch (Exception esa)
                 {
@@ -385,7 +386,7 @@ namespace ScaleniaMW
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
                 textBlockBledy.Text = stringBuilder.ToString();
-              
+                tabControl.SelectedIndex = 1;
             }
             catch(Exception ex)
             {
@@ -477,6 +478,84 @@ namespace ScaleniaMW
         {
             Properties.Settings.Default.checkBoxDopiszBlad = (bool)checkDopiszBlad.IsChecked;
             Properties.Settings.Default.Save();
+        }
+
+
+        List<DopasowanieJednostek> listaDopasowJednos = new List<DopasowanieJednostek>();
+        private void ItemImportJednostkiSN_Click(object sender, RoutedEventArgs e)
+        {
+            aktualizujSciezkeZPropertis();
+            using (var connection = new FbConnection(connectionString))
+            {
+                connection.Open();
+
+                FbCommand command = new FbCommand();
+
+                FbTransaction transaction = connection.BeginTransaction();
+
+                command.Connection = connection;
+                command.Transaction = transaction;
+                // działające zapytanie na nrobr-nrdz NKR 
+                //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+                // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
+                command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr, dn.idd, dn.id_id, dn.rjdrprzed, " +
+                    "js.NKR stary_nkr,  dn.pew/10000, dn.ww from JEDN_SN sn " +
+                                        "join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                dt = new DataTable();
+
+                adapter.Fill(dt);
+                foreach (var item in dt.Columns)
+                {
+
+                    Console.Write(item + " << ");
+                }
+                Console.WriteLine("row count:" + dt.Rows.Count);
+                Console.WriteLine("column count:" + dt.Columns.Count);
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+
+                  listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5]));
+                }
+                try
+                {
+                    //dataGrid.ItemsSource = dt.AsDataView();
+                    //dataGrid.Visibility = Visibility.Visible;
+                    //dataGrid.Items.Refresh();
+                    dgNkrFDB.ItemsSource = dt.AsDataView();
+                    dgNkrFDB.Visibility = Visibility.Visible;
+                    dgNkrFDB.Items.Refresh();
+
+                    Console.WriteLine("ustawiam SOURCE");
+                }
+                catch (Exception excp)
+                {
+                    Console.WriteLine(excp);
+                }
+
+                //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
+                //foreach (var item in listaDopasowJednos)
+                //{
+                //    item.wypiszWConsoli(A++.ToString());
+
+                //}
+                Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+
+                connection.Close();
+                tabControl.SelectedIndex = 1;
+            }
+        }
+
+        private void ListBoxNkr_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+            listBoxDzialkiNowe.SelectedIndex = 0;
+        }
+
+        private void ListBoxDzialkiNowe_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
         }
     }
 }
