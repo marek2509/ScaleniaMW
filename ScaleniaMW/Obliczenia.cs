@@ -162,31 +162,31 @@ namespace ScaleniaMW
         }
 
 
-        public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, object sender=null)
+        public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, string sender = "")
         {
             if (listaJednostekZSQL.Count > 0)
             {
 
 
-                for (int i = listaJednostekZSQL[0].IdJednN; i <= listaJednostekZSQL[listaJednostekZSQL.Count - 1].IdJednN; i++)
+                if (sender.Equals("AutoPrzypiszJednostki"))
                 {
-                    List<DopasowanieJednostek> tmpListaJednostek = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(i));
-
-
-                    if (tmpListaJednostek.Count == tmpListaJednostek.FindAll(x => x.IdJednS.Equals(tmpListaJednostek[0].IdJednS)).Count)
+                    for (int i = listaJednostekZSQL[0].IdJednN; i <= listaJednostekZSQL[listaJednostekZSQL.Count - 1].IdJednN; i++)
                     {
-                        foreach (var item in tmpListaJednostek)
-                        {
-                            if (item.PrzypisanyNrRej.Equals(null))
-                            {
-                                item.PrzypisanyNrRej = item.IdJednS;
-                            }
+                        List<DopasowanieJednostek> tmpListaJednostek = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(i));
 
+
+                        if (tmpListaJednostek.Count == tmpListaJednostek.FindAll(x => x.IdJednS.Equals(tmpListaJednostek[0].IdJednS)).Count)
+                        {
+                            foreach (var item in tmpListaJednostek)
+                            {
+                                if (item.PrzypisanyNrRej.Equals(null))
+                                {
+                                    item.PrzypisanyNrRej = item.IdJednS;
+                                }
+                            }
                         }
                     }
                 }
-
-
 
                 if (listaJednostekZSQL.Exists(x => x.PrzypisanyNrRej.Equals(null)))
                 {
@@ -202,7 +202,7 @@ namespace ScaleniaMW
 
                     List<string> NowyNrDz = new List<string>();
                     // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-                    listBoxNkr.SelectedIndex= listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
                     List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
                     foreach (var item in tmpListNKRbezJednRejNRDZ.GroupBy(a => a.NrDzialki))
                     {
@@ -221,17 +221,13 @@ namespace ScaleniaMW
                     //}
                     //  listBoxNrRej.ItemsSource = NrRejGr;
                     listBoxNrRej.ItemsSource = tmpListGrRej.GroupBy(x => x.NrJednEwopis).Select(x => x.Key);
-                    if (sender == (null))
-                    {
-                        Console.WriteLine("sender null");
-                    }
-                    else
+                    if (sender.Equals("PrzypiszZaznJedn"))
                     {
                         Console.WriteLine("sender jetsst " + sender.GetHashCode());
 
                         foreach (var item in listaJednostekZSQL)
                         {
-                            if (item.NowyNKR.Equals(listBoxNkr.SelectedValue)&&item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
+                            if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
                             {
                                 Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
                                 item.wypiszWConsoli();

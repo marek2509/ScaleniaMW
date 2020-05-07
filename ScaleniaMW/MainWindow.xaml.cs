@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Deployment;
+using System.Windows.Threading;
 
 namespace ScaleniaMW
 {
@@ -393,7 +394,7 @@ namespace ScaleniaMW
             {
                 itemPolaczZBaza.Background = Brushes.Red;
                 itemPolaczZBaza.Header = "Połącz z bazą";
-                textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex;
+                textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
 
             }
        
@@ -482,79 +483,96 @@ namespace ScaleniaMW
         List<DopasowanieJednostek> listaDopasowJednos = new List<DopasowanieJednostek>();
         private void ItemImportJednostkiSN_Click(object sender, RoutedEventArgs e)
         {
-            aktualizujSciezkeZPropertis();
-            using (var connection = new FbConnection(connectionString))
+            try
             {
-                if (itemImportJednostkiSN.Background.Equals(Brushes.LightSeaGreen))
-                {
-                    var resultat = MessageBox.Show("Czy chcesz nadpisać obecnie załadowany plik?", "UWAGA!", MessageBoxButton.YesNo);
 
-                    if (resultat == MessageBoxResult.No)
+                aktualizujSciezkeZPropertis();
+                using (var connection = new FbConnection(connectionString))
+                {
+                    if (itemImportJednostkiSN.Background.Equals(Brushes.LightSeaGreen))
                     {
-                        goto koniec;
+                        var resultat = MessageBox.Show("Czy chcesz nadpisać obecnie załadowany plik?", "UWAGA!", MessageBoxButton.YesNo);
+
+                        if (resultat == MessageBoxResult.No)
+                        {
+                            goto koniec;
+                        }
+                        else
+                        {
+                            listaDopasowJednos = new List<DopasowanieJednostek>();
+                        }
+
                     }
+                    connection.Open();
+
+                    FbCommand command = new FbCommand();
+
+                    FbTransaction transaction = connection.BeginTransaction();
+
+                    command.Connection = connection;
+                    command.Transaction = transaction;
+                    // działające zapytanie na nrobr-nrdz NKR 
+                    //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+                    // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
+                    command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr, dn.idd, dn.id_id, dn.rjdrprzed, " +
+                        "js.NKR stary_nkr,  dn.pew/10000, dn.ww from JEDN_SN sn " +
+                                            "join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";
+                    FbDataAdapter adapter = new FbDataAdapter(command);
+                    dt = new DataTable();
+
+                    adapter.Fill(dt);
+                    foreach (var item in dt.Columns)
+                    {
+
+                        Console.Write(item + " << ");
+                    }
+                    Console.WriteLine("row count:" + dt.Rows.Count);
+                    Console.WriteLine("column count:" + dt.Columns.Count);
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+
+                        listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
+                    }
+                    try
+                    {
+                        //dataGrid.ItemsSource = dt.AsDataView();
+                        //dataGrid.Visibility = Visibility.Visible;
+                        //dataGrid.Items.Refresh();
+                        //dgNkrFDB.ItemsSource = dt.AsDataView();
+                        dgNiedopJednostki.ItemsSource = listaDopasowJednos;
+                        dgNiedopJednostki.Items.Refresh();
+                        // dgNkrFDB.Visibility = Visibility.Visible;
+                        // dgNkrFDB.Items.Refresh();
+
+                        Console.WriteLine("ustawiam SOURCE");
+                    }
+                    catch (Exception excp)
+                    {
+                        Console.WriteLine(excp);
+                    }
+
+                    //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
+                    //foreach (var item in listaDopasowJednos)
+                    //{
+                    //    item.wypiszWConsoli(A++.ToString());
+
+                    //}
+                    Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+
+                    connection.Close();
+                    tabControl.SelectedIndex = 3;
+                    itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
+                    itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
+                    koniec:;
                 }
-                connection.Open();
+            }
+            catch (Exception ex)
+            {
 
-                FbCommand command = new FbCommand();
-
-                FbTransaction transaction = connection.BeginTransaction();
-
-                command.Connection = connection;
-                command.Transaction = transaction;
-                // działające zapytanie na nrobr-nrdz NKR 
-                //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
-                command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr, dn.idd, dn.id_id, dn.rjdrprzed, " +
-                    "js.NKR stary_nkr,  dn.pew/10000, dn.ww from JEDN_SN sn " +
-                                        "join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";
-                FbDataAdapter adapter = new FbDataAdapter(command);
-                dt = new DataTable();
-
-                adapter.Fill(dt);
-                foreach (var item in dt.Columns)
-                {
-
-                    Console.Write(item + " << ");
-                }
-                Console.WriteLine("row count:" + dt.Rows.Count);
-                Console.WriteLine("column count:" + dt.Columns.Count);
-
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-
-                  listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5],  dt.Rows[i][6]));
-                }
-                try
-                {
-                    //dataGrid.ItemsSource = dt.AsDataView();
-                    //dataGrid.Visibility = Visibility.Visible;
-                    //dataGrid.Items.Refresh();
-                    //dgNkrFDB.ItemsSource = dt.AsDataView();
-                    dgNiedopJednostki.ItemsSource = listaDopasowJednos;
-                    dgNiedopJednostki.Items.Refresh();
-                   // dgNkrFDB.Visibility = Visibility.Visible;
-                   // dgNkrFDB.Items.Refresh();
-
-                    Console.WriteLine("ustawiam SOURCE");
-                }
-                catch (Exception excp)
-                {
-                    Console.WriteLine(excp);
-                }
-
-                //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
-                //foreach (var item in listaDopasowJednos)
-                //{
-                //    item.wypiszWConsoli(A++.ToString());
-
-                //}
-                Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
-
-                connection.Close();
-                tabControl.SelectedIndex = 3;
-                itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
-                koniec:;
+                itemImportJednostkiSN.Background = Brushes.Red;
+                itemImportJednostkiSN.Header = "Baza.fdb";
+                textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
             }
         }
 
@@ -576,7 +594,7 @@ namespace ScaleniaMW
         {
             Console.WriteLine(" super ");
             Console.WriteLine(sender.GetHashCode());
-            Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, sender);
+            Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, "PrzypiszZaznJedn");
             dgNkrFDB.ItemsSource = listaDopasowJednos;
             dgNkrFDB.Items.Refresh();
 
@@ -610,7 +628,7 @@ namespace ScaleniaMW
                             stringBuilder.AppendLine("[IddN] [idJednS] [NKRN] [NrDzN] [NrRejGr]");
                             foreach (var item in listaDopasowJednos)
                             {
-                                stringBuilder.AppendLine(item.IdDz + "\t"+item.IdJednS+"\t"+ item.NowyNKR + "\t" + item.NrDzialki + "\t" + item.NrJednEwopis);
+                                stringBuilder.AppendLine(item.IdDz + "\t"+item.IdJednS+"\t"+ item.NowyNKR + "\t" + item.NrDzialki + "\t" + item.PrzypisanyNrRej);
                             }
 
                             sw.Write(stringBuilder.ToString());
@@ -645,44 +663,94 @@ namespace ScaleniaMW
                 using (var connection = new FbConnection(connectionString))
                 {
                     connection.Open();
-
-                    FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id WHEN @IDDZ THEN @RJDRPRZED else RJDRPRZED END", connection);
-
-                    writeCommand.Parameters.Add("@IDDZ", "660");
-                    writeCommand.Parameters.Add("@RJDRPRZED", "123");
-                    writeCommand.ExecuteNonQuery();
-                    writeCommand.Parameters.Clear();
-                    writeCommand.Parameters.Add("@IDDZ", "661");
-                    writeCommand.Parameters.Add("@RJDRPRZED", "333");
-                    writeCommand.ExecuteNonQuery();
-
-                    /*
-                    FbCommand command = new FbCommand();
-
-                    FbTransaction transaction = connection.BeginTransaction();
-
-                    command.Connection = connection;
-                    command.Transaction = transaction;
-                    Console.WriteLine("jestem sss");
-                    command.CommandText = "UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id WHEN 660 THEN 22 else RJDRPRZED END";
-
-                    FbDataAdapter adapter = new FbDataAdapter(command);
-
-                    dt = new DataTable();
-
-                    adapter.Fill(dt);*/
+                    FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id  WHEN @IDDZ  THEN @RJDRPRZED else RJDRPRZED END",connection);
+                    List<int> tmpListaIdDz = new List<int>();
+                    tmpListaIdDz = listaDopasowJednos.GroupBy(g => g.IdDz).Select(x => x.Key).ToList();
+                    
+                    tmpListaIdDz.Sort();
+                    Console.WriteLine(tmpListaIdDz.Count);
+                    progresBar.Visibility = Visibility.Visible;
+                    progresBar.Maximum = listaDopasowJednos.FindAll(x =>x.PrzypisanyNrRej!=null).Count;
+                    for (int i = 0; i <= tmpListaIdDz.Count-1; i++)
+                    {
+                        if(listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
+                        {
+                            writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
+                            writeCommand.Parameters.Add("@RJDRPRZED", listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej);
+                            writeCommand.ExecuteNonQuery();
+                            writeCommand.Parameters.Clear();
+                            Console.WriteLine(i);
+                            progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+                        }
+                       
+                    }
                     connection.Close();
+                    MessageBox.Show("Jednostki przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+                    progresBar.Visibility = Visibility.Hidden;
                 }
-
-
             }
+        }
 
+        private void MenuItem_AutoPrzypiszJednostki(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(sender.GetHashCode());
+            Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, "AutoPrzypiszJednostki");
+            dgNiedopJednostki.Items.Refresh();
+        }
+        private void UpdateProgress()
+        {
+            progresBar.Value += 1;
+        }
+        private delegate void ProgressBarDelegate();
 
-            /*UPDATE DZIALKI_N 
-SET RJDRPRZED = CASE Id_Id
-WHEN 660 THEN 999 
-else RJDRPRZED
-END*/
+        private void UstawLoginIHaslo2(object sender, RoutedEventArgs e)
+        {
+            textBoxLogin.Text = Properties.Settings.Default.Login;
+            panelLogowania2.Visibility = Visibility.Visible;
+            tabControl2.Visibility = Visibility.Hidden;
+        }
+
+        private void ButtonZapiszLogIHaslo2(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.Login = textBoxLogin.Text;
+            Properties.Settings.Default.Haslo = textBoxHaslo.Text;
+            Properties.Settings.Default.Save();
+            textBoxHaslo.Text = "";
+            panelLogowania2.Visibility = Visibility.Hidden;
+            //dataGrid.Visibility = Visibility.Visible;
+            tabControl2.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Anuluj2(object sender, RoutedEventArgs e)
+        {
+            panelLogowania2.Visibility = Visibility.Hidden;
+            //dataGrid.Visibility = Visibility.Visible;
+            tabControl2.Visibility = Visibility.Visible;
+        }
+
+        private void ButtonRodzajPracyNKR_KW_Click(object sender, RoutedEventArgs e)
+        {
+            dockCoChceszZrobić.Visibility = Visibility.Hidden;
+            gridNKRKW.Visibility = Visibility.Visible;
+        }
+
+        private void ButtonRodzajPracyPrzypisanieRejGr_Click(object sender, RoutedEventArgs e)
+        {
+            dockCoChceszZrobić.Visibility = Visibility.Hidden;
+            gridPrzypisaanieJednostek.Visibility = Visibility.Visible;
+        }
+
+        private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
+        {
+            
+            gridNKRKW.Visibility = Visibility.Hidden; 
+            gridPrzypisaanieJednostek.Visibility = Visibility.Hidden;
+            dockCoChceszZrobić.Visibility = Visibility.Visible;
+        }
+
+        private void zamknijProgram_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
