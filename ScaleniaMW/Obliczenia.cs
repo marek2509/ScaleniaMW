@@ -161,6 +161,21 @@ namespace ScaleniaMW
             return sb.ToString();
         }
 
+        public class IDiNKR
+        {
+            public int IdJednN { get; set; }
+            public int NKR { get; set; }
+        }
+        public class IDDZiNRDZ
+        {
+            public int iddz { get; set; }
+            public string Nrdz { get; set; }
+        }
+        public class IdJednSiNRRej
+        {
+            public int iddJednSt { get; set; }
+            public int NrRejGr { get; set; }
+        }
 
         public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, string sender = "")
         {
@@ -193,47 +208,66 @@ namespace ScaleniaMW
 
                     List<int> NowyNkr = new List<int>();
                     List<DopasowanieJednostek> tmpListNKRbezJednRej = listaJednostekZSQL.FindAll(x => x.PrzypisanyNrRej.Equals(null));
+                    /*
                     foreach (var item in tmpListNKRbezJednRej.GroupBy(x => x.NowyNKR))
                     {
                         NowyNkr.Add(item.Key);
                     }
                     listBoxNkr.ItemsSource = NowyNkr;
-
-
+                    ////////////*/
+                    List<IDiNKR> lisIDnkr_NKR = tmpListNKRbezJednRej.GroupBy(x => new { x.NowyNKR, x.IdJednN }).Select(x => new IDiNKR { IdJednN = x.Key.IdJednN, NKR = x.Key.NowyNKR }).ToList();
+                    //foreach (var item in lisIDnkr_NKR)
+                    //{ 
+                    //    NowyNkr.Add(item.NKR);
+                    //}
+                    NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
+                    listBoxNkr.ItemsSource = NowyNkr;
+                    ///////////////////
                     List<string> NowyNrDz = new List<string>();
                     // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
                     listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
-                    List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-                    foreach (var item in tmpListNKRbezJednRejNRDZ.GroupBy(a => a.NrDzialki))
-                    {
-                        NowyNrDz.Add(item.Key);
-                    }
+                    List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
+
+                    List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezJednRejNRDZ.GroupBy(a => new { a.NrDzialki, a.IdDz }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDz, Nrdz = x.Key.NrDzialki }).ToList();
+                    NowyNrDz = iDDZiNRDZ.Select(x => x.Nrdz).ToList();
+                    //foreach (var item in iDDZiNRDZ)
+                    //{
+                    //    NowyNrDz.Add(item.Nrdz);
+                    //}
                     listBoxNoweDzialki.ItemsSource = NowyNrDz;
 
 
                     List<int> NrRejGr = new List<int>();
                     listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
-                    List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-                    //foreach (var item in tmpListGrRej.GroupBy(x => x.NrJednEwopis))
-                    //{
-                    //    NrRejGr.Add(item.Key);
+                    List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
+                    List<IdJednSiNRRej> listidJednSiNRRejs = tmpListGrRej.GroupBy(x => new { x.NrJednEwopis, x.IdJednS }).Select(x => new IdJednSiNRRej {iddJednSt = x.Key.IdJednS, NrRejGr=x.Key.NrJednEwopis}).ToList();
+                    NrRejGr = listidJednSiNRRejs.Select(x => x.NrRejGr).ToList();
+                    listBoxNrRej.ItemsSource = NrRejGr;
 
-                    //}
-                    //  listBoxNrRej.ItemsSource = NrRejGr;
-                    listBoxNrRej.ItemsSource = tmpListGrRej.GroupBy(x => x.NrJednEwopis).Select(x => x.Key);
+
                     if (sender.Equals("PrzypiszZaznJedn"))
                     {
                         Console.WriteLine("sender jetsst " + sender.GetHashCode());
 
                         foreach (var item in listaJednostekZSQL)
                         {
-                            if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
+                            //if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
+                            //{
+                            //    Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
+                            //    item.wypiszWConsoli();
+                            //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
+
+                            //}
+
+                            if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDz.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
                             {
                                 Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
                                 item.wypiszWConsoli();
-                                item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
+                                item.PrzypisanyNrRej = listidJednSiNRRejs[listBoxNrRej.SelectedIndex].iddJednSt;
 
                             }
+
+
 
                         }
 

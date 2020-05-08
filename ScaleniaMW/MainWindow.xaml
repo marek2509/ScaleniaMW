@@ -56,7 +56,9 @@
                     <Separator></Separator>
                     <MenuItem Header="Zamknij" Click="zamknijProgram_Click"/>
                 </MenuItem>
-                <MenuItem Header="Opcje" Click="MenuItem_Opcje">
+                <MenuItem Header="Opcje">
+                    <MenuItem Header="Opcje KW/NKR" Click="MenuItem_Opcje"/>
+                    <CheckBox Content="Zawsze na wierzchu" IsChecked="False" x:Name="checkBoxCzyNaWierzchu" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
                 </MenuItem>
                 <MenuItem Header="Ustawienia FDB">
                     <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"></MenuItem>
@@ -144,6 +146,9 @@
                     <Separator></Separator>
                     <MenuItem Header="Zamknij" Click="zamknijProgram_Click"></MenuItem>
                 </MenuItem>
+                <MenuItem Header="Opcje">
+                    <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
+                </MenuItem>
                 <MenuItem Header="Ustawienia FDB">
                     <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"></MenuItem>
                     <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo2"></MenuItem>
@@ -151,7 +156,10 @@
                 <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
                     <MenuItem Header="Połącz i pobierz dane do przypisania jednostek(przed) w stanie po scalenu z bazy FDB" Click="ItemImportJednostkiSN_Click"/>
                     <MenuItem Header="Automatycznie przypisz jednostki" Click="MenuItem_AutoPrzypiszJednostki"/>
-                    <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy"/>
+                    <Separator></Separator>
+                    <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
+                    <Separator></Separator>
+                    <MenuItem Header="Usuń wszystkie przypisane jednostki z bazy" Click="ItemUsunPrzypisaneJednostkiZBazy" Foreground="IndianRed"/>
                 </MenuItem>
             </Menu>
             

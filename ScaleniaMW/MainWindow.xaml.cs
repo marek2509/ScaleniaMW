@@ -31,15 +31,11 @@ namespace ScaleniaMW
         List<DzialkaEDZ> listaZEDZ = new List<DzialkaEDZ>();
         List<DzialkaNkrZSQL> listaDzNkrzSQL = new List<DzialkaNkrZSQL>();
         DataTable dt;
-        //  public static FbConnection connection;
-        //FbCommand command;
-        //FbTransaction transaction;
-        //FbDataAdapter adapter;
         public static string connectionString;
 
         public static void aktualizujSciezkeZPropertis()
         {
-            connectionString = @"User="+ Properties.Settings.Default.Login +";Password=" + Properties.Settings.Default.Haslo + ";Database= " + Properties.Settings.Default.PathFDB + "; DataSource=localhost; Port=3050;Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
+            connectionString = @"User=" + Properties.Settings.Default.Login + ";Password=" + Properties.Settings.Default.Haslo + ";Database= " + Properties.Settings.Default.PathFDB + "; DataSource=localhost; Port=3050;Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
                                   "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
         }
 
@@ -64,7 +60,7 @@ namespace ScaleniaMW
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 dt = new DataTable();
-             
+
                 adapter.Fill(dt);
                 foreach (var item in dt.Columns)
                 {
@@ -76,8 +72,8 @@ namespace ScaleniaMW
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    
-                      listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString()));
+
+                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString()));
                 }
                 try
                 {
@@ -105,13 +101,10 @@ namespace ScaleniaMW
 
 
 
-
-    public MainWindow()
+        public MainWindow()
         {
 
             InitializeComponent();
-
-
             try
             {
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
@@ -150,7 +143,7 @@ namespace ScaleniaMW
             string[] wartosciZlini = LiniaTekstu.Trim().Split(charSeparators);
             return wartosciZlini;
         }
-        
+
         private void otworzEDZ(object sender, RoutedEventArgs e)
         {
             listaZEDZ = new List<DzialkaEDZ>();
@@ -179,7 +172,7 @@ namespace ScaleniaMW
                         {
                             listaBezPustychLinii.Add(calyOdczzytanyTextLinie[i].Trim());
                             //listaBezPustychLinii.Add(calyOdczzytanyTextLinie[i].Trim().Replace(".", ","));
-                         
+
                         }
                     }
 
@@ -204,7 +197,7 @@ namespace ScaleniaMW
 
                         if (przekierownik > 8 && listTmp.Count.Equals(1))
                         {
-                            przekierownik = 0; 
+                            przekierownik = 0;
                         }
 
                         przekierownik += listTmp.Count;
@@ -247,7 +240,7 @@ namespace ScaleniaMW
                     //    }
                     //}
 
-                    textBlockLogInfo.Text = "Wczytane działki: " + listaZEDZ.Count + ", z pliku " + dlg.FileName.Substring(dlg.FileName.LastIndexOf('\\')+1);
+                    textBlockLogInfo.Text = "Wczytane działki: " + listaZEDZ.Count + ", z pliku " + dlg.FileName.Substring(dlg.FileName.LastIndexOf('\\') + 1);
                     //dataGrid.ItemsSource = listaZEDZ;
                     //dataGrid.Visibility = Visibility.Visible;
                     //dataGrid.Items.Refresh();
@@ -256,7 +249,7 @@ namespace ScaleniaMW
                     dgDzialkiEdz.Visibility = Visibility.Visible;
                     dgDzialkiEdz.Items.Refresh();
 
-                    Properties.Settings.Default.PathEDZ =dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\"));     
+                    Properties.Settings.Default.PathEDZ = dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\"));
                     Properties.Settings.Default.Save();
 
                     tabControl.SelectedIndex = 0;
@@ -330,23 +323,25 @@ namespace ScaleniaMW
         public void ustawProperties(string FileName)
         {
             Properties.Settings.Default.PathFDB = FileName;
-           textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
+            textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
             Properties.Settings.Default.Save();
         }
 
         private void ustawSciezkeFDB(object sender, RoutedEventArgs e)
         {
-       
+            czyPolaczonoZBaza = false;
+            itemImportJednostkiSN.Background = Brushes.Transparent;
+            itemImportJednostkiSN.Header = "Baza.fdb";
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            if(!(Properties.Settings.Default.PathFDB.Equals("") || Properties.Settings.Default.PathFDB.Equals(null)))
+            if (!(Properties.Settings.Default.PathFDB.Equals("") || Properties.Settings.Default.PathFDB.Equals(null)))
             {
                 dlg.InitialDirectory = Properties.Settings.Default.PathFDB.ToString().Substring(0, Properties.Settings.Default.PathFDB.LastIndexOf("\\"));
             }
-     
+
             //dlg.InitialDirectory = @"C:\";
             dlg.DefaultExt = ".edz";
             dlg.Filter = "All files(*.*) | *.*|TXT Files (*.txt)|*.txt| CSV(*.csv)|*.csv| EDZ(*.edz)|*.edz";
-         
+
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
@@ -379,7 +374,7 @@ namespace ScaleniaMW
                 textBlockLogInfo.Text = "Połączono z bazą FDB. Ilość wczytanych linii: " + dt.Rows.Count + ".";
                 itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
                 foreach (var item in listaDzNkrzSQL)
-                {             
+                {
                     if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka).Equals(""))
                     {
                         stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka));
@@ -390,14 +385,14 @@ namespace ScaleniaMW
                 textBlockBledy.Text = stringBuilder.ToString();
                 tabControl.SelectedIndex = 1;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 itemPolaczZBaza.Background = Brushes.Red;
                 itemPolaczZBaza.Header = "Połącz z bazą";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
 
             }
-       
+
         }
 
         private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
@@ -447,7 +442,7 @@ namespace ScaleniaMW
             panelOpcje.Visibility = Visibility.Hidden;
 
         }
-        
+
         private void MenuItem_Opcje(object sender, RoutedEventArgs e)
         {
             checkDopiszBlad.IsChecked = Properties.Settings.Default.checkBoxDopiszBlad;
@@ -481,17 +476,18 @@ namespace ScaleniaMW
 
 
         List<DopasowanieJednostek> listaDopasowJednos = new List<DopasowanieJednostek>();
+        List<DopasowanieJednostek> listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
+        bool czyPolaczonoZBaza = false;
         private void ItemImportJednostkiSN_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-
                 aktualizujSciezkeZPropertis();
                 using (var connection = new FbConnection(connectionString))
                 {
                     if (itemImportJednostkiSN.Background.Equals(Brushes.LightSeaGreen))
                     {
-                        var resultat = MessageBox.Show("Czy chcesz nadpisać obecnie załadowany plik?", "UWAGA!", MessageBoxButton.YesNo);
+                        var resultat = MessageBox.Show("Czy chcesz pobrać dane z bazy ponownie\n i nadpisać obecnie załadowany plik?", "UWAGA!", MessageBoxButton.YesNo);
 
                         if (resultat == MessageBoxResult.No)
                         {
@@ -499,10 +495,12 @@ namespace ScaleniaMW
                         }
                         else
                         {
+                            listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
                             listaDopasowJednos = new List<DopasowanieJednostek>();
                         }
 
                     }
+
                     connection.Open();
 
                     FbCommand command = new FbCommand();
@@ -531,7 +529,7 @@ namespace ScaleniaMW
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-
+                        listaDopasowJednos_CzyLadowac.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
                         listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
                     }
                     try
@@ -564,6 +562,7 @@ namespace ScaleniaMW
                     tabControl.SelectedIndex = 3;
                     itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
                     itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
+                    czyPolaczonoZBaza = true;
                     koniec:;
                 }
             }
@@ -628,7 +627,9 @@ namespace ScaleniaMW
                             stringBuilder.AppendLine("[IddN] [idJednS] [NKRN] [NrDzN] [NrRejGr]");
                             foreach (var item in listaDopasowJednos)
                             {
-                                stringBuilder.AppendLine(item.IdDz + "\t"+item.IdJednS+"\t"+ item.NowyNKR + "\t" + item.NrDzialki + "\t" + item.PrzypisanyNrRej);
+
+                                stringBuilder.AppendLine(item.IdDz + "\t" + item.IdJednS + "\t" + item.NowyNKR + "\t" + item.NrDzialki + "\t" + item.PrzypisanyNrRej);
+
                             }
 
                             sw.Write(stringBuilder.ToString());
@@ -659,34 +660,41 @@ namespace ScaleniaMW
 
             if (resultat == MessageBoxResult.Yes)
             {
+
                 aktualizujSciezkeZPropertis();
                 using (var connection = new FbConnection(connectionString))
                 {
                     connection.Open();
-                    FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id  WHEN @IDDZ  THEN @RJDRPRZED else RJDRPRZED END",connection);
+                    FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id  WHEN @IDDZ  THEN @RJDRPRZED else RJDRPRZED END where Id_Id IN(@IDDZ)", connection);
+                    //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
                     List<int> tmpListaIdDz = new List<int>();
                     tmpListaIdDz = listaDopasowJednos.GroupBy(g => g.IdDz).Select(x => x.Key).ToList();
-                    
+
                     tmpListaIdDz.Sort();
                     Console.WriteLine(tmpListaIdDz.Count);
+                    progresBar.Value = 0;
                     progresBar.Visibility = Visibility.Visible;
-                    progresBar.Maximum = listaDopasowJednos.FindAll(x =>x.PrzypisanyNrRej!=null).Count;
-                    for (int i = 0; i <= tmpListaIdDz.Count-1; i++)
+                    progresBar.Maximum = listaDopasowJednos.FindAll(x => x.PrzypisanyNrRej != null).GroupBy(x => x.IdDz).ToList().Count - listaDopasowJednos_CzyLadowac.FindAll(x => x.PrzypisanyNrRej != null).GroupBy(x => x.IdDz).ToList().Count;
+                    for (int i = 0; i <= tmpListaIdDz.Count - 1; i++)
                     {
-                        if(listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
+                        if (!listaDopasowJednos_CzyLadowac.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
                         {
-                            writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
-                            writeCommand.Parameters.Add("@RJDRPRZED", listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej);
-                            writeCommand.ExecuteNonQuery();
-                            writeCommand.Parameters.Clear();
-                            Console.WriteLine(i);
-                            progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+                            if (listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
+                            {
+                                writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
+                                writeCommand.Parameters.Add("@RJDRPRZED", listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej);
+                                writeCommand.ExecuteNonQuery();
+
+                                writeCommand.Parameters.Clear();
+                                Console.WriteLine(i + " " + listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej + " " + listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).NrDzialki);
+                                progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+                            }
                         }
-                       
                     }
                     connection.Close();
                     MessageBox.Show("Jednostki przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
                     progresBar.Visibility = Visibility.Hidden;
+                    ItemImportJednostkiSN_Click(sender, e);
                 }
             }
         }
@@ -702,6 +710,8 @@ namespace ScaleniaMW
             progresBar.Value += 1;
         }
         private delegate void ProgressBarDelegate();
+
+
 
         private void UstawLoginIHaslo2(object sender, RoutedEventArgs e)
         {
@@ -742,8 +752,8 @@ namespace ScaleniaMW
 
         private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
         {
-            
-            gridNKRKW.Visibility = Visibility.Hidden; 
+
+            gridNKRKW.Visibility = Visibility.Hidden;
             gridPrzypisaanieJednostek.Visibility = Visibility.Hidden;
             dockCoChceszZrobić.Visibility = Visibility.Visible;
         }
@@ -751,6 +761,45 @@ namespace ScaleniaMW
         private void zamknijProgram_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void ItemUsunPrzypisaneJednostkiZBazy(object sender, RoutedEventArgs e)
+        {
+            if (czyPolaczonoZBaza)
+            {
+                var resultat = MessageBox.Show("Czy chcesz usunąć wcześniej przypisabe jednostki z bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+
+                if (resultat == MessageBoxResult.Yes)
+                {
+
+                    aktualizujSciezkeZPropertis();
+                    using (var connection = new FbConnection(connectionString))
+                    {
+                        connection.Open();
+                        FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = null", connection);
+                        //writeCommand.ExecuteNonQuery();
+                        writeCommand.ExecuteNonQueryAsync();
+                        connection.Close();
+                        MessageBox.Show("Jednostki usunięto pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+
+                        ItemImportJednostkiSN_Click(sender, e);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
+            }
+        }
+
+        private void CheckBoxZawszeNaWierzchu_Checked(object sender, RoutedEventArgs e)
+        {
+            windowScaleniaMW.Topmost = true;
+        }
+
+        private void CheckBoxZawszeNaWierzchu_Unchecked(object sender, RoutedEventArgs e)
+        {
+            windowScaleniaMW.Topmost = false;
         }
     }
 }
