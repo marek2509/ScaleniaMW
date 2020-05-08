@@ -329,9 +329,7 @@ namespace ScaleniaMW
 
         private void ustawSciezkeFDB(object sender, RoutedEventArgs e)
         {
-            czyPolaczonoZBaza = false;
-            itemImportJednostkiSN.Background = Brushes.Transparent;
-            itemImportJednostkiSN.Header = "Baza.fdb";
+
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             if (!(Properties.Settings.Default.PathFDB.Equals("") || Properties.Settings.Default.PathFDB.Equals(null)))
             {
@@ -348,6 +346,9 @@ namespace ScaleniaMW
                 try
                 {
                     ustawProperties(dlg.FileName);
+                    czyPolaczonoZBaza = false;
+                    itemImportJednostkiSN.Background = Brushes.Transparent;
+                    itemImportJednostkiSN.Header = "Baza.fdb";
                 }
                 catch (Exception esa)
                 {
@@ -591,6 +592,10 @@ namespace ScaleniaMW
 
         private void Button_PrzypiszZaznJedn(object sender, RoutedEventArgs e)
         {
+            if (czyPolaczonoZBaza)
+            {
+
+            
             Console.WriteLine(" super ");
             Console.WriteLine(sender.GetHashCode());
             Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, "PrzypiszZaznJedn");
@@ -606,6 +611,11 @@ namespace ScaleniaMW
             tabItemNiedopasowJedn.Visibility = Visibility.Hidden;
             tabItemNiedopasowJedn.Visibility = Visibility.Visible;
             dgNiedopJednostki.Items.Refresh();
+            }
+            else
+            {
+                MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
+            }
         }
 
         private void Zapisz_Dopasowanie_Jedn_Click(object sender, RoutedEventArgs e)
@@ -656,54 +666,70 @@ namespace ScaleniaMW
 
         private void Button_ZaladujDoBazy(object sender, RoutedEventArgs e)
         {
-            var resultat = MessageBox.Show("Czy chcesz rozpocząć ładowanie do bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
-
-            if (resultat == MessageBoxResult.Yes)
+            if (czyPolaczonoZBaza)
             {
 
-                aktualizujSciezkeZPropertis();
-                using (var connection = new FbConnection(connectionString))
+
+                var resultat = MessageBox.Show("Czy chcesz rozpocząć ładowanie do bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+
+                if (resultat == MessageBoxResult.Yes)
                 {
-                    connection.Open();
-                    FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id  WHEN @IDDZ  THEN @RJDRPRZED else RJDRPRZED END where Id_Id IN(@IDDZ)", connection);
-                    //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
-                    List<int> tmpListaIdDz = new List<int>();
-                    tmpListaIdDz = listaDopasowJednos.GroupBy(g => g.IdDz).Select(x => x.Key).ToList();
 
-                    tmpListaIdDz.Sort();
-                    Console.WriteLine(tmpListaIdDz.Count);
-                    progresBar.Value = 0;
-                    progresBar.Visibility = Visibility.Visible;
-                    progresBar.Maximum = listaDopasowJednos.FindAll(x => x.PrzypisanyNrRej != null).GroupBy(x => x.IdDz).ToList().Count - listaDopasowJednos_CzyLadowac.FindAll(x => x.PrzypisanyNrRej != null).GroupBy(x => x.IdDz).ToList().Count;
-                    for (int i = 0; i <= tmpListaIdDz.Count - 1; i++)
+                    aktualizujSciezkeZPropertis();
+                    using (var connection = new FbConnection(connectionString))
                     {
-                        if (!listaDopasowJednos_CzyLadowac.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
-                        {
-                            if (listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
-                            {
-                                writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
-                                writeCommand.Parameters.Add("@RJDRPRZED", listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej);
-                                writeCommand.ExecuteNonQuery();
+                        connection.Open();
+                        FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id  WHEN @IDDZ  THEN @RJDRPRZED else RJDRPRZED END where Id_Id IN(@IDDZ)", connection);
+                        //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
+                        List<int> tmpListaIdDz = new List<int>();
+                        tmpListaIdDz = listaDopasowJednos.GroupBy(g => g.IdDz).Select(x => x.Key).ToList();
 
-                                writeCommand.Parameters.Clear();
-                                Console.WriteLine(i + " " + listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej + " " + listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).NrDzialki);
-                                progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+                        tmpListaIdDz.Sort();
+                        Console.WriteLine(tmpListaIdDz.Count);
+                        progresBar.Value = 0;
+                        progresBar.Visibility = Visibility.Visible;
+                        progresBar.Maximum = listaDopasowJednos.FindAll(x => x.PrzypisanyNrRej != null).GroupBy(x => x.IdDz).ToList().Count - listaDopasowJednos_CzyLadowac.FindAll(x => x.PrzypisanyNrRej != null).GroupBy(x => x.IdDz).ToList().Count;
+                        for (int i = 0; i <= tmpListaIdDz.Count - 1; i++)
+                        {
+                            if (!listaDopasowJednos_CzyLadowac.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
+                            {
+                                if (listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
+                                {
+                                    writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
+                                    writeCommand.Parameters.Add("@RJDRPRZED", listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej);
+                                    writeCommand.ExecuteNonQuery();
+
+                                    writeCommand.Parameters.Clear();
+                                    Console.WriteLine(i + " " + listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej + " " + listaDopasowJednos.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).NrDzialki);
+                                    progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+                                }
                             }
                         }
+                        connection.Close();
+                        MessageBox.Show("Jednostki przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+                        progresBar.Visibility = Visibility.Hidden;
+                        ItemImportJednostkiSN_Click(sender, e);
                     }
-                    connection.Close();
-                    MessageBox.Show("Jednostki przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
-                    progresBar.Visibility = Visibility.Hidden;
-                    ItemImportJednostkiSN_Click(sender, e);
                 }
+            }
+            else
+            {
+                MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
             }
         }
 
         private void MenuItem_AutoPrzypiszJednostki(object sender, RoutedEventArgs e)
         {
+            if(czyPolaczonoZBaza)
+            { 
             Console.WriteLine(sender.GetHashCode());
             Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, "AutoPrzypiszJednostki");
             dgNiedopJednostki.Items.Refresh();
+            }
+            else
+            {
+                MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
+            }
         }
         private void UpdateProgress()
         {
