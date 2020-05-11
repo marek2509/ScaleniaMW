@@ -349,6 +349,19 @@ namespace ScaleniaMW
                     czyPolaczonoZBaza = false;
                     itemImportJednostkiSN.Background = Brushes.Transparent;
                     itemImportJednostkiSN.Header = "Baza.fdb";
+
+                    listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
+                    listaDopasowJednos = new List<DopasowanieJednostek>();
+
+                    dgNiedopJednostki.ItemsSource = null;
+                    listBoxDzialkiNowe.ItemsSource = null;
+                    listBoxNkr.ItemsSource = null;
+                    listBoxNrRej.ItemsSource = null;
+
+                    listBoxDzialkiNowe.Items.Refresh();
+                    listBoxNkr.Items.Refresh();
+                    listBoxNrRej.Items.Refresh();
+                    dgNiedopJednostki.Items.Refresh();
                 }
                 catch (Exception esa)
                 {
@@ -483,6 +496,10 @@ namespace ScaleniaMW
         {
             try
             {
+                listBoxDzialkiNowe.Items.Refresh();
+                listBoxNkr.Items.Refresh();
+                listBoxNrRej.Items.Refresh();
+                dgNiedopJednostki.Items.Refresh();
                 aktualizujSciezkeZPropertis();
                 using (var connection = new FbConnection(connectionString))
                 {
@@ -498,6 +515,11 @@ namespace ScaleniaMW
                         {
                             listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
                             listaDopasowJednos = new List<DopasowanieJednostek>();
+
+                            listBoxDzialkiNowe.Items.Refresh();
+                            listBoxNkr.Items.Refresh();
+                            listBoxNrRej.Items.Refresh();
+                            dgNiedopJednostki.Items.Refresh();
                         }
 
                     }
@@ -525,6 +547,7 @@ namespace ScaleniaMW
 
                         Console.Write(item + " << ");
                     }
+
                     Console.WriteLine("row count:" + dt.Rows.Count);
                     Console.WriteLine("column count:" + dt.Columns.Count);
 
@@ -541,9 +564,8 @@ namespace ScaleniaMW
                         //dgNkrFDB.ItemsSource = dt.AsDataView();
                         dgNiedopJednostki.ItemsSource = listaDopasowJednos;
                         dgNiedopJednostki.Items.Refresh();
-                        // dgNkrFDB.Visibility = Visibility.Visible;
-                        // dgNkrFDB.Items.Refresh();
 
+                       
                         Console.WriteLine("ustawiam SOURCE");
                     }
                     catch (Exception excp)
@@ -551,18 +573,18 @@ namespace ScaleniaMW
                         Console.WriteLine(excp);
                     }
 
-                    //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
-                    //foreach (var item in listaDopasowJednos)
-                    //{
-                    //    item.wypiszWConsoli(A++.ToString());
+                    if(0 == dt.Rows.Count)
+                    {
+                        textBlockLogInfo.Text = "Brak danych";
+                    }
 
-                    //}
                     Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
 
                     connection.Close();
                     tabControl.SelectedIndex = 3;
                     itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
                     itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
+                    dgNiedopJednostki.Items.Refresh();
                     czyPolaczonoZBaza = true;
                     koniec:;
                 }
