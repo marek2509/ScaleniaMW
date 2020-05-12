@@ -100,6 +100,12 @@
     <Compile Include="Obliczenia.cs" />
     <Compile Include="DzialkaEDZ.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="WindowNkrKwObrot.xaml.cs">
+      <DependentUpon>WindowNkrKwObrot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowPrzypiszRejGr.xaml.cs">
+      <DependentUpon>WindowPrzypiszRejGr.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +118,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WindowNkrKwObrot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowPrzypiszRejGr.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

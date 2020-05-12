@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW inż. Marek Wojciechowicz" Height="600" Width="1000" x:Name="windowScaleniaMW">
+        Title="SCALENIAMW inż. Marek Wojciechowicz" Height="340" Width="600" x:Name="windowScaleniaMW">
     <Grid>
         <DockPanel  x:Name="dockCoChceszZrobić" Panel.ZIndex="101">
 
@@ -16,206 +16,39 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition 
+                        ></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Grid.Row="1" x:Name="buttonRodzajPracyNKR_KW" FontSize="20" Click="ButtonRodzajPracyNKR_KW_Click" >
-                    <StackPanel >
-                        <Label HorizontalAlignment="Center">Przypisanie NKR do działki i obrócenie</Label>
-                        <Label HorizontalAlignment="Center">lub</Label>
-                        <Label HorizontalAlignment="Center">Przypisanie KW do działki i obrócenie</Label>
-                        <Label HorizontalAlignment="Center">w stanie "PRZED"</Label>
-                    </StackPanel>
-                </Button>
-                <Button Grid.Column="1" Grid.Row="1" FontSize="20" x:Name="buttonRodzajPracyPrzypisanieRejGr" Click="ButtonRodzajPracyPrzypisanieRejGr_Click">
+                <Label Background="DimGray" Foreground="White" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić?</Label>
+                <StackPanel Grid.Row="2">
+
+
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Width="250" Height="100" x:Name="buttonRodzajPracyNKR_KW" FontSize="10" Click="ButtonRodzajPracyNKR_KW_Click" >
+                        <StackPanel>
+                            <Label HorizontalAlignment="Center">NKR/KW NA MAPĘ</Label>
+                            <Label HorizontalAlignment="Center">STAN "PRZED"</Label>
+                        </StackPanel>
+                    </Button>
+                    <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Width="250" Height="100" FontSize="10" x:Name="buttonRodzajPracyPrzypisanieRejGr" Click="ButtonRodzajPracyPrzypisanieRejGr_Click">
+                        <StackPanel>
+                            <Label HorizontalAlignment="Center">Przypisanie do działek w stanie "PO"</Label>
+                            <Label HorizontalAlignment="Center">numerów rejestru gruntu z przed scalenia</Label>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Margin="15" Width="250" Height="100" FontSize="10" x:Name="buttonPrzypiszKwDlaNowychDzialek" Click="ButtonPrzypiszKwDlaNowychDzialek_Click">
                     <StackPanel>
-                        <Label HorizontalAlignment="Center">Przypisanie do działek w stanie "PO"</Label>
-                        <Label HorizontalAlignment="Center">numerów rejestru gruntu z przed scalenia</Label>
+                        <Label HorizontalAlignment="Center">Przypisanie KW do działek w stanie "PO"</Label>
+                        <Label HorizontalAlignment="Center"></Label>
                     </StackPanel>
                 </Button>
-                <Label Background="White" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" FontSize="25">Wybierz co chcesz zrobić?</Label>
+
             </Grid>
         </DockPanel>
-        
-        
-        <Grid x:Name="gridNKRKW" Visibility="Hidden">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="*">
-                </RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
-            <Menu Grid.Row="1">
-                <MenuItem Header="Plik" >
-                    <MenuItem Header="_Otwórz Działki.edz" Click="otworzEDZ"></MenuItem>
-                    <MenuItem x:Name="obrNKR" Header="_Generuj plik z obróconym nr NKR" Click="ZapiszDoPliku"/>
-                    <MenuItem x:Name="obrKW" Header="_Generuj plik z obróconym nr KW" Click="ZapiszDoPliku"/>
-                    <Separator></Separator>
-                    <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"/>
-                    <Separator></Separator>
-                    <MenuItem Header="Zamknij" Click="zamknijProgram_Click"/>
-                </MenuItem>
-                <MenuItem Header="Opcje">
-                    <MenuItem Header="Opcje KW/NKR" Click="MenuItem_Opcje"/>
-                    <CheckBox Content="Zawsze na wierzchu" IsChecked="False" x:Name="checkBoxCzyNaWierzchu" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
-                </MenuItem>
-                <MenuItem Header="Ustawienia FDB">
-                    <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"></MenuItem>
-                    <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"></MenuItem>
-                    <WrapPanel ToolTip="Opcja po scaleniu w przygotowaniu">
-                        <Label>Stan:</Label>
-
-                        <RadioButton VerticalContentAlignment="Center" IsChecked="True">Przed scaleniem</RadioButton>
-                        <Label></Label>
-                        <RadioButton VerticalContentAlignment="Center"  IsEnabled="False">Po scaleniu</RadioButton>
-                    </WrapPanel>
-                </MenuItem>
-                <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza"></MenuItem>
-            </Menu>
-
-            <StackPanel Grid.Row="2" Panel.ZIndex="100" x:Name="panelOpcje" Visibility="Hidden" Background="White">
-                <GroupBox>
-                    <GroupBox.Header>Opcje dla Eksportu</GroupBox.Header>
-                    <StackPanel>
-                        <CheckBox x:Name="checkBoxIgnorujKropkeIPrzecinej" Unchecked="CheckBoxIgnorujKropkeIPrzecinej_Unchecked" Checked="CheckBoxIgnorujKropkeIPrzecinej_Checked">Ignoruj przecinek "," i kropkę "." przy porównianiu DZIAŁEK z pliku .EDZ i .FDB podczas Exportu plików tekstowych</CheckBox>
-                        <GroupBox Width="500" HorizontalAlignment="Left">
-                            <GroupBox.Header>Eksport KW</GroupBox.Header>
-                            <StackPanel>
-                                <CheckBox x:Name="checkWypiszBrakKW" Checked="CheckWypiszBrakKW_Checked" Unchecked="CheckWypiszBrakKW_Unchecked" >Wypisz "Brak KW" dla działek bez Księgi.</CheckBox>
-                                <CheckBox x:Name="checkDopiszBlad" Checked="CheckDopiszBlad_Checked" Unchecked="CheckDopiszBlad_Unchecked">Dopisuj "@Błąd" w przypadku numerów KW dla których program uznał za niepoprawne.</CheckBox>
-                            </StackPanel>
-
-                        </GroupBox>
-                        <Button Width="50"  x:Name="zapiszUstawienia" Click="ZapiszUstawienia_Click">Zapisz</Button>
-                    </StackPanel>
-                </GroupBox>
-            </StackPanel>
-
-            <StackPanel Grid.Row="2" x:Name="panelLogowania" Visibility="Hidden">
-                <Label>Login:</Label>
-                <TextBox x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
-                <Label>Hasło:</Label>
-                <TextBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
-                <WrapPanel>
-                    <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo">Zapisz</Button>
-                    <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj">Anuluj</Button>
-                </WrapPanel>
-            </StackPanel>
-            <TabControl x:Name="tabControl" Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" >
-
-                <TabItem Header="Plik.EDZ" MinWidth="50">
-                    <Grid Background="#FFE5E5E5">
-                        <DataGrid ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
-                CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgDzialkiEdz"   VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2"/>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Baza.FDB"  MinWidth="50">
-                    <Grid Background="#FFE5E5E5">
-                        <DataGrid  ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
-                CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3"/>
-
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Znaleziono Błędy KW!" Foreground="Red" Visibility="Hidden" x:Name="logBledowKW" >
-                    <TextBox x:Name="textBlockBledy" ></TextBox>
-                </TabItem>
-            </TabControl>
-            <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
-        </Grid>
-
-        
-        
-        
-        <Grid x:Name="gridPrzypisaanieJednostek" Visibility="Hidden">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="*">
-                </RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock Margin="10,0" Text="{Binding ElementName=textBlockSciezka, Path=Text}"></TextBlock>
 
 
-            <Menu Grid.Row="1">
-                <MenuItem Header="Plik" >
-                    <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Header="Zapisz dopasowanie jednostek do txt" Click="Zapisz_Dopasowanie_Jedn_Click"></MenuItem>
-                    <Separator></Separator>
-                    <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"></MenuItem>
-                    <Separator></Separator>
-                    <MenuItem Header="Zamknij" Click="zamknijProgram_Click"></MenuItem>
-                </MenuItem>
-                <MenuItem Header="Opcje">
-                    <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
-                </MenuItem>
-                <MenuItem Header="Ustawienia FDB">
-                    <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"></MenuItem>
-                    <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo2"></MenuItem>
-                </MenuItem>
-                <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
-                    <MenuItem Header="Połącz i pobierz dane do przypisania jednostek(przed) w stanie po scalenu z bazy FDB" Click="ItemImportJednostkiSN_Click"/>
-                    <MenuItem Header="Automatycznie przypisz jednostki" Click="MenuItem_AutoPrzypiszJednostki"/>
-                    <Separator></Separator>
-                    <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
-                    <Separator></Separator>
-                    <MenuItem Header="Usuń wszystkie przypisane jednostki z bazy" Click="ItemUsunPrzypisaneJednostkiZBazy" Foreground="IndianRed"/>
-                </MenuItem>
-            </Menu>
-            
-            <StackPanel Grid.Row="2" x:Name="panelLogowania2"  Visibility="Hidden">
-                <Label>Login:</Label>
-                <TextBox  Text="{Binding ElementName=textBoxLogin, Path=Text}"  Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
-                <Label>Hasło:</Label>
-                <TextBox Text="{Binding ElementName=textBoxHaslo, Path=Text}" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
-                <WrapPanel>
-                    <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo2">Zapisz</Button>
-                    <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj2">Anuluj</Button>
-                </WrapPanel>
-            </StackPanel>
 
-            <ProgressBar x:Name="progresBar" Grid.Row="2" Value="0" Visibility="Hidden" Margin="0,25,0,0"  Panel.ZIndex="100" Opacity="0.5">
-            </ProgressBar>
-            <TabControl  x:Name="tabControl2" Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" >
-                <TabItem Header="Niedopasowane jednostki" x:Name="tabItemNiedopasowJedn">
-                    <DockPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"></ColumnDefinition>
-                                <ColumnDefinition Width="auto"></ColumnDefinition>
-                                <ColumnDefinition Width="auto"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0">NKR</Label>
-                            <DockPanel Margin="0,20,0,0" Grid.Column="0">
-                                <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
-                            </DockPanel>
-
-                            <Label Grid.Column="1">NR DZIAŁKI</Label>
-                            <DockPanel  Margin="0,20,0,0" Grid.Column="1">
-                                <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
-                            </DockPanel>
-
-                            <Label Grid.Column="2">NR REJ. GRUNTU</Label>
-                            <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
-                                <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left"/>
-                            </DockPanel>
-                        </Grid>
-                        <StackPanel>
-                            <Button Height="125" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" >
-                                <StackPanel HorizontalAlignment="Center">
-                                    <Label HorizontalAlignment="Center">-> -> -> -></Label>
-                                    <Label HorizontalAlignment="Center">Przypisz zaznaczoną</Label>
-                                    <Label HorizontalAlignment="Center">jednostkę</Label>
-                                    <Label HorizontalAlignment="Center">-> -> -> -></Label>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                        <DataGrid Margin="5,0" x:Name="dgNiedopJednostki"></DataGrid>
-                    </DockPanel>
-                </TabItem>
-            </TabControl>
-            <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="{Binding ElementName=textBlockLogInfo, Path=Text}" Margin="2"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
-        </Grid>
     </Grid>
 </Window>
