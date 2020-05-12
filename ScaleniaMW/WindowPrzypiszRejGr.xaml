@@ -14,7 +14,7 @@
         </RowDefinition>
         <RowDefinition Height="20"></RowDefinition>
     </Grid.RowDefinitions>
-    <TextBlock Margin="10,0" x:Name="textBlockSciezka"  Text="{Binding ElementName=textBlockSciezka, Path=Text}"></TextBlock>
+    <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
 
 
     <Menu Grid.Row="1">

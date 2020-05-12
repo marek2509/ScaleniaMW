@@ -37,7 +37,7 @@
                     </Button>
                 </StackPanel>
 
-                <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Margin="15" Width="250" Height="100" FontSize="10" x:Name="buttonPrzypiszKwDlaNowychDzialek" Click="ButtonPrzypiszKwDlaNowychDzialek_Click">
+                <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Margin="15" Width="250" Height="100" FontSize="10" x:Name="buttonPrzypiszKwDlaNowychDzialek" Click="ButtonRodzPracyPrzypiszKwDlaNowychDzialek_Click">
                     <StackPanel>
                         <Label HorizontalAlignment="Center">Przypisanie KW do działek w stanie "PO"</Label>
                         <Label HorizontalAlignment="Center"></Label>

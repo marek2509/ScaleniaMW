@@ -801,16 +801,16 @@ namespace ScaleniaMW
             windowScaleniaMW.Close();
         }
 
-
         private void zamknijProgram_Click(object sender, RoutedEventArgs e)
         {
-
             Application.Current.Shutdown();
         }
 
-        private void ButtonPrzypiszKwDlaNowychDzialek_Click(object sender, RoutedEventArgs e)
+        private void ButtonRodzPracyPrzypiszKwDlaNowychDzialek_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowPrzypiszKW windowPrzypiszKW = new WindowPrzypiszKW();
+            windowPrzypiszKW.Show();
+            windowScaleniaMW.Close();
         }
 
         /*
@@ -852,5 +852,6 @@ namespace ScaleniaMW
         {
             windowScaleniaMW.Topmost = false;
         }*/
+
     }
 }

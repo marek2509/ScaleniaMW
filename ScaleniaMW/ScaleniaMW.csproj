@@ -96,12 +96,16 @@
     </ApplicationDefinition>
     <Compile Include="BadanieKsiagWieczystych.cs" />
     <Compile Include="DopasowanieJednostek.cs" />
+    <Compile Include="DopasowanieKW.cs" />
     <Compile Include="DzialkaNkrZSQL.cs" />
     <Compile Include="Obliczenia.cs" />
     <Compile Include="DzialkaEDZ.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="WindowNkrKwObrot.xaml.cs">
       <DependentUpon>WindowNkrKwObrot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowPrzypiszKW.xaml.cs">
+      <DependentUpon>WindowPrzypiszKW.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowPrzypiszRejGr.xaml.cs">
       <DependentUpon>WindowPrzypiszRejGr.xaml</DependentUpon>
@@ -119,6 +123,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="WindowNkrKwObrot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowPrzypiszKW.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
