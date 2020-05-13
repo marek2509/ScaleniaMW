@@ -15,10 +15,12 @@ namespace ScaleniaMW
         public int NKRn { get; set; }
         public int IdJednN { get; set; }
         public int IdJednS { get; set; }
+
         public DopasowanieKW()
         {
 
         }
+
         public DopasowanieKW(int idDzN, string nrDz, object kwPrzed, object kwPoDopas, int nkrN, int idJednN, int idJednS )
         {
             IdDzN = idDzN;
@@ -46,6 +48,11 @@ namespace ScaleniaMW
             }
 
            
+        }
+
+        public void wypiszDaneDoKonsoli()
+        {
+            Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", IdDzN, NrDZ, KWprzed, KWPoDopasowane, NKRn, IdJednN, IdJednS);
         }
     }
 }

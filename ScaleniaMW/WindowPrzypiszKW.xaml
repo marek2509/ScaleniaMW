@@ -102,7 +102,7 @@
                 </Button>
                 <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="DarkViolet" FontWeight="Heavy">KW</Label>
             </StackPanel>
-            <DataGrid Margin="5,0" x:Name="dgNrKwZSQL" CellEditEnding="DgNrKwZSQL_CellEditEnding"/>
+            <DataGrid Margin="5,0" x:Name="dgNrKwZSQL" CanUserDeleteRows="False" CellEditEnding="DgNrKwZSQL_CellEditEnding" CurrentCellChanged="DgNrKwZSQL_CurrentCellChanged"/>
         </DockPanel>
 
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Margin="2" ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>

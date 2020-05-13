@@ -382,7 +382,7 @@ namespace ScaleniaMW
                     List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezKWNRDZ.GroupBy(a => new { a.NrDZ, a.IdDzN }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDzN, Nrdz = x.Key.NrDZ }).ToList();
                     NowyNrDz = iDDZiNRDZ.Select(x => x.Nrdz).ToList();
                     listBoxNoweDzialki.ItemsSource = NowyNrDz;
-
+                    listBoxNoweDzialki.SelectedIndex = listBoxNoweDzialki.SelectedIndex >= 0 && listBoxNoweDzialki.SelectedIndex < listBoxNoweDzialki.Items.Count ? listBoxNoweDzialki.SelectedIndex : 0;
 
                     List<string> NrKW = new List<string>();
                     // listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
@@ -420,7 +420,6 @@ namespace ScaleniaMW
                             //    Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
                             //    item.wypiszWConsoli();
                             //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
-
                             //}
 
                             if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDzN.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))

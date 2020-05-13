@@ -65,7 +65,7 @@ namespace ScaleniaMW
                 dlg.InitialDirectory = Properties.Settings.Default.PathFDB.ToString().Substring(0, Properties.Settings.Default.PathFDB.LastIndexOf("\\"));
             }
 
-           // dlg.DefaultExt = ".edz";
+            // dlg.DefaultExt = ".edz";
             dlg.Filter = "All files(*.*) | *.*|TXT Files (*.txt)|*.txt| CSV(*.csv)|*.csv| EDZ(*.edz)|*.edz";
 
             Nullable<bool> result = dlg.ShowDialog();
@@ -114,8 +114,8 @@ namespace ScaleniaMW
                     return true;
                 }
             }
-           
-             return false;
+
+            return false;
         }
 
         List<DopasowanieKW> listaDopasowKW = new List<DopasowanieKW>();
@@ -180,7 +180,7 @@ namespace ScaleniaMW
 
                     Console.WriteLine("row count:" + dt.Rows.Count);
                     Console.WriteLine("column count:" + dt.Columns.Count);
-                    
+
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         //  listaDopasowJednos_CzyLadowac.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
@@ -188,10 +188,12 @@ namespace ScaleniaMW
 
                         //Console.Write(czyJestTakiWierszW(listaDopasowKW, new DopasowanieKW((int)dt.Rows[i][0], dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString(), dt.Rows[i][3], (int)dt.Rows[i][4], (int)dt.Rows[i][5], (int)dt.Rows[i][6])));
                         //Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", dt.Rows[i][0].ToString(), dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString(), dt.Rows[i][3].ToString(), dt.Rows[i][4].ToString(), dt.Rows[i][5].ToString(), dt.Rows[i][6].ToString());
-                        if(!czyJestTakiWierszW(listaDopasowKW, new DopasowanieKW((int)dt.Rows[i][0], dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString(), dt.Rows[i][3], (int)dt.Rows[i][4], (int)dt.Rows[i][5], (int)dt.Rows[i][6]))){
+                        if (!czyJestTakiWierszW(listaDopasowKW, new DopasowanieKW((int)dt.Rows[i][0], dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString(), dt.Rows[i][3], (int)dt.Rows[i][4], (int)dt.Rows[i][5], (int)dt.Rows[i][6])))
+                        {
                             listaDopasowKW.Add(new DopasowanieKW((int)dt.Rows[i][0], dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString(), dt.Rows[i][3], (int)dt.Rows[i][4], (int)dt.Rows[i][5], (int)dt.Rows[i][6]));
+                            listaDopasowKW_CzyLadowac.Add(new DopasowanieKW((int)dt.Rows[i][0], dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString(), dt.Rows[i][3], (int)dt.Rows[i][4], (int)dt.Rows[i][5], (int)dt.Rows[i][6]));
                         }
-                       
+
                     }
                     try
                     {
@@ -199,7 +201,7 @@ namespace ScaleniaMW
                         //dataGrid.Visibility = Visibility.Visible;
                         //dataGrid.Items.Refresh();
                         //dgNkrFDB.ItemsSource = dt.AsDataView();
-                        Console.WriteLine(  listaDopasowKW.Count);
+                        Console.WriteLine(listaDopasowKW.Count);
                         dgNrKwZSQL.ItemsSource = listaDopasowKW;
                         dgNrKwZSQL.Items.Refresh();
 
@@ -244,7 +246,7 @@ namespace ScaleniaMW
         private void ListBoxDzialkiNowe_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
-           // listBoxNrKW.SelectedIndex = 0;
+            // listBoxNrKW.SelectedIndex = 0;
 
         }
 
@@ -312,12 +314,12 @@ namespace ScaleniaMW
         }
 
         private void Button_ZaladujDoBazy(object sender, RoutedEventArgs e)
-        {/*
+        {
             if (czyPolaczonoZBaza)
             {
 
 
-                var resultat = MessageBox.Show("Czy chcesz rozpocząć ładowanie do bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+                var resultat = MessageBox.Show("Czy chcesz rozpocząć ładowanie KW do bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
 
                 if (resultat == MessageBoxResult.Yes)
                 {
@@ -325,35 +327,63 @@ namespace ScaleniaMW
                     aktualizujSciezkeZPropertis();
                     using (var connection = new FbConnection(connectionString))
                     {
-                        connection.Open();
-                        FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE Id_Id  WHEN @IDDZ  THEN @RJDRPRZED else RJDRPRZED END where Id_Id IN(@IDDZ)", connection);
+                        connection.Open(); //UPDATE DZIALKI_N SET KW = CASE Id_Id  WHEN 660 THEN 'BI100000' else KW END where Id_Id IN(660)
+                        FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET KW = CASE Id_Id  WHEN @IDDZ  THEN @KW else KW END where Id_Id IN(@IDDZ)", connection);
                         //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
                         List<int> tmpListaIdDz = new List<int>();
-                        tmpListaIdDz = listaDopasowKW.GroupBy(g => g.IdDz).Select(x => x.Key).ToList();
+                        tmpListaIdDz = listaDopasowKW.GroupBy(g => g.IdDzN).Select(x => x.Key).ToList();
 
                         tmpListaIdDz.Sort();
-                        Console.WriteLine(tmpListaIdDz.Count);
+                        // Console.WriteLine(tmpListaIdDz.Count + "count ");
                         progresBar.Value = 0;
                         progresBar.Visibility = Visibility.Visible;
-                        progresBar.Maximum = listaDopasowKW.FindAll(x => x.PrzypisanyNrRej != null).GroupBy(x => x.IdDz).ToList().Count - listaDopasowKW_CzyLadowac.FindAll(x => x.PrzypisanyNrRej != null).GroupBy(x => x.IdDz).ToList().Count;
+
+                        //Console.WriteLine(listaDopasowKW.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count);
+
+                        // Console.WriteLine(listaDopasowKW_CzyLadowac.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count);
                         for (int i = 0; i <= tmpListaIdDz.Count - 1; i++)
                         {
-                            if (!listaDopasowKW_CzyLadowac.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
+                            if (listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane != listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane)
                             {
-                                if (listaDopasowKW.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej.HasValue)
+                                progresBar.Maximum++;
+                            }
+                        }
+                        // progresBar.Maximum = listaDopasowKW.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count - listaDopasowKW_CzyLadowac.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count;
+                        Console.WriteLine("progres max " + progresBar.Maximum);
+                        for (int i = 0; i <= tmpListaIdDz.Count - 1; i++)
+                        {
+                            // Console.WriteLine("sss " + listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane);
+                            // if (listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null && listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane != null)
+
+                            if (listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane != listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane)
+                            {
+                                if ((listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "") && (listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "" || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null))
+                                {
+                                    progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+                                    continue;
+                                }
+                                if (BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane))
                                 {
                                     writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
-                                    writeCommand.Parameters.Add("@RJDRPRZED", listaDopasowKW.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej);
+                                    writeCommand.Parameters.Add("@KW", listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane);
                                     writeCommand.ExecuteNonQuery();
 
                                     writeCommand.Parameters.Clear();
-                                    Console.WriteLine(i + " " + listaDopasowKW.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).PrzypisanyNrRej + " " + listaDopasowKW.Find(x => x.IdDz.Equals(tmpListaIdDz[i])).NrDzialki);
+                                    Console.WriteLine(i + " " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane + " " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).NrDZ);
                                     progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+                                }
+                                else
+                                {
+                                    var result = MessageBox.Show("BŁĘDNY NR KW: " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane + " NIE ZOSTANIE PRZYPISANY DO BAZY!\n", "UWAGA!", MessageBoxButton.OKCancel);
+                                    if (result == MessageBoxResult.Cancel)
+                                    {
+                                        break;
+                                    }
                                 }
                             }
                         }
                         connection.Close();
-                        MessageBox.Show("Jednostki przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+                        MessageBox.Show("Zakończono przypisywanie KW do bazy.", "SUKCES!", MessageBoxButton.OK);
                         progresBar.Visibility = Visibility.Hidden;
                         ItemImportJednostkiSN_Click(sender, e);
                     }
@@ -362,7 +392,7 @@ namespace ScaleniaMW
             else
             {
                 MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
-            }*/
+            }
         }
 
         private void MenuItem_AutoPrzypiszJednostki(object sender, RoutedEventArgs e)
@@ -466,10 +496,31 @@ namespace ScaleniaMW
 
         private void DgNrKwZSQL_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+
+            //  Console.WriteLine(((TextBox)e.EditingElement).Text + " @ " + e.EditAction + " @ " +e.Column.DisplayIndex +" displIdx @ local enum " + e.Row.GetLocalValueEnumerator().Current);
+            foreach (var item in listaDopasowKW)
+            {
+                if (item.IdDzN.Equals(listaDopasowKW[e.Row.GetIndex()].IdDzN) && e.Column.DisplayIndex == 3)
+                {
+                    Console.WriteLine("przed: " + item.KWPoDopasowane + " " + item.IdDzN + " " + item.NKRn);
+                    item.KWPoDopasowane = ((TextBox)e.EditingElement).Text;
+
+
+                    Console.WriteLine("po: " + item.KWPoDopasowane + " " + item.IdDzN + " " + item.NKRn);
+                }
+            }
             Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
+        }
+
+        private void DgNrKwZSQL_CurrentCellChanged(object sender, EventArgs e)
+        {
+
+
             listBoxNkr.Items.Refresh();
             listBoxDzialkiNowe.Items.Refresh();
             listBoxNrKW.Items.Refresh();
+            dgNrKwZSQL.Items.Refresh();
         }
     }
 }
+
