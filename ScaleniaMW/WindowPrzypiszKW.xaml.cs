@@ -84,11 +84,11 @@ namespace ScaleniaMW
                     dgNrKwZSQL.ItemsSource = null;
                     listBoxDzialkiNowe.ItemsSource = null;
                     listBoxNkr.ItemsSource = null;
-                    listBoxNrRej.ItemsSource = null;
+                    listBoxNrKW.ItemsSource = null;
 
                     listBoxDzialkiNowe.Items.Refresh();
                     listBoxNkr.Items.Refresh();
-                    listBoxNrRej.Items.Refresh();
+                    listBoxNrKW.Items.Refresh();
                     dgNrKwZSQL.Items.Refresh();
                 }
                 catch (Exception esa)
@@ -127,7 +127,7 @@ namespace ScaleniaMW
             {
                 listBoxDzialkiNowe.Items.Refresh();
                 listBoxNkr.Items.Refresh();
-                listBoxNrRej.Items.Refresh();
+                listBoxNrKW.Items.Refresh();
                 dgNrKwZSQL.Items.Refresh();
                 aktualizujSciezkeZPropertis();
                 using (var connection = new FbConnection(connectionString))
@@ -147,7 +147,7 @@ namespace ScaleniaMW
 
                             listBoxDzialkiNowe.Items.Refresh();
                             listBoxNkr.Items.Refresh();
-                            listBoxNrRej.Items.Refresh();
+                            listBoxNrKW.Items.Refresh();
                             dgNrKwZSQL.Items.Refresh();
                         }
                     }
@@ -215,7 +215,7 @@ namespace ScaleniaMW
                         textBlockLogInfo.Text = "Brak danych";
                     }
 
-                    Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+                    Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
 
                     connection.Close();
                     itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
@@ -236,15 +236,15 @@ namespace ScaleniaMW
 
         private void ListBoxNkr_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+            Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
             listBoxDzialkiNowe.SelectedIndex = 0;
 
         }
 
         private void ListBoxDzialkiNowe_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
-            listBoxNrRej.SelectedIndex = 0;
+            Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
+           // listBoxNrKW.SelectedIndex = 0;
 
         }
 
@@ -254,11 +254,11 @@ namespace ScaleniaMW
             {
                 Console.WriteLine(" super ");
                 Console.WriteLine(sender.GetHashCode());
-                Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, "PrzypiszZaznJedn");
+                Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "PrzypiszZaznJedn");
 
                 listBoxNkr.Items.Refresh();
                 listBoxDzialkiNowe.Items.Refresh();
-                listBoxNrRej.Items.Refresh();
+                listBoxNrKW.Items.Refresh();
                 dgNrKwZSQL.Items.Refresh();
             }
             else
@@ -283,12 +283,10 @@ namespace ScaleniaMW
                         try
                         {
                             StringBuilder stringBuilder = new StringBuilder();
-                            stringBuilder.AppendLine("[NrDz] [NKRN] [KW]");
+                            stringBuilder.AppendLine("[IdDZ] [NrDz] [NKRN] [KW]");
                             foreach (var item in listaDopasowKW)
                             {
-
-                                stringBuilder.AppendLine(item.NrDZ + "\t" + item.NKRn + "\t" + item.KWPoDopasowane);
-
+                                stringBuilder.AppendLine(item.IdDzN + "\t" + item.NrDZ + "\t" + item.NKRn + "\t" + item.KWPoDopasowane);
                             }
 
                             sw.Write(stringBuilder.ToString());
@@ -372,7 +370,7 @@ namespace ScaleniaMW
             if (czyPolaczonoZBaza)
             {
                 Console.WriteLine(sender.GetHashCode());
-                Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, "AutoPrzypiszKW");
+                Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "AutoPrzypiszKW");
                 Console.WriteLine(listaDopasowKW.Count);
 
                 dgNrKwZSQL.Items.Refresh();
@@ -433,21 +431,19 @@ namespace ScaleniaMW
         {
             if (czyPolaczonoZBaza)
             {
-                var resultat = MessageBox.Show("Czy chcesz usunąć wcześniej przypisabe jednostki z bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+                var resultat = MessageBox.Show("Czy chcesz usunąć wcześniej przypisane KW z bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
 
                 if (resultat == MessageBoxResult.Yes)
                 {
-
                     aktualizujSciezkeZPropertis();
                     using (var connection = new FbConnection(connectionString))
                     {
                         connection.Open();
-                        FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = null", connection);
+                        FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET KW = null", connection);
                         //writeCommand.ExecuteNonQuery();
                         writeCommand.ExecuteNonQueryAsync();
                         connection.Close();
-                        MessageBox.Show("Jednostki usunięto pomyślnie.", "SUKCES!", MessageBoxButton.OK);
-
+                        MessageBox.Show("KW usunięto pomyślnie.", "SUKCES!", MessageBoxButton.OK);
                         ItemImportJednostkiSN_Click(sender, e);
                     }
                 }
@@ -466,6 +462,14 @@ namespace ScaleniaMW
         private void CheckBoxZawszeNaWierzchu_Unchecked(object sender, RoutedEventArgs e)
         {
             windowPrzypiszKW.Topmost = false;
+        }
+
+        private void DgNrKwZSQL_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
+            listBoxNkr.Items.Refresh();
+            listBoxDzialkiNowe.Items.Refresh();
+            listBoxNrKW.Items.Refresh();
         }
     }
 }

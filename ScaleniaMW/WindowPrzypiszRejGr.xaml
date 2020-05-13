@@ -76,7 +76,7 @@
                         <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
                     </DockPanel>
 
-                    <Label Grid.Column="2">NR REJ. GRUNTU</Label>
+                    <Label Grid.Column="2">NR JEDN. REJ.</Label>
                     <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
                         <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left"/>
                     </DockPanel>
@@ -90,7 +90,8 @@
                             <Label HorizontalAlignment="Center">-> -> -> -></Label>
                         </StackPanel>
                     </Button>
-                </StackPanel>
+                        <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="Green" FontWeight="Heavy">NJR</Label>
+                    </StackPanel>
                 <DataGrid Margin="5,0" x:Name="dgNiedopJednostki"></DataGrid>
             </DockPanel>
         </TabItem>

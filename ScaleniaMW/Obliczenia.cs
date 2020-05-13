@@ -179,7 +179,7 @@ namespace ScaleniaMW
         public class IddzKwPrzed
         {
             public int Iddz { get; set; }
-            public string KwPrzed{ get; set; }
+            public string KwPrzed { get; set; }
         }
         public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, string sender = "")
         {
@@ -244,7 +244,7 @@ namespace ScaleniaMW
                     List<int> NrRejGr = new List<int>();
                     listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
                     List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
-                    List<IdJednSiNRRej> listidJednSiNRRejs = tmpListGrRej.GroupBy(x => new { x.NrJednEwopis, x.IdJednS }).Select(x => new IdJednSiNRRej {iddJednSt = x.Key.IdJednS, NrRejGr=x.Key.NrJednEwopis}).ToList();
+                    List<IdJednSiNRRej> listidJednSiNRRejs = tmpListGrRej.GroupBy(x => new { x.NrJednEwopis, x.IdJednS }).Select(x => new IdJednSiNRRej { iddJednSt = x.Key.IdJednS, NrRejGr = x.Key.NrJednEwopis }).ToList();
                     NrRejGr = listidJednSiNRRejs.Select(x => x.NrRejGr).ToList();
                     listBoxNrRej.ItemsSource = NrRejGr;
 
@@ -301,15 +301,16 @@ namespace ScaleniaMW
         }
 
         // funkcja dla KW 
-        public static void DopasujNrKWDoNowychDzialek(ref List<DopasowanieKW> listaKWdlaNowychDzialek, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, string sender = "")
+        public static void DopasujNrKWDoNowychDzialek(ref List<DopasowanieKW> listaKWdlaNowychDzialek, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrKW, string sender = "")
         {
             if (listaKWdlaNowychDzialek.Count > 0)
             {
 
                 int licznik = 0;
+                int licznikZPustym = 0;
                 if (sender.Equals("AutoPrzypiszKW"))
                 {
-                    
+
                     for (int i = listaKWdlaNowychDzialek[0].IdJednN; i <= listaKWdlaNowychDzialek[listaKWdlaNowychDzialek.Count - 1].IdJednN; i++)
                     {
                         List<DopasowanieKW> tmpListaKW = listaKWdlaNowychDzialek.FindAll(x => x.IdJednN.Equals(i));
@@ -318,107 +319,143 @@ namespace ScaleniaMW
 
                         for (int j = 0; j < tmpListaKW.Count; j++)
                         {
-                            if (!tmpListaKW[j].KWprzed.Equals("")) nrNiePustego = j;
+                            if (!(tmpListaKW[j].KWprzed == "" || tmpListaKW[j].KWprzed == null))
+                            {
+                                nrNiePustego = j;
+                            }
+
                         }
+
+                        if (tmpListaKW.Count != tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count)
+                        {
+                            if (tmpListaKW.Count == tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count + tmpListaKW.FindAll(x => x.KWprzed.Equals("")).Count)
+                            {
+                                foreach (var item in tmpListaKW)
+                                {
+                                    Console.WriteLine(item.NKRn + " | " + item.KWprzed + " | " + item.KWPoDopasowane);
+                                }
+                                Console.WriteLine(licznikZPustym++);
+                            }
+                        }
+                        // Console.WriteLine(tmpListaKW.Count + " " + tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count +" " + tmpListaKW.FindAll(x => x.KWprzed.Equals("")).Count + tmpListaKW.FindAll(x => x.KWprzed.Equals(null)).Count);
 
                         if (tmpListaKW.Count == tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count)
                         {
                             foreach (var item in tmpListaKW)
                             {
-                                if (item.KWPoDopasowane == null)
+
+
+                                if (item.KWPoDopasowane == null || item.KWPoDopasowane.Trim() == "")
                                 {
-                                   item.KWPoDopasowane = item.KWprzed;
-                                   licznik++;
+                                    //  Console.WriteLine(item.NKRn + " " + item.KWprzed +" " + item.KWPoDopasowane);
+                                    item.KWPoDopasowane = item.KWprzed;
+                                    licznik++;
                                 }
                             }
                         }
                     }
-                    Console.WriteLine("licznik wskazal: " + licznik);
+
+                    Console.WriteLine(licznikZPustym + " licznik wskazal: " + licznik);
                 }
 
                 if (listaKWdlaNowychDzialek.Exists(x => x.KWprzed.Equals("")))
                 {
 
                     List<int> NowyNkr = new List<int>();
-                    List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => x.KWprzed.Equals(""));
-                    Console.WriteLine(listaKWdlaNowychDzialek.FindAll(x => x.KWprzed.Equals("")).Count + "count 11 ");
+                    List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == "" || x.KWPoDopasowane == null);
+                    // Console.WriteLine(listaKWdlaNowychDzialek.FindAll(x => x.KWprzed.Equals("")).Count + "count 11 ");
                     List<IDiNKR> lisIDnkr_NKR = tmpListNKRbezJednRej.GroupBy(x => new { x.NKRn, x.IdJednN }).Select(x => new IDiNKR { IdJednN = x.Key.IdJednN, NKR = x.Key.NKRn }).ToList();
                     //foreach (var item in lisIDnkr_NKR)
                     //{ 
                     //    NowyNkr.Add(item.NKR);
                     //}
+
                     NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
                     listBoxNkr.ItemsSource = NowyNkr;
-                    Console.WriteLine(NowyNkr.Count +  "NKR");
-                        ///////////////////
-                         List<string> NowyNrDz = new List<string>();
-                         // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-                         listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
-                         List<DopasowanieKW> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
+                    //  Console.WriteLine(NowyNkr.Count +  "NKR");
+                    ///////////////////
+                    List<string> NowyNrDz = new List<string>();
+                    // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
+                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+                    List<DopasowanieKW> tmpListNKRbezKWNRDZ = tmpListNKRbezJednRej.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
 
-                         List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezJednRejNRDZ.GroupBy(a => new { a.NrDZ, a.IdDzN }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDzN, Nrdz = x.Key.NrDZ }).ToList();
-                         NowyNrDz = iDDZiNRDZ.Select(x => x.Nrdz).ToList();
-                         listBoxNoweDzialki.ItemsSource = NowyNrDz;
+                    List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezKWNRDZ.GroupBy(a => new { a.NrDZ, a.IdDzN }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDzN, Nrdz = x.Key.NrDZ }).ToList();
+                    NowyNrDz = iDDZiNRDZ.Select(x => x.Nrdz).ToList();
+                    listBoxNoweDzialki.ItemsSource = NowyNrDz;
+
+
+                    List<string> NrKW = new List<string>();
+                    // listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+
+                    List<DopasowanieKW> tmpListKW = listaKWdlaNowychDzialek.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
+                    // List<IddzKwPrzed> listIddzKWPrzed = tmpListKW.GroupBy(x => new { x.IdJednN, x.KWprzed }).Select(x => new IddzKwPrzed { Iddz = x.Key.IdJednN, KwPrzed = x.Key.KWprzed }).ToList();
+                    List<IddzKwPrzed> listIddzKWPrzed;
+                    if (tmpListKW.GroupBy(x => new { x.IdJednN, x.KWprzed }).Select(x => new IddzKwPrzed { Iddz = x.Key.IdJednN, KwPrzed = x.Key.KWprzed }).ToList().Count > 1)
+                    {
+                        listIddzKWPrzed = tmpListKW.FindAll(x => x.KWprzed != "").GroupBy(x => new { x.IdJednN, x.KWprzed }).Select(x => new IddzKwPrzed { Iddz = x.Key.IdJednN, KwPrzed = x.Key.KWprzed }).ToList();
+                    }
+                    else
+                    {
+                        listIddzKWPrzed = tmpListKW.GroupBy(x => new { x.IdJednN, x.KWprzed }).Select(x => new IddzKwPrzed { Iddz = x.Key.IdJednN, KwPrzed = x.Key.KWprzed }).ToList();
+                    }
                    
+                    
+                    NrKW = listIddzKWPrzed.Select(x => x.KwPrzed).ToList();
 
-                         List<string> NrKW = new List<string>();
-                         listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
-                         List<DopasowanieKW> tmpListGrRej = listaKWdlaNowychDzialek.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
-                         List<IddzKwPrzed> listidJednSiNRRejs = tmpListGrRej.GroupBy(x => new { x.IdJednN, x.KWprzed }).Select(x => new IddzKwPrzed { Iddz = x.Key.IdJednN, KwPrzed = x.Key.KWprzed }).ToList();
-                         NrKW = listidJednSiNRRejs.Select(x => x.KwPrzed).ToList();
-                         listBoxNrRej.ItemsSource = NrKW;
+                    listBoxNrKW.ItemsSource = NrKW;
 
-                    /*
-                         if (sender.Equals("PrzypiszZaznJedn"))
-                         {
-                             Console.WriteLine("sender jetsst " + sender.GetHashCode());
-
-                             foreach (var item in listaKWdlaNowychDzialek)
-                             {
-                                 //if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
-                                 //{
-                                 //    Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
-                                 //    item.wypiszWConsoli();
-                                 //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
-
-                                 //}
-
-                                 if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDz.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
-                                 {
-                                     Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
-                                     item.wypiszWConsoli();
-                                     item.PrzypisanyNrRej = listidJednSiNRRejs[listBoxNrRej.SelectedIndex].iddJednSt;
-
-                                 }
+                    listBoxNrKW.SelectedIndex = listBoxNrKW.SelectedIndex >= 0 && listBoxNrKW.SelectedIndex < listBoxNrKW.Items.Count ? listBoxNrKW.SelectedIndex : 0;
+                    listBoxNrKW.Items.Refresh();
 
 
+                    if (sender.Equals("PrzypiszZaznJedn"))
+                    {
+                        Console.WriteLine("sender jetsst " + sender.GetHashCode());
 
-                             }
+                        foreach (var item in listaKWdlaNowychDzialek)
+                        {
+                            //if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
+                            //{
+                            //    Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
+                            //    item.wypiszWConsoli();
+                            //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
 
-                             if (listBoxNoweDzialki.Items.Count == 1 || listBoxNoweDzialki.Items.Count == 0)
-                             {
-                                 Console.WriteLine("to teraz");
-                                 listBoxNkr.SelectedIndex = 0;
-                             }
+                            //}
 
-                             Obliczenia.DopasujNrRejDoNowychDzialek(ref listaKWdlaNowychDzialek, listBoxNkr, listBoxNoweDzialki, listBoxNrRej);
-                             listBoxNrRej.SelectedIndex = 0;
-                             listBoxNoweDzialki.SelectedIndex = 0;
+                            if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDzN.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
+                            {
+                                Console.WriteLine(item.NKRn + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDZ + " " + listBoxNoweDzialki.SelectedValue + " " + item.KWprzed + " " + listBoxNrKW.SelectedValue + " id");
 
-                         }
+                                item.KWPoDopasowane = listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed;
+                            }
+                        }
+                        if (listBoxNoweDzialki.Items.Count < 1 )
+                        {
+                            Console.WriteLine("to teraz");
+                            listBoxNkr.SelectedIndex = 0;
+                        }
 
-                     }
-                     else
-                     {
-                         List<string> lll = new List<string>();
-                         lll.Add("WSZYSTKIE DOPASOWANO");
-                         listBoxNrRej.ItemsSource = lll;
-                         listBoxNoweDzialki.ItemsSource = lll;
-                         listBoxNkr.ItemsSource = lll;
-                     }
-                 */
+                        Obliczenia.DopasujNrKWDoNowychDzialek(ref listaKWdlaNowychDzialek, listBoxNkr, listBoxNoweDzialki, listBoxNrKW);
+                        // listBoxNrKW.SelectedIndex = 0;
+                        listBoxNrKW.SelectedIndex = listBoxNrKW.SelectedIndex >= 0 && listBoxNrKW.SelectedIndex < listBoxNrKW.Items.Count ? listBoxNrKW.SelectedIndex : 0;
+                        listBoxNoweDzialki.SelectedIndex = 0;
+
+                    }
+
                 }
+                else
+                {
+                    List<string> lll = new List<string>();
+                    lll.Add("WSZYSTKIE DOPASOWANO");
+                    listBoxNrKW.ItemsSource = lll;
+                    listBoxNoweDzialki.ItemsSource = lll;
+                    listBoxNkr.ItemsSource = lll;
+                }
+
             }
         }
     }
+
 }
+

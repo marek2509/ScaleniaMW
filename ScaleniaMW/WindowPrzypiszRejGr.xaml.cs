@@ -421,7 +421,7 @@ namespace ScaleniaMW
         {
             if (czyPolaczonoZBaza)
             {
-                var resultat = MessageBox.Show("Czy chcesz usunąć wcześniej przypisabe jednostki z bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+                var resultat = MessageBox.Show("Czy chcesz usunąć wcześniej przypisane jednostki z bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
 
                 if (resultat == MessageBoxResult.Yes)
                 {

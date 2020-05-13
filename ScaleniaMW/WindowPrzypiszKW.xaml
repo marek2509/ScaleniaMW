@@ -7,13 +7,13 @@
         mc:Ignorable="d"
         Title="SCALENIAMW inż. Marek Wojciechowicz - dopasuj KW dla nowych działek" Height="600" Width="1100" x:Name="windowPrzypiszKW">
     <Grid x:Name="gridPrzypiszKW" Visibility="Visible">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
         <Menu Grid.Row="1">
             <MenuItem Header="Plik" >
                 <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Header="Zapisz dopasowanie KW do pliku txt" ToolTip="[obr-dz] [KW]" Click="Zapisz_Dopasowanie_Jedn_Click"/>
@@ -54,42 +54,56 @@
         <ProgressBar x:Name="progresBar" Grid.Row="2" Value="0" Visibility="Hidden" Margin="0,25,0,0"  Panel.ZIndex="100" Opacity="0.5">
         </ProgressBar>
 
-            <DockPanel x:Name="tabControl2"  Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
+        <DockPanel x:Name="tabControl2"  Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0">NKR</Label>
-                        <DockPanel Margin="0,20,0,0" Grid.Column="0">
-                            <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
-                        </DockPanel>
-
-                        <Label Grid.Column="1">NR DZIAŁKI</Label>
-                        <DockPanel  Margin="0,20,0,0" Grid.Column="1">
-                            <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
-                        </DockPanel>
-
-                        <Label Grid.Column="2">KW</Label>
-                        <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
-                            <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left"/>
-                        </DockPanel>
-                    </Grid>
-                    <StackPanel>
-                        <Button Height="125" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" >
-                            <StackPanel HorizontalAlignment="Center">
-                                <Label HorizontalAlignment="Center">-> -> -> -></Label>
-                                <Label HorizontalAlignment="Center">Przypisz zaznaczony</Label>
-                                <Label HorizontalAlignment="Center">nr KW</Label>
-                                <Label HorizontalAlignment="Center">-> -> -> -></Label>
-                            </StackPanel>
-                        </Button>
-                <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="DarkViolet" FontWeight="Heavy">KW</Label>
-                    </StackPanel>
-                    <DataGrid Margin="5,0" x:Name="dgNrKwZSQL"></DataGrid>
+                <Label Grid.Column="0" >NKR</Label>
+                <DockPanel Grid.Column="0">
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNkr, Path=Items.Count}"></Label>
                 </DockPanel>
+
+                <DockPanel Margin="0,20,0,0" Grid.Column="0">
+                    <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0"  Margin="5,0,5,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
+
+                </DockPanel>
+
+                <Label Grid.Column="1">NR DZIAŁKI</Label>
+                <DockPanel  Margin="0,20,0,0" Grid.Column="1">
+                    <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin="5,0,5,25" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
+                </DockPanel>
+                <DockPanel Grid.Column="1">
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNowe, Path=Items.Count}"></Label>
+                </DockPanel>
+
+                <Label Grid.Column="2">KW</Label>
+                <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
+                    <ListBox x:Name="listBoxNrKW" MinWidth="100"  SelectedIndex="0" Margin="5,0,5,25" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Grid.Column="2">
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNrKW, Path=Items.Count}"></Label>
+                </DockPanel>
+            </Grid>
+            <StackPanel>
+                <Button Height="125" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" >
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label HorizontalAlignment="Center">-> -> -> -></Label>
+                        <Label HorizontalAlignment="Center">Przypisz zaznaczony</Label>
+                        <Label HorizontalAlignment="Center">nr KW</Label>
+                        <Label HorizontalAlignment="Center">-> -> -> -></Label>
+                    </StackPanel>
+                </Button>
+                <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="DarkViolet" FontWeight="Heavy">KW</Label>
+            </StackPanel>
+            <DataGrid Margin="5,0" x:Name="dgNrKwZSQL" CellEditEnding="DgNrKwZSQL_CellEditEnding"/>
+        </DockPanel>
 
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Margin="2" ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
 
