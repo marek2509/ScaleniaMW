@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW inż. Marek Wojciechowicz" Height="340" Width="600" x:Name="windowScaleniaMW">
+        Title="SCALENIAMW inż. Marek Wojciechowicz" x:Name="windowScaleniaMW" Width="590" Height="354" ResizeMode="NoResize">
     <Grid>
         <DockPanel  x:Name="dockCoChceszZrobić" Panel.ZIndex="101">
 
@@ -19,36 +19,48 @@
                     <ColumnDefinition 
                         ></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Background="DimGray" Foreground="White" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić?</Label>
+                <Label Background="DimGray" FontWeight="Bold" Foreground="White" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić</Label>
                 <StackPanel Grid.Row="2">
 
 
-                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Width="250" Height="100" x:Name="buttonRodzajPracyNKR_KW" FontSize="10" Click="ButtonRodzajPracyNKR_KW_Click" >
+                    <Button HorizontalAlignment="Left" Margin="25,25,12,12"  MouseEnter="ButtonRodzajPracyNKR_KW_MouseEnter" MouseLeave="ButtonRodzajPracyNKR_KW_MouseLeave" 
+                            Background="DodgerBlue"  Width="250" Height="100" x:Name="buttonRodzajPracyNKR_KW" FontSize="13" Click="ButtonRodzajPracyNKR_KW_Click" >
                         <StackPanel>
-                            <Label HorizontalAlignment="Center">NKR/KW NA MAPĘ</Label>
-                            <Label HorizontalAlignment="Center">STAN "PRZED"</Label>
+                            <Label HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" x:Name="label1RodzajPracyNKR_KW">NKR/KW NA MAPĘ</Label>
+                            <Label HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" x:Name="label2RodzajPracyNKR_KW">STAN "PRZED"</Label>
                         </StackPanel>
                     </Button>
-                    <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Width="250" Height="100" FontSize="10" x:Name="buttonRodzajPracyPrzypisanieRejGr" Click="ButtonRodzajPracyPrzypisanieRejGr_Click">
+                    <Button  HorizontalAlignment="Left" Margin="25,12,12,25"  Width="250" Height="100" FontSize="13"
+                             x:Name="buttonRodzajPracyPrzypisanieRejGr" Click="ButtonRodzajPracyPrzypisanieRejGr_Click" Background="Green"
+                             MouseEnter="ButtonRodzajPracyPrzypisanieRejGr_MouseEnter" MouseLeave="ButtonRodzajPracyPrzypisanieRejGr_MouseLeave">
                         <StackPanel>
-                            <Label HorizontalAlignment="Center">Przypisanie do działek w stanie "PO"</Label>
-                            <Label HorizontalAlignment="Center">numerów rejestru gruntu z przed scalenia</Label>
+                            <Label HorizontalAlignment="Center" x:Name="label1RodzajPracyPrzypisanieRejGr" Foreground="White" FontWeight="Bold">PRZYPISANIE DO DZIAŁEK "PO"</Label>
+                            <Label HorizontalAlignment="Center" x:Name="label2RodzajPracyPrzypisanieRejGr" Foreground="White" FontWeight="Bold">NR REJ. GR. Z PRZED SCALENIA</Label>
                         </StackPanel>
                     </Button>
                 </StackPanel>
-
-                <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Margin="15" Width="250" Height="100" FontSize="10" x:Name="buttonPrzypiszKwDlaNowychDzialek" Click="ButtonRodzPracyPrzypiszKwDlaNowychDzialek_Click">
-                    <StackPanel>
-                        <Label HorizontalAlignment="Center">Przypisanie KW do działek w stanie "PO"</Label>
-                        <Label HorizontalAlignment="Center"></Label>
+                <StackPanel Grid.Column="1" Grid.Row="1">
+                    <Button  HorizontalAlignment="Right" MouseEnter="ButtonPrzypiszKwDlaNowychDzialek_MouseEnter" MouseLeave="ButtonPrzypiszKwDlaNowychDzialek_MouseLeave"
+                             VerticalAlignment="Top" Background="DarkViolet"  Margin="12,25,25,12" Width="250" Height="100" FontSize="13" x:Name="buttonPrzypiszKwDlaNowychDzialek" Click="ButtonRodzPracyPrzypiszKwDlaNowychDzialek_Click">
+                    <StackPanel >
+                        <Label HorizontalAlignment="Center" x:Name="label1PrzypiszKwDlaNowychDzialek"  Foreground="White" FontWeight="Bold">PRZYPISANIE KW</Label>
+                        <Label HorizontalAlignment="Center"  x:Name="label2PrzypiszKwDlaNowychDzialek"  Foreground="White" FontWeight="Bold">DO DZIAŁEK W STANIE "PO"</Label>
                     </StackPanel>
                 </Button>
-
+                    <Button  HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="SaddleBrown" Grid.Column="1" Grid.Row="1" Margin="12,12,25,25" 
+                             Width="250" Height="100" FontSize="13" x:Name="buttonRodzPracyKWnaMapeStanPO" Click="ButtonRodzPracyKWnaMapeStanPO_Click" 
+                             MouseEnter="ButtonRodzPracyKWnaMapeStanPO_MouseEnter" MouseLeave="ButtonRodzPracyKWnaMapeStanPO_MouseLeave" >
+                    <StackPanel >
+                            <Label HorizontalAlignment="Center" x:Name="label1RodzPracyKWnaMapeStanPO"  Foreground="White" FontWeight="Bold">KW NA MAPĘ</Label>
+                            <Label HorizontalAlignment="Center"  x:Name="label2RodzPracyKWnaMapeStanPO"  Foreground="White" FontWeight="Bold">STAN "PO"</Label>
+                    </StackPanel>
+                        
+                </Button>
+                    <Label Height="20"></Label>
+                </StackPanel>
             </Grid>
         </DockPanel>
-
-
-
+        <Image HorizontalAlignment="Left" Height="100" Margin="-235,174,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>

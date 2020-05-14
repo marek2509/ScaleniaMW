@@ -21,11 +21,11 @@ using System.Windows.Shapes;
 namespace ScaleniaMW
 {
     /// <summary>
-    /// Logika interakcji dla klasy WindowNkrKwObrot.xaml
+    /// Logika interakcji dla klasy WindowKwNaMapePO.xaml
     /// </summary>
-    public partial class WindowNkrKwObrot : Window
+    public partial class WindowKwNaMapePO : Window
     {
-        public WindowNkrKwObrot()
+        public WindowKwNaMapePO()
         {
             InitializeComponent();
             try
@@ -33,13 +33,12 @@ namespace ScaleniaMW
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
                 checkBoxIgnorujKropkeIPrzecinej.IsChecked = Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek;
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                windowNkrKwObrot.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                windowKwNaMapePO.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e + " problem z oknem");
             }
-
         }
 
         List<DzialkaEDZ> listaZEDZ = new List<DzialkaEDZ>();
@@ -52,6 +51,82 @@ namespace ScaleniaMW
             connectionString = @"User=" + Properties.Settings.Default.Login + ";Password=" + Properties.Settings.Default.Haslo + ";Database= " + Properties.Settings.Default.PathFDB + "; DataSource=localhost; Port=3050;Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
                                   "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
         }
+
+        public bool czyJestTakiWierszW2(List<DzNkrKWzSQLProponow> dopasowanieKWs, DzNkrKWzSQLProponow dkw)
+        {
+            foreach (var item in dopasowanieKWs)
+            {
+                if (dkw.IdDZ == item.IdDZ && dkw.NKR == item.NKR && dkw.Nrdz == item.Nrdz && dkw.ProponowKW == item.ProponowKW)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        List<DzNkrKWzSQLProponow> listDzNkrKWzSQLProponows = new List<DzNkrKWzSQLProponow>();
+        public void odczytajZSqlProponowaneKW()
+        {
+            listDzNkrKWzSQLProponows = new List<DzNkrKWzSQLProponow>();
+            aktualizujSciezkeZPropertis();
+            Console.WriteLine(connectionString);
+            using (var connection = new FbConnection(connectionString))
+            {
+                connection.Open();
+
+                FbCommand command = new FbCommand();
+
+                FbTransaction transaction = connection.BeginTransaction();
+
+                command.Connection = connection;
+                command.Transaction = transaction;
+                // działające zapytanie na nrobr-nrdz NKR 
+                //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+                command.CommandText = "select ob.id ||'-'|| dn.idd nr_Dz, dn.id_id, jn.ijr, case when dn.kw is null then ds.kw end as OK " +
+                            "from dzialki_N dn join JEDN_REJ_N jn on jn.ID_ID = dn.rjdr join JEDN_SN sn on sn.ID_jednn = dn.rjdr join dzialka ds on ds.rjdr = sn.id_jedns " +
+                            "left outer join OBREBY ob on ob.id_id = dn.idobr";
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                dt = new DataTable();
+
+                adapter.Fill(dt);
+                foreach (var item in dt.Columns)
+                {
+
+                    Console.Write(item + " << ");
+                }
+                Console.WriteLine("row count:" + dt.Rows.Count);
+                Console.WriteLine("column count:" + dt.Columns.Count);
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    if (!czyJestTakiWierszW2(listDzNkrKWzSQLProponows, new DzNkrKWzSQLProponow { Nrdz = dt.Rows[i][0].ToString(), IdDZ = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() }))
+                    {
+                        listDzNkrKWzSQLProponows.Add(new DzNkrKWzSQLProponow { Nrdz = dt.Rows[i][0].ToString(), IdDZ = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() });
+
+                    }
+
+                }
+                try
+                {
+                    //dataGrid.ItemsSource = dt.AsDataView();
+                    //dataGrid.Visibility = Visibility.Visible;
+                    //dataGrid.Items.Refresh();
+                    dgNkrFDB.ItemsSource = listDzNkrKWzSQLProponows;
+                    dgNkrFDB.Visibility = Visibility.Visible;
+                    dgNkrFDB.Items.Refresh();
+
+                    Console.WriteLine("ustawiam SOURCE");
+                }
+                catch (Exception excp)
+                {
+                    Console.WriteLine(excp);
+                }
+                //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
+                connection.Close();
+            }
+
+        }
+
 
         public void odczytajZSql()
         {
@@ -70,7 +145,7 @@ namespace ScaleniaMW
                 command.Transaction = transaction;
                 // działające zapytanie na nrobr-nrdz NKR 
                 //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI, kw from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+                command.CommandText = "select obreby.id || '-' || dzialki_N.idd as NR_DZ, JEDN_REJ_N.ijr NKR, kw from DZIALKi_N left outer join OBREBY on dzialki_N.idobr = OBREBY.id_id left outer join JEDN_REJ_N on dzialki_N.rjdr = JEDN_REJ_N.id_id order by NKR";
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 dt = new DataTable();
@@ -104,10 +179,7 @@ namespace ScaleniaMW
                 {
                     Console.WriteLine(excp);
                 }
-
                 //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
-
-
                 connection.Close();
             }
 
@@ -125,7 +197,6 @@ namespace ScaleniaMW
             {
                 Console.WriteLine("Do dupy: {0}", e.Message);
                 MessageBox.Show("Błąd odcztu pliku txt lub csv.\nUpewnij się, że plik, \nktóry chcesz otworzyć jest zamknięty!", "ERROR", MessageBoxButton.OK);
-
             }
             return all;
         }
@@ -200,8 +271,6 @@ namespace ScaleniaMW
                         }
                         else if (przekierownik == 7)
                         {
-
-
                             listaZEDZ[listaZEDZ.Count - 1].DzX1 = double.Parse(listTmp[0], CultureInfo.InvariantCulture);
                             listaZEDZ[listaZEDZ.Count - 1].DzY1 = double.Parse(listTmp[1], CultureInfo.InvariantCulture);
                             listaZEDZ[listaZEDZ.Count - 1].DzX2 = double.Parse(listTmp[2], CultureInfo.InvariantCulture);
@@ -245,11 +314,9 @@ namespace ScaleniaMW
                     Properties.Settings.Default.PathEDZ = dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\"));
                     Properties.Settings.Default.Save();
 
-                    tabControl.SelectedIndex = 0;
                 }
                 catch (Exception esa)
                 {
-
                     var resultat = MessageBox.Show("Nieprawidłowy format ciągu wejściowego.\nPrzy eksporcie EDZ z EWMAPY zaznacz wszystko prócz opcji 'operat'.\nPrzerwać?", "ERROR", MessageBoxButton.YesNo);
 
                     if (resultat == MessageBoxResult.Yes)
@@ -257,7 +324,8 @@ namespace ScaleniaMW
                         Application.Current.Shutdown();
                     }
 
-                    Console.WriteLine(esa + "Błędny format importu działek");
+                    Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz ");
+
                 }
             }
         }
@@ -276,21 +344,9 @@ namespace ScaleniaMW
                     {
                         try
                         {
-                            //StringBuilder sb = new StringBuilder();
-                            //foreach (var item in listaPunktów)
-                            //{
-                            //    sb.AppendLine(item.NazwaDz + "\t" + item.podajeKatUstawienia());
-                            //}
                             string loginfo = "";
-                            int kodRodzajuNKRczyKW = 0;
-                            if (sender.GetHashCode().Equals(obrNKR.GetHashCode()))
-                            {
-                                kodRodzajuNKRczyKW = 0;
-                            }
-                            else if (sender.GetHashCode().Equals(obrKW.GetHashCode()))
-                            {
-                                kodRodzajuNKRczyKW = 1;
-                            }
+                            int kodRodzajuNKRczyKW = 1;
+
 
                             sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
                             textBlockLogInfo.Text = loginfo;
@@ -310,7 +366,45 @@ namespace ScaleniaMW
                             Application.Current.Shutdown();
                         }
                     }
+            }
+        }
 
+        private void ZapiszDoPlikuProponow(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog svd = new SaveFileDialog();
+            svd.DefaultExt = ".txt";
+            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (svd.ShowDialog() == true)
+            {
+                using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                    try
+                    {
+                        try
+                        {
+                            string loginfo = "";
+                            int kodRodzajuNKRczyKW = 1;
+
+
+                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listDzNkrKWzSQLProponows, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
+                            textBlockLogInfo.Text = loginfo;
+                            sw.Close();
+                        }
+                        catch (Exception exc)
+                        {
+                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+
+                        if (resultat == MessageBoxResult.Yes)
+                        {
+                            Application.Current.Shutdown();
+                        }
+                    }
             }
         }
 
@@ -323,7 +417,7 @@ namespace ScaleniaMW
 
         private void ustawSciezkeFDB(object sender, RoutedEventArgs e)
         {
-
+         
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             if (!(Properties.Settings.Default.PathFDB.Equals("") || Properties.Settings.Default.PathFDB.Equals(null)))
             {
@@ -340,6 +434,8 @@ namespace ScaleniaMW
                 try
                 {
                     ustawProperties(dlg.FileName);
+                    itemPolaczZBaza.Background = Brushes.Transparent;
+                    itemPolaczZBazaProponowaneKW.Background = Brushes.Transparent;
                     //czyPolaczonoZBaza = false;
                     //itemImportJednostkiSN.Background = Brushes.Transparent;
                     //itemImportJednostkiSN.Header = "Baza.fdb";
@@ -366,7 +462,6 @@ namespace ScaleniaMW
                         Application.Current.Shutdown();
                     }
 
-                    Console.WriteLine(esa + "Błędny format importu działek");
                 }
             }
         }
@@ -391,7 +486,39 @@ namespace ScaleniaMW
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
                 textBlockBledy.Text = stringBuilder.ToString();
-                tabControl.SelectedIndex = 1;
+
+            }
+            catch (Exception ex)
+            {
+                itemPolaczZBaza.Background = Brushes.Red;
+                itemPolaczZBaza.Header = "Połącz z bazą";
+                textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
+
+            }
+
+        }
+
+        private void PolaczZBazaProponowanych(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                logBledowKW.Visibility = Visibility.Hidden;
+                odczytajZSqlProponowaneKW();
+                itemPolaczZBazaProponowaneKW.Background = Brushes.LightSeaGreen;
+                StringBuilder stringBuilder = new StringBuilder();
+                textBlockLogInfo.Text = "Połączono z bazą FDB.";
+                itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
+                foreach (var item in listaDzNkrzSQL)
+                {
+                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka).Equals(""))
+                    {
+                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka));
+                        logBledowKW.Visibility = Visibility.Visible;
+                    }
+                }
+                stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
+                textBlockBledy.Text = stringBuilder.ToString();
+
             }
             catch (Exception ex)
             {
@@ -408,7 +535,9 @@ namespace ScaleniaMW
             textBoxLogin.Text = Properties.Settings.Default.Login;
 
             panelLogowania.Visibility = Visibility.Visible;
-            tabControl.Visibility = Visibility.Hidden;
+            dgDzialkiEdz.Visibility = Visibility.Hidden;
+            tekstyTytuly.Visibility = Visibility.Hidden;
+            dgNkrFDB.Visibility = Visibility.Hidden;
         }
 
         private void ButtonZapiszLogIHaslo(object sender, RoutedEventArgs e)
@@ -419,7 +548,9 @@ namespace ScaleniaMW
             textBoxHaslo.Text = "";
             panelLogowania.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
-            tabControl.Visibility = Visibility.Visible;
+            dgDzialkiEdz.Visibility = Visibility.Visible;
+            tekstyTytuly.Visibility = Visibility.Visible;
+            dgNkrFDB.Visibility = Visibility.Visible;
 
         }
 
@@ -427,7 +558,9 @@ namespace ScaleniaMW
         {
             panelLogowania.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
-            tabControl.Visibility = Visibility.Visible;
+            dgDzialkiEdz.Visibility = Visibility.Visible;
+            tekstyTytuly.Visibility = Visibility.Visible;
+            dgNkrFDB.Visibility = Visibility.Visible;
         }
 
         private void CheckBoxIgnorujKropkeIPrzecinej_Checked(object sender, RoutedEventArgs e)
@@ -488,7 +621,7 @@ namespace ScaleniaMW
 
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
-            windowNkrKwObrot.Close();
+            windowKwNaMapePO.Close();
 
         }
 
@@ -499,13 +632,14 @@ namespace ScaleniaMW
 
         private void CheckBoxZawszeNaWierzchu_Checked(object sender, RoutedEventArgs e)
         {
-             windowNkrKwObrot.Topmost = true;
+            windowKwNaMapePO.Topmost = true;
         }
 
         private void CheckBoxZawszeNaWierzchu_Unchecked(object sender, RoutedEventArgs e)
         {
-            windowNkrKwObrot.Topmost = false;
+            windowKwNaMapePO.Topmost = false;
         }
+
 
     }
 }

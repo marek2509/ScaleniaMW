@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
         <Menu Grid.Row="1">
-            <MenuItem Header="Plik" >
+            <MenuItem Header="Plik">
                 <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Header="Zapisz dopasowanie KW do pliku txt" ToolTip="[obr-dz] [KW]" Click="Zapisz_Dopasowanie_Jedn_Click"/>
                 <Separator></Separator>
                 <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"/>

@@ -28,7 +28,7 @@
     <ProductName>SCALENIAMW</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>14</ApplicationRevision>
+    <ApplicationRevision>15</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -98,9 +98,13 @@
     <Compile Include="DopasowanieJednostek.cs" />
     <Compile Include="DopasowanieKW.cs" />
     <Compile Include="DzialkaNkrZSQL.cs" />
+    <Compile Include="DzNkrKWzSQLProponow.cs" />
     <Compile Include="Obliczenia.cs" />
     <Compile Include="DzialkaEDZ.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="WindowKwNaMapePO.xaml.cs">
+      <DependentUpon>WindowKwNaMapePO.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowNkrKwObrot.xaml.cs">
       <DependentUpon>WindowNkrKwObrot.xaml</DependentUpon>
     </Compile>
@@ -122,6 +126,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WindowKwNaMapePO.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowNkrKwObrot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

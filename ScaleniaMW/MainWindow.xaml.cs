@@ -812,6 +812,62 @@ namespace ScaleniaMW
             windowPrzypiszKW.Show();
             windowScaleniaMW.Close();
         }
+        private void ButtonRodzPracyKWnaMapeStanPO_Click(object sender, RoutedEventArgs e)
+        {
+            WindowKwNaMapePO windowKwNaMapePO = new WindowKwNaMapePO();
+            windowKwNaMapePO.Show();
+            windowScaleniaMW.Close();
+        }
+
+        private void ButtonRodzajPracyNKR_KW_MouseEnter(object sender, MouseEventArgs e)
+        {
+            label1RodzajPracyNKR_KW.Foreground = Brushes.Black;
+            label2RodzajPracyNKR_KW.Foreground = Brushes.Black;
+        }
+
+        private void ButtonRodzajPracyNKR_KW_MouseLeave(object sender, MouseEventArgs e)
+        {
+            label1RodzajPracyNKR_KW.Foreground = Brushes.White;
+            label2RodzajPracyNKR_KW.Foreground = Brushes.White;
+        }
+
+        private void ButtonPrzypiszKwDlaNowychDzialek_MouseEnter(object sender, MouseEventArgs e)
+        {
+            label1PrzypiszKwDlaNowychDzialek.Foreground = Brushes.Black;
+            label2PrzypiszKwDlaNowychDzialek.Foreground = Brushes.Black;
+        }
+
+        private void ButtonPrzypiszKwDlaNowychDzialek_MouseLeave(object sender, MouseEventArgs e)
+        {
+            label1PrzypiszKwDlaNowychDzialek.Foreground = Brushes.White;
+            label2PrzypiszKwDlaNowychDzialek.Foreground = Brushes.White;
+        }
+
+        private void ButtonRodzajPracyPrzypisanieRejGr_MouseEnter(object sender, MouseEventArgs e)
+        {
+            label1RodzajPracyPrzypisanieRejGr.Foreground = Brushes.Black;
+            label2RodzajPracyPrzypisanieRejGr.Foreground = Brushes.Black;
+        }
+
+        private void ButtonRodzajPracyPrzypisanieRejGr_MouseLeave(object sender, MouseEventArgs e)
+        {
+            label1RodzajPracyPrzypisanieRejGr.Foreground = Brushes.White;
+            label2RodzajPracyPrzypisanieRejGr.Foreground = Brushes.White;
+        }
+
+        private void ButtonRodzPracyKWnaMapeStanPO_MouseEnter(object sender, MouseEventArgs e)
+        {
+            label1RodzPracyKWnaMapeStanPO.Foreground = Brushes.Black;
+            label2RodzPracyKWnaMapeStanPO.Foreground = Brushes.Black;
+        }
+
+        private void ButtonRodzPracyKWnaMapeStanPO_MouseLeave(object sender, MouseEventArgs e)
+        {
+            label1RodzPracyKWnaMapeStanPO.Foreground = Brushes.White;
+            label2RodzPracyKWnaMapeStanPO.Foreground = Brushes.White;
+        }
+
+
 
         /*
         private void ItemUsunPrzypisaneJednostkiZBazy(object sender, RoutedEventArgs e)
