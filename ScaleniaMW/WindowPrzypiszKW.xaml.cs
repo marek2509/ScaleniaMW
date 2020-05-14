@@ -341,12 +341,14 @@ namespace ScaleniaMW
                         //Console.WriteLine(listaDopasowKW.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count);
 
                         // Console.WriteLine(listaDopasowKW_CzyLadowac.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count);
+                        progresBar.Maximum = 0;
                         for (int i = 0; i <= tmpListaIdDz.Count - 1; i++)
                         {
                             if (listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane != listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane)
                             {
                                 progresBar.Maximum++;
                             }
+
                         }
                         // progresBar.Maximum = listaDopasowKW.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count - listaDopasowKW_CzyLadowac.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count;
                         Console.WriteLine("progres max " + progresBar.Maximum);
@@ -357,17 +359,26 @@ namespace ScaleniaMW
 
                             if (listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane != listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane)
                             {
-                                if ((listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "") && (listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "" || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null))
+                                //if ((listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "") && (listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "" || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null))
+                                //{
+                                //    progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+                                //    continue;
+                                //}
+                                if (BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane)|| listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "" )
                                 {
-                                    progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
-                                    continue;
-                                }
-                                if (BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane))
-                                {
-                                    writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
-                                    writeCommand.Parameters.Add("@KW", listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane);
-                                    writeCommand.ExecuteNonQuery();
+                                    if(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "")
+                                    {
+                                        Console.WriteLine("puste badziewie");
+                                         writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
+                                         writeCommand.Parameters.Add("@KW", null);
+                                    }
+                                    else
+                                    {
+                                        writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
+                                        writeCommand.Parameters.Add("@KW", listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane);
+                                    }
 
+                                    writeCommand.ExecuteNonQuery();
                                     writeCommand.Parameters.Clear();
                                     Console.WriteLine(i + " " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane + " " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).NrDZ);
                                     progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
@@ -504,8 +515,7 @@ namespace ScaleniaMW
                 {
                     Console.WriteLine("przed: " + item.KWPoDopasowane + " " + item.IdDzN + " " + item.NKRn);
                     item.KWPoDopasowane = ((TextBox)e.EditingElement).Text;
-
-
+                    textBlockLogInfo.Text = "";
                     Console.WriteLine("po: " + item.KWPoDopasowane + " " + item.IdDzN + " " + item.NKRn);
                 }
             }
@@ -514,12 +524,18 @@ namespace ScaleniaMW
 
         private void DgNrKwZSQL_CurrentCellChanged(object sender, EventArgs e)
         {
+            try
+            {
+                listBoxNkr.Items.Refresh();
+                listBoxDzialkiNowe.Items.Refresh();
+                listBoxNrKW.Items.Refresh();
+                dgNrKwZSQL.Items.Refresh();
+            }
+            catch
+            {
+                textBlockLogInfo.Text = "Nie udało się odświeiżyć tabeli.";
+            }
 
-
-            listBoxNkr.Items.Refresh();
-            listBoxDzialkiNowe.Items.Refresh();
-            listBoxNrKW.Items.Refresh();
-            dgNrKwZSQL.Items.Refresh();
         }
     }
 }
