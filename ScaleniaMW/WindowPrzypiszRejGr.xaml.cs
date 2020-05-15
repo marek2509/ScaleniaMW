@@ -107,7 +107,7 @@ namespace ScaleniaMW
                 }
             }
         }
- 
+
 
         List<DopasowanieJednostek> listaDopasowJednos = new List<DopasowanieJednostek>();
         List<DopasowanieJednostek> listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
@@ -173,8 +173,8 @@ namespace ScaleniaMW
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                     listaDopasowJednos_CzyLadowac.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
-                       listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
+                        listaDopasowJednos_CzyLadowac.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
+                        listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
                     }
                     try
                     {
@@ -182,9 +182,9 @@ namespace ScaleniaMW
                         //dataGrid.Visibility = Visibility.Visible;
                         //dataGrid.Items.Refresh();
                         //dgNkrFDB.ItemsSource = dt.AsDataView();
+
                         dgNiedopJednostki.ItemsSource = listaDopasowJednos;
                         dgNiedopJednostki.Items.Refresh();
-
 
                         Console.WriteLine("ustawiam SOURCE");
                     }
@@ -205,6 +205,7 @@ namespace ScaleniaMW
                     itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
                     dgNiedopJednostki.Items.Refresh();
                     czyPolaczonoZBaza = true;
+
                     koniec:;
                 }
             }
@@ -220,15 +221,14 @@ namespace ScaleniaMW
         private void ListBoxNkr_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
-            listBoxDzialkiNowe.SelectedIndex = 0;
+           listBoxDzialkiNowe.SelectedIndex = listBoxDzialkiNowe.SelectedIndex >= 0 && listBoxDzialkiNowe.SelectedIndex < listBoxDzialkiNowe.Items.Count ? listBoxDzialkiNowe.SelectedIndex : 0;
 
         }
 
         private void ListBoxDzialkiNowe_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
-            listBoxNrRej.SelectedIndex = 0;
-
+            listBoxNrRej.SelectedIndex = listBoxNrRej.SelectedIndex >= 0 && listBoxNrRej.SelectedIndex < listBoxNrRej.Items.Count ? listBoxNrRej.SelectedIndex : 0;
         }
 
         private void Button_PrzypiszZaznJedn(object sender, RoutedEventArgs e)
@@ -455,5 +455,77 @@ namespace ScaleniaMW
         {
             windowPrzypiszRejGr.Topmost = false;
         }
+
+
+        private void DgNiedopJednostki_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+
+            Console.WriteLine(listaDopasowJednos[e.Row.GetIndex()].PrzypisanyNrRej);
+            Console.WriteLine(((TextBox)e.EditingElement).Text.GetType() + "xx");
+
+            if (e.Column.DisplayIndex == 6)
+            {
+                bool czyPasi = false;
+                foreach (var item in listaDopasowJednos.FindAll(x => x.IdDz.Equals(listaDopasowJednos[e.Row.GetIndex()].IdDz)))
+                {
+                    Console.WriteLine(item.IdDz + " " + item.NrJednEwopis +  " " + item.PrzypisanyNrRej);
+                    int tmpNrRej;
+                    int.TryParse(((TextBox)e.EditingElement).Text, out tmpNrRej);
+                    if (item.IdJednS.Equals(tmpNrRej))
+                    {
+                        czyPasi = true;
+                    }
+                }
+
+                foreach (var item in listaDopasowJednos.FindAll(x => x.IdDz.Equals(listaDopasowJednos[e.Row.GetIndex()].IdDz)))
+                {
+                    if (czyPasi)
+                    {
+                        Console.WriteLine(czyPasi + " czy pasi");
+                        int tmpNrRej;
+                        int.TryParse(((TextBox)e.EditingElement).Text,out tmpNrRej);
+                        item.PrzypisanyNrRej = tmpNrRej;
+                    }
+                    else
+                    {
+                        Console.WriteLine(czyPasi + " czy pasi");
+                        ((TextBox)e.EditingElement).Text = null;
+                        item.PrzypisanyNrRej = null;
+                    }
+                }
+                foreach (var item in listaDopasowJednos.FindAll(x => x.IdDz.Equals(listaDopasowJednos[e.Row.GetIndex()].IdDz)))
+                {
+                    Console.WriteLine("pip: " + item.PrzypisanyNrRej);
+                }
+               
+                listBoxNkr.Items.Refresh();
+                listBoxNrRej.Items.Refresh();
+                listBoxDzialkiNowe.Items.Refresh();
+                Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+            }
+        }
+
+
+        private void DgNiedopJednostki_CurrentCellChanged(object sender, EventArgs e)
+        {
+            try
+            {
+              //  Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+
+                Console.WriteLine("CHANGED ");
+
+                listBoxNkr.Items.Refresh();
+                listBoxNrRej.Items.Refresh();
+                listBoxDzialkiNowe.Items.Refresh();
+                dgNiedopJednostki.Items.Refresh();
+            }
+            catch (Exception)
+            {
+
+                Console.WriteLine(" catch DgNiedopJednostki_CurrentCellChanged");
+            }
+
+        }
     }
 }
+

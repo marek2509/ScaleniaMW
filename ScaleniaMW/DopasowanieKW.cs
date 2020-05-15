@@ -8,13 +8,13 @@ namespace ScaleniaMW
 {
      public class DopasowanieKW
     {
-        public int IdDzN { get; set; }
-        public string NrDZ { get; set; }
-        public string KWprzed { get; set; }
+        public int IdDzN { get; private set; }
+        public string NrDZ { get; private set; }
+        public string KWprzed { get; private set; }
         public string KWPoDopasowane { get; set; }
-        public int NKRn { get; set; }
-        public int IdJednN { get; set; }
-        public int IdJednS { get; set; }
+        public int NKRn { get; private set; }
+        public int IdJednN { get; private set; }
+        public int IdJednS { get; private set; }
 
         public DopasowanieKW()
         {

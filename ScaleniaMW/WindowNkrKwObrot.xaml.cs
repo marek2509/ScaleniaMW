@@ -339,6 +339,7 @@ namespace ScaleniaMW
             {
                 try
                 {
+
                     ustawProperties(dlg.FileName);
                     //czyPolaczonoZBaza = false;
                     //itemImportJednostkiSN.Background = Brushes.Transparent;
@@ -385,7 +386,7 @@ namespace ScaleniaMW
                 {
                     if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka).Equals(""))
                     {
-                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka));
+                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka) + " przypisaną do działki nr: " + item.Obr_Dzialka);
                         logBledowKW.Visibility = Visibility.Visible;
                     }
                 }
@@ -398,9 +399,7 @@ namespace ScaleniaMW
                 itemPolaczZBaza.Background = Brushes.Red;
                 itemPolaczZBaza.Header = "Połącz z bazą";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
-
             }
-
         }
 
         private void UstawLoginIHaslo(object sender, RoutedEventArgs e)

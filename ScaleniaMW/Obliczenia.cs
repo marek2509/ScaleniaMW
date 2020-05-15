@@ -444,6 +444,8 @@ namespace ScaleniaMW
                     NrRejGr = listidJednSiNRRejs.Select(x => x.NrRejGr).ToList();
                     listBoxNrRej.ItemsSource = NrRejGr;
 
+                    listBoxNrRej.SelectedIndex = listBoxNrRej.SelectedIndex >= 0 && listBoxNrRej.SelectedIndex < listBoxNrRej.Items.Count ? listBoxNrRej.SelectedIndex : 0;
+                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 && listBoxNkr.SelectedIndex < listBoxNkr.Items.Count ? listBoxNkr.SelectedIndex : 0;
 
                     if (sender.Equals("PrzypiszZaznJedn"))
                     {
@@ -458,7 +460,7 @@ namespace ScaleniaMW
                             //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
 
                             //}
-
+                           
                             if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDz.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
                             {
                                 Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
@@ -471,18 +473,17 @@ namespace ScaleniaMW
 
                         }
 
-                        if (listBoxNoweDzialki.Items.Count == 1 || listBoxNoweDzialki.Items.Count == 0)
-                        {
+                      //  if (listBoxNoweDzialki.Items.Count == 1 || listBoxNoweDzialki.Items.Count == 0)
+                     //   {
                             Console.WriteLine("to teraz");
-                            listBoxNkr.SelectedIndex = 0;
-                        }
+                           
+                     //   }
 
                         Obliczenia.DopasujNrRejDoNowychDzialek(ref listaJednostekZSQL, listBoxNkr, listBoxNoweDzialki, listBoxNrRej);
-                        listBoxNrRej.SelectedIndex = 0;
-                        listBoxNoweDzialki.SelectedIndex = 0;
-
+                        listBoxNrRej.SelectedIndex = listBoxNrRej.SelectedIndex>=0 && listBoxNrRej.SelectedIndex<listBoxNrRej.Items.Count? listBoxNrRej.SelectedIndex:0;
+                        Console.WriteLine(listBoxNrRej.SelectedIndex + " SELECTED INDEX NRREJ " + listBoxNrRej.Items.Count);
+                        listBoxNoweDzialki.SelectedIndex = listBoxNoweDzialki.SelectedIndex >= 0 && listBoxNoweDzialki.SelectedIndex < listBoxNoweDzialki.Items.Count ? listBoxNoweDzialki.SelectedIndex : 0;
                     }
-
                 }
                 else
                 {
@@ -550,9 +551,59 @@ namespace ScaleniaMW
                             }
                         }
                     }
-
                     Console.WriteLine(licznikZPustym + " licznik wskazal: " + licznik);
                 }
+
+
+                if (sender.Equals("AutoPrzypiszKWPrzyblizony"))
+                {
+
+                    for (int i = listaKWdlaNowychDzialek[0].IdJednN; i <= listaKWdlaNowychDzialek[listaKWdlaNowychDzialek.Count - 1].IdJednN; i++)
+                    {
+                        List<DopasowanieKW> tmpListaKW = listaKWdlaNowychDzialek.FindAll(x => x.IdJednN.Equals(i));
+
+                        int nrNiePustego = 0;
+
+                        for (int j = 0; j < tmpListaKW.Count; j++)
+                        {
+                            if (!(tmpListaKW[j].KWprzed == "" || tmpListaKW[j].KWprzed == null))
+                            {
+                                nrNiePustego = j;
+                            }
+
+                        }
+
+                        if (tmpListaKW.Count != tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count)
+                        {
+                            if (tmpListaKW.Count == tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count + tmpListaKW.FindAll(x => x.KWprzed.Equals("")).Count)
+                            {
+                                foreach (var item in tmpListaKW)
+                                {
+                                    Console.WriteLine(item.NKRn + " | " + item.KWprzed + " | " + item.KWPoDopasowane);
+                                }
+                                Console.WriteLine(licznikZPustym++);
+                            }
+                        }
+
+                        // Console.WriteLine(tmpListaKW.Count + " " + tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count +" " + tmpListaKW.FindAll(x => x.KWprzed.Equals("")).Count + tmpListaKW.FindAll(x => x.KWprzed.Equals(null)).Count);
+
+                        if (tmpListaKW.Count == tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count + tmpListaKW.FindAll(x => x.KWprzed.Equals("")).Count)
+                        {
+                            foreach (var item in tmpListaKW)
+                            {
+                                if (item.KWPoDopasowane == null || item.KWPoDopasowane.Trim() == "")
+                                {
+                                   // item.KWPoDopasowane = item.KWprzed;
+                                    item.KWPoDopasowane = tmpListaKW[nrNiePustego].KWprzed;
+                                    licznik++;
+                                }
+                            }
+                        }
+                    }
+                    Console.WriteLine(licznikZPustym + " licznik wskazal: " + licznik);
+                }
+
+
 
                 if (listaKWdlaNowychDzialek.Exists(x => x.KWprzed.Equals("")))
                 {
@@ -572,7 +623,7 @@ namespace ScaleniaMW
                     ///////////////////
                     List<string> NowyNrDz = new List<string>();
                     // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 && listBoxNkr.SelectedIndex < listBoxNkr.Items.Count ? listBoxNkr.SelectedIndex : 0;
                     List<DopasowanieKW> tmpListNKRbezKWNRDZ = tmpListNKRbezJednRej.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
 
                     List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezKWNRDZ.GroupBy(a => new { a.NrDZ, a.IdDzN }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDzN, Nrdz = x.Key.NrDZ }).ToList();
@@ -651,6 +702,5 @@ namespace ScaleniaMW
             }
         }
     }
-
 }
 

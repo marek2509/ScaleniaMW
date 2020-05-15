@@ -16,12 +16,12 @@ namespace ScaleniaMW
         //private int _IdDz;
         //private int? _przypisanyNrRej;
 
-        public int IdJednN { get; set; }
-        public int IdJednS { get; set; }
-        public int NrJednEwopis { get; set; }
-        public int NowyNKR { get; set; }
-        public string NrDzialki { get; set; }
-        public int IdDz { get; set; }
+        public int IdJednN { get; private set; }
+        public int IdJednS { get; private set; }
+        public int NrJednEwopis { get; private set; }
+        public int NowyNKR { get; private set; }
+        public string NrDzialki { get; private set; }
+        public int IdDz { get; private set; }
         public int? PrzypisanyNrRej { get; set; }
 
         public DopasowanieJednostek(int idjednn, int idjedns, int nrjednewop, int nowynkr, string nrdz, int iddz, object njdrprzed)

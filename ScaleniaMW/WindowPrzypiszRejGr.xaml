@@ -64,23 +64,37 @@
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
+                        
                     </Grid.ColumnDefinitions>
 
+                    
                     <Label Grid.Column="0">NKR</Label>
                     <DockPanel Margin="0,20,0,0" Grid.Column="0">
-                        <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
+                        <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
                     </DockPanel>
+                        <DockPanel Grid.Column="0">
+                            <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
+                            <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNkr, Path=Items.Count}"></Label>
+                        </DockPanel>
 
-                    <Label Grid.Column="1">NR DZIAŁKI</Label>
+                        <Label Grid.Column="1">NR DZIAŁKI</Label>
                     <DockPanel  Margin="0,20,0,0" Grid.Column="1">
-                        <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
+                        <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
                     </DockPanel>
+                        <DockPanel Grid.Column="1">
+                            <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
+                            <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNowe, Path=Items.Count}"></Label>
+                        </DockPanel>
 
-                    <Label Grid.Column="2">NR JEDN. REJ.</Label>
+                        <Label Grid.Column="2">NR JEDN. REJ.</Label>
                     <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
-                        <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0" HorizontalAlignment="Left"/>
+                        <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left"/>
                     </DockPanel>
-                </Grid>
+                        <DockPanel Grid.Column="2">
+                            <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
+                            <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNrRej, Path=Items.Count}"></Label>
+                        </DockPanel>
+                    </Grid>
                 <StackPanel>
                     <Button Height="125" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" >
                         <StackPanel HorizontalAlignment="Center">
@@ -91,9 +105,11 @@
                         </StackPanel>
                     </Button>
                         <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="Green" FontWeight="Heavy">NJR</Label>
+                   
                     </StackPanel>
-                <DataGrid Margin="5,0" x:Name="dgNiedopJednostki"></DataGrid>
-            </DockPanel>
+                <DataGrid Margin="5,0" x:Name="dgNiedopJednostki" CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding"/>
+                
+                </DockPanel>
         </TabItem>
     </TabControl>
     <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Text="{Binding ElementName=textBlockLogInfo, Path=Text}" Margin="2"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>

@@ -30,12 +30,18 @@
                 <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo2"/>
             </MenuItem>
             <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
-                <MenuItem Header="Połącz i pobierz dane do przypisania jednostek(przed) w stanie po scalenu z bazy FDB" Click="ItemImportJednostkiSN_Click"/>
-                <MenuItem Header="Automatycznie przypisz jednostki" Click="MenuItem_AutoPrzypiszJednostki"/>
+                <MenuItem Header="Połącz i pobierz dane" Click="ItemImportJednostkiSN_Click"/>
+                <MenuItem Header="Automatycznie przypisz KW" >
+                    <MenuItem Header="Tryb dokładny" Click="MenuItem_AutoPrzypiszJednostkiDokladny"></MenuItem>
+                    <MenuItem Header="Tryb przybliżony" Click="MenuItem_AutoPrzypiszJednostkiPrzybliżony"></MenuItem>
+                </MenuItem>
                 <Separator></Separator>
-                <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
+                <MenuItem Header="Załaduj do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
                 <Separator></Separator>
-                <MenuItem Header="Usuń wszystkie przypisane jednostki z bazy" Click="ItemUsunPrzypisaneJednostkiZBazy" Foreground="IndianRed"/>
+                <MenuItem Header="Usuń wszystkie z bazy" Click="ItemUsunPrzypisaneJednostkiZBazy" Foreground="IndianRed"/>
+            </MenuItem>
+            <MenuItem Header="Pomoc">
+                <TextBlock x:Name="textBoxPomoc" Background="Transparent" Text=""></TextBlock>
             </MenuItem>
         </Menu>
 
@@ -104,8 +110,6 @@
             </StackPanel>
             <DataGrid Margin="5,0" x:Name="dgNrKwZSQL" CanUserDeleteRows="False" CellEditEnding="DgNrKwZSQL_CellEditEnding" CurrentCellChanged="DgNrKwZSQL_CurrentCellChanged"/>
         </DockPanel>
-
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Margin="2" ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
-
     </Grid>
 </Window>

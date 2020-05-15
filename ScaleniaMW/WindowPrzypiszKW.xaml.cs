@@ -30,6 +30,15 @@ namespace ScaleniaMW
             InitializeComponent();
             try
             {
+                textBoxPomoc.Text += "1. Ustawiena FDB > Ustaw ścieżkę -wybieramy ścieżkę FDB programu scalenia np. 'scalenia.fdb'\n" +
+                                     "2. Ustawienia FDB > Ustaw login i hasło -takie jak przy logowaniu w programie scalenia, domyślne(SYSDBA, masterkey).\n" +
+                                     "3. Baza.fdb > Połącz i pobierz dane -potrzebne do przypisania KW(przed) w stanie po scalenu z bazy 'scalenia.fdb'.\n" +
+                                     "4. Baza.fdb > Automatycznie przypisz KW -Automatycznie przypisz KW,\n" +
+                                     "\t\t\t\t       -Tryb dokładny -Przypisze jeśli księgi we wszystkich działkach były takie same.\n" +
+                                     "\t\t\t\t       -Tryb przybliżony -Przypisze jeśli była przynajmniej jedna działka z księgą a pozostałe działki były bez księgi.\n" +
+                                     "5. Baza.fdb > Przypisz zaznaczoną jednostkę -przycisk przypisuje wybraną jednostkę z listy 'KW' \n" +
+                                     "6. Baza.fdb > Załaduj do bazy FDB -przypisane KW zostaną wprowadzone do pliku 'scalenia.fdb'\n" +
+                                     "7. Baza.fdb > Usuń wszystkie z bazy -usunie wszystkie przypisane KW znajdujące się w pliku'scalenia.fdb'";
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 windowPrzypiszKW.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -255,7 +264,6 @@ namespace ScaleniaMW
             if (czyPolaczonoZBaza)
             {
                 Console.WriteLine(" super ");
-                Console.WriteLine(sender.GetHashCode());
                 Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "PrzypiszZaznJedn");
 
                 listBoxNkr.Items.Refresh();
@@ -364,13 +372,13 @@ namespace ScaleniaMW
                                 //    progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
                                 //    continue;
                                 //}
-                                if (BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane)|| listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "" )
+                                if (BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane) || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "")
                                 {
-                                    if(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "")
+                                    if (listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "")
                                     {
                                         Console.WriteLine("puste badziewie");
-                                         writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
-                                         writeCommand.Parameters.Add("@KW", null);
+                                        writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
+                                        writeCommand.Parameters.Add("@KW", null);
                                     }
                                     else
                                     {
@@ -406,7 +414,8 @@ namespace ScaleniaMW
             }
         }
 
-        private void MenuItem_AutoPrzypiszJednostki(object sender, RoutedEventArgs e)
+
+        private void MenuItem_AutoPrzypiszJednostkiDokladny(object sender, RoutedEventArgs e)
         {
             if (czyPolaczonoZBaza)
             {
@@ -421,6 +430,24 @@ namespace ScaleniaMW
                 MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
             }
         }
+
+        private void MenuItem_AutoPrzypiszJednostkiPrzybliżony(object sender, RoutedEventArgs e)
+        {
+            if (czyPolaczonoZBaza)
+            {
+                Console.WriteLine(sender.GetHashCode());
+                Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "AutoPrzypiszKWPrzyblizony");
+                Console.WriteLine(listaDopasowKW.Count);
+
+                dgNrKwZSQL.Items.Refresh();
+            }
+            else
+            {
+                MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
+            }
+        }
+
+
         private void UpdateProgress()
         {
             progresBar.Value += 1;
@@ -505,37 +532,48 @@ namespace ScaleniaMW
             windowPrzypiszKW.Topmost = false;
         }
 
+        bool czybylaZmiana = false;
         private void DgNrKwZSQL_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-
+          
             //  Console.WriteLine(((TextBox)e.EditingElement).Text + " @ " + e.EditAction + " @ " +e.Column.DisplayIndex +" displIdx @ local enum " + e.Row.GetLocalValueEnumerator().Current);
-            foreach (var item in listaDopasowKW)
+            if (e.EditAction.Equals(DataGridEditAction.Commit))
             {
-                if (item.IdDzN.Equals(listaDopasowKW[e.Row.GetIndex()].IdDzN) && e.Column.DisplayIndex == 3)
+                czybylaZmiana = e.EditAction.Equals(DataGridEditAction.Commit);
+               
+                foreach (var item in listaDopasowKW)
                 {
-                    Console.WriteLine("przed: " + item.KWPoDopasowane + " " + item.IdDzN + " " + item.NKRn);
-                    item.KWPoDopasowane = ((TextBox)e.EditingElement).Text;
-                    textBlockLogInfo.Text = "";
-                    Console.WriteLine("po: " + item.KWPoDopasowane + " " + item.IdDzN + " " + item.NKRn);
+                    if (item.IdDzN.Equals(listaDopasowKW[e.Row.GetIndex()].IdDzN) && e.Column.DisplayIndex == 3)
+                    {
+                        item.KWPoDopasowane = ((TextBox)e.EditingElement).Text;
+                        textBlockLogInfo.Text = "";
+                    }
                 }
+
+                Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
+                Console.WriteLine("edit action: " + e.EditAction + " " + e.Cancel);
             }
-            Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
         }
 
         private void DgNrKwZSQL_CurrentCellChanged(object sender, EventArgs e)
         {
-            try
-            {
-                listBoxNkr.Items.Refresh();
-                listBoxDzialkiNowe.Items.Refresh();
-                listBoxNrKW.Items.Refresh();
-                dgNrKwZSQL.Items.Refresh();
-            }
-            catch
-            {
-                textBlockLogInfo.Text = "Nie udało się odświeiżyć tabeli.";
-            }
 
+            if (czybylaZmiana)
+            {
+                czybylaZmiana = false;
+                Console.WriteLine("hajfajf");
+                try
+                {
+                    listBoxNkr.Items.Refresh();
+                    listBoxDzialkiNowe.Items.Refresh();
+                    listBoxNrKW.Items.Refresh();
+                    dgNrKwZSQL.Items.Refresh();
+                }
+                catch
+                {
+                    textBlockLogInfo.Text = "Nie udało się odświeżyć tabeli.";
+                }
+            }
         }
     }
 }
