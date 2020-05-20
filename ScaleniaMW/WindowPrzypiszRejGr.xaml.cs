@@ -381,16 +381,38 @@ namespace ScaleniaMW
         private void UstawLoginIHaslo2(object sender, RoutedEventArgs e)
         {
             textBoxLogin.Text = Properties.Settings.Default.Login;
+            passwordBoxLogowanie.Password = Properties.Settings.Default.Haslo;
             panelLogowania2.Visibility = Visibility.Visible;
             tabControl2.Visibility = Visibility.Hidden;
         }
 
         private void ButtonZapiszLogIHaslo2(object sender, RoutedEventArgs e)
         {
+            if (Properties.Settings.Default.Haslo != passwordBoxLogowanie.Password)
+            {
+
+                czyPolaczonoZBaza = false;
+                itemImportJednostkiSN.Background = Brushes.Transparent;
+                itemImportJednostkiSN.Header = "Baza.fdb";
+
+                listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
+                listaDopasowJednos = new List<DopasowanieJednostek>();
+
+                dgNiedopJednostki.ItemsSource = null;
+                listBoxDzialkiNowe.ItemsSource = null;
+                listBoxNkr.ItemsSource = null;
+                listBoxNrRej.ItemsSource = null;
+
+                listBoxDzialkiNowe.Items.Refresh();
+                listBoxNkr.Items.Refresh();
+                listBoxNrRej.Items.Refresh();
+                dgNiedopJednostki.Items.Refresh();
+            }
+
             Properties.Settings.Default.Login = textBoxLogin.Text;
-            Properties.Settings.Default.Haslo = textBoxHaslo.Text;
+            Properties.Settings.Default.Haslo = passwordBoxLogowanie.Password;
             Properties.Settings.Default.Save();
-            textBoxHaslo.Text = "";
+          //  textBoxHaslo.Text = "";
             panelLogowania2.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
             tabControl2.Visibility = Visibility.Visible;

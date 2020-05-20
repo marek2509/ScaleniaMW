@@ -83,18 +83,16 @@ namespace ScaleniaMW
                 try
                 {
                     ustawProperties(dlg.FileName);
+
                     czyPolaczonoZBaza = false;
                     itemImportJednostkiSN.Background = Brushes.Transparent;
                     itemImportJednostkiSN.Header = "Baza.fdb";
-
                     listaDopasowKW_CzyLadowac = new List<DopasowanieKW>();
                     listaDopasowKW = new List<DopasowanieKW>();
-
                     dgNrKwZSQL.ItemsSource = null;
                     listBoxDzialkiNowe.ItemsSource = null;
                     listBoxNkr.ItemsSource = null;
                     listBoxNrKW.ItemsSource = null;
-
                     listBoxDzialkiNowe.Items.Refresh();
                     listBoxNkr.Items.Refresh();
                     listBoxNrKW.Items.Refresh();
@@ -458,20 +456,42 @@ namespace ScaleniaMW
 
         private void UstawLoginIHaslo2(object sender, RoutedEventArgs e)
         {
+
+            textBoxHaslo.Password = Properties.Settings.Default.Haslo;
             textBoxLogin.Text = Properties.Settings.Default.Login;
             panelLogowania2.Visibility = Visibility.Visible;
             tabControl2.Visibility = Visibility.Hidden;
+
         }
 
         private void ButtonZapiszLogIHaslo2(object sender, RoutedEventArgs e)
         {
+
+            if (Properties.Settings.Default.Haslo != textBoxHaslo.Password)
+            {
+
+            czyPolaczonoZBaza = false;
+            itemImportJednostkiSN.Background = Brushes.Transparent;
+            itemImportJednostkiSN.Header = "Baza.fdb";
+            listaDopasowKW_CzyLadowac = new List<DopasowanieKW>();
+            listaDopasowKW = new List<DopasowanieKW>();
+            dgNrKwZSQL.ItemsSource = null;
+            listBoxDzialkiNowe.ItemsSource = null;
+            listBoxNkr.ItemsSource = null;
+            listBoxNrKW.ItemsSource = null;
+            listBoxDzialkiNowe.Items.Refresh();
+            listBoxNkr.Items.Refresh();
+            listBoxNrKW.Items.Refresh();
+            dgNrKwZSQL.Items.Refresh();
+            }
+
             Properties.Settings.Default.Login = textBoxLogin.Text;
-            Properties.Settings.Default.Haslo = textBoxHaslo.Text;
+            Properties.Settings.Default.Haslo = textBoxHaslo.Password;
             Properties.Settings.Default.Save();
-            textBoxHaslo.Text = "";
+            tabControl2.Visibility = Visibility.Visible;
             panelLogowania2.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
-            tabControl2.Visibility = Visibility.Visible;
+
         }
 
         private void Button_Anuluj2(object sender, RoutedEventArgs e)

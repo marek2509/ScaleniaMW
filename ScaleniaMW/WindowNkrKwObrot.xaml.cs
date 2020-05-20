@@ -405,7 +405,7 @@ namespace ScaleniaMW
         private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
         {
             textBoxLogin.Text = Properties.Settings.Default.Login;
-
+            textBoxHaslo.Password = Properties.Settings.Default.Haslo;
             panelLogowania.Visibility = Visibility.Visible;
             tabControl.Visibility = Visibility.Hidden;
         }
@@ -413,13 +413,11 @@ namespace ScaleniaMW
         private void ButtonZapiszLogIHaslo(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Login = textBoxLogin.Text;
-            Properties.Settings.Default.Haslo = textBoxHaslo.Text;
+            Properties.Settings.Default.Haslo = textBoxHaslo.Password;
             Properties.Settings.Default.Save();
-            textBoxHaslo.Text = "";
             panelLogowania.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
             tabControl.Visibility = Visibility.Visible;
-
         }
 
         private void Button_Anuluj(object sender, RoutedEventArgs e)

@@ -46,7 +46,8 @@
         <Label>Login:</Label>
         <TextBox  Text="{Binding ElementName=textBoxLogin, Path=Text}" x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
         <Label>Hasło:</Label>
-        <TextBox Text="{Binding ElementName=textBoxHaslo, Path=Text}" x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
+        <!--<TextBox Text="{Binding ElementName=textBoxHaslo, Path=Text}" x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>-->
+            <PasswordBox x:Name="passwordBoxLogowanie" Margin="10,0" Width="125" HorizontalAlignment="Left"> </PasswordBox>
 
         <WrapPanel>
             <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo2">Zapisz</Button>

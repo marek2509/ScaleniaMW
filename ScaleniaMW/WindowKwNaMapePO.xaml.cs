@@ -475,7 +475,7 @@ namespace ScaleniaMW
                 itemPolaczZBaza.Background = Brushes.LightSeaGreen;
                 StringBuilder stringBuilder = new StringBuilder();
                 textBlockLogInfo.Text = "Połączono z bazą FDB. Ilość wczytanych linii: " + dt.Rows.Count + ".";
-                itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
+               // itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
                 foreach (var item in listaDzNkrzSQL)
                 {
                     if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka).Equals(""))
@@ -533,7 +533,7 @@ namespace ScaleniaMW
         private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
         {
             textBoxLogin.Text = Properties.Settings.Default.Login;
-
+            textBoxHaslo.Password = Properties.Settings.Default.Haslo;
             panelLogowania.Visibility = Visibility.Visible;
             dgDzialkiEdz.Visibility = Visibility.Hidden;
             tekstyTytuly.Visibility = Visibility.Hidden;
@@ -543,9 +543,8 @@ namespace ScaleniaMW
         private void ButtonZapiszLogIHaslo(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Login = textBoxLogin.Text;
-            Properties.Settings.Default.Haslo = textBoxHaslo.Text;
+            Properties.Settings.Default.Haslo = textBoxHaslo.Password;
             Properties.Settings.Default.Save();
-            textBoxHaslo.Text = "";
             panelLogowania.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
             dgDzialkiEdz.Visibility = Visibility.Visible;

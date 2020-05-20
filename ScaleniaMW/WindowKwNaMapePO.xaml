@@ -40,10 +40,9 @@
                     <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Połączenie z bazą">
-                    <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą i pobierz przypisane" Click="PolaczZBaza" ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb"></MenuItem>
-                    <MenuItem x:Name="itemPolaczZBazaProponowaneKW"  Click="PolaczZBazaProponowanych" Header="Połącz z bazą i pobierz proponowane KW"  ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb ze stanu przed dla nowych działek"></MenuItem>
+                    <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą i pobierz przypisany nr KW" Click="PolaczZBaza" ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb"></MenuItem>
+                    <MenuItem x:Name="itemPolaczZBazaProponowaneKW"  Click="PolaczZBazaProponowanych" Header="Połącz z bazą i pobierz proponowany nr KW"  ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb ze stanu przed dla nowych działek"></MenuItem>
                 </MenuItem>
-
             </Menu>
 
             <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Panel.ZIndex="100" x:Name="panelOpcje" Visibility="Hidden" Background="White">
@@ -68,7 +67,7 @@
                 <Label>Login:</Label>
                 <TextBox x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
                 <Label>Hasło:</Label>
-                <TextBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
+                <PasswordBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
                 <WrapPanel>
                     <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo">Zapisz</Button>
                     <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj">Anuluj</Button>
