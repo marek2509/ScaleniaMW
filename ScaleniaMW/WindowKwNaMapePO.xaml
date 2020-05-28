@@ -41,7 +41,8 @@
                 </MenuItem>
                 <MenuItem Header="Połączenie z bazą">
                     <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą i pobierz przypisany nr KW" Click="PolaczZBaza" ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb"></MenuItem>
-                    <MenuItem x:Name="itemPolaczZBazaProponowaneKW"  Click="PolaczZBazaProponowanych" Header="Połącz z bazą i pobierz proponowany nr KW"  ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb ze stanu przed dla nowych działek"></MenuItem>
+                    <MenuItem x:Name="itemPolaczZBazaProponowaneKW"  Click="PolaczZBazaProponowanych" Header="Połącz z bazą i pobierz proponowany nr KW"  
+                              ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb ze stanu przed dla nowych działek"></MenuItem>
                 </MenuItem>
             </Menu>
 

@@ -518,16 +518,13 @@ namespace ScaleniaMW
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
                 textBlockBledy.Text = stringBuilder.ToString();
-
             }
             catch (Exception ex)
             {
                 itemPolaczZBaza.Background = Brushes.Red;
                 itemPolaczZBaza.Header = "Połącz z bazą";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
-
             }
-
         }
 
         private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
@@ -550,7 +547,6 @@ namespace ScaleniaMW
             dgDzialkiEdz.Visibility = Visibility.Visible;
             tekstyTytuly.Visibility = Visibility.Visible;
             dgNkrFDB.Visibility = Visibility.Visible;
-
         }
 
         private void Button_Anuluj(object sender, RoutedEventArgs e)
@@ -580,7 +576,6 @@ namespace ScaleniaMW
             Properties.Settings.Default.checkBoxBrakKW = (bool)checkWypiszBrakKW.IsChecked;
             Properties.Settings.Default.Save();
             panelOpcje.Visibility = Visibility.Hidden;
-
         }
 
         private void MenuItem_Opcje(object sender, RoutedEventArgs e)
