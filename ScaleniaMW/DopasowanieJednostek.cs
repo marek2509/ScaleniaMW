@@ -36,6 +36,9 @@ namespace ScaleniaMW
             if (njdrprzed.Equals(System.DBNull.Value))
             {
                 PrzypisanyNrRej = null;
+            }else if (njdrprzed.Equals(0))
+            {
+                PrzypisanyNrRej = null;
             }
             else
             {

@@ -56,7 +56,7 @@ namespace ScaleniaMW
         {
             foreach (var item in dopasowanieKWs)
             {
-                if (dkw.IdDZ == item.IdDZ && dkw.NKR == item.NKR && dkw.Nrdz == item.Nrdz && dkw.ProponowKW == item.ProponowKW)
+                if (dkw.NrdzObr == item.NrdzObr && dkw.NKR == item.NKR && dkw.NrdzObr == item.NrdzObr && dkw.ProponowKW == item.ProponowKW)
                 {
                     return true;
                 }
@@ -82,7 +82,7 @@ namespace ScaleniaMW
                 command.Transaction = transaction;
                 // działające zapytanie na nrobr-nrdz NKR 
                 //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                command.CommandText = "select ob.id ||'-'|| dn.idd nr_Dz, dn.id_id, jn.ijr, case when dn.kw is null then ds.kw end as OK " +
+                command.CommandText = "select ob.id ||'-'|| dn.idd nr_Dz, dn.id_id, jn.ijr, case when dn.kw is null then ds.kw when dn.kw = '' then ds.kw  end as OK " +
                             "from dzialki_N dn join JEDN_REJ_N jn on jn.ID_ID = dn.rjdr join JEDN_SN sn on sn.ID_jednn = dn.rjdr join dzialka ds on ds.rjdr = sn.id_jedns " +
                             "left outer join OBREBY ob on ob.id_id = dn.idobr";
                 FbDataAdapter adapter = new FbDataAdapter(command);
@@ -99,9 +99,9 @@ namespace ScaleniaMW
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (!czyJestTakiWierszW2(listDzNkrKWzSQLProponows, new DzNkrKWzSQLProponow { Nrdz = dt.Rows[i][0].ToString(), IdDZ = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() }))
+                    if (!czyJestTakiWierszW2(listDzNkrKWzSQLProponows, new DzNkrKWzSQLProponow { NrdzObr = dt.Rows[i][0].ToString(), IdDz = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() }))
                     {
-                        listDzNkrKWzSQLProponows.Add(new DzNkrKWzSQLProponow { Nrdz = dt.Rows[i][0].ToString(), IdDZ = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() });
+                        listDzNkrKWzSQLProponows.Add(new DzNkrKWzSQLProponow { NrdzObr = dt.Rows[i][0].ToString(), IdDz = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() });
 
                     }
 
@@ -486,7 +486,8 @@ namespace ScaleniaMW
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
                 textBlockBledy.Text = stringBuilder.ToString();
-
+               
+                itemPolaczZBazaProponowaneKW.Background = Brushes.Transparent;
             }
             catch (Exception ex)
             {
@@ -508,16 +509,17 @@ namespace ScaleniaMW
                 StringBuilder stringBuilder = new StringBuilder();
                 textBlockLogInfo.Text = "Połączono z bazą FDB.";
                 itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
-                foreach (var item in listaDzNkrzSQL)
+                foreach (var item in listDzNkrKWzSQLProponows)
                 {
-                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka).Equals(""))
+                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.ProponowKW, item.NrdzObr).Equals(""))
                     {
-                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka));
+                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.ProponowKW, item.ProponowKW));
                         logBledowKW.Visibility = Visibility.Visible;
                     }
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
                 textBlockBledy.Text = stringBuilder.ToString();
+                itemPolaczZBaza.Background = Brushes.Transparent;
             }
             catch (Exception ex)
             {

@@ -215,9 +215,9 @@ namespace ScaleniaMW
                 foreach (var item in punkt)
                 {
 
-                    if (dzialkaNkrZSQL.Exists(x => x.Nrdz.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
+                    if (dzialkaNkrZSQL.Exists(x => x.NrdzObr.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
                     {
-                        nkrZSQL = dzialkaNkrZSQL.FindAll(x => x.Nrdz.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
+                        nkrZSQL = dzialkaNkrZSQL.FindAll(x => x.NrdzObr.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
                         foreach (var item2 in nkrZSQL)
                         {
 
@@ -284,9 +284,9 @@ namespace ScaleniaMW
                 foreach (var item in punkt)
                 {
 
-                    if (dzialkaNkrZSQL.Exists(x => x.Nrdz.Trim().Equals(item.Nr_Dz.Trim())))
+                    if (dzialkaNkrZSQL.Exists(x => x.NrdzObr.Trim().Equals(item.Nr_Dz.Trim())))
                     {
-                        nkrZSQL = dzialkaNkrZSQL.FindAll(x => x.Nrdz.Trim().Equals(item.Nr_Dz.Trim()));
+                        nkrZSQL = dzialkaNkrZSQL.FindAll(x => x.NrdzObr.Trim().Equals(item.Nr_Dz.Trim()));
                         foreach (var item3 in nkrZSQL)
                         {
                             ileDopasowano++;
@@ -605,17 +605,13 @@ namespace ScaleniaMW
 
 
 
-                if (listaKWdlaNowychDzialek.Exists(x => x.KWprzed.Equals("")))
+                if (listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane.Equals("") || x.KWPoDopasowane == null))
                 {
 
                     List<int> NowyNkr = new List<int>();
                     List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == "" || x.KWPoDopasowane == null);
                     // Console.WriteLine(listaKWdlaNowychDzialek.FindAll(x => x.KWprzed.Equals("")).Count + "count 11 ");
                     List<IDiNKR> lisIDnkr_NKR = tmpListNKRbezJednRej.GroupBy(x => new { x.NKRn, x.IdJednN }).Select(x => new IDiNKR { IdJednN = x.Key.IdJednN, NKR = x.Key.NKRn }).ToList();
-                    //foreach (var item in lisIDnkr_NKR)
-                    //{ 
-                    //    NowyNkr.Add(item.NKR);
-                    //}
 
                     NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
                     listBoxNkr.ItemsSource = NowyNkr;

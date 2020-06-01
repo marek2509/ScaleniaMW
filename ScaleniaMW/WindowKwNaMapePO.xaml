@@ -78,19 +78,18 @@
                 <DataGrid  Grid.Row="2" Grid.Column="0" ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
                 CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgDzialkiEdz"   VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2"/>
             <Grid Grid.Row="2"  Grid.Column="1">
-            <StackPanel x:Name="tekstyTytuly"   >
+            <StackPanel x:Name="tekstyTytuly"  >
                 <Label FontFamily="TIMES NEW ROMAN" FontWeight="Bold" FontSize="55" Foreground="SaddleBrown" HorizontalAlignment="Center">KW</Label>
                 <Label FontFamily="TIMES NEW ROMAN" FontWeight="Black" FontSize="55" Foreground="SaddleBrown" HorizontalAlignment="Center">NA</Label>
-                <Label FontFamily="TIMES NEW ROMAN" FontWeight="Bold" FontSize="55" Foreground="SaddleBrown" HorizontalAlignment="Center">MAPĘ</Label>
-
-            </StackPanel>
+                    <Label FontFamily="TIMES NEW ROMAN" FontWeight="Bold" FontSize="55" Foreground="SaddleBrown" HorizontalAlignment="Center">MAPĘ</Label>
+                </StackPanel>
                 <TextBlock x:Name="logBledowKW" Height="150" VerticalAlignment="Bottom"></TextBlock>
             </Grid>
             <DataGrid  Grid.Row="2"  Grid.Column="2" HorizontalAlignment="Stretch"  ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
                 CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3"/>
 
 
-                <TextBox x:Name="textBlockBledy" Visibility="Hidden" ></TextBox>
+            <TextBox x:Name="textBlockBledy" Visibility="Hidden" ></TextBox>
 
        
             <TextBlock Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>

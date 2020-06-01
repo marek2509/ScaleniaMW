@@ -8,8 +8,8 @@ namespace ScaleniaMW
 {
     public class DzNkrKWzSQLProponow
     {
-        public string Nrdz { get; set; }
-        public int IdDZ { get; set; }
+        public string NrdzObr { get; set; }
+       public int IdDz { private get; set; }
         public int NKR { get; set; }
         public string ProponowKW { get; set; }
     }
