@@ -502,7 +502,6 @@ namespace ScaleniaMW
         {
             if (listaKWdlaNowychDzialek.Count > 0)
             {
-
                 int licznik = 0;
                 int licznikZPustym = 0;
                 if (sender.Equals("AutoPrzypiszKW"))
@@ -557,7 +556,6 @@ namespace ScaleniaMW
 
                 if (sender.Equals("AutoPrzypiszKWPrzyblizony"))
                 {
-
                     for (int i = listaKWdlaNowychDzialek[0].IdJednN; i <= listaKWdlaNowychDzialek[listaKWdlaNowychDzialek.Count - 1].IdJednN; i++)
                     {
                         List<DopasowanieKW> tmpListaKW = listaKWdlaNowychDzialek.FindAll(x => x.IdJednN.Equals(i));
@@ -603,11 +601,21 @@ namespace ScaleniaMW
                     Console.WriteLine(licznikZPustym + " licznik wskazal: " + licznik);
                 }
 
+                Console.WriteLine("tntntntnt");
+                Console.WriteLine(listaKWdlaNowychDzialek.Count);
+                Console.WriteLine(listaKWdlaNowychDzialek.Count + " " + listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane==""));
+                Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane==null));
 
 
-                if (listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane.Equals("") || x.KWPoDopasowane == null))
+                Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane==""));
+                Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == null ));
+
+                Console.WriteLine("tntntntnt end");
+
+                if (listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane=="" || x.KWPoDopasowane == null))
                 {
 
+                    Console.WriteLine("x=<1");
                     List<int> NowyNkr = new List<int>();
                     List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == "" || x.KWPoDopasowane == null);
                     // Console.WriteLine(listaKWdlaNowychDzialek.FindAll(x => x.KWprzed.Equals("")).Count + "count 11 ");
@@ -615,7 +623,7 @@ namespace ScaleniaMW
 
                     NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
                     listBoxNkr.ItemsSource = NowyNkr;
-                    //  Console.WriteLine(NowyNkr.Count +  "NKR");
+                     Console.WriteLine(NowyNkr.Count +  "NKR");
                     ///////////////////
                     List<string> NowyNrDz = new List<string>();
                     // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
@@ -684,7 +692,7 @@ namespace ScaleniaMW
                         listBoxNoweDzialki.SelectedIndex = 0;
 
                     }
-
+             
                 }
                 else
                 {

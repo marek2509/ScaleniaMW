@@ -158,7 +158,7 @@ namespace ScaleniaMW
                             dgNrKwZSQL.Items.Refresh();
                         }
                     }
-
+                  //  Console.WriteLine("connection.Open();");
                     connection.Open();
 
                     FbCommand command = new FbCommand();
@@ -223,9 +223,9 @@ namespace ScaleniaMW
                     {
                         textBlockLogInfo.Text = "Brak danych";
                     }
-
+                    Console.WriteLine("x1q");
                     Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
-
+                    Console.WriteLine("x2q");
                     connection.Close();
                     itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
                     itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
