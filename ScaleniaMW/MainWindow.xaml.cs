@@ -29,7 +29,10 @@ namespace ScaleniaMW
 
     public partial class MainWindow : Window
     {
-
+        static Button btNKR_KW;
+        static Button btNowychDzialek;
+        static Button btRejGR;
+        static Button btStanPo;
 
 
         public MainWindow()
@@ -41,6 +44,10 @@ namespace ScaleniaMW
 
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 windowScaleniaMW.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                btNKR_KW = buttonRodzajPracyNKR_KW;
+                btNowychDzialek = buttonPrzypiszKwDlaNowychDzialek;
+                btRejGR = buttonRodzajPracyPrzypisanieRejGr;
+                btStanPo = buttonRodzPracyKWnaMapeStanPO;
             }
             catch (Exception e)
             {
@@ -819,53 +826,149 @@ namespace ScaleniaMW
             windowScaleniaMW.Close();
         }
 
-        private void ButtonRodzajPracyNKR_KW_MouseEnter(object sender, MouseEventArgs e)
+        private void ButtonRodzajPracyPrzypisanieRejGr_MouseLeave(object sender, MouseEventArgs e)
         {
-            label1RodzajPracyNKR_KW.Foreground = Brushes.Black;
-            label2RodzajPracyNKR_KW.Foreground = Brushes.Black;
+            imgNrJRprzypisz.Visibility = Visibility.Hidden;
+            label1RodzajPracyPrzypisanieRejGr.Foreground = Brushes.White;
+            for (int i = 0; i < 25; i++)
+            {
+                btRejGR.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonRodzajPracyPrzypisanieRejGr), DispatcherPriority.Background);
+            }
         }
 
         private void ButtonRodzajPracyNKR_KW_MouseLeave(object sender, MouseEventArgs e)
         {
+            imgNKR.Visibility = Visibility.Hidden;
             label1RodzajPracyNKR_KW.Foreground = Brushes.White;
-            label2RodzajPracyNKR_KW.Foreground = Brushes.White;
-        }
-
-        private void ButtonPrzypiszKwDlaNowychDzialek_MouseEnter(object sender, MouseEventArgs e)
-        {
-            label1PrzypiszKwDlaNowychDzialek.Foreground = Brushes.Black;
-            label2PrzypiszKwDlaNowychDzialek.Foreground = Brushes.Black;
+            for (int i = 0; i < 25; i++)
+            {
+                btNKR_KW.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonRodzajPracyNKR_KW), DispatcherPriority.Background);
+            }
         }
 
         private void ButtonPrzypiszKwDlaNowychDzialek_MouseLeave(object sender, MouseEventArgs e)
         {
+            imgKWprzypisz.Visibility = Visibility.Hidden;
             label1PrzypiszKwDlaNowychDzialek.Foreground = Brushes.White;
-            label2PrzypiszKwDlaNowychDzialek.Foreground = Brushes.White;
-        }
-
-        private void ButtonRodzajPracyPrzypisanieRejGr_MouseEnter(object sender, MouseEventArgs e)
-        {
-            label1RodzajPracyPrzypisanieRejGr.Foreground = Brushes.Black;
-            label2RodzajPracyPrzypisanieRejGr.Foreground = Brushes.Black;
-        }
-
-        private void ButtonRodzajPracyPrzypisanieRejGr_MouseLeave(object sender, MouseEventArgs e)
-        {
-            label1RodzajPracyPrzypisanieRejGr.Foreground = Brushes.White;
-            label2RodzajPracyPrzypisanieRejGr.Foreground = Brushes.White;
-        }
-
-        private void ButtonRodzPracyKWnaMapeStanPO_MouseEnter(object sender, MouseEventArgs e)
-        {
-            label1RodzPracyKWnaMapeStanPO.Foreground = Brushes.Black;
-            label2RodzPracyKWnaMapeStanPO.Foreground = Brushes.Black;
+            for (int i = 0; i < 25; i++)
+            {
+                btNowychDzialek.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonPrzypiszKwDlaNowychDzialek), DispatcherPriority.Background);
+            }
         }
 
         private void ButtonRodzPracyKWnaMapeStanPO_MouseLeave(object sender, MouseEventArgs e)
         {
+            imgKWpNaMape.Visibility = Visibility.Hidden;
             label1RodzPracyKWnaMapeStanPO.Foreground = Brushes.White;
-            label2RodzPracyKWnaMapeStanPO.Foreground = Brushes.White;
+            for (int i = 0; i < 25; i++)
+            {
+                btStanPo.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonRodzPracyKWnaMapeStanPO), DispatcherPriority.Background);
+            }
         }
+
+        private void ButtonRodzPracyKWnaMapeStanPO_MouseEnter(object sender, MouseEventArgs e)
+        {
+            imgKWpNaMape.Visibility = Visibility.Visible;
+            label1RodzPracyKWnaMapeStanPO.Foreground = Brushes.Black;
+            for (int i = 0; i < 25; i++)
+            {
+                btStanPo.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonRodzPracyKWnaMapeStanPO), DispatcherPriority.Background);
+            }
+        }
+
+        private void ButtonPrzypiszKwDlaNowychDzialek_MouseEnter(object sender, MouseEventArgs e)
+        {
+            imgKWprzypisz.Visibility = Visibility.Visible;
+            label1PrzypiszKwDlaNowychDzialek.Foreground = Brushes.Black;
+            for (int i = 0; i < 25; i++)
+            {
+                btNowychDzialek.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonPrzypiszKwDlaNowychDzialek), DispatcherPriority.Background);
+            }
+        }
+
+        private void ButtonRodzajPracyPrzypisanieRejGr_MouseEnter(object sender, MouseEventArgs e)
+        {
+            imgNrJRprzypisz.Visibility = Visibility.Visible;
+            label1RodzajPracyPrzypisanieRejGr.Foreground = Brushes.Black;
+            for (int i = 0; i < 25; i++)
+            {
+                btRejGR.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonRodzajPracyPrzypisanieRejGr), DispatcherPriority.Background);
+            }
+        }
+
+
+        private void ButtonRodzajPracyNKR_KW_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+            imgNKR.Visibility = Visibility.Visible;
+            label1RodzajPracyNKR_KW.Foreground = Brushes.Black;
+            for (int i = 0; i < 25; i++)
+            {
+                btNKR_KW.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonRodzajPracyNKR_KW), DispatcherPriority.Background);
+            }
+
+        }
+
+
+        private void UpdateProgressbuttonRodzajPracyNKR_KW()
+        {
+            btNKR_KW.Width += 0.4;
+            if (btNKR_KW.ActualWidth > 275)
+                btNKR_KW.Width = 250;
+
+        }
+        private void UpdateRegresbuttonRodzajPracyNKR_KW()
+        {
+            btNKR_KW.Width -= 0.4;
+            if (btNKR_KW.ActualWidth < 250)
+                btNKR_KW.Width = 250;
+        }
+        /// <summary>
+        /// ///////////////////////////////
+        /// </summary>
+        private void UpdateProgressbuttonRodzajPracyPrzypisanieRejGr()
+        {
+            btRejGR.Width += 0.4;
+            if (btRejGR.ActualWidth > 275)
+                btRejGR.Width = 250;
+        }
+        private void UpdateRegresbuttonRodzajPracyPrzypisanieRejGr()
+        {
+            btRejGR.Width -= 0.4;
+            if (btRejGR.ActualWidth < 250)
+                btRejGR.Width = 250;
+        }
+        /// <summary>
+        /// //////////////////////////
+        /// </summary>
+        private void UpdateProgressbuttonPrzypiszKwDlaNowychDzialek()
+        {
+            btNowychDzialek.Width += 0.4;
+            if (btNowychDzialek.ActualWidth > 275)
+                btNowychDzialek.Width = 250;
+        }
+        private void UpdateRegresbuttonPrzypiszKwDlaNowychDzialek()
+        {
+            btNowychDzialek.Width -= 0.4;
+            if (btNowychDzialek.ActualWidth < 250)
+                btNowychDzialek.Width = 250;
+        }
+        /// <summary>
+        /// //////////////////////
+        /// </summary>
+        private void UpdateProgressbuttonRodzPracyKWnaMapeStanPO()
+        {
+            btStanPo.Width += 0.4;
+            if (btStanPo.ActualWidth > 275)
+                btStanPo.Width = 250;
+        }
+        private void UpdateRegresbuttonRodzPracyKWnaMapeStanPO()
+        {
+            btStanPo.Width -= 0.4;
+            if (btStanPo.ActualWidth < 250)
+                btStanPo.Width = 250;
+        }
+        private delegate void ProgressBarDelegate();
 
 
 
