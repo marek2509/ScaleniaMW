@@ -20,28 +20,28 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Margin="10,0" x:Name="textBlockSciezka" Grid.ColumnSpan="3"></TextBlock>
-            <Menu Grid.Row="1" Grid.ColumnSpan="3">
+            <Menu x:Name="menuStanPo" Grid.Row="1" Grid.ColumnSpan="3" Background="#244677" Foreground="White">
                 <MenuItem Header="Plik" >
-                    <MenuItem Header="_Otwórz Działki.edz" Click="otworzEDZ"></MenuItem>
+                    <MenuItem    Foreground="Black"  Header="_Otwórz Działki.edz" Click="otworzEDZ"></MenuItem>
 
-                    <MenuItem x:Name="obrKW" Header="_Generuj plik z obróconym nr KW" Click="ZapiszDoPliku"/>
-                    <MenuItem Header="_Generuj plik z obróconym nr KW (proponowanym)" Click="ZapiszDoPlikuProponow"/>
+                    <MenuItem  Foreground="Black"  x:Name="obrKW" Header="_Generuj plik z obróconym nr KW" Click="ZapiszDoPliku"/>
+                    <!--<MenuItem  Foreground="Black"  Header="_Generuj plik z obróconym nr KW (proponowanym)" Click="ZapiszDoPlikuProponow"/>-->
                     <Separator></Separator>
-                    <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"/>
+                    <MenuItem  Foreground="Black"  Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"/>
                     <Separator></Separator>
-                    <MenuItem Header="Zamknij" Click="zamknijProgram_Click"/>
+                    <MenuItem  Foreground="Black"  Header="Zamknij" Click="zamknijProgram_Click"/>
                 </MenuItem>
-                <MenuItem Header="Opcje">
-                    <MenuItem Header="Opcje KW/NKR" Click="MenuItem_Opcje"/>
-                    <CheckBox Content="Zawsze na wierzchu" IsChecked="False" x:Name="checkBoxCzyNaWierzchu" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
+                <MenuItem  Header="Opcje">
+                    <MenuItem  Foreground="Black"  Header="Opcje KW/NKR" Click="MenuItem_Opcje"/>
+                    <CheckBox Content="Zawsze na wierzchu" IsChecked="False"  Foreground="Black"  x:Name="checkBoxCzyNaWierzchu" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
                 </MenuItem>
                 <MenuItem Header="Ustawienia FDB">
-                    <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"></MenuItem>
-                    <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"></MenuItem>
+                    <MenuItem   Foreground="Black"  Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"></MenuItem>
+                    <MenuItem  Foreground="Black"  Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"></MenuItem>
                 </MenuItem>
-                <MenuItem Header="Połączenie z bazą">
-                    <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą i pobierz przypisany nr KW" Click="PolaczZBaza" ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb"></MenuItem>
-                    <MenuItem x:Name="itemPolaczZBazaProponowaneKW"  Click="PolaczZBazaProponowanych" Header="Połącz z bazą i pobierz proponowany nr KW"  
+                <MenuItem Header="Połączenie z bazą" x:Name="itemPolaczenieZbaza">
+                    <MenuItem  Foreground="Black"  x:Name="itemPolaczZBaza"  Header="Połącz z bazą i pobierz przypisany nr KW" Click="PolaczZBaza" ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb"></MenuItem>
+                    <MenuItem  Foreground="Black"  x:Name="itemPolaczZBazaProponowaneKW"  Click="PolaczZBazaProponowanych" Header="Połącz z bazą i pobierz proponowany nr KW"  
                               ToolTip="Połącz w celu pobrania KW z bazy SCALENIA.fdb ze stanu przed dla nowych działek"></MenuItem>
                 </MenuItem>
             </Menu>
@@ -78,10 +78,10 @@
                 <DataGrid  Grid.Row="2" Grid.Column="0" ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
                 CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgDzialkiEdz"   VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2"/>
             <Grid Grid.Row="2"  Grid.Column="1">
-            <StackPanel x:Name="tekstyTytuly"  >
-                <Label FontFamily="TIMES NEW ROMAN" FontWeight="Bold" FontSize="55" Foreground="SaddleBrown" HorizontalAlignment="Center">KW</Label>
-                <Label FontFamily="TIMES NEW ROMAN" FontWeight="Black" FontSize="55" Foreground="SaddleBrown" HorizontalAlignment="Center">NA</Label>
-                    <Label FontFamily="TIMES NEW ROMAN" FontWeight="Bold" FontSize="55" Foreground="SaddleBrown" HorizontalAlignment="Center">MAPĘ</Label>
+            <StackPanel x:Name="tekstyTytuly">
+                    <Label FontFamily="TIMES NEW ROMAN" x:Name="labelKWPOSCALENIU" FontWeight="Bold" FontSize="55" Foreground="#244677" HorizontalAlignment="Center">KW</Label>
+                <Label FontFamily="TIMES NEW ROMAN" FontWeight="Black" FontSize="55" Foreground="{Binding ElementName=labelKWPOSCALENIU, Path=Foreground}" HorizontalAlignment="Center">NA</Label>
+                    <Label FontFamily="TIMES NEW ROMAN" FontWeight="Bold" FontSize="55"  Foreground="{Binding ElementName=labelKWPOSCALENIU, Path=Foreground}"  HorizontalAlignment="Center">MAPĘ</Label>
                 </StackPanel>
                 <TextBlock x:Name="logBledowKW" Height="150" VerticalAlignment="Bottom"></TextBlock>
             </Grid>

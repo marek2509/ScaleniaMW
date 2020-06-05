@@ -332,81 +332,126 @@ namespace ScaleniaMW
 
         private void ZapiszDoPliku(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog svd = new SaveFileDialog();
-            svd.DefaultExt = ".txt";
-            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            if (svd.ShowDialog() == true)
+            if (CzyKwProponowane)
             {
-                using (Stream s = File.Open(svd.FileName, FileMode.Create))
-                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                    try
-                    {
+                SaveFileDialog svd = new SaveFileDialog();
+                svd.DefaultExt = ".txt";
+                svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                if (svd.ShowDialog() == true)
+                {
+                    using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                    //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                    using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
                         try
                         {
-                            string loginfo = "";
-                            int kodRodzajuNKRczyKW = 1;
+                            try
+                            {
+                                string loginfo = "";
+                                int kodRodzajuNKRczyKW = 1;
 
 
-                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
-                            textBlockLogInfo.Text = loginfo;
-                            sw.Close();
+                                sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listDzNkrKWzSQLProponows, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
+                                textBlockLogInfo.Text = loginfo;
+                                sw.Close();
+                            }
+                            catch (Exception exc)
+                            {
+                                MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                            }
                         }
-                        catch (Exception exc)
+                        catch (Exception ex)
                         {
-                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+                            var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
 
-                        if (resultat == MessageBoxResult.Yes)
-                        {
-                            Application.Current.Shutdown();
+                            if (resultat == MessageBoxResult.Yes)
+                            {
+                                Application.Current.Shutdown();
+                            }
                         }
-                    }
+                }
             }
-        }
-
-        private void ZapiszDoPlikuProponow(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog svd = new SaveFileDialog();
-            svd.DefaultExt = ".txt";
-            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            if (svd.ShowDialog() == true)
+            else if (CzyKwPrzypisane)
             {
-                using (Stream s = File.Open(svd.FileName, FileMode.Create))
-                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                    try
-                    {
+
+
+                SaveFileDialog svd = new SaveFileDialog();
+                svd.DefaultExt = ".txt";
+                svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                if (svd.ShowDialog() == true)
+                {
+                    using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                    //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                    using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
                         try
                         {
-                            string loginfo = "";
-                            int kodRodzajuNKRczyKW = 1;
+                            try
+                            {
+                                string loginfo = "";
+                                int kodRodzajuNKRczyKW = 1;
 
 
-                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listDzNkrKWzSQLProponows, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
-                            textBlockLogInfo.Text = loginfo;
-                            sw.Close();
+                                sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
+                                textBlockLogInfo.Text = loginfo;
+                                sw.Close();
+                            }
+                            catch (Exception exc)
+                            {
+                                MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                            }
                         }
-                        catch (Exception exc)
+                        catch (Exception ex)
                         {
-                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+                            var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
 
-                        if (resultat == MessageBoxResult.Yes)
-                        {
-                            Application.Current.Shutdown();
+                            if (resultat == MessageBoxResult.Yes)
+                            {
+                                Application.Current.Shutdown();
+                            }
                         }
-                    }
+                }
             }
         }
+        bool CzyKwPrzypisane = false;
+        bool CzyKwProponowane = false;
+
+        //private void ZapiszDoPlikuProponow(object sender, RoutedEventArgs e)
+        //{
+        //    SaveFileDialog svd = new SaveFileDialog();
+        //    svd.DefaultExt = ".txt";
+        //    svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+        //    if (svd.ShowDialog() == true)
+        //    {
+        //        using (Stream s = File.Open(svd.FileName, FileMode.Create))
+        //        //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+        //        using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+        //            try
+        //            {
+        //                try
+        //                {
+        //                    string loginfo = "";
+        //                    int kodRodzajuNKRczyKW = 1;
+
+
+        //                    sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listDzNkrKWzSQLProponows, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
+        //                    textBlockLogInfo.Text = loginfo;
+        //                    sw.Close();
+        //                }
+        //                catch (Exception exc)
+        //                {
+        //                    MessageBox.Show(exc.ToString() + "  problem z plikiem");
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+
+        //                if (resultat == MessageBoxResult.Yes)
+        //                {
+        //                    Application.Current.Shutdown();
+        //                }
+        //            }
+        //    }
+        //}
 
         public void ustawProperties(string FileName)
         {
@@ -417,7 +462,7 @@ namespace ScaleniaMW
 
         private void ustawSciezkeFDB(object sender, RoutedEventArgs e)
         {
-         
+
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             if (!(Properties.Settings.Default.PathFDB.Equals("") || Properties.Settings.Default.PathFDB.Equals(null)))
             {
@@ -466,16 +511,22 @@ namespace ScaleniaMW
             }
         }
 
+
         private void PolaczZBaza(object sender, RoutedEventArgs e)
         {
+            itemPolaczZBazaProponowaneKW.Background = Brushes.Transparent;
+            CzyKwProponowane = false;
+            CzyKwPrzypisane = false;
             try
             {
                 logBledowKW.Visibility = Visibility.Hidden;
                 odczytajZSql();
                 itemPolaczZBaza.Background = Brushes.LightSeaGreen;
+                itemPolaczenieZbaza.Background = Brushes.LightSeaGreen;
+                itemPolaczenieZbaza.Header = "Połączono";
                 StringBuilder stringBuilder = new StringBuilder();
                 textBlockLogInfo.Text = "Połączono z bazą FDB. Ilość wczytanych linii: " + dt.Rows.Count + ".";
-               // itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
+                // itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
                 foreach (var item in listaDzNkrzSQL)
                 {
                     if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka).Equals(""))
@@ -486,21 +537,26 @@ namespace ScaleniaMW
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
                 textBlockBledy.Text = stringBuilder.ToString();
-               
-                itemPolaczZBazaProponowaneKW.Background = Brushes.Transparent;
+
+                
+                CzyKwPrzypisane = true;
             }
             catch (Exception ex)
             {
                 itemPolaczZBaza.Background = Brushes.Red;
-                itemPolaczZBaza.Header = "Połącz z bazą";
+                itemPolaczenieZbaza.Header = "Połącz z bazą";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
-
+                itemPolaczenieZbaza.Background = Brushes.Red;
+                przejdzDoOknaLogowania(ex.Message);
             }
 
         }
 
         private void PolaczZBazaProponowanych(object sender, RoutedEventArgs e)
         {
+            itemPolaczZBaza.Background = Brushes.Transparent;
+            CzyKwProponowane = false;
+            CzyKwPrzypisane = false;
             try
             {
                 logBledowKW.Visibility = Visibility.Hidden;
@@ -519,17 +575,33 @@ namespace ScaleniaMW
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
                 textBlockBledy.Text = stringBuilder.ToString();
-                itemPolaczZBaza.Background = Brushes.Transparent;
+             
+                CzyKwProponowane = true;
+                itemPolaczenieZbaza.Background = Brushes.LightSeaGreen;
+                itemPolaczenieZbaza.Header = "Połączono";
             }
             catch (Exception ex)
             {
-                itemPolaczZBaza.Background = Brushes.Red;
-                itemPolaczZBaza.Header = "Połącz z bazą";
+               
+                itemPolaczenieZbaza.Background = Brushes.Red;
+                itemPolaczZBazaProponowaneKW.Background = Brushes.Red;
+                itemPolaczenieZbaza.Header = "Połącz z bazą";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
+
+                    przejdzDoOknaLogowania(ex.Message);
+
             }
         }
 
-        private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
+        void przejdzDoOknaLogowania(string s)
+        {
+            if (s.Contains("password"))
+            {
+                przejdzDoUstawLoginIHaslo();
+            }
+        }
+
+        void przejdzDoUstawLoginIHaslo()
         {
             textBoxLogin.Text = Properties.Settings.Default.Login;
             textBoxHaslo.Password = Properties.Settings.Default.Haslo;
@@ -537,6 +609,11 @@ namespace ScaleniaMW
             dgDzialkiEdz.Visibility = Visibility.Hidden;
             tekstyTytuly.Visibility = Visibility.Hidden;
             dgNkrFDB.Visibility = Visibility.Hidden;
+        }
+
+        private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
+        {
+            przejdzDoUstawLoginIHaslo();
         }
 
         private void ButtonZapiszLogIHaslo(object sender, RoutedEventArgs e)

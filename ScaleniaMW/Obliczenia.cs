@@ -703,6 +703,15 @@ namespace ScaleniaMW
                     listBoxNkr.ItemsSource = lll;
                 }
 
+
+            }
+            else
+            {
+                List<string> lll = new List<string>();
+                lll.Add("BRAK DANYCH");
+                listBoxNrKW.ItemsSource = lll;
+                listBoxNoweDzialki.ItemsSource = lll;
+                listBoxNkr.ItemsSource = lll;
             }
         }
     }

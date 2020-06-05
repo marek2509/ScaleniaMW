@@ -396,18 +396,33 @@ namespace ScaleniaMW
             }
             catch (Exception ex)
             {
+               
                 itemPolaczZBaza.Background = Brushes.Red;
                 itemPolaczZBaza.Header = "Połącz z bazą";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
+                przejdzDoOknaLogowania(ex.Message);
             }
         }
 
-        private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
+        void przejdzDoOknaLogowania(string s)
+        {
+            if (s.Contains("password"))
+            {
+                przejdzDoUstawLoginIHaslo();
+            }
+        }
+
+        void przejdzDoUstawLoginIHaslo()
         {
             textBoxLogin.Text = Properties.Settings.Default.Login;
             textBoxHaslo.Password = Properties.Settings.Default.Haslo;
             panelLogowania.Visibility = Visibility.Visible;
             tabControl.Visibility = Visibility.Hidden;
+        }
+
+        private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
+        {
+            przejdzDoUstawLoginIHaslo();
         }
 
         private void ButtonZapiszLogIHaslo(object sender, RoutedEventArgs e)

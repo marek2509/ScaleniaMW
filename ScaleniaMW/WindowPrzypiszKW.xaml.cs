@@ -151,17 +151,20 @@ namespace ScaleniaMW
                         {
                             listaDopasowKW_CzyLadowac = new List<DopasowanieKW>();
                             listaDopasowKW = new List<DopasowanieKW>();
-
+                          //  dgNrKwZSQL.ItemsSource = listaDopasowKW;
+                            Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
                             listBoxDzialkiNowe.Items.Refresh();
+                            dgNrKwZSQL.ItemsSource = listaDopasowKW;
                             listBoxNkr.Items.Refresh();
                             listBoxNrKW.Items.Refresh();
                             dgNrKwZSQL.Items.Refresh();
+
+
                         }
                     }
-                  //  Console.WriteLine("connection.Open();");
                     connection.Open();
-
                     FbCommand command = new FbCommand();
+
 
                     FbTransaction transaction = connection.BeginTransaction();
 
@@ -240,6 +243,7 @@ namespace ScaleniaMW
                 itemImportJednostkiSN.Background = Brushes.Red;
                 itemImportJednostkiSN.Header = "Baza.fdb";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
+                przejdzDoOknaLogowania(ex.Message);
             }
         }
 
@@ -452,15 +456,26 @@ namespace ScaleniaMW
         }
         private delegate void ProgressBarDelegate();
 
-
-
-        private void UstawLoginIHaslo2(object sender, RoutedEventArgs e)
+        void przejdzDoOknaLogowania(string s)
         {
+            if (s.Contains("password"))
+            {
+                przejdzDoUstawLoginIHaslo();
+            }
+        }
 
+        void przejdzDoUstawLoginIHaslo()
+        {
             textBoxHaslo.Password = Properties.Settings.Default.Haslo;
             textBoxLogin.Text = Properties.Settings.Default.Login;
             panelLogowania2.Visibility = Visibility.Visible;
             tabControl2.Visibility = Visibility.Hidden;
+        }
+
+        private void UstawLoginIHaslo2(object sender, RoutedEventArgs e)
+        {
+
+            przejdzDoUstawLoginIHaslo();
 
         }
 
@@ -470,19 +485,19 @@ namespace ScaleniaMW
             if (Properties.Settings.Default.Haslo != textBoxHaslo.Password)
             {
 
-            czyPolaczonoZBaza = false;
-            itemImportJednostkiSN.Background = Brushes.Transparent;
-            itemImportJednostkiSN.Header = "Baza.fdb";
-            listaDopasowKW_CzyLadowac = new List<DopasowanieKW>();
-            listaDopasowKW = new List<DopasowanieKW>();
-            dgNrKwZSQL.ItemsSource = null;
-            listBoxDzialkiNowe.ItemsSource = null;
-            listBoxNkr.ItemsSource = null;
-            listBoxNrKW.ItemsSource = null;
-            listBoxDzialkiNowe.Items.Refresh();
-            listBoxNkr.Items.Refresh();
-            listBoxNrKW.Items.Refresh();
-            dgNrKwZSQL.Items.Refresh();
+                czyPolaczonoZBaza = false;
+                itemImportJednostkiSN.Background = Brushes.Transparent;
+                itemImportJednostkiSN.Header = "Baza.fdb";
+                listaDopasowKW_CzyLadowac = new List<DopasowanieKW>();
+                listaDopasowKW = new List<DopasowanieKW>();
+                dgNrKwZSQL.ItemsSource = null;
+                listBoxDzialkiNowe.ItemsSource = null;
+                listBoxNkr.ItemsSource = null;
+                listBoxNrKW.ItemsSource = null;
+                listBoxDzialkiNowe.Items.Refresh();
+                listBoxNkr.Items.Refresh();
+                listBoxNrKW.Items.Refresh();
+                dgNrKwZSQL.Items.Refresh();
             }
 
             Properties.Settings.Default.Login = textBoxLogin.Text;
@@ -555,12 +570,12 @@ namespace ScaleniaMW
         bool czybylaZmiana = false;
         private void DgNrKwZSQL_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-          
+
             //  Console.WriteLine(((TextBox)e.EditingElement).Text + " @ " + e.EditAction + " @ " +e.Column.DisplayIndex +" displIdx @ local enum " + e.Row.GetLocalValueEnumerator().Current);
             if (e.EditAction.Equals(DataGridEditAction.Commit))
             {
                 czybylaZmiana = e.EditAction.Equals(DataGridEditAction.Commit);
-               
+
                 foreach (var item in listaDopasowKW)
                 {
                     if (item.IdDzN.Equals(listaDopasowKW[e.Row.GetIndex()].IdDzN) && e.Column.DisplayIndex == 3)
