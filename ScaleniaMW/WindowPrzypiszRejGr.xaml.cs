@@ -383,7 +383,7 @@ namespace ScaleniaMW
             textBoxLogin.Text = Properties.Settings.Default.Login;
             passwordBoxLogowanie.Password = Properties.Settings.Default.Haslo;
             panelLogowania2.Visibility = Visibility.Visible;
-            tabControl2.Visibility = Visibility.Hidden;
+            tabItemNiedopasowJedn.Visibility = Visibility.Hidden;
         }
 
         private void ButtonZapiszLogIHaslo2(object sender, RoutedEventArgs e)
@@ -415,14 +415,14 @@ namespace ScaleniaMW
           //  textBoxHaslo.Text = "";
             panelLogowania2.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
-            tabControl2.Visibility = Visibility.Visible;
+            tabItemNiedopasowJedn.Visibility = Visibility.Visible;
         }
 
         private void Button_Anuluj2(object sender, RoutedEventArgs e)
         {
             panelLogowania2.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
-            tabControl2.Visibility = Visibility.Visible;
+            tabItemNiedopasowJedn.Visibility = Visibility.Visible;
         }
 
 
@@ -485,7 +485,7 @@ namespace ScaleniaMW
             Console.WriteLine(listaDopasowJednos[e.Row.GetIndex()].PrzypisanyNrRej);
             Console.WriteLine(((TextBox)e.EditingElement).Text.GetType() + "xx");
 
-            if (e.Column.DisplayIndex == 6)
+            if (e.Column.DisplayIndex == kolumnaJednRej.DisplayIndex)
             {
                 bool czyPasi = false;
                 foreach (var item in listaDopasowJednos.FindAll(x => x.IdDz.Equals(listaDopasowJednos[e.Row.GetIndex()].IdDz)))

@@ -5,114 +5,129 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW inż. Marek Wojciechowicz" Height="600" Width="1000" x:Name="windowPrzypiszRejGr">
-<Grid x:Name="gridPrzypisaanieJednostek" Visibility="Visible">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="20"></RowDefinition>
-        <RowDefinition Height="20"></RowDefinition>
-        <RowDefinition Height="*">
-        </RowDefinition>
-        <RowDefinition Height="20"></RowDefinition>
-    </Grid.RowDefinitions>
-    <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
+        Title="SCALENIAMW inż. Marek Wojciechowicz" Height="600" Width="1050" x:Name="windowPrzypiszRejGr">
+    <Grid x:Name="gridPrzypisaanieJednostek" Visibility="Visible">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*">
+            </RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
 
 
-    <Menu Grid.Row="1">
-        <MenuItem Header="Plik" >
-            <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Header="Zapisz dopasowanie jednostek do txt" Click="Zapisz_Dopasowanie_Jedn_Click"></MenuItem>
-            <Separator></Separator>
-            <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"></MenuItem>
-            <Separator></Separator>
-            <MenuItem Header="Zamknij" Click="zamknijProgram_Click"></MenuItem>
-        </MenuItem>
-        <MenuItem Header="Opcje">
-            <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
-        </MenuItem>
-        <MenuItem Header="Ustawienia FDB">
-            <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"></MenuItem>
-            <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo2"></MenuItem>
-        </MenuItem>
-        <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
-            <MenuItem Header="Połącz i pobierz dane do przypisania jednostek(przed) w stanie po scalenu z bazy FDB" Click="ItemImportJednostkiSN_Click"/>
-            <MenuItem Header="Automatycznie przypisz jednostki" Click="MenuItem_AutoPrzypiszJednostki"/>
-            <Separator></Separator>
-            <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
-            <Separator></Separator>
-            <MenuItem Header="Usuń wszystkie przypisane jednostki z bazy" Click="ItemUsunPrzypisaneJednostkiZBazy" Foreground="IndianRed"/>
-        </MenuItem>
-    </Menu>
+        <Menu Grid.Row="1" Background="#2676d0" Foreground="White">
+            <MenuItem Header="Plik" >
+                <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Foreground="Black" Header="Zapisz dopasowanie jednostek do txt" Click="Zapisz_Dopasowanie_Jedn_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="otworzOknoPoczatkowe_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Zamknij" Foreground="Black" Click="zamknijProgram_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Opcje">
+                <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
+            </MenuItem>
+            <MenuItem Header="Ustawienia FDB">
+                <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Foreground="Black" Click="ustawSciezkeFDB"></MenuItem>
+                <MenuItem Header="Ustaw Login i Hasło" Foreground="Black" Click="UstawLoginIHaslo2"></MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
+                <MenuItem Header="Połącz i pobierz dane do przypisania jednostek(przed) w stanie po scalenu z bazy FDB" Foreground="Black" Click="ItemImportJednostkiSN_Click"/>
+                <MenuItem Header="Automatycznie przypisz jednostki" Click="MenuItem_AutoPrzypiszJednostki" Foreground="Black"/>
+                <Separator></Separator>
+                <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
+                <Separator></Separator>
+                <MenuItem Header="Usuń wszystkie przypisane jednostki z bazy" Click="ItemUsunPrzypisaneJednostkiZBazy" Foreground="IndianRed"/>
+            </MenuItem>
+        </Menu>
 
-    <StackPanel Grid.Row="2" x:Name="panelLogowania2"  Visibility="Hidden">
-        <Label>Login:</Label>
-        <TextBox  Text="{Binding ElementName=textBoxLogin, Path=Text}" x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
-        <Label>Hasło:</Label>
-        <!--<TextBox Text="{Binding ElementName=textBoxHaslo, Path=Text}" x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>-->
-            <PasswordBox x:Name="passwordBoxLogowanie" Margin="10,0" Width="125" HorizontalAlignment="Left"> </PasswordBox>
+        <StackPanel Grid.Row="2" x:Name="panelLogowania2"  Visibility="Hidden">
+            <Label>Login:</Label>
+            <TextBox  Text="{Binding ElementName=textBoxLogin, Path=Text}" x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
+            <Label>Hasło:</Label>
+            <!--<TextBox Text="{Binding ElementName=textBoxHaslo, Path=Text}" x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>-->
+            <PasswordBox x:Name="passwordBoxLogowanie" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
 
-        <WrapPanel>
-            <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo2">Zapisz</Button>
-            <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj2">Anuluj</Button>
-        </WrapPanel>
-    </StackPanel>
+            <WrapPanel>
+                <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo2">Zapisz</Button>
+                <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj2">Anuluj</Button>
+            </WrapPanel>
+        </StackPanel>
 
-    <ProgressBar x:Name="progresBar" Grid.Row="2" Value="0" Visibility="Hidden" Margin="0,25,0,0"  Panel.ZIndex="100" Opacity="0.5">
-    </ProgressBar>
-    <TabControl  x:Name="tabControl2"  Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" >
-        <TabItem Header="Niedopasowane jednostki" x:Name="tabItemNiedopasowJedn">
-            <DockPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"></ColumnDefinition>
-                        <ColumnDefinition Width="auto"></ColumnDefinition>
-                        <ColumnDefinition Width="auto"></ColumnDefinition>
-                        
-                    </Grid.ColumnDefinitions>
+        <ProgressBar x:Name="progresBar" Grid.Row="2" Value="0" Visibility="Hidden" Margin="0,25,0,0"  Panel.ZIndex="100" Opacity="0.5">
+        </ProgressBar>
+        <!--<TabControl  x:Name="tabControl2"  Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" >-->
 
-                    
-                    <Label Grid.Column="0">NKR</Label>
-                    <DockPanel Margin="0,20,0,0" Grid.Column="0">
-                        <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
-                    </DockPanel>
+        <DockPanel  Grid.Row="2"  x:Name="tabItemNiedopasowJedn"   Margin="0,2,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+
+                        </Grid.ColumnDefinitions>
+
+
+                <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">NKR</Label>
+                        <DockPanel Margin="0,20,0,0" Grid.Column="0">
+                            <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
+                        </DockPanel>
                         <DockPanel Grid.Column="0">
-                            <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
-                            <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNkr, Path=Items.Count}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: "  Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNkr, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                         </DockPanel>
 
-                        <Label Grid.Column="1">NR DZIAŁKI</Label>
-                    <DockPanel  Margin="0,20,0,0" Grid.Column="1">
-                        <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
-                    </DockPanel>
+                        <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI</Label>
+                        <DockPanel  Margin="0,20,0,0" Grid.Column="1">
+                            <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
+                        </DockPanel>
                         <DockPanel Grid.Column="1">
-                            <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
-                            <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNowe, Path=Items.Count}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNowe, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                         </DockPanel>
 
-                        <Label Grid.Column="2">NR JEDN. REJ.</Label>
-                    <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
-                        <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left"/>
-                    </DockPanel>
+                <Label Grid.Column="2"  Foreground="{Binding ElementName=labelNKR, Path=Foreground}" >NR JEDN. REJ.</Label>
+                        <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
+                            <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left"/>
+                        </DockPanel>
                         <DockPanel Grid.Column="2">
-                            <Label  VerticalAlignment="Bottom" Content="Ilość: "></Label>
-                            <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNrRej, Path=Items.Count}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNrRej, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                         </DockPanel>
                     </Grid>
-                <StackPanel>
-                    <Button Height="125" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" >
-                        <StackPanel HorizontalAlignment="Center">
-                            <Label HorizontalAlignment="Center">-> -> -> -></Label>
-                            <Label HorizontalAlignment="Center">Przypisz zaznaczoną</Label>
-                            <Label HorizontalAlignment="Center">jednostkę</Label>
-                            <Label HorizontalAlignment="Center">-> -> -> -></Label>
-                        </StackPanel>
-                    </Button>
-                        <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="Green" FontWeight="Heavy">NJR</Label>
-                   
+                    <StackPanel>
+                <Button Height="125" Width="120" HorizontalAlignment="Left" x:Name="buttonPrzypisz" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" Background="#2676d0" FontWeight="Bold" Foreground="White" >
+                            <StackPanel HorizontalAlignment="Center">
+                        <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
+                        <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">PRZYPISZ</Label>
+                        <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">WYBRANĄ</Label>
+                        <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
+                        <Image   HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="Resources/pen.png"/>
+
                     </StackPanel>
-                <DataGrid Margin="5,0" x:Name="dgNiedopJednostki" CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding"/>
-                
+                        </Button>
+                        <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#2676d0" FontWeight="Heavy">NJR</Label>
+
+                    </StackPanel>
+
+                    <!--<DataGrid Margin="5,0" x:Name="dgNiedopJednostki"  CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding"/>-->
+
+                    <DataGrid Margin="5,0" x:Name="dgNiedopJednostki" Style="{DynamicResource DGHeaderStyle}" AutoGenerateColumns="False" CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="NR DZIAŁKI" Binding="{Binding NrDzialki}" />
+                    <DataGridTextColumn Header="NKR PO SCALENIU" Binding="{Binding NowyNKR}" />
+                    <DataGridTextColumn Header="ID JEDN.PRZED" Binding="{Binding IdJednS}" />
+                    <DataGridTextColumn Header="JEDN. REJ. PRZED" Binding="{Binding NrJednEwopis}" />
+                    <DataGridTextColumn x:Name="kolumnaJednRej" Header="ID JEDN PRZYPISANA" Binding="{Binding PrzypisanyNrRej}" />
+                </DataGrid.Columns>
+            </DataGrid>
                 </DockPanel>
-        </TabItem>
-    </TabControl>
-    <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Text="{Binding ElementName=textBlockLogInfo, Path=Text}" Margin="2"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
-</Grid>
+
+        <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Text="{Binding ElementName=textBlockLogInfo, Path=Text}" Margin="2"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
+        <Image  x:Name="ingCoZrobic"  Grid.Row="2"  Margin="450,0,0,0" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencilDuzy.png"  Opacity="0.15"/>
+
+    </Grid>
+    
 </Window>
+    

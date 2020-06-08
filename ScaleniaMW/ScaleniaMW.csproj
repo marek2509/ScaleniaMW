@@ -196,5 +196,8 @@
     <Resource Include="Resources\NrKWPrzypisz.png" />
     <Resource Include="Resources\pencilDuzy.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pen.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
