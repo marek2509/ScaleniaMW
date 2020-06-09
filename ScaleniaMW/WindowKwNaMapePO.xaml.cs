@@ -56,7 +56,7 @@ namespace ScaleniaMW
         {
             foreach (var item in dopasowanieKWs)
             {
-                if (dkw.NrdzObr == item.NrdzObr && dkw.NKR == item.NKR && dkw.NrdzObr == item.NrdzObr && dkw.ProponowKW == item.ProponowKW)
+                if (dkw.ObrDzialka == item.ObrDzialka && dkw.NKR == item.NKR && dkw.ObrDzialka == item.ObrDzialka && dkw.ProponowKW == item.ProponowKW)
                 {
                     return true;
                 }
@@ -99,9 +99,9 @@ namespace ScaleniaMW
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (!czyJestTakiWierszW2(listDzNkrKWzSQLProponows, new DzNkrKWzSQLProponow { NrdzObr = dt.Rows[i][0].ToString(), IdDz = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() }))
+                    if (!czyJestTakiWierszW2(listDzNkrKWzSQLProponows, new DzNkrKWzSQLProponow { ObrDzialka = dt.Rows[i][0].ToString(), IdDz = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() }))
                     {
-                        listDzNkrKWzSQLProponows.Add(new DzNkrKWzSQLProponow { NrdzObr = dt.Rows[i][0].ToString(), IdDz = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() });
+                        listDzNkrKWzSQLProponows.Add(new DzNkrKWzSQLProponow { ObrDzialka = dt.Rows[i][0].ToString(), IdDz = (int)dt.Rows[i][1], NKR = (int)dt.Rows[i][2], ProponowKW = dt.Rows[i][3].ToString() });
 
                     }
 
@@ -111,6 +111,9 @@ namespace ScaleniaMW
                     //dataGrid.ItemsSource = dt.AsDataView();
                     //dataGrid.Visibility = Visibility.Visible;
                     //dataGrid.Items.Refresh();
+                    var myBinding = new Binding("ProponowKW");
+                    columnKW.Binding = myBinding;
+                    columnKW.Header = "PROPOZYCJA NR KW";
                     dgNkrFDB.ItemsSource = listDzNkrKWzSQLProponows;
                     dgNkrFDB.Visibility = Visibility.Visible;
                     dgNkrFDB.Items.Refresh();
@@ -169,7 +172,12 @@ namespace ScaleniaMW
                     //dataGrid.ItemsSource = dt.AsDataView();
                     //dataGrid.Visibility = Visibility.Visible;
                     //dataGrid.Items.Refresh();
-                    dgNkrFDB.ItemsSource = dt.AsDataView();
+                    //dgNkrFDB.ItemsSource = dt.AsDataView();
+
+                    var myBinding = new Binding("KW");
+                    columnKW.Binding = myBinding;
+                    columnKW.Header = "PRZYPISANY NR KW";
+                    dgNkrFDB.ItemsSource = listaDzNkrzSQL;
                     dgNkrFDB.Visibility = Visibility.Visible;
                     dgNkrFDB.Items.Refresh();
 
@@ -529,9 +537,9 @@ namespace ScaleniaMW
                 // itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
                 foreach (var item in listaDzNkrzSQL)
                 {
-                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka).Equals(""))
+                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.ObrDzialka).Equals(""))
                     {
-                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka));
+                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.ObrDzialka));
                         logBledowKW.Visibility = Visibility.Visible;
                     }
                 }
@@ -567,7 +575,7 @@ namespace ScaleniaMW
                 itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
                 foreach (var item in listDzNkrKWzSQLProponows)
                 {
-                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.ProponowKW, item.NrdzObr).Equals(""))
+                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.ProponowKW, item.ObrDzialka).Equals(""))
                     {
                         stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.ProponowKW, item.ProponowKW));
                         logBledowKW.Visibility = Visibility.Visible;

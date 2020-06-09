@@ -14,24 +14,24 @@
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
-        <Menu Grid.Row="1">
+        <Menu Grid.Row="1" Background="#275ea2" Foreground="White">
             <MenuItem Header="Plik">
-                <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Header="Zapisz dopasowanie KW do pliku txt" ToolTip="[obr-dz] [KW]" Click="Zapisz_Dopasowanie_Jedn_Click"/>
+                <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Foreground="Black" Header="Zapisz dopasowanie KW do pliku txt" ToolTip="[obr-dz] [KW]" Click="Zapisz_Dopasowanie_Jedn_Click"/>
                 <Separator></Separator>
-                <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"/>
+                <MenuItem Header="Otwórz okno startowe" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}"  Click="otworzOknoPoczatkowe_Click"/>
                 <Separator></Separator>
-                <MenuItem Header="Zamknij" Click="zamknijProgram_Click"/>
+                <MenuItem Header="Zamknij" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" Click="zamknijProgram_Click"/>
             </MenuItem>
             <MenuItem Header="Opcje">
                 <CheckBox Content="Zawsze na wierzchu" IsChecked="False" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"/>
             </MenuItem>
             <MenuItem Header="Ustawienia FDB">
-                <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"/>
-                <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo2"/>
+                <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" Click="ustawSciezkeFDB"/>
+                <MenuItem Header="Ustaw Login i Hasło" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" Click="UstawLoginIHaslo2"/>
             </MenuItem>
             <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
-                <MenuItem Header="Połącz i pobierz dane" Click="ItemImportJednostkiSN_Click"/>
-                <MenuItem Header="Automatycznie przypisz KW" >
+                <MenuItem Header="Połącz i pobierz dane" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" Click="ItemImportJednostkiSN_Click"/>
+                <MenuItem Header="Automatycznie przypisz KW" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" >
                     <MenuItem Header="Tryb dokładny" Click="MenuItem_AutoPrzypiszJednostkiDokladny"></MenuItem>
                     <MenuItem Header="Tryb przybliżony" Click="MenuItem_AutoPrzypiszJednostkiPrzybliżony"></MenuItem>
                 </MenuItem>
@@ -40,8 +40,7 @@
                 <Separator></Separator>
                 <MenuItem Header="Usuń wszystkie z bazy" Click="ItemUsunPrzypisaneJednostkiZBazy" Foreground="IndianRed"/>
             </MenuItem>
-            <MenuItem Header="Pomoc">
-                <TextBlock x:Name="textBoxPomoc" Background="Transparent" Text=""></TextBlock>
+            <MenuItem Header="Pomoc" Click="MenuItemOknoPomocy_Click">
             </MenuItem>
         </Menu>
 
@@ -107,7 +106,7 @@
                         <Label HorizontalAlignment="Center">-> -> -> -></Label>
                     </StackPanel>
                 </Button>
-                <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="DarkViolet" FontWeight="Heavy">KW</Label>
+                <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#275ea2" FontWeight="Heavy">KW</Label>
             </StackPanel>
             <DataGrid Margin="5,0" x:Name="dgNrKwZSQL" CanUserDeleteRows="False" CellEditEnding="DgNrKwZSQL_CellEditEnding" CurrentCellChanged="DgNrKwZSQL_CurrentCellChanged"/>
         </DockPanel>

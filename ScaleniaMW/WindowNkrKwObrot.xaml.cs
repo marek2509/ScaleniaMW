@@ -384,9 +384,9 @@ namespace ScaleniaMW
                 itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
                 foreach (var item in listaDzNkrzSQL)
                 {
-                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka).Equals(""))
+                    if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.ObrDzialka).Equals(""))
                     {
-                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.Obr_Dzialka) + " przypisaną do działki nr: " + item.Obr_Dzialka);
+                        stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.ObrDzialka) + " przypisaną do działki nr: " + item.ObrDzialka);
                         logBledowKW.Visibility = Visibility.Visible;
                     }
                 }

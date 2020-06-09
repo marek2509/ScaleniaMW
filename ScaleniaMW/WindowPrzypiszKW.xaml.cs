@@ -25,12 +25,21 @@ namespace ScaleniaMW
     /// </summary>
     public partial class WindowPrzypiszKW : Window
     {
+        string tekstPomoc = "1. Ustawiena FDB > Ustaw ścieżkę -wybieramy ścieżkę FDB programu scalenia np. 'scalenia.fdb'\n" +
+                                     "2. Ustawienia FDB > Ustaw login i hasło -takie jak przy logowaniu w programie scalenia, domyślne(SYSDBA, masterkey).\n" +
+                                     "3. Baza.fdb > Połącz i pobierz dane -potrzebne do przypisania KW(przed) w stanie po scalenu z bazy 'scalenia.fdb'.\n" +
+                                     "4. Baza.fdb > Automatycznie przypisz KW -Automatycznie przypisz KW,\n" +
+                                     "\t\t\t\t       -Tryb dokładny -Przypisze jeśli księgi we wszystkich działkach były takie same.\n" +
+                                     "\t\t\t\t       -Tryb przybliżony -Przypisze jeśli była przynajmniej jedna działka z księgą a pozostałe działki były bez księgi.\n" +
+                                     "5. Baza.fdb > Przypisz zaznaczoną jednostkę -przycisk przypisuje wybraną jednostkę z listy 'KW' \n" +
+                                     "6. Baza.fdb > Załaduj do bazy FDB -przypisane KW zostaną wprowadzone do pliku 'scalenia.fdb'\n" +
+                                     "7. Baza.fdb > Usuń wszystkie z bazy -usunie wszystkie przypisane KW znajdujące się w pliku'scalenia.fdb'";
         public WindowPrzypiszKW()
         {
             InitializeComponent();
             try
             {
-                textBoxPomoc.Text += "1. Ustawiena FDB > Ustaw ścieżkę -wybieramy ścieżkę FDB programu scalenia np. 'scalenia.fdb'\n" +
+                tekstPomoc += "1. Ustawiena FDB > Ustaw ścieżkę -wybieramy ścieżkę FDB programu scalenia np. 'scalenia.fdb'\n" +
                                      "2. Ustawienia FDB > Ustaw login i hasło -takie jak przy logowaniu w programie scalenia, domyślne(SYSDBA, masterkey).\n" +
                                      "3. Baza.fdb > Połącz i pobierz dane -potrzebne do przypisania KW(przed) w stanie po scalenu z bazy 'scalenia.fdb'.\n" +
                                      "4. Baza.fdb > Automatycznie przypisz KW -Automatycznie przypisz KW,\n" +
@@ -609,6 +618,12 @@ namespace ScaleniaMW
                     textBlockLogInfo.Text = "Nie udało się odświeżyć tabeli.";
                 }
             }
+        }
+
+        private void MenuItemOknoPomocy_Click(object sender, RoutedEventArgs e)
+        {
+            var resultat = MessageBox.Show(tekstPomoc, "POMOC", MessageBoxButton.OK);
+
         }
     }
 }

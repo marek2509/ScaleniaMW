@@ -60,45 +60,45 @@
         <!--<TabControl  x:Name="tabControl2"  Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" >-->
 
         <DockPanel  Grid.Row="2"  x:Name="tabItemNiedopasowJedn"   Margin="0,2,0,0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
 
-                        </Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>
 
 
                 <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">NKR</Label>
-                        <DockPanel Margin="0,20,0,0" Grid.Column="0">
-                            <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
-                        </DockPanel>
-                        <DockPanel Grid.Column="0">
+                <DockPanel Margin="0,20,0,0" Grid.Column="0">
+                    <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
+                </DockPanel>
+                <DockPanel Grid.Column="0">
                     <Label  VerticalAlignment="Bottom" Content="Ilość: "  Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                     <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNkr, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                        </DockPanel>
+                </DockPanel>
 
-                        <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI</Label>
-                        <DockPanel  Margin="0,20,0,0" Grid.Column="1">
-                            <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
-                        </DockPanel>
-                        <DockPanel Grid.Column="1">
+                <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI</Label>
+                <DockPanel  Margin="0,20,0,0" Grid.Column="1">
+                    <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
+                </DockPanel>
+                <DockPanel Grid.Column="1">
                     <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                     <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNowe, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                        </DockPanel>
+                </DockPanel>
 
                 <Label Grid.Column="2"  Foreground="{Binding ElementName=labelNKR, Path=Foreground}" >NR JEDN. REJ.</Label>
-                        <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
-                            <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left"/>
-                        </DockPanel>
-                        <DockPanel Grid.Column="2">
+                <DockPanel  Margin="0,20,0,0"  Grid.Column="2">
+                    <ListBox x:Name="listBoxNrRej" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Grid.Column="2">
                     <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                     <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNrRej, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                        </DockPanel>
-                    </Grid>
-                    <StackPanel>
+                </DockPanel>
+            </Grid>
+            <StackPanel>
                 <Button Height="125" Width="120" HorizontalAlignment="Left" x:Name="buttonPrzypisz" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" Background="#2676d0" FontWeight="Bold" Foreground="White" >
-                            <StackPanel HorizontalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center">
                         <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">PRZYPISZ</Label>
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">WYBRANĄ</Label>
@@ -106,28 +106,28 @@
                         <Image   HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="Resources/pen.png"/>
 
                     </StackPanel>
-                        </Button>
-                        <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#2676d0" FontWeight="Heavy">NJR</Label>
+                </Button>
+                <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#2676d0" FontWeight="Heavy">NJR</Label>
 
-                    </StackPanel>
+            </StackPanel>
 
-                    <!--<DataGrid Margin="5,0" x:Name="dgNiedopJednostki"  CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding"/>-->
+            <!--<DataGrid Margin="5,0" x:Name="dgNiedopJednostki"  CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding"/>-->
 
-                    <DataGrid Margin="5,0" x:Name="dgNiedopJednostki" Style="{DynamicResource DGHeaderStyle}" AutoGenerateColumns="False" CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding">
+            <DataGrid Margin="5,0" Panel.ZIndex="1" Opacity="0.8" x:Name="dgNiedopJednostki" Style="{DynamicResource DGHeaderStyle}" AutoGenerateColumns="False" CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="NR DZIAŁKI" Binding="{Binding NrDzialki}" />
-                    <DataGridTextColumn Header="NKR PO SCALENIU" Binding="{Binding NowyNKR}" />
-                    <DataGridTextColumn Header="ID JEDN.PRZED" Binding="{Binding IdJednS}" />
-                    <DataGridTextColumn Header="JEDN. REJ. PRZED" Binding="{Binding NrJednEwopis}" />
+                    <DataGridTextColumn Header="NR DZIAŁKI" Binding="{Binding NrDzialki, Mode=OneWay}" />
+                    <DataGridTextColumn Header="NKR PO SCALENIU" Binding="{Binding NowyNKR, Mode=OneWay}" />
+                    <DataGridTextColumn Header="ID JEDN.PRZED" Binding="{Binding IdJednS, Mode=OneWay}" />
+                    <DataGridTextColumn Header="JEDN. REJ. PRZED" Binding="{Binding NrJednEwopis, Mode=OneWay}" />
                     <DataGridTextColumn x:Name="kolumnaJednRej" Header="ID JEDN PRZYPISANA" Binding="{Binding PrzypisanyNrRej}" />
                 </DataGrid.Columns>
             </DataGrid>
-                </DockPanel>
+        </DockPanel>
 
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Text="{Binding ElementName=textBlockLogInfo, Path=Text}" Margin="2"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
-        <Image  x:Name="ingCoZrobic"  Grid.Row="2"  Margin="450,0,0,0" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencilDuzy.png"  Opacity="0.15"/>
+        <Image Panel.ZIndex="-1" x:Name="ingCoZrobic" IsEnabled="False" Grid.Row="2"  Margin="450,0,0,0" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencilDuzy.png"  />
 
     </Grid>
-    
+
 </Window>
     

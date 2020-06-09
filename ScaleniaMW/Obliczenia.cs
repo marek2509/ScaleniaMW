@@ -45,9 +45,9 @@ namespace ScaleniaMW
                 foreach (var item in punkt)
                 {
 
-                    if (dzialkaNkrZSQL.Exists(x => x.Obr_Dzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
+                    if (dzialkaNkrZSQL.Exists(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
                     {
-                        nkrZSQL = dzialkaNkrZSQL.Find(x => x.Obr_Dzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
+                        nkrZSQL = dzialkaNkrZSQL.Find(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
                         string KW = nkrZSQL.KW;
                         ileDopasowano++;
                         switch (intKodExpo0NKR1KW)
@@ -110,9 +110,9 @@ namespace ScaleniaMW
                 foreach (var item in punkt)
                 {
 
-                    if (dzialkaNkrZSQL.Exists(x => x.Obr_Dzialka.Trim().Equals(item.Nr_Dz.Trim())))
+                    if (dzialkaNkrZSQL.Exists(x => x.ObrDzialka.Trim().Equals(item.Nr_Dz.Trim())))
                     {
-                        nkrZSQL = dzialkaNkrZSQL.Find(x => x.Obr_Dzialka.Trim().Equals(item.Nr_Dz.Trim()));
+                        nkrZSQL = dzialkaNkrZSQL.Find(x => x.ObrDzialka.Trim().Equals(item.Nr_Dz.Trim()));
                         ileDopasowano++;
                         string KW = nkrZSQL.KW;
                         switch (intKodExpo0NKR1KW)
@@ -215,9 +215,9 @@ namespace ScaleniaMW
                 foreach (var item in punkt)
                 {
 
-                    if (dzialkaNkrZSQL.Exists(x => x.NrdzObr.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
+                    if (dzialkaNkrZSQL.Exists(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
                     {
-                        nkrZSQL = dzialkaNkrZSQL.FindAll(x => x.NrdzObr.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
+                        nkrZSQL = dzialkaNkrZSQL.FindAll(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
                         foreach (var item2 in nkrZSQL)
                         {
 
@@ -284,9 +284,9 @@ namespace ScaleniaMW
                 foreach (var item in punkt)
                 {
 
-                    if (dzialkaNkrZSQL.Exists(x => x.NrdzObr.Trim().Equals(item.Nr_Dz.Trim())))
+                    if (dzialkaNkrZSQL.Exists(x => x.ObrDzialka.Trim().Equals(item.Nr_Dz.Trim())))
                     {
-                        nkrZSQL = dzialkaNkrZSQL.FindAll(x => x.NrdzObr.Trim().Equals(item.Nr_Dz.Trim()));
+                        nkrZSQL = dzialkaNkrZSQL.FindAll(x => x.ObrDzialka.Trim().Equals(item.Nr_Dz.Trim()));
                         foreach (var item3 in nkrZSQL)
                         {
                             ileDopasowano++;

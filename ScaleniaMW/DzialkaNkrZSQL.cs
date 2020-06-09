@@ -10,12 +10,12 @@ namespace ScaleniaMW
     {
         public DzialkaNkrZSQL(string obrDz, string nkr, string kw="")
         {
-            Obr_Dzialka = obrDz;
+            ObrDzialka = obrDz;
             NKR = nkr;
             KW = kw;
         }
         
-        public string Obr_Dzialka { get; set; } 
+        public string ObrDzialka { get; set; } 
         public string NKR { get; set; }
         public string KW { get; set; }
     }
