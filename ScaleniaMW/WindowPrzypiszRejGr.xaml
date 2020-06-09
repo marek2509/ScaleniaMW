@@ -97,14 +97,13 @@
                 </DockPanel>
             </Grid>
             <StackPanel>
-                <Button Height="125" Width="120" HorizontalAlignment="Left" x:Name="buttonPrzypisz" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" Background="#2676d0" FontWeight="Bold" Foreground="White" >
+                <Button Height="125" Width="120" HorizontalAlignment="Left" x:Name="buttonPrzypisz" MouseEnter="ButtonPrzypisz_MouseEnter" MouseLeave="ButtonPrzypisz_MouseLeave" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" Background="#2676d0" FontWeight="Bold" Foreground="White" >
                     <StackPanel HorizontalAlignment="Center">
                         <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">PRZYPISZ</Label>
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">WYBRANĄ</Label>
                         <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
-                        <Image   HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="Resources/pen.png"/>
-
+                        <Image  x:Name="imageHand" HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="Resources/PenWhite.png"/>
                     </StackPanel>
                 </Button>
                 <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#2676d0" FontWeight="Heavy">NJR</Label>

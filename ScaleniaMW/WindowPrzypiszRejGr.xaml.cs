@@ -548,6 +548,30 @@ namespace ScaleniaMW
             }
 
         }
+
+        private void ButtonPrzypisz_MouseEnter(object sender, MouseEventArgs e)
+        {
+            buttonPrzypisz.Foreground = Brushes.Black;
+
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/pen.png", UriKind.Relative);
+            bi3.EndInit();
+            imageHand.Stretch = Stretch.Fill;
+            imageHand.Source = bi3;
+        }
+
+        private void ButtonPrzypisz_MouseLeave(object sender, MouseEventArgs e)
+        {
+            buttonPrzypisz.Foreground = Brushes.White;
+
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/PenWhite.png", UriKind.Relative);
+            bi3.EndInit();
+            imageHand.Stretch = Stretch.Fill;
+            imageHand.Source = bi3;
+        }
     }
 }
 

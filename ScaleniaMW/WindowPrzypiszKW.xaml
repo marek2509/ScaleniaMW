@@ -98,19 +98,18 @@
                 </DockPanel>
             </Grid>
             <StackPanel>
-                <Button x:Name="buttonPrzypisz" Height="125" Width="120" HorizontalAlignment="Left" FontWeight="Bold" Foreground="White" Background="#275ea2" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" >
+                <Button x:Name="buttonPrzypisz" Height="125" Width="120" HorizontalAlignment="Left" MouseLeave="ButtonPrzypisz_MouseLeave" MouseEnter="ButtonPrzypisz_MouseEnter" FontWeight="Bold" Foreground="White" Background="#275ea2" VerticalAlignment="Top" Margin="0,20" Click="Button_PrzypiszZaznJedn" >
                     <StackPanel HorizontalAlignment="Center">
                         <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">PRZYPISZ</Label>
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">WYBRANĄ</Label>
                         <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
-                        <Image HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="Resources/pen.png">
-                         
-                        </Image>
+                        <Image x:Name="imageHand" HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="Resources/PenWhite.png"/>
+
 
                     </StackPanel>
                 </Button>
-                <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="DarkViolet" FontWeight="Heavy">KW</Label>
+                <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#275ea2" FontWeight="Heavy">KW</Label>
             </StackPanel>
             <DataGrid Margin="5,0" x:Name="dgNrKwZSQL" CanUserDeleteRows="False" CellEditEnding="DgNrKwZSQL_CellEditEnding" CurrentCellChanged="DgNrKwZSQL_CurrentCellChanged"/>
         </DockPanel>
