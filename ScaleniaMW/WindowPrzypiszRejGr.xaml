@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW inż. Marek Wojciechowicz" Height="600" Width="1050" x:Name="windowPrzypiszRejGr">
+        Title="SCALENIAMW inż. Marek Wojciechowicz - Przypisanie nr rej. gr. z przed scalenia" Height="600" Width="1050" x:Name="windowPrzypiszRejGr">
     <Grid x:Name="gridPrzypisaanieJednostek" Visibility="Visible">
+
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
@@ -15,8 +17,7 @@
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
-
-
+        
         <Menu Grid.Row="1" Background="#2676d0" Foreground="White">
             <MenuItem Header="Plik" >
                 <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Foreground="Black" Header="Zapisz dopasowanie jednostek do txt" Click="Zapisz_Dopasowanie_Jedn_Click"></MenuItem>

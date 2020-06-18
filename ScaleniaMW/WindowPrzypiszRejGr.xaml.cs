@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,11 +26,13 @@ namespace ScaleniaMW
     /// </summary>
     public partial class WindowPrzypiszRejGr : Window
     {
+   
         public WindowPrzypiszRejGr()
         {
             InitializeComponent();
             try
             {
+              
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 windowPrzypiszRejGr.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -38,6 +41,7 @@ namespace ScaleniaMW
             {
                 Console.WriteLine(e + " problem z oknem");
             }
+
         }
 
         List<DzialkaEDZ> listaZEDZ = new List<DzialkaEDZ>();
@@ -104,6 +108,8 @@ namespace ScaleniaMW
                     }
 
                     Console.WriteLine(esa + "Błędny format importu działek");
+
+                    
                 }
             }
         }
@@ -114,6 +120,7 @@ namespace ScaleniaMW
         bool czyPolaczonoZBaza = false;
         private void ItemImportJednostkiSN_Click(object sender, RoutedEventArgs e)
         {
+
             try
             {
                 listBoxDzialkiNowe.Items.Refresh();
@@ -572,6 +579,7 @@ namespace ScaleniaMW
             imageHand.Stretch = Stretch.Fill;
             imageHand.Source = bi3;
         }
+        
     }
 }
 

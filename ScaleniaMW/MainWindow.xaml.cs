@@ -20,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Deployment;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace ScaleniaMW
 {
@@ -33,8 +34,6 @@ namespace ScaleniaMW
         static Button btNowychDzialek;
         static Button btRejGR;
         static Button btStanPo;
-
-
         public MainWindow()
         {
 

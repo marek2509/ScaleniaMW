@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW inż. Marek Wojciechowicz" Height="600" Width="1000" x:Name="windowNkrKwObrot">
+        Title="SCALENIAMW inż. Marek Wojciechowicz - NKR/KW na mapę" Height="600" Width="1000" x:Name="windowNkrKwObrot">
     <Grid>
         <Grid x:Name="gridNKRKW" Visibility="Visible">
             <Grid.RowDefinitions>
@@ -16,29 +16,29 @@
                 <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
-            <Menu Grid.Row="1">
+            <Menu Grid.Row="1" Background="#1e90ff" Foreground="White">
                 <MenuItem Header="Plik" >
-                    <MenuItem Header="_Otwórz Działki.edz" Click="otworzEDZ"></MenuItem>
-                    <MenuItem x:Name="obrNKR" Header="_Generuj plik z obróconym nr NKR" Click="ZapiszDoPliku"/>
-                    <MenuItem x:Name="obrKW" Header="_Generuj plik z obróconym nr KW" Click="ZapiszDoPliku"/>
+                    <MenuItem x:Name="otworzDzialkiEDZ" Header="_Otwórz Działki.edz" Click="otworzEDZ" Foreground="Black"></MenuItem>
+                    <MenuItem x:Name="obrNKR" Header="_Generuj plik z obróconym nr NKR" Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}" Click="ZapiszDoPliku"/>
+                    <MenuItem x:Name="obrKW" Header="_Generuj plik z obróconym nr KW"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}" Click="ZapiszDoPliku"/>
                     <Separator></Separator>
-                    <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"/>
+                    <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
                     <Separator></Separator>
-                    <MenuItem Header="Zamknij" Click="zamknijProgram_Click"/>
+                    <MenuItem Header="Zamknij" Click="zamknijProgram_Click"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
                 </MenuItem>
                 <MenuItem Header="Opcje">
-                    <MenuItem Header="Opcje KW/NKR" Click="MenuItem_Opcje"/>
+                    <MenuItem Header="Opcje KW/NKR" Click="MenuItem_Opcje"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
                     <CheckBox Content="Zawsze na wierzchu" IsChecked="False" x:Name="checkBoxCzyNaWierzchu" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
                 </MenuItem>
                 <MenuItem Header="Ustawienia FDB">
-                    <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"></MenuItem>
-                    <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"></MenuItem>
-                    <WrapPanel ToolTip="Opcja po scaleniu w przygotowaniu">
+                    <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+                    <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+                    <!--<WrapPanel ToolTip="Opcja po scaleniu w przygotowaniu">
                         <Label>Stan:</Label>
                         <RadioButton VerticalContentAlignment="Center" IsChecked="True">Przed scaleniem</RadioButton>
                         <Label></Label>
                         <RadioButton VerticalContentAlignment="Center"  IsEnabled="False">Po scaleniu</RadioButton>
-                    </WrapPanel>
+                    </WrapPanel>-->
                 </MenuItem>
                 <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza"></MenuItem>
             </Menu>
