@@ -139,6 +139,7 @@ namespace ScaleniaMW
 
         private void otworzEDZ(object sender, RoutedEventArgs e)
         {
+            stackBledyKW.Visibility = Visibility.Hidden;
             listaZEDZ = new List<DzialkaEDZ>();
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             if (!(Properties.Settings.Default.PathEDZ.Equals("") || Properties.Settings.Default.PathEDZ.Equals(null)))
@@ -245,7 +246,7 @@ namespace ScaleniaMW
                     Properties.Settings.Default.PathEDZ = dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\"));
                     Properties.Settings.Default.Save();
 
-                    tabControl.SelectedIndex = 0;
+                  //x  tabControl.SelectedIndex = 0;
                 }
                 catch (Exception esa)
                 {
@@ -357,6 +358,7 @@ namespace ScaleniaMW
                     //listBoxNkr.Items.Refresh();
                     //listBoxNrRej.Items.Refresh();
                     //dgNiedopJednostki.Items.Refresh();
+                    itemPolaczZBaza.Background = Brushes.Transparent;
                 }
                 catch (Exception esa)
                 {
@@ -378,7 +380,7 @@ namespace ScaleniaMW
             {
                 logBledowKW.Visibility = Visibility.Hidden;
                 odczytajZSql();
-                itemPolaczZBaza.Background = Brushes.LightSeaGreen;
+                itemPolaczZBaza.Background = Brushes.SeaGreen;
                 StringBuilder stringBuilder = new StringBuilder();
                 textBlockLogInfo.Text = "Połączono z bazą FDB. Ilość wczytanych linii: " + dt.Rows.Count + ".";
                 itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
@@ -391,8 +393,9 @@ namespace ScaleniaMW
                     }
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");
+
                 textBlockBledy.Text = stringBuilder.ToString();
-                tabControl.SelectedIndex = 1;
+               //x tabControl.SelectedIndex = 1;
             }
             catch (Exception ex)
             {
@@ -518,6 +521,22 @@ namespace ScaleniaMW
         {
             windowNkrKwObrot.Topmost = false;
         }
+
+        private void LogBledowKW_Click(object sender, RoutedEventArgs e)
+        {
+
+            stackBledyKW.Visibility = Visibility.Visible;
+            dgDzialkiEdz.Visibility = Visibility.Hidden;
+
+        }
+
+        private void ZamknijTextBlockBledy_Click(object sender, RoutedEventArgs e)
+        {
+            dgDzialkiEdz.Visibility = Visibility.Visible;
+            stackBledyKW.Visibility = Visibility.Hidden;
+            logBledowKW.Background = Brushes.Transparent;
+        }
+
 
     }
 }

@@ -36,11 +36,15 @@ namespace ScaleniaMW
         static Button btStanPo;
         public MainWindow()
         {
+ 
 
             InitializeComponent();
+    
+  
+
             try
             {
-
+            
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 windowScaleniaMW.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 btNKR_KW = buttonRodzajPracyNKR_KW;
@@ -52,6 +56,29 @@ namespace ScaleniaMW
             {
                 Console.WriteLine(e + " problem z oknem");
             }
+
+
+            try
+            {
+                Console.WriteLine("przypisz ip");
+                Email.przypiszIP();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            try
+            {
+                Email.przypiszIP();
+                //  Email.SendEmail("SCALENAMW", "użyto programu", "SCALENIAMW");
+                Console.WriteLine("czy wyslano: " + Email.SendEmail("SCALENAMW", "Właśnie użyto programu SCALENAMW\n\n", "SCALENAMW"));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
 
         }
 
