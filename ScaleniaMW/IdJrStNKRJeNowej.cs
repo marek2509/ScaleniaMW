@@ -8,12 +8,12 @@ namespace ScaleniaMW
 {
     class IdJrStNKRJeNowej
     {
-        public int idJednStarej;
+        public int idJednNowej;
         public int NKRJednNowej;
 
         public IdJrStNKRJeNowej(int JS,int JN)
         {
-            idJednStarej = JS;
+            idJednNowej = JS;
             NKRJednNowej = JN;
         }
     }

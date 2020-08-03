@@ -20,15 +20,16 @@ namespace ScaleniaMW
 
         }
 
-        public StanPrzedWartosci(decimal wart, int ijr, int nkr, int grp, int idgrp, int id)
+        public StanPrzedWartosci(decimal wart, int ijr, int nkr, int grp, int idgrp, int idJednNowej)
         {
             Wartosc = Decimal.Round(wart,2);
             IJR = ijr;
             NKR = nkr;
             GRP = grp;
             IDGRP = idgrp;
-            id_id = id;
+            id_id = idJednNowej;
         }                  
+
         public void wypiszwConsoli()
         {
             Console.WriteLine(Wartosc + " "+ IJR + " "+ NKR + " " + GRP + " " + IDGRP);

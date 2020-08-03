@@ -16,7 +16,7 @@ namespace ScaleniaMW
             get => _wartPrzed;
             set
             {
-                _wartPrzed = Decimal.Round(value);
+                _wartPrzed = Decimal.Round(value,2);
                 Roznice = WartPo - WartPrzed;
             }
         }
@@ -34,13 +34,13 @@ namespace ScaleniaMW
 
         public void wypiszWConsoli()
         {
-            Console.WriteLine(NKR + " " + WartPrzed + " " + WartPo + " \t\t\tROZNICE" + Roznice);
+            Console.WriteLine(NKR + " " + WartPrzed + " " + WartPo + " \t\t\tROZNICE" + Roznice + " idPo:" + IdPo);
         }
 
 
         public decimal Roznice { get; set; }
 
-        public int IdPrzed;
+        public int IdPo;
 
         public ZsumwaneWartosciZPorownania()
         {
