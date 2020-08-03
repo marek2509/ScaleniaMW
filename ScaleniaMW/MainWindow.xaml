@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW - inż. Marek Wojciechowicz - Wojewódzkie Biuro Geodezji w Białymstoku" x:Name="windowScaleniaMW"  Width="800" SizeToContent="Height" ResizeMode="NoResize">
+        Title="SCALENIAMW - inż. Marek Wojciechowicz - Wojewódzkie Biuro Geodezji w Białymstoku" x:Name="windowScaleniaMW"  Width="1000" SizeToContent="Height" ResizeMode="NoResize">
     <Grid>
         <DockPanel  x:Name="dockCoChceszZrobić" Panel.ZIndex="101">
 
@@ -17,8 +17,9 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="270"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="270"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Background="#1e304f" FontWeight="Bold" Foreground="White" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić</Label>
+                <Label Background="#1e304f" FontWeight="Bold" Foreground="White" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić</Label>
                 <StackPanel Grid.Row="2">
 
 
@@ -59,10 +60,19 @@
                 <Image x:Name="imgNrJRprzypisz" Grid.Column="1" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrJRPrzypisz.png"  Opacity="0.7"/>
                 <Image x:Name="imgKWprzypisz" Grid.Column="1" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrKWPrzypisz.png"  Opacity="0.7"/>
                 <Image x:Name="imgKWpNaMape" Grid.Column="1" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/KWNaMape.png"  Opacity="0.7"/>
+               
+                <StackPanel Grid.Column="3" Grid.Row="2">
+                    <Button   HorizontalAlignment="Right"  Margin="1,1,0,0" MouseEnter="PorownanieStanuPrzedIPo_MouseEnter"  MouseLeave="PorownanieStanuPrzedIPo_MouseLeave" 
+                                    Click="PorownanieStanuPrzedIPo_Click" Background="#1e90ff"  Width="250" Height="100" x:Name="buttonPorownanieStanuPrzedIPo" FontSize="13">
+                        <StackPanel>
+                            <Label x:Name="labelPorownaniePrzePo"  FontWeight="Bold" Foreground="White">PORÓWNANIE WART. "PRZED/PO"</Label>
+                            <Image x:Name="imagePorownanieWaga"  Source="Resources/wagaWhite.png" Width="60"></Image>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
 
 
             </Grid>
-
 
         </DockPanel>
 

@@ -28,7 +28,7 @@
     <ProductName>SCALENIAMW</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>22</ApplicationRevision>
+    <ApplicationRevision>24</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -64,7 +64,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>pencil-1.ico</ApplicationIcon>
@@ -97,20 +97,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AktualizacjaOprogramowania.cs" />
     <Compile Include="BadanieKsiagWieczystych.cs" />
     <Compile Include="DopasowanieJednostek.cs" />
     <Compile Include="DopasowanieKW.cs" />
     <Compile Include="DzialkaNkrZSQL.cs" />
     <Compile Include="DzNkrKWzSQLProponow.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="IdJrStNKRJeNowej.cs" />
     <Compile Include="Obliczenia.cs" />
     <Compile Include="DzialkaEDZ.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="StanPrzedWartosci.cs" />
     <Compile Include="WindowKwNaMapePO.xaml.cs">
       <DependentUpon>WindowKwNaMapePO.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowNkrKwObrot.xaml.cs">
       <DependentUpon>WindowNkrKwObrot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowPorownajPrzedPo.xaml.cs">
+      <DependentUpon>WindowPorownajPrzedPo.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowPrzypiszKW.xaml.cs">
       <DependentUpon>WindowPrzypiszKW.xaml</DependentUpon>
@@ -118,6 +124,7 @@
     <Compile Include="WindowPrzypiszRejGr.xaml.cs">
       <DependentUpon>WindowPrzypiszRejGr.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ZsumwaneWartosciZPorownania.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -135,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowNkrKwObrot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowPorownajPrzedPo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,6 +213,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\penWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\waga.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\wagaWhite.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

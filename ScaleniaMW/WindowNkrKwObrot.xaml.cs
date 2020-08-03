@@ -70,10 +70,17 @@ namespace ScaleniaMW
                 command.Transaction = transaction;
                 // działające zapytanie na nrobr-nrdz NKR 
                 //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI, kw from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+               // command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI, kw from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+                command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, JEDN_REJ.nkr NKR_Z_GRUPAMI, kw, JEDN_REJ.idgrp from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+                
+
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 dt = new DataTable();
+
+
+
+
 
                 adapter.Fill(dt);
                 foreach (var item in dt.Columns)
@@ -87,14 +94,37 @@ namespace ScaleniaMW
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
 
-                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString()));
+                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(
+                        dt.Rows[i][0].ToString(),
+                        Convert.ToInt32(dt.Rows[i][1].Equals(System.DBNull.Value) ? null : dt.Rows[i][1]), 
+                        dt.Rows[i][2].ToString(),
+                         Convert.ToInt32(dt.Rows[i][3].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][3])));
                 }
+
+
+                while (listaDzNkrzSQL.Exists(x => x.NKR == 0))
+                {
+                    DzialkaNkrZSQL tmp = new DzialkaNkrZSQL();
+                    tmp = listaDzNkrzSQL.Find(x => x.NKR == 0);
+                    DzialkaNkrZSQL tmp2 = new DzialkaNkrZSQL();
+
+                    tmp2 = listaDzNkrzSQL.Find(x => x._grp == tmp._grp && x.NKR != 0);
+                    //stanPrzedZnalezionyZNKREM.wypiszwConsoli();
+                    Console.WriteLine("tmp: " + tmp._grp + " " +tmp.NKR + tmp.ObrDzialka );
+                    Console.WriteLine("tmp2: " + tmp2._grp + " " +tmp2.NKR + tmp2.ObrDzialka );
+                    tmp.NKR = tmp2.NKR;
+                    //  stanPrzedWartoscis.Find(x => x.Equals(stanPrzed)).wypiszwConsoli();
+                    // break;
+                }
+                
+
+
                 try
                 {
                     //dataGrid.ItemsSource = dt.AsDataView();
                     //dataGrid.Visibility = Visibility.Visible;
                     //dataGrid.Items.Refresh();
-                    dgNkrFDB.ItemsSource = dt.AsDataView();
+                    dgNkrFDB.ItemsSource = listaDzNkrzSQL;
                     dgNkrFDB.Visibility = Visibility.Visible;
                     dgNkrFDB.Items.Refresh();
 

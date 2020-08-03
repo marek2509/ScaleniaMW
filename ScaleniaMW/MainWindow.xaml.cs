@@ -34,6 +34,7 @@ namespace ScaleniaMW
         static Button btNowychDzialek;
         static Button btRejGR;
         static Button btStanPo;
+        static Button btPorownaniePrzedPo;
         public MainWindow()
         {
  
@@ -51,6 +52,7 @@ namespace ScaleniaMW
                 btNowychDzialek = buttonPrzypiszKwDlaNowychDzialek;
                 btRejGR = buttonRodzajPracyPrzypisanieRejGr;
                 btStanPo = buttonRodzPracyKWnaMapeStanPO;
+                btPorownaniePrzedPo = buttonPorownanieStanuPrzedIPo;
             }
             catch (Exception e)
             {
@@ -78,8 +80,15 @@ namespace ScaleniaMW
             {
                 Console.WriteLine(e.Message);
             }
+            try
+            {
+                AktualizacjaOprogramowania.aktualizuj();
+            }
+            catch
+            {
 
-
+            }
+     
         }
 
         List<DzialkaEDZ> listaZEDZ = new List<DzialkaEDZ>();
@@ -994,7 +1003,60 @@ namespace ScaleniaMW
             if (btStanPo.ActualWidth < 250)
                 btStanPo.Width = 250;
         }
+        /// <summary>
+        /// //////////////////////
+        /// </summary>
+        private void UpdateProgressbuttonPorownaniePrzedPo()
+        {
+            btPorownaniePrzedPo.Width += 0.4;
+            if (btPorownaniePrzedPo.ActualWidth > 275)
+                btPorownaniePrzedPo.Width = 250;
+        }
+        private void UpdateRegresbuttonPorownaniePrzedPo()
+        {
+            btPorownaniePrzedPo.Width -= 0.4;
+            if (btPorownaniePrzedPo.ActualWidth < 250)
+                btPorownaniePrzedPo.Width = 250;
+        }
         private delegate void ProgressBarDelegate();
+
+
+        private void PorownanieStanuPrzedIPo_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/wagaWhite.png", UriKind.Relative);
+            bi3.EndInit();
+            imagePorownanieWaga.Source = bi3;
+
+            labelPorownaniePrzePo.Foreground = Brushes.White;
+            for (int i = 0; i < 25; i++)
+            {
+                btPorownaniePrzedPo.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonPorownaniePrzedPo), DispatcherPriority.Background);
+            }
+        }
+
+        private void PorownanieStanuPrzedIPo_MouseEnter(object sender, MouseEventArgs e)
+        {
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/waga.png", UriKind.Relative);
+            bi3.EndInit();
+            imagePorownanieWaga.Source = bi3;
+            labelPorownaniePrzePo.Foreground = Brushes.Black;
+            for (int i = 0; i < 25; i++)
+            {
+                btPorownaniePrzedPo.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonPorownaniePrzedPo), DispatcherPriority.Background);
+            }
+        }
+
+        private void PorownanieStanuPrzedIPo_Click(object sender, RoutedEventArgs e)
+        {
+            WindowPorownajPrzedPo windowPorownajPrzedPo = new WindowPorownajPrzedPo();
+            windowPorownajPrzedPo.Show();
+            windowScaleniaMW.Close();
+        }
 
 
 

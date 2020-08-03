@@ -165,7 +165,7 @@ namespace ScaleniaMW
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
 
-                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), dt.Rows[i][1].ToString(), dt.Rows[i][2].ToString()));
+                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), Convert.ToInt32( dt.Rows[i][1]), dt.Rows[i][2].ToString()));
                 }
                 try
                 {
