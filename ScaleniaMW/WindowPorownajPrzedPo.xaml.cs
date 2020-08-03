@@ -81,7 +81,7 @@ namespace ScaleniaMW
                     ustawProperties(dlg.FileName);
 
                     itemPolaczZBaza.Background = Brushes.Transparent;
-
+                    itemPolaczZBaza.Header = "Połącz z bazą";
                     stanPrzedWartoscis = new List<StanPrzedWartosci>();
                     resultPorownanie = new List<ZsumwaneWartosciZPorownania>();
                     dgPorownanie.ItemsSource = resultPorownanie;
