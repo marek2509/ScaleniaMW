@@ -40,6 +40,13 @@
                 <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
                 <Separator></Separator>
                 <MenuItem Header="Usuń wszystkie przypisane jednostki z bazy" Click="ItemUsunPrzypisaneJednostkiZBazy" Foreground="IndianRed"/>
+                <Separator></Separator>
+                <Separator></Separator>
+                <Separator></Separator>
+
+                    <MenuItem Header="Nadaj NKR w stanie po ''scaleniu''" ToolTip="W tabeli JEDN_REJ_N zostaną ponumerowane jednostki od 1 do n" Click="NadajNKrWStaniePo" Foreground="Black"/>
+                    <MenuItem Header="Wyczyść NKR w stanie po ''scaleniu''" Foreground="Black" Click="MenuItem_ClickWyczyscNKRwStaniePo"/>
+
             </MenuItem>
         </Menu>
 

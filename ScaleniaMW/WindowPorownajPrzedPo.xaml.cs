@@ -228,8 +228,10 @@ namespace ScaleniaMW
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    idJrNowejNKRJeNowej.Add(new IdJrStNKRJeNowej(Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]),
-                        Convert.ToInt32(dt.Rows[i][1].Equals(System.DBNull.Value) ? null : dt.Rows[i][1])));
+                    idJrNowejNKRJeNowej.Add(new IdJrStNKRJeNowej(
+                        Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]),
+                        Convert.ToInt32(dt.Rows[i][1].Equals(System.DBNull.Value) ? null : dt.Rows[i][1]), 0.99
+                        ));
                 }
 
 
@@ -240,7 +242,7 @@ namespace ScaleniaMW
                 // command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.grp, j.idgrp, j.ID_ID from dzialka d join jedn_rej j on j.ID_ID = d.rjdr order by idgrp";
 
                 // dodano do tabeli id jednN
-                command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.grp, j.idgrp, jsn.id_jednn from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id order by idgrp";
+                command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.grp, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id order by idgrp";
                 /*
                                 for (int i = 0; i < dt.Rows.Count; i++)
                                 {
@@ -259,7 +261,9 @@ namespace ScaleniaMW
                         Convert.ToInt32(dt.Rows[i][2].Equals(System.DBNull.Value) ? null : dt.Rows[i][2]),
                         Convert.ToInt32(dt.Rows[i][3].Equals(System.DBNull.Value) ? null : dt.Rows[i][3]),
                         Convert.ToInt32(dt.Rows[i][4].Equals(System.DBNull.Value) ? null : dt.Rows[i][4]),
-                        Convert.ToInt32(dt.Rows[i][5].Equals(System.DBNull.Value) ? null : dt.Rows[i][5])));
+                        Convert.ToInt32(dt.Rows[i][5].Equals(System.DBNull.Value) ? null : dt.Rows[i][5]),
+                        Convert.ToDouble(dt.Rows[i][5].Equals(System.DBNull.Value) ? null : dt.Rows[i][6])));
+
                 }
 
 
@@ -291,7 +295,7 @@ namespace ScaleniaMW
              {
                  NKR = (int)cl.First().NKR,
                  IdPo = (int)cl.First().id_id,
-                 WartPrzed = cl.Sum(c => c.Wartosc)
+                 WartPrzed = cl.Sum(c => (c.Wartosc * (decimal)c.udzialPrzed))
              }).ToList();
 
                 Console.WriteLine("punkt kontrolny 2");
@@ -308,7 +312,9 @@ namespace ScaleniaMW
                 //    }
 
                 //}
-
+                Console.WriteLine("________________________________________");
+                resultPorownanie.ForEach(x => x.wypiszWConsoli());
+                Console.WriteLine("________________________________________");
                 foreach (var item in resultPorownanie)
                 {
 
@@ -316,7 +322,7 @@ namespace ScaleniaMW
                     if (zsumwaneWartosciStanPO.Exists(x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej))
                     {
 
-                        zsumwaneWartosciStanPO.Find((x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej)).WartPrzed = item.WartPrzed;
+                        zsumwaneWartosciStanPO.Find((x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej)).WartPrzed += item.WartPrzed;
                     }
                     else
                     {

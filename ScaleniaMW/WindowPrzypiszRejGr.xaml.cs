@@ -26,13 +26,13 @@ namespace ScaleniaMW
     /// </summary>
     public partial class WindowPrzypiszRejGr : Window
     {
-   
+
         public WindowPrzypiszRejGr()
         {
             InitializeComponent();
             try
             {
-              
+
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 windowPrzypiszRejGr.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -109,7 +109,7 @@ namespace ScaleniaMW
 
                     Console.WriteLine(esa + "Błędny format importu działek");
 
-                    
+
                 }
             }
         }
@@ -228,7 +228,7 @@ namespace ScaleniaMW
         private void ListBoxNkr_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
-           listBoxDzialkiNowe.SelectedIndex = listBoxDzialkiNowe.SelectedIndex >= 0 && listBoxDzialkiNowe.SelectedIndex < listBoxDzialkiNowe.Items.Count ? listBoxDzialkiNowe.SelectedIndex : 0;
+            listBoxDzialkiNowe.SelectedIndex = listBoxDzialkiNowe.SelectedIndex >= 0 && listBoxDzialkiNowe.SelectedIndex < listBoxDzialkiNowe.Items.Count ? listBoxDzialkiNowe.SelectedIndex : 0;
 
         }
 
@@ -314,13 +314,10 @@ namespace ScaleniaMW
         {
             if (czyPolaczonoZBaza)
             {
-
-
                 var resultat = MessageBox.Show("Czy chcesz rozpocząć ładowanie do bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
 
                 if (resultat == MessageBoxResult.Yes)
                 {
-
                     aktualizujSciezkeZPropertis();
                     using (var connection = new FbConnection(connectionString))
                     {
@@ -419,7 +416,7 @@ namespace ScaleniaMW
             Properties.Settings.Default.Login = textBoxLogin.Text;
             Properties.Settings.Default.Haslo = passwordBoxLogowanie.Password;
             Properties.Settings.Default.Save();
-          //  textBoxHaslo.Text = "";
+            // textBoxHaslo.Text = "";
             panelLogowania2.Visibility = Visibility.Hidden;
             //dataGrid.Visibility = Visibility.Visible;
             tabItemNiedopasowJedn.Visibility = Visibility.Visible;
@@ -431,8 +428,6 @@ namespace ScaleniaMW
             //dataGrid.Visibility = Visibility.Visible;
             tabItemNiedopasowJedn.Visibility = Visibility.Visible;
         }
-
-
 
         private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
         {
@@ -497,7 +492,7 @@ namespace ScaleniaMW
                 bool czyPasi = false;
                 foreach (var item in listaDopasowJednos.FindAll(x => x.IdDz.Equals(listaDopasowJednos[e.Row.GetIndex()].IdDz)))
                 {
-                    Console.WriteLine(item.IdDz + " " + item.NrJednEwopis +  " " + item.PrzypisanyNrRej);
+                    Console.WriteLine(item.IdDz + " " + item.NrJednEwopis + " " + item.PrzypisanyNrRej);
                     int tmpNrRej;
                     int.TryParse(((TextBox)e.EditingElement).Text, out tmpNrRej);
                     if (item.IdJednS.Equals(tmpNrRej))
@@ -512,7 +507,7 @@ namespace ScaleniaMW
                     {
                         Console.WriteLine(czyPasi + " czy pasi");
                         int tmpNrRej;
-                        int.TryParse(((TextBox)e.EditingElement).Text,out tmpNrRej);
+                        int.TryParse(((TextBox)e.EditingElement).Text, out tmpNrRej);
                         item.PrzypisanyNrRej = tmpNrRej;
                     }
                     else
@@ -526,7 +521,7 @@ namespace ScaleniaMW
                 {
                     Console.WriteLine("pip: " + item.PrzypisanyNrRej);
                 }
-               
+
                 listBoxNkr.Items.Refresh();
                 listBoxNrRej.Items.Refresh();
                 listBoxDzialkiNowe.Items.Refresh();
@@ -539,7 +534,7 @@ namespace ScaleniaMW
         {
             try
             {
-              //  Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+                //  Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
 
                 Console.WriteLine("CHANGED ");
 
@@ -579,7 +574,132 @@ namespace ScaleniaMW
             imageHand.Stretch = Stretch.Fill;
             imageHand.Source = bi3;
         }
-        
+
+        private void NadajNKrWStaniePo(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                aktualizujSciezkeZPropertis();
+                using (var connection = new FbConnection(connectionString))
+                {
+                    connection.Open();
+                    FbCommand command = new FbCommand();
+                    FbTransaction transaction = connection.BeginTransaction();
+
+                    command.Connection = connection;
+                    command.Transaction = transaction;
+                    // działające zapytanie na nrobr-nrdz NKR 
+                    //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+                    // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
+                   // command.CommandText = "select  j.id_id from jedn_rej_N j join obreby o on o.id_ID = j.id_obr join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
+                    command.CommandText = "select distinct  j.id_id from jedn_rej_N j join dzialki_n dn on dn.rjdr = j.iD_ID join obreby o on o.id_ID = dn.idobr join gminy g on g.id_id = dn.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
+                    FbDataAdapter adapter = new FbDataAdapter(command);
+                    dt = new DataTable();
+
+                    adapter.Fill(dt);
+
+                    Console.WriteLine("row count:" + dt.Rows.Count);
+                    Console.WriteLine("column count:" + dt.Columns.Count);
+
+                    if (0 == dt.Rows.Count)
+                    {
+                        textBlockLogInfo.Text = "Brak danych";
+
+                    }
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+
+                        Console.WriteLine(dt.Rows[i][0]);
+
+
+
+                    }
+
+
+
+
+                    connection.Close();
+                    itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
+                    itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
+                    dgNiedopJednostki.Items.Refresh();
+                    czyPolaczonoZBaza = true;
+                }
+                try
+                {
+                    aktualizujSciezkeZPropertis();
+                    using (var connection = new FbConnection(connectionString))
+                    {
+                        connection.Open();
+                        FbCommand writeCommand = new FbCommand("UPDATE JEDN_REJ_N SET nkr= @NKR where Id_Id IN(@IDID)", connection);
+                        //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
+
+                        progresBar.Value = 0;
+                        progresBar.Visibility = Visibility.Visible;
+                        progresBar.Maximum = dt.Rows.Count;
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+
+                            Console.WriteLine(dt.Rows[i][0]);
+
+                        }
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+
+                            writeCommand.Parameters.Add("@NKR", i + 1);
+                            writeCommand.Parameters.Add("@IDID", dt.Rows[i][0]);
+                            writeCommand.ExecuteNonQuery();
+
+                            writeCommand.Parameters.Clear();
+                            progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+
+                        }
+                        connection.Close();
+                        MessageBox.Show("NKR przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+                        progresBar.Visibility = Visibility.Hidden;
+
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                itemImportJednostkiSN.Background = Brushes.Red;
+                itemImportJednostkiSN.Header = "Baza.fdb";
+                textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
+            }
+        }
+
+        private void MenuItem_ClickWyczyscNKRwStaniePo(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var resultat = MessageBox.Show("Czy chcesz usunąć wcześniej przypisane NKRy z bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+                if (resultat == MessageBoxResult.Yes)
+                {
+                    aktualizujSciezkeZPropertis();
+                    using (var connection = new FbConnection(connectionString))
+                    {
+                        connection.Open();
+                        FbCommand writeCommand = new FbCommand("UPDATE jedn_rej_N SET NKR = null", connection);
+                        //writeCommand.ExecuteNonQuery();
+                        writeCommand.ExecuteNonQueryAsync();
+                        connection.Close();
+                        MessageBox.Show("NKRy usunięto pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
     }
 }
 
