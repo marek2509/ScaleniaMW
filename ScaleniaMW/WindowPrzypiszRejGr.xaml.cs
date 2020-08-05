@@ -592,7 +592,7 @@ namespace ScaleniaMW
                     //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
                     // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
                    // command.CommandText = "select  j.id_id from jedn_rej_N j join obreby o on o.id_ID = j.id_obr join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
-                    command.CommandText = "select distinct  j.id_id from jedn_rej_N j join dzialki_n dn on dn.rjdr = j.iD_ID join obreby o on o.id_ID = dn.idobr join gminy g on g.id_id = dn.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
+                    command.CommandText = "select distinct j.id_id from jedn_rej_N j left join dzialki_n dn on dn.rjdr = j.iD_ID left join obreby o on o.id_ID = j.id_obr left join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
                     FbDataAdapter adapter = new FbDataAdapter(command);
                     dt = new DataTable();
 

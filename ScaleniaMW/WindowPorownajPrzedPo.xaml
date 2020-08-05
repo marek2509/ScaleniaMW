@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="WindowPorownajPrzedPo" Height="450" Width="800" x:Name="windowPorownajPrzedPo">
+        Title="SCALENIAMW inż. Marek Wojciechowicz - Ekwiwalent należny / zaprojektowany" Height="450" Width="800" x:Name="windowPorownajPrzedPo">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>

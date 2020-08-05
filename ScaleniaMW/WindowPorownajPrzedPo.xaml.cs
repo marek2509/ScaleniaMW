@@ -208,6 +208,8 @@ namespace ScaleniaMW
                 Console.WriteLine("column count:" + dt.Columns.Count);
 
                 List<ZsumwaneWartosciZPorownania> zsumwaneWartosciStanPO = new List<ZsumwaneWartosciZPorownania>();
+                dgPorownanie.ItemsSource = zsumwaneWartosciStanPO;
+                dgPorownanie.Items.Refresh();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     zsumwaneWartosciStanPO.Add(new ZsumwaneWartosciZPorownania(Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]),
@@ -390,13 +392,13 @@ namespace ScaleniaMW
                 //    Console.WriteLine(item.NKR + " " + item.WartPrzed + " " + item.WartPo);
                 //}
 
-
+                dgPorownanie.ItemsSource = zsumwaneWartosciStanPO;
                 try
                 {
                     //dataGrid.ItemsSource = dt.AsDataView();
                     //dataGrid.Visibility = Visibility.Visible;
                     //dataGrid.Items.Refresh();
-                    dgPorownanie.ItemsSource = zsumwaneWartosciStanPO;
+                    
                     dgPorownanie.Visibility = Visibility.Visible;
                     dgPorownanie.Items.Refresh();
 
