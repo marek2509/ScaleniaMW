@@ -604,20 +604,12 @@ namespace ScaleniaMW
                     if (0 == dt.Rows.Count)
                     {
                         textBlockLogInfo.Text = "Brak danych";
-
                     }
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-
                         Console.WriteLine(dt.Rows[i][0]);
-
-
-
                     }
-
-
-
 
                     connection.Close();
                     itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
@@ -646,19 +638,15 @@ namespace ScaleniaMW
 
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
-
                             writeCommand.Parameters.Add("@NKR", i + 1);
                             writeCommand.Parameters.Add("@IDID", dt.Rows[i][0]);
                             writeCommand.ExecuteNonQuery();
-
                             writeCommand.Parameters.Clear();
                             progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
-
                         }
                         connection.Close();
                         MessageBox.Show("NKR przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
                         progresBar.Visibility = Visibility.Hidden;
-
                     }
                 }
                 catch

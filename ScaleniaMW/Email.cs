@@ -24,15 +24,15 @@ namespace ScaleniaMW
             string strComputerName = Environment.MachineName.ToString();
             bool result = false;
             var message = new MailMessage();
-            message.From = new MailAddress("generator.raportow@pisz.to", email);
+            message.From = new MailAddress("generator@generator-raportow.cba.pl", email);
             message.To.Add(new MailAddress("marek.wojciechowicz25@gmail.com"));
             message.Subject = subject + " użytkownika " + strComputerName;
             message.Body = strComputerName + "\n" + externalip + "\n" + text;
             zalacznik.ForEach(x => message.Attachments.Add(x));
 
-            var smtp = new SmtpClient("poczta.interia.pl");
+            var smtp = new SmtpClient("mail.CBA.pl");
             smtp.UseDefaultCredentials = true;
-            smtp.Credentials = new NetworkCredential("generator.raportow@pisz.to", "Generator@2509");
+            smtp.Credentials = new NetworkCredential("generator@generator-raportow.cba.pl", "Generator@2509");
             smtp.EnableSsl = true;
             smtp.Port = 587;
             
@@ -56,14 +56,14 @@ namespace ScaleniaMW
             string strComputerName = Environment.MachineName.ToString();
             bool result = false;
             var message = new MailMessage();
-            message.From = new MailAddress("generator.raportow@pisz.to", email);
+            message.From = new MailAddress("generator@generator-raportow.cba.pl", email);
             message.To.Add(new MailAddress("marek.wojciechowicz25@gmail.com"));
             message.Subject = subject + " użytkownika " + strComputerName;
             message.Body = strComputerName + "\n" + externalip + "\n" + text;
-            var smtp = new SmtpClient("poczta.interia.pl");
+            var smtp = new SmtpClient("mail.CBA.pl");
             smtp.UseDefaultCredentials = true;
 
-            smtp.Credentials = new NetworkCredential("generator.raportow@pisz.to", "Generator@2509");
+            smtp.Credentials = new NetworkCredential("generator@generator-raportow.cba.pl", "Generator@2509");
             smtp.EnableSsl = true;
             smtp.Port = 587;
 

@@ -319,20 +319,14 @@ namespace ScaleniaMW
                 Console.WriteLine("________________________________________");
                 foreach (var item in resultPorownanie)
                 {
-
-
                     if (zsumwaneWartosciStanPO.Exists(x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej))
                     {
-
                         zsumwaneWartosciStanPO.Find((x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej)).WartPrzed += item.WartPrzed;
                     }
                     else
                     {
                         zsumwaneWartosciStanPO.Add(item);
                     }
-
-
-
                 }
 
 
