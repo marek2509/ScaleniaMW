@@ -18,14 +18,16 @@
 
 
                 <MenuItem VerticalContentAlignment="Center" VerticalAlignment="Center" x:Name="menuItemPlik" Header="Plik">
-                    <MenuItem Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
+                    <MenuItem Header="Otwórz okno startowe" x:Name="otworzOknoStartowe" Click="otworzOknoPoczatkowe_Click"  Foreground="Black"/>
                     <Separator></Separator>
-                    <MenuItem Header="Zamknij" Click="zamknijProgram_Click"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
+                <MenuItem Header="Zamknij" Click="zamknijProgram_Click"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"/>
                 </MenuItem>
-
-                <MenuItem Header="Ustawienia FDB" Foreground="White">
-                    <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
-                    <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+            <MenuItem Header="Opcje">
+                <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
+            </MenuItem>
+            <MenuItem Header="Ustawienia FDB" Foreground="White">
+                <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>
+                <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>
                     <!--<WrapPanel ToolTip="Opcja po scaleniu w przygotowaniu">
                         <Label>Stan:</Label>
                         <RadioButton VerticalContentAlignment="Center" IsChecked="True">Przed scaleniem</RadioButton>
@@ -48,7 +50,7 @@
                     <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj">Anuluj</Button>
                 </WrapPanel>
             </StackPanel>
-        <DataGrid Grid.Row="2" x:Name="dgPorownanie"></DataGrid>
+        <DataGrid Grid.Row="2" x:Name="dgPorownanie"  IsReadOnly="True"></DataGrid>
         
             <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
     </Grid>

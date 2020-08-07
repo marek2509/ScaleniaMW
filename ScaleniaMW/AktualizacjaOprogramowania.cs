@@ -39,9 +39,27 @@ namespace ScaleniaMW
             return "";
         }
 
+        public static bool? CzyBlokowacProgram(string FTPstring = @"ftp://generator-raportow.cba.pl/SCALENIAMWCZYBLOKOWACTAKNIE")
+        {
+            string tekstCzyBlokowacProgram = StringFileFromServer(FTPstring);
+            Console.WriteLine("czy blokowac: " + tekstCzyBlokowacProgram);
+           if(tekstCzyBlokowacProgram.ToUpper().Equals("TAK"))
+            {
+                return true;
+            }
+            else if(tekstCzyBlokowacProgram.ToUpper().Equals("NIE"))
+            {
+                return false;
+            }
+            else
+            {
+                return null;
+            }
 
+       
+        }
 
-        public static bool czyJestNowszaWersja(string FTPstring = @"ftp://generator-raportow.cba.pl/SCALENIAMWVersion")
+            public static bool czyJestNowszaWersja(string FTPstring = @"ftp://generator-raportow.cba.pl/SCALENIAMWVersion")
         {
             string wersjaZFtp = StringFileFromServer(FTPstring);
 
@@ -69,8 +87,6 @@ namespace ScaleniaMW
             {
                 if (wersjaAppInt[i] < wersjaFtpInt[i])
                 {
-
-
                     var resul = MessageBox.Show("Jest dostępna nowsza wersja programu. \nPobrać pliki instalacyjne?", "Aktualizacja", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (resul == MessageBoxResult.Yes)
                     {
@@ -91,7 +107,6 @@ namespace ScaleniaMW
                     {
                         return false;
                     }
-
                 }
             }
             return false;

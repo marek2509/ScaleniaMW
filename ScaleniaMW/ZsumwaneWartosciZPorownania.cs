@@ -9,8 +9,7 @@ namespace ScaleniaMW
     class ZsumwaneWartosciZPorownania
     {
         public int NKR { get; set; }
-
-        decimal _wartPrzed;
+        public int Nkr_Przed;
         public decimal WartPrzed
         {
             get => _wartPrzed;
@@ -18,10 +17,10 @@ namespace ScaleniaMW
             {
                 _wartPrzed = Decimal.Round(value,2);
                 Roznice = WartPo - WartPrzed;
+                odch_3_Proc =Decimal.Round(WartPrzed * 0.03M,2);
             }
         }
-
-        decimal _wartPo;
+       
         public decimal WartPo
         {
             get => _wartPo;          
@@ -31,28 +30,27 @@ namespace ScaleniaMW
                 Roznice = WartPo - WartPrzed;
             }
         }
-
-        public void wypiszWConsoli()
-        {
-            Console.WriteLine(NKR + " " + WartPrzed + " " + WartPo + " \t\t\tROZNICE" + Roznice + " idPo:" + IdPo);
-        }
-
-
         public decimal Roznice { get; set; }
-
+        public decimal odch_3_Proc { get; set; }
+        decimal _wartPo;
+        decimal _wartPrzed;
         public int IdPo;
-
+        
         public ZsumwaneWartosciZPorownania()
         {
-
         }
 
-        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0 )
+        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0)
         {
             NKR = nkr;
             WartPrzed = wartPrzed;
             WartPo = wartPo;
             Roznice = WartPo - WartPrzed;
         }
+
+        public void wypiszWConsoli()
+        {
+            Console.WriteLine(NKR + "<NKR WartPrzed>" + WartPrzed + " " + WartPo + "<wart po ROZNICE>" + Roznice + " idPo:>" + IdPo + "nkrprzed>" + Nkr_Przed);
+        }      
     }
 }
