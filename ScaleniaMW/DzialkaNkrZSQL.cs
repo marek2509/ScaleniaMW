@@ -20,10 +20,22 @@ namespace ScaleniaMW
             KW = kw;
             _grp = grp ;
         }
-        
+      
+
+         public DzialkaNkrZSQL(string obrDz, int nkr, decimal wartosc, string kw = "", int grp = 0)
+        {
+            ObrDzialka = obrDz;
+            NKR = nkr;
+            KW = kw;
+            _grp = grp;
+            WartoscDz = String.Format("{0:F0}", wartosc);
+        }
+
         public string ObrDzialka { get; set; } 
         public int NKR { get; set; }
         public string KW { get; set; }
+        public string WartoscDz { get; set; }
+
         public int _grp;
     }
 }

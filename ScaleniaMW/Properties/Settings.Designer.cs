@@ -130,5 +130,65 @@ namespace ScaleniaMW.Properties {
                 this["CzyBlokowacProgram"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public int OdsumieciePionoweTekstu {
+            get {
+                return ((int)(this["OdsumieciePionoweTekstu"]));
+            }
+            set {
+                this["OdsumieciePionoweTekstu"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int JustyfikacjNKR {
+            get {
+                return ((int)(this["JustyfikacjNKR"]));
+            }
+            set {
+                this["JustyfikacjNKR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public int JustyfikacjaWartosci {
+            get {
+                return ((int)(this["JustyfikacjaWartosci"]));
+            }
+            set {
+                this["JustyfikacjaWartosci"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckBoxPodkreslenieNKR {
+            get {
+                return ((bool)(this["CheckBoxPodkreslenieNKR"]));
+            }
+            set {
+                this["CheckBoxPodkreslenieNKR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CheckBoxPodkreslenieWARTOSCI {
+            get {
+                return ((bool)(this["CheckBoxPodkreslenieWARTOSCI"]));
+            }
+            set {
+                this["CheckBoxPodkreslenieWARTOSCI"] = value;
+            }
+        }
     }
 }

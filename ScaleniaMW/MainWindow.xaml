@@ -49,7 +49,7 @@
                              Width="250" Height="100" FontSize="13" x:Name="buttonRodzPracyKWnaMapeStanPO" Click="ButtonRodzPracyKWnaMapeStanPO_Click" 
                              MouseEnter="ButtonRodzPracyKWnaMapeStanPO_MouseEnter" MouseLeave="ButtonRodzPracyKWnaMapeStanPO_MouseLeave" >
                         <StackPanel >
-                            <Label HorizontalAlignment="Center" x:Name="label1RodzPracyKWnaMapeStanPO"  Foreground="White" FontWeight="Bold">KW NA MAPĘ</Label>
+                            <Label HorizontalAlignment="Center" x:Name="label1RodzPracyKWnaMapeStanPO"  Foreground="White" FontWeight="Bold">KW / WARTOŚĆ NA MAPĘ</Label>
                             <Label HorizontalAlignment="Center"  Foreground="{Binding ElementName=label1RodzPracyKWnaMapeStanPO, Path=Foreground}" FontWeight="Bold">STAN "PO"</Label>
                         </StackPanel>
                     </Button>

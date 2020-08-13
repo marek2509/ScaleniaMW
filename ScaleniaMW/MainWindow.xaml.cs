@@ -38,9 +38,8 @@ namespace ScaleniaMW
 
         public MainWindow()
         {
-
             InitializeComponent();
-
+           
             try
             {
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -71,7 +70,7 @@ namespace ScaleniaMW
             {
                 Email.przypiszIP();
                 //  Email.SendEmail("SCALENAMW", "użyto programu", "SCALENIAMW");
-                Console.WriteLine("czy wyslano: " + Email.SendEmail("SCALENAMW", "Właśnie użyto programu SCALENAMW\n\n", "SCALENAMW"));
+                Console.WriteLine("czy wyslano: " + Email.SendEmail("SCALENAMW", "Właśnie użyto programu SCALENIAMW\n\nWersja programu: " + Assembly.GetExecutingAssembly().GetName().Version.ToString(), "SCALENIA_MW"));
             }
             catch (Exception e)
             {
