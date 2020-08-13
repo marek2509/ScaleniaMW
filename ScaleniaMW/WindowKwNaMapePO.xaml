@@ -48,7 +48,7 @@
                 </MenuItem>
             </Menu>
 
-            <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Panel.ZIndex="100" x:Name="panelOpcje" Visibility="Visible" Background="White">
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Panel.ZIndex="100" x:Name="panelOpcje" Visibility="Hidden" Background="White">
                 <GroupBox>
                     <GroupBox.Header>Opcje dla Eksportu</GroupBox.Header>
                     <StackPanel>
