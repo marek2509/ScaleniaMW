@@ -519,7 +519,6 @@ namespace ScaleniaMW
                             {
                                 nrNiePustego = j;
                             }
-
                         }
 
                         if (tmpListaKW.Count != tmpListaKW.FindAll(x => x.KWprzed.Equals(tmpListaKW[nrNiePustego].KWprzed)).Count)
@@ -617,10 +616,9 @@ namespace ScaleniaMW
 
                     Console.WriteLine("x=<1");
                     List<int> NowyNkr = new List<int>();
-                    List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == "" || x.KWPoDopasowane == null);
+                    List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => (x.KWPoDopasowane == "" || x.KWPoDopasowane == null) && x.KWprzed!="");
                     // Console.WriteLine(listaKWdlaNowychDzialek.FindAll(x => x.KWprzed.Equals("")).Count + "count 11 ");
                     List<IDiNKR> lisIDnkr_NKR = tmpListNKRbezJednRej.GroupBy(x => new { x.NKRn, x.IdJednN }).Select(x => new IDiNKR { IdJednN = x.Key.IdJednN, NKR = x.Key.NKRn }).ToList();
-
                     NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
                     listBoxNkr.ItemsSource = NowyNkr;
                     Console.WriteLine(NowyNkr.Count + "NKR");
