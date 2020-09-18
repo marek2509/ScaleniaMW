@@ -8,16 +8,15 @@
         Title="SCALENIAMW inż. Marek Wojciechowicz - Przypisanie nr rej. gr. z przed scalenia" Height="600" Width="1050" x:Name="windowPrzypiszRejGr">
     <Grid x:Name="gridPrzypisaanieJednostek" Visibility="Visible">
 
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="*">
-            </RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
-        
+
         <Menu Grid.Row="1" Background="#2676d0" Foreground="White">
             <MenuItem Header="Plik" >
                 <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Foreground="Black" Header="Zapisz dopasowanie jednostek do txt" Click="Zapisz_Dopasowanie_Jedn_Click"></MenuItem>
@@ -35,7 +34,10 @@
             </MenuItem>
             <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
                 <MenuItem Header="Połącz i pobierz dane do przypisania jednostek(przed) w stanie po scalenu z bazy FDB" Foreground="Black" Click="ItemImportJednostkiSN_Click"/>
-                <MenuItem Header="Automatycznie przypisz jednostki" Click="MenuItem_AutoPrzypiszJednostki" Foreground="Black"/>
+                <MenuItem Header="Automatycznie przypisz jednostki" ToolTip="Przypisz jeśli w stanie ''przed'' była tylko jedna jednostka" Click="MenuItem_AutoPrzypiszJednostki" Foreground="Black"/>
+                <MenuItem Header="Automatycznie przypisz jednostki na podstawie jednostki głównej z grupy" 
+                          ToolTip="Przypisze NKR'owi jednostkę, która jest w nazwie NKRu np. 4001 -> [obr]4*1000+1[NJR] -> 1" Foreground="Black"
+                          Click="MenuItem_Click_PrzejdzDoWyboryRodzajuNumeracjiNKRu"/>
                 <Separator></Separator>
                 <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
                 <Separator></Separator>
@@ -44,11 +46,28 @@
                 <Separator></Separator>
                 <Separator></Separator>
 
-                    <MenuItem Header="Nadaj NKR w stanie po ''scaleniu''" ToolTip="W tabeli JEDN_REJ_N zostaną ponumerowane jednostki od 1 do n" Click="NadajNKrWStaniePo" Foreground="Black"/>
-                    <MenuItem Header="Wyczyść NKR w stanie po ''scaleniu''" Foreground="Black" Click="MenuItem_ClickWyczyscNKRwStaniePo"/>
-
+                <MenuItem Header="Nadaj NKR w stanie po ''scaleniu''" ToolTip="W tabeli JEDN_REJ_N zostaną ponumerowane jednostki od 1 do n" Click="NadajNKrWStaniePo" Foreground="Black"/>
+                <MenuItem Header="Wyczyść NKR w stanie po ''scaleniu''" Foreground="Black" Click="MenuItem_ClickWyczyscNKRwStaniePo"/>
             </MenuItem>
         </Menu>
+
+        <StackPanel x:Name="StackPanelWyboruRodzajuNumeracji" Panel.ZIndex="1"  Background="White" Grid.Row="2" Visibility="Hidden">
+            <StackPanel Margin="25">
+                
+          
+            <Label>Wybierz w jaki sposób zostały utworzone gospodarstwa:</Label>
+            <RadioButton GroupName="NRJ" x:Name="radioButtonNRJ">nr jednostki rejestrowej</RadioButton>
+            <RadioButton GroupName="NRJ" x:Name="radioButton1000_NRJ" IsChecked="True">1000 * nr obrębu + nr jednostki rejestrowej</RadioButton>
+            <RadioButton GroupName="NRJ" x:Name="radioButton10000_NRJ">10000 * nr obrębu + nr jednostki rejestrowej</RadioButton>
+            <RadioButton GroupName="NRJ" x:Name="radioButton100000_NRJ">100000 * nr obrębu + nr jednostki rejestrowej</RadioButton>
+           
+            <DockPanel>
+                <Button Width="100" HorizontalAlignment="Left" Margin="5" Click="Button_Click_KontynuujAutonumerowanie">Kontynuuj</Button>
+                <Button Width="100" HorizontalAlignment="Left" Margin="5" Click="Button_Click_AnulujAutonumeracje">Anuluj</Button>
+            </DockPanel>
+
+            </StackPanel>
+        </StackPanel>
 
         <StackPanel Grid.Row="2" x:Name="panelLogowania2"  Visibility="Hidden">
             <Label>Login:</Label>

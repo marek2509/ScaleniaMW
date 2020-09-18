@@ -54,7 +54,7 @@ namespace ScaleniaMW
                         {
                             case 0:
                                 {
-                                    sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja +" " + "\"" + nkrZSQL.NKR + "\" _");
+                                    sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + nkrZSQL.NKR + "\" _");
                                     break;
                                 }
                             case 1:
@@ -377,7 +377,7 @@ namespace ScaleniaMW
             public string KwPrzed { get; set; }
         }
 
-        public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, string sender = "")
+        public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, string sender = "", int? ParametrUzytyprzyTworzeniuNKR = null)
         {
             if (listaJednostekZSQL.Count > 0)
             {
@@ -398,6 +398,27 @@ namespace ScaleniaMW
                                 {
                                     item.PrzypisanyNrRej = item.IdJednS;
                                 }
+                            }
+                        }
+
+
+
+                    }
+                }
+
+                if (sender.Equals("AutoPrzypiszJednostkiZDoborem"))
+                {
+                    foreach (var pojedyncza in listaJednostekZSQL)
+                    {
+                        int jednostkaDoPorownania = pojedyncza.NowyNKR - pojedyncza.NrObr * (int)ParametrUzytyprzyTworzeniuNKR;
+
+                        if (listaJednostekZSQL.Exists(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania))
+                        {
+                           // Console.WriteLine("Nowy NKR " + pojedyncza.NowyNKR + " idjednStarej: " + pojedyncza.NrJednEwopis + "  " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
+
+                            if (pojedyncza.PrzypisanyNrRej.Equals(null))
+                            {
+                                pojedyncza.PrzypisanyNrRej = listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).IdJednS;
                             }
                         }
                     }
@@ -449,8 +470,6 @@ namespace ScaleniaMW
 
                     if (sender.Equals("PrzypiszZaznJedn"))
                     {
-                        Console.WriteLine("sender jetsst " + sender.GetHashCode());
-
                         foreach (var item in listaJednostekZSQL)
                         {
                             //if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
@@ -458,7 +477,6 @@ namespace ScaleniaMW
                             //    Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
                             //    item.wypiszWConsoli();
                             //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
-
                             //}
 
                             if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDz.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
@@ -466,18 +484,8 @@ namespace ScaleniaMW
                                 Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
                                 item.wypiszWConsoli();
                                 item.PrzypisanyNrRej = listidJednSiNRRejs[listBoxNrRej.SelectedIndex].iddJednSt;
-
                             }
-
-
-
                         }
-
-                        //  if (listBoxNoweDzialki.Items.Count == 1 || listBoxNoweDzialki.Items.Count == 0)
-                        //   {
-                        Console.WriteLine("to teraz");
-
-                        //   }
 
                         Obliczenia.DopasujNrRejDoNowychDzialek(ref listaJednostekZSQL, listBoxNkr, listBoxNoweDzialki, listBoxNrRej);
                         listBoxNrRej.SelectedIndex = listBoxNrRej.SelectedIndex >= 0 && listBoxNrRej.SelectedIndex < listBoxNrRej.Items.Count ? listBoxNrRej.SelectedIndex : 0;
@@ -616,7 +624,7 @@ namespace ScaleniaMW
 
                     Console.WriteLine("x=<1");
                     List<int> NowyNkr = new List<int>();
-                    List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => (x.KWPoDopasowane == "" || x.KWPoDopasowane == null) && x.KWprzed!="");
+                    List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => (x.KWPoDopasowane == "" || x.KWPoDopasowane == null) && x.KWprzed != "");
                     // Console.WriteLine(listaKWdlaNowychDzialek.FindAll(x => x.KWprzed.Equals("")).Count + "count 11 ");
                     List<IDiNKR> lisIDnkr_NKR = tmpListNKRbezJednRej.GroupBy(x => new { x.NKRn, x.IdJednN }).Select(x => new IDiNKR { IdJednN = x.Key.IdJednN, NKR = x.Key.NKRn }).ToList();
                     NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
@@ -721,7 +729,7 @@ namespace ScaleniaMW
 
 
 
-        public static string DopasujWartosciDlaNowychDzialek(List<DzialkaEDZ> punkt, List<DzialkaNkrZSQL> dzialkaNkrZSQL, ref string logInfo, bool czyIgnorowacPrzecinkiIKropki, bool czyDopisacBrakKw,double przyrostXdoPrzesuniaeciaNr = 8, int justyfikacja = 8)
+        public static string DopasujWartosciDlaNowychDzialek(List<DzialkaEDZ> punkt, List<DzialkaNkrZSQL> dzialkaNkrZSQL, ref string logInfo, bool czyIgnorowacPrzecinkiIKropki, bool czyDopisacBrakKw, double przyrostXdoPrzesuniaeciaNr = 8, int justyfikacja = 8)
         {
 
 
@@ -805,9 +813,9 @@ namespace ScaleniaMW
                             if (czyDopisacBrakKw)
                             {
                                 wartosc = "Brak Wartości";
-                                sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " "+justyfikacja+" " + "\"" + wartosc + "\" _");
+                                sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
                             }
-                           
+
                         }
                         else
                         {
@@ -827,7 +835,7 @@ namespace ScaleniaMW
 
             logInfo = "Dopasowano " + ileDopasowano + " z " + punkt.Count + " WARTOŚCI dla działek z pliku. Niedopasowano: " + ileNieZnaleziono + " Nie znaleziono: " + jakichDzialekNieOdnaleziono;
 
-            
+
             return sb.ToString();
         }
     }

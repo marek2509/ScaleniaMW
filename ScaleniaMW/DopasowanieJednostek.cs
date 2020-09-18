@@ -23,8 +23,9 @@ namespace ScaleniaMW
         public string NrDzialki { get; private set; }
         public int IdDz { get; private set; }
         public int? PrzypisanyNrRej { get; set; }
+        public int NrObr { get; private set; }
 
-        public DopasowanieJednostek(int idjednn, int idjedns, int nrjednewop, int nowynkr, string nrdz, int iddz, object njdrprzed)
+        public DopasowanieJednostek(int idjednn, int idjedns, int nrjednewop, int nowynkr, string nrdz, int iddz, object njdrprzed, int nrObr=0)
         {
             IdJednN = idjednn;
             IdJednS = idjedns;
@@ -32,6 +33,7 @@ namespace ScaleniaMW
             NowyNKR = nowynkr;
             NrDzialki = nrdz;
             IdDz = iddz;
+            NrObr = nrObr;
 
             if (njdrprzed.Equals(System.DBNull.Value))
             {

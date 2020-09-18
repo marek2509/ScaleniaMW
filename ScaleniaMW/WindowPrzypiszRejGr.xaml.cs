@@ -159,12 +159,17 @@ namespace ScaleniaMW
 
                     command.Connection = connection;
                     command.Transaction = transaction;
-                    // działające zapytanie na nrobr-nrdz NKR 
-                    //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                    // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
+                    /*   command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr, dn.idd, dn.id_id, dn.rjdrprzed, " +
+                       "js.NKR stary_nkr,  dn.pew/10000, dn.ww from JEDN_SN sn " +
+                       "join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";*/
+
+
                     command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr, dn.idd, dn.id_id, dn.rjdrprzed, " +
-                        "js.NKR stary_nkr,  dn.pew/10000, dn.ww from JEDN_SN sn " +
-                        "join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";
+                                            "js.NKR stary_nkr, dn.pew / 10000, dn.ww, o.id from  JEDN_SN sn " +
+                                            "join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn " +
+                                            "join dzialki_n dn on dn.rjdr = jn.id_id " +
+                                            "join obreby o on o.id_id = jn.id_obr " +
+                                            "order by id_jednn";
                     FbDataAdapter adapter = new FbDataAdapter(command);
                     dt = new DataTable();
 
@@ -180,8 +185,8 @@ namespace ScaleniaMW
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        listaDopasowJednos_CzyLadowac.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
-                        listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6]));
+                        listaDopasowJednos_CzyLadowac.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6], (int)dt.Rows[i][10]));
+                        listaDopasowJednos.Add(new DopasowanieJednostek((int)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], dt.Rows[i][4].ToString(), (int)dt.Rows[i][5], dt.Rows[i][6], (int)dt.Rows[i][10]));
                     }
                     try
                     {
@@ -222,6 +227,10 @@ namespace ScaleniaMW
                 itemImportJednostkiSN.Background = Brushes.Red;
                 itemImportJednostkiSN.Header = "Baza.fdb";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
+                if (ex.Message.ToLower().Contains("password"))
+                {
+                    UstawLoginIHaslo();
+                }
             }
         }
 
@@ -374,20 +383,24 @@ namespace ScaleniaMW
                 MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
             }
         }
+
         private void UpdateProgress()
         {
             progresBar.Value += 1;
         }
         private delegate void ProgressBarDelegate();
 
-
-
-        private void UstawLoginIHaslo2(object sender, RoutedEventArgs e)
+        void UstawLoginIHaslo()
         {
             textBoxLogin.Text = Properties.Settings.Default.Login;
             passwordBoxLogowanie.Password = Properties.Settings.Default.Haslo;
             panelLogowania2.Visibility = Visibility.Visible;
             tabItemNiedopasowJedn.Visibility = Visibility.Hidden;
+        }
+
+        private void UstawLoginIHaslo2(object sender, RoutedEventArgs e)
+        {
+            UstawLoginIHaslo();
         }
 
         private void ButtonZapiszLogIHaslo2(object sender, RoutedEventArgs e)
@@ -688,6 +701,50 @@ namespace ScaleniaMW
             }
         }
 
+        private void MenuItem_Click_PrzejdzDoWyboryRodzajuNumeracjiNKRu(object sender, RoutedEventArgs e)
+        {
+            StackPanelWyboruRodzajuNumeracji.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Click_AnulujAutonumeracje(object sender, RoutedEventArgs e)
+        {
+            StackPanelWyboruRodzajuNumeracji.Visibility = Visibility.Hidden;
+        }
+
+        private void Button_Click_KontynuujAutonumerowanie(object sender, RoutedEventArgs e)
+        {
+            int? constDoWyciagnieciaNrRej = null;
+            StackPanelWyboruRodzajuNumeracji.Visibility = Visibility.Hidden;
+            if ((bool)radioButtonNRJ.IsChecked)
+            {
+                constDoWyciagnieciaNrRej = 0;
+            }
+            else if((bool)radioButton1000_NRJ.IsChecked)
+            {
+                constDoWyciagnieciaNrRej = 1000;
+            }
+            else if ((bool)radioButton10000_NRJ.IsChecked)
+            {
+                constDoWyciagnieciaNrRej = 10000;
+            }
+            else if ((bool)radioButton100000_NRJ.IsChecked)
+            {
+                constDoWyciagnieciaNrRej = 100000;
+            }
+
+            if (czyPolaczonoZBaza)
+            {
+                Console.WriteLine(sender.GetHashCode());
+                Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, "AutoPrzypiszJednostkiZDoborem", constDoWyciagnieciaNrRej);
+                dgNiedopJednostki.Items.Refresh();
+            }
+            else
+            {
+                MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
+            }
+
+
+        }
     }
 }
 
