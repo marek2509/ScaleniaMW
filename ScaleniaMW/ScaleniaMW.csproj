@@ -103,6 +103,9 @@
     <Compile Include="DopasowanieKW.cs" />
     <Compile Include="DzialkaNkrZSQL.cs" />
     <Compile Include="DzNkrKWzSQLProponow.cs" />
+    <Compile Include="EdycjaDokumentow.xaml.cs">
+      <DependentUpon>EdycjaDokumentow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Email.cs" />
     <Compile Include="IdJrStNKRJeNowej.cs" />
     <Compile Include="Obliczenia.cs" />
@@ -125,6 +128,10 @@
       <DependentUpon>WindowPrzypiszRejGr.xaml</DependentUpon>
     </Compile>
     <Compile Include="ZsumwaneWartosciZPorownania.cs" />
+    <Page Include="EdycjaDokumentow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

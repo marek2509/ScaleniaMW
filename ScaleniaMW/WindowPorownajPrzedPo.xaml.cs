@@ -4,15 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace ScaleniaMW
@@ -633,7 +626,7 @@ namespace ScaleniaMW
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_ClickUsunWszystkieZgody(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -649,6 +642,57 @@ namespace ScaleniaMW
                         writeCommand.ExecuteNonQueryAsync();
                         connection.Close();
                         MessageBox.Show("Usunięto zaznaczenie pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void MenuItem_Click_ustawoOdchylkeWszystkim(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var resultat = MessageBox.Show("Czy chcesz zaznaczyć wszystkim ''Odchyłki techniczne''?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+                if (resultat == MessageBoxResult.Yes)
+                {
+                    aktualizujSciezkeZPropertis();
+                    using (var connection = new FbConnection(connectionString))
+                    {
+                        connection.Open();
+                        FbCommand writeCommand = new FbCommand("UPDATE jedn_rej_N SET ODCHT = 1", connection);
+                        //writeCommand.ExecuteNonQuery();
+                        writeCommand.ExecuteNonQueryAsync();
+                        connection.Close();
+                        MessageBox.Show("Zaznaczono pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void MenuItem_ClickUstawZgodeNaPowGospWszystkim(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var resultat = MessageBox.Show("Czy chcesz zaznaczyć wszystkim ''Zgodę na powiększenie gospodarstwa''?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+                if (resultat == MessageBoxResult.Yes)
+                {
+                    aktualizujSciezkeZPropertis();
+                    using (var connection = new FbConnection(connectionString))
+                    {
+                        connection.Open();
+                        FbCommand writeCommand = new FbCommand("UPDATE jedn_rej_N SET ZGODA = 1", connection);
+                        //writeCommand.ExecuteNonQuery();
+                        writeCommand.ExecuteNonQueryAsync();
+                        connection.Close();
+                        MessageBox.Show("Zaznaczono pomyślnie.", "SUKCES!", MessageBoxButton.OK);
 
                     }
                 }

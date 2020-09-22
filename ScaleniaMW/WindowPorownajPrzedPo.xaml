@@ -44,8 +44,11 @@
                 <MenuItem Header="Ustaw ''Odchyłkę techniczną'' jednostkom mieszczącym się w 3%" ToolTip="Ustawia odchyłkę techniczną jednostkom mieszczącym sie w 3% a pozostałym usuwa zaznaczenie"  Foreground="DarkGreen" Click="MenuItem_ClickUstawOdchylkeTechniczna" />
                 <MenuItem Header="Ustaw ''Zgodę na powiększenie gospodarstwa'' jednostkom przekraczającym 3%"  Foreground="DarkGreen" Click="MenuItem_ClickUstawZgodeNaPowiekszGosp" />
                 <Separator></Separator>
+                <MenuItem Header="Ustaw ''Odchyłkę techniczną'' wszystkim jednostkom" Foreground="DarkGreen" Click="MenuItem_Click_ustawoOdchylkeWszystkim" />
+                <MenuItem Header="Ustaw ''Zgodę na powiekszenie gospodarstwa'' wszystkim jednostkom" Foreground="DarkGreen" Click="MenuItem_ClickUstawZgodeNaPowGospWszystkim" />
+                <Separator></Separator>
                 <MenuItem Header="Usuń wszystkim jednostkom zaznaczenie ''Odchyłka techniczna'' "  Foreground="Red" Click="MenuItem_ClickUsunWszystkieOchylkiTechniczne" />
-                <MenuItem Header="Usuń wszystkim jednostkom zaznaczenie ''Zgoda na powiększenie gospodarstwa''"  Foreground="Red" Click="MenuItem_Click" />
+                <MenuItem Header="Usuń wszystkim jednostkom zaznaczenie ''Zgoda na powiększenie gospodarstwa''"  Foreground="Red" Click="MenuItem_ClickUsunWszystkieZgody" />
             </MenuItem>
           
             
