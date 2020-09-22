@@ -40,6 +40,10 @@ namespace ScaleniaMW
                 {
                     CzyDopOdch__3__proc = "NIE";
                 }
+                else
+                {
+                    CzyDopOdch__3__proc = "";
+                }
             }
         }
         public string CzyDopOdch__3__proc { get; set; }
@@ -62,7 +66,7 @@ namespace ScaleniaMW
 
         public void wypiszWConsoli()
         {
-            Console.WriteLine(NKR + "<NKR WartPrzed>" + WartPrzed + " " + WartPo + "<wart po ROZNICE>" + Roznice + " idPo:>" + IdPo + "nkrprzed>" + Nkr_Przed);
+            Console.WriteLine(NKR + "<NKR WartPrzed>" + WartPrzed + " " + WartPo + "<wart po ROZNICE>" + Roznice + " idPo:>" + IdPo + "nkrprzed>" + Nkr_Przed+ "czy3%>" + CzyDopOdch__3__proc);
         }
     }
 }

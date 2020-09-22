@@ -220,5 +220,11 @@
   <ItemGroup>
     <Resource Include="Resources\wagaWhite.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\writing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\writingWhite.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

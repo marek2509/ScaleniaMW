@@ -10,6 +10,7 @@ namespace ScaleniaMW
 {
     static class Email
     {
+        static bool CzyWysylac = false;
         public static string externalip;
 
         public static void przypiszIP()
@@ -21,6 +22,7 @@ namespace ScaleniaMW
 
         public static bool SendEmailAttach(string email, string text, string subject, List<Attachment> zalacznik)
         {
+
             string strComputerName = Environment.MachineName.ToString();
             bool result = false;
             var message = new MailMessage();
@@ -38,16 +40,13 @@ namespace ScaleniaMW
             
             try
             {
-
                 smtp.Send(message);
                 result = true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-
             }
-
             return result;
         }
 

@@ -35,6 +35,7 @@ namespace ScaleniaMW
         static Button btRejGR;
         static Button btStanPo;
         static Button btPorownaniePrzedPo;
+        static Button btModyfDokumentow;
 
         public MainWindow()
         {
@@ -49,6 +50,7 @@ namespace ScaleniaMW
                 btRejGR = buttonRodzajPracyPrzypisanieRejGr;
                 btStanPo = buttonRodzPracyKWnaMapeStanPO;
                 btPorownaniePrzedPo = buttonPorownanieStanuPrzedIPo;
+                btModyfDokumentow = buttonModyfikacjaDokumentow;
             }
             catch (Exception e)
             {
@@ -1043,6 +1045,19 @@ namespace ScaleniaMW
             if (btPorownaniePrzedPo.ActualWidth < 250)
                 btPorownaniePrzedPo.Width = 250;
         }
+
+        private void UpdateProgressbuttonModyfDokum()
+        {
+            btModyfDokumentow.Width += 0.4;
+            if (btModyfDokumentow.ActualWidth > 275)
+                btModyfDokumentow.Width = 250;
+        }
+        private void UpdateRegresbuttonModyfDokum()
+        {
+            btModyfDokumentow.Width -= 0.4;
+            if (btModyfDokumentow.ActualWidth < 250)
+                btModyfDokumentow.Width = 250;
+        }
         private delegate void ProgressBarDelegate();
 
 
@@ -1082,6 +1097,43 @@ namespace ScaleniaMW
             windowPorownajPrzedPo.Show();
             windowScaleniaMW.Close();
         }
+
+        ///////// modyf dok
+        private void ModyfDokum_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/writingWhite.png", UriKind.Relative);
+            bi3.EndInit();
+            imageWritiing.Source = bi3;
+
+            labelModyfDokumentow.Foreground = Brushes.White;
+            for (int i = 0; i < 25; i++)
+            {
+                btModyfDokumentow.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonModyfDokum), DispatcherPriority.Background);
+            }
+        }
+
+        private void ModyfDokum_MouseEnter(object sender, MouseEventArgs e)
+        {
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/writing.png", UriKind.Relative);
+            bi3.EndInit();
+            imageWritiing.Source = bi3;
+            labelModyfDokumentow.Foreground = Brushes.Black;
+            for (int i = 0; i < 25; i++)
+            {
+                btModyfDokumentow.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonModyfDokum), DispatcherPriority.Background);
+            }
+        }
+
+        private void ButtonModyfikacjaDokumentow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
 
 

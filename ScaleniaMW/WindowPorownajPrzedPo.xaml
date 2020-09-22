@@ -7,12 +7,15 @@
         mc:Ignorable="d"
         Title="SCALENIAMW inż. Marek Wojciechowicz - Ekwiwalent należny / zaprojektowany" Height="450" Width="800" x:Name="windowPorownajPrzedPo">
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
+        <ProgressBar x:Name="progresBar" Grid.Row="2" Value="0" Visibility="Hidden" Margin="0,25,0,0"  Panel.ZIndex="100" Opacity="0.5"></ProgressBar>
+
         <TextBlock  Grid.Row="0" Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
             <Menu Grid.Row="1" Foreground="White" Background="#FF047CF1" >
 
@@ -35,7 +38,20 @@
                         <RadioButton VerticalContentAlignment="Center"  IsEnabled="False">Po scaleniu</RadioButton>
                     </WrapPanel>-->
                 </MenuItem>
-            <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza" Foreground="White"/>
+            <MenuItem Background="{Binding ElementName=itemPolaczZBaza, Path=Background}"  Header="Baza FDB"  Foreground="White">
+                  <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza" Foreground="Black"/>
+                <Separator></Separator>
+                <MenuItem Header="Ustaw ''Odchyłkę techniczną'' jednostkom mieszczącym się w 3%" ToolTip="Ustawia odchyłkę techniczną jednostkom mieszczącym sie w 3% a pozostałym usuwa zaznaczenie"  Foreground="DarkGreen" Click="MenuItem_ClickUstawOdchylkeTechniczna" />
+                <MenuItem Header="Ustaw ''Zgodę na powiększenie gospodarstwa'' jednostkom przekraczającym 3%"  Foreground="DarkGreen" Click="MenuItem_ClickUstawZgodeNaPowiekszGosp" />
+                <Separator></Separator>
+                <MenuItem Header="Usuń wszystkim jednostkom zaznaczenie ''Odchyłka techniczna'' "  Foreground="Red" Click="MenuItem_ClickUsunWszystkieOchylkiTechniczne" />
+                <MenuItem Header="Usuń wszystkim jednostkom zaznaczenie ''Zgoda na powiększenie gospodarstwa''"  Foreground="Red" Click="MenuItem_Click" />
+            </MenuItem>
+          
+            
+
+
+
         </Menu>
 
         <StackPanel Grid.Row="2" x:Name="panelLogowania" Visibility="Hidden">
