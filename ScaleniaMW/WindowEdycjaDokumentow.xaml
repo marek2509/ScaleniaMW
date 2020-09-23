@@ -1,0 +1,30 @@
+﻿<Window x:Class="ScaleniaMW.WindowEdycjaDokumentow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScaleniaMW"
+        mc:Ignorable="d"
+        Title="SCALENIAMW inż. Marek Wojciechowicz - Edycja Raportów RTF" x:Name="windowEdycjaDokumentow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
+        <Menu Grid.Row="1" Background="#2676d0" Foreground="White">
+            <MenuItem Header="Plik" >
+                <MenuItem x:Name="Otworz_RTF" Foreground="Black" Header="Otwórz plik RTF" Click="Otworz_RTF_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="otworzOknoPoczatkowe_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Zamknij" Foreground="Black" Click="zamknijProgram_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Opcje">
+                <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
+            </MenuItem>
+        </Menu>
+    </Grid>
+</Window>

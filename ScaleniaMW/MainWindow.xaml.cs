@@ -105,7 +105,7 @@ namespace ScaleniaMW
                 }
                 else
                 {
-                    if(Properties.Settings.Default.CzyBlokowacProgram == true)
+                    if (Properties.Settings.Default.CzyBlokowacProgram == true)
                     {
                         MessageBox.Show("Aby rozwiązać problem z działaniem programu skontaktuj się z autorem pod adresem email:\nmarek.wojciechowicz25@gmail.com", "Brak dostępu", MessageBoxButton.OK, MessageBoxImage.Information);
                         windowScaleniaMW.IsEnabled = false;
@@ -1131,7 +1131,9 @@ namespace ScaleniaMW
 
         private void ButtonModyfikacjaDokumentow_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowEdycjaDokumentow windidEdycjaDok = new WindowEdycjaDokumentow();
+            windidEdycjaDok.Show();
+            windowScaleniaMW.Close();
         }
 
 

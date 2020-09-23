@@ -516,11 +516,8 @@ namespace ScaleniaMW
                                     writeCommand.Parameters.Add("@wart01", 1);
                                     Console.WriteLine("1  IdPo:" + item.IdPo + " NKR:" + item.NKR);
                                 }
-
                                     writeCommand.ExecuteNonQuery();
                                     writeCommand.Parameters.Clear();
-                            
-
 
                                 progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
                             }
@@ -693,7 +690,6 @@ namespace ScaleniaMW
                         writeCommand.ExecuteNonQueryAsync();
                         connection.Close();
                         MessageBox.Show("Zaznaczono pomyślnie.", "SUKCES!", MessageBoxButton.OK);
-
                     }
                 }
             }
