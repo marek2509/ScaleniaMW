@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW - inż. Marek Wojciechowicz - Wojewódzkie Biuro Geodezji w Białymstoku" x:Name="windowScaleniaMW"  Width="1000" SizeToContent="Height" ResizeMode="NoResize">
+        Title="SCALENIAMW (współpracuje z programem scalenia do wersji 2.25) - inż. Marek Wojciechowicz - Wojewódzkie Biuro Geodezji w Białymstoku" x:Name="windowScaleniaMW"  Width="1000" SizeToContent="Height" ResizeMode="NoResize">
     <Grid>
         <DockPanel  x:Name="dockCoChceszZrobić" Panel.ZIndex="101">
 
@@ -60,6 +60,7 @@
                 <Image x:Name="imgNrJRprzypisz" Grid.Column="1" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrJRPrzypisz.png"  Opacity="0.7"/>
                 <Image x:Name="imgKWprzypisz" Grid.Column="1" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrKWPrzypisz.png"  Opacity="0.7"/>
                 <Image x:Name="imgKWpNaMape" Grid.Column="1" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/KWNaMape.png"  Opacity="0.7"/>
+                <Image x:Name="imgEdycDokum" Grid.Column="1" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/poprawDokumenPrzedPo.png"  Opacity="0.7"/>
                
                 <StackPanel Grid.Column="3" Grid.Row="2">
                     <Button   HorizontalAlignment="Right"  Margin="0,1,1,0" MouseEnter="PorownanieStanuPrzedIPo_MouseEnter"  MouseLeave="PorownanieStanuPrzedIPo_MouseLeave" 

@@ -1101,28 +1101,39 @@ namespace ScaleniaMW
         ///////// modyf dok
         private void ModyfDokum_MouseLeave(object sender, MouseEventArgs e)
         {
-
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
             bi3.UriSource = new Uri("Resources/writingWhite.png", UriKind.Relative);
             bi3.EndInit();
             imageWritiing.Source = bi3;
 
+            imgEdycDokum.Visibility = Visibility.Hidden;
             labelModyfDokumentow.Foreground = Brushes.White;
+
+
+           
             for (int i = 0; i < 25; i++)
             {
                 btModyfDokumentow.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonModyfDokum), DispatcherPriority.Background);
             }
         }
 
+      
+
+
+
         private void ModyfDokum_MouseEnter(object sender, MouseEventArgs e)
         {
+            imgEdycDokum.Visibility = Visibility.Visible;
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
             bi3.UriSource = new Uri("Resources/writing.png", UriKind.Relative);
             bi3.EndInit();
             imageWritiing.Source = bi3;
             labelModyfDokumentow.Foreground = Brushes.Black;
+    
+
+
             for (int i = 0; i < 25; i++)
             {
                 btModyfDokumentow.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonModyfDokum), DispatcherPriority.Background);

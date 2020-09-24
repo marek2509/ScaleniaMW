@@ -22,9 +22,6 @@
                 <Separator></Separator>
                 <MenuItem Header="Zamknij" Foreground="Black" Click="zamknijProgram_Click"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Opcje">
-                <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
-            </MenuItem>
         </Menu>
     </Grid>
 </Window>
