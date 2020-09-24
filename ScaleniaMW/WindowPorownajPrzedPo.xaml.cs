@@ -206,6 +206,7 @@ namespace ScaleniaMW
 
                 zsumwaneWartosciStanPO = new List<ZsumwaneWartosciZPorownania>();
                 dgPorownanie.ItemsSource = zsumwaneWartosciStanPO;
+
                 dgPorownanie.Items.Refresh();
                 //for (int i = 0; i < dt.Rows.Count; i++)
                 //{
@@ -251,7 +252,7 @@ namespace ScaleniaMW
                 // command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.grp, j.idgrp, j.ID_ID from dzialka d join jedn_rej j on j.ID_ID = d.rjdr order by idgrp";
 
                 // dodano do tabeli id jednN
-                command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.grp, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id order by idgrp";
+                command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id order by idgrp";
                 /*
                                 for (int i = 0; i < dt.Rows.Count; i++)
                                 {
@@ -263,6 +264,7 @@ namespace ScaleniaMW
 
                 adapter.Fill(dt);
 
+              //  dgPorownanie.ItemsSource = dt.AsDataView();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     stanPrzedWartoscis.Add(new StanPrzedWartosci(Convert.ToDecimal(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]),
@@ -270,9 +272,7 @@ namespace ScaleniaMW
                         Convert.ToInt32(dt.Rows[i][2].Equals(System.DBNull.Value) ? null : dt.Rows[i][2]),
                         Convert.ToInt32(dt.Rows[i][3].Equals(System.DBNull.Value) ? null : dt.Rows[i][3]),
                         Convert.ToInt32(dt.Rows[i][4].Equals(System.DBNull.Value) ? null : dt.Rows[i][4]),
-                        Convert.ToInt32(dt.Rows[i][5].Equals(System.DBNull.Value) ? null : dt.Rows[i][5]),
-                        Convert.ToDouble(dt.Rows[i][5].Equals(System.DBNull.Value) ? null : dt.Rows[i][6])));
-
+                        Convert.ToDouble(dt.Rows[i][5].Equals(System.DBNull.Value) ? null : dt.Rows[i][5])));
                 }
 
 
@@ -285,6 +285,7 @@ namespace ScaleniaMW
                 //}
                 Console.WriteLine("row count:" + dt.Rows.Count);
                 Console.WriteLine("column count:" + dt.Columns.Count);
+
                 /*
                 while (stanPrzedWartoscis.Exists(x => x.NKR == 0))
                 {
@@ -310,35 +311,11 @@ namespace ScaleniaMW
 
                 Console.WriteLine("punkt kontrolny 2");
 
-                //foreach (var item in zsumwaneWartosciStanPO)
-                //{
 
-                //    if (resultPorownanie.Exists(x => x.IdPo == idJrNowejNKRJeNowej.Find(xa => xa.NKRJednNowej == item.NKR).idJednNowej))
-                //    {
-
-                //       item.WartPrzed += resultPorownanie.Find(x => x.IdPo == idJrNowejNKRJeNowej.Find(xa => xa.NKRJednNowej == item.NKR).idJednNowej).WartPrzed;
-
-                //        item.IdPo = resultPorownanie.Find(x => x.NKR == item.NKR).IdPo;
-                //    }
-
-                //}
                 Console.WriteLine("________________________________________");
                 // resultPorownanie.ForEach(x => x.wypiszWConsoli());
                 Console.WriteLine("________________________________________");
-                //foreach (var item in resultPorownanie)
-                //{
 
-                //    if (zsumwaneWartosciStanPO.Exists(x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej))
-                //    {
-                //        Console.WriteLine("if "+ item.IdPo + " " + item.NKR + "<Przed Po>"+ zsumwaneWartosciStanPO.Find((x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej)).NKR);
-                //        zsumwaneWartosciStanPO.Find((x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej)).WartPrzed += item.WartPrzed;
-                //    }
-                //    else
-                //    {
-                //        Console.WriteLine("else " + item.IdPo + " " + item.NKR); 
-                //        zsumwaneWartosciStanPO.Add(item);
-                //    }
-                //}
 
                 foreach (var item in resultPorownanie)
                 {
@@ -350,20 +327,15 @@ namespace ScaleniaMW
                         zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).WartPrzed += item.WartPrzed;
                         if (zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).NKR == 0)
                         {
-                            //  Console.WriteLine();
-                            //  Console.WriteLine("zero gorne>"); item.wypiszWConsoli();
+
                             zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).NKR = idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej;
                             zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).Nkr_Przed = item.NKR;
-                            // Console.WriteLine("<zero gorne " + zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).NKR); 
                         }
-                        //  Console.WriteLine("istnieje" + item.IdPo + " " + item.NKR + " " + zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).NKR);
                     }
                     else
                     {
                         Console.WriteLine("else " + item.IdPo + " " + item.NKR);
                         zsumwaneWartosciStanPO.Add(new ZsumwaneWartosciZPorownania() { Nkr_Przed = item.NKR, IdPo = item.IdPo, WartPrzed = item.WartPrzed, NKR = idJrNowejNKRJeNowej.Find(x => x.idJednNowej == item.IdPo).NKRJednNowej });
-                        // idJrNowejNKRJeNowej.Find(x=> x.idJednNowej == item.IdPo).NKRJednNowej
-
                     }
 
 
@@ -432,7 +404,8 @@ namespace ScaleniaMW
                 //    Console.WriteLine(item.NKR + " " + item.WartPrzed + " " + item.WartPo);
                 //}
 
-                dgPorownanie.ItemsSource = zsumwaneWartosciStanPO;
+              //   dgPorownanie.ItemsSource = zsumwaneWartosciStanPO;
+                
                 Console.WriteLine(zsumwaneWartosciStanPO.Count + "COUNT 1");
                 try
                 {

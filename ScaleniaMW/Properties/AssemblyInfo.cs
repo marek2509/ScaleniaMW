@@ -7,11 +7,11 @@ using System.Windows;
 // Ogólne informacje o zestawie są kontrolowane poprzez następujący 
 // zestaw atrybutów. Zmień wartości tych atrybutów, aby zmodyfikować informacje
 // powiązane z zestawem.
-[assembly: AssemblyTitle("ScaleniaMW")]
-[assembly: AssemblyDescription("ScaleniaMW Marek Wojciechowicz")]
+[assembly: AssemblyTitle("ScaleniaMW2")]
+[assembly: AssemblyDescription("ScaleniaMW2 Marek Wojciechowicz")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Marek Wojciechowicz")]
-[assembly: AssemblyProduct("ScaleniaMW")]
+[assembly: AssemblyProduct("ScaleniaMW2")]
 [assembly: AssemblyCopyright("Copyright ©  2020 Marek Wojciechowicz")]
 [assembly: AssemblyTrademark("Marek Wojciechowicz")]
 [assembly: AssemblyCulture("")]

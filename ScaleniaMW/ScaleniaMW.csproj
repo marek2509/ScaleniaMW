@@ -7,7 +7,7 @@
     <ProjectGuid>{D0955F85-CE6F-42C5-818B-314B4044FD0A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ScaleniaMW</RootNamespace>
-    <AssemblyName>ScaleniaMW</AssemblyName>
+    <AssemblyName>ScaleniaMW2</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -28,8 +28,8 @@
     <ProductName>SCALENIAMW</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>33</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,7 +67,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>pencil-1.ico</ApplicationIcon>
+    <ApplicationIcon>pencil-2.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -241,6 +241,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\poprawDokumenPrzedPo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pencil-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pencil-2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

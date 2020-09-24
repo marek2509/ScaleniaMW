@@ -95,15 +95,24 @@
 
                 <DataGrid Grid.Column="0" ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
                 CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgDzialkiEdz"   VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3"/>
-                <DataGrid Grid.Column="2"  ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
-                CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2"/>
+              
+               
+                <DataGrid   Grid.Row="2" Panel.ZIndex="1" Opacity="0.9" Grid.Column="2" HorizontalAlignment="Stretch"  ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
+                CanUserResizeRows="False" Visibility="Visible" AutoGenerateColumns="False" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF202929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="NR DZIAŁKI" Binding="{Binding ObrDzialka}" />
+                        <DataGridTextColumn Header="NKR" Binding="{Binding NKR}" />
+                        <DataGridTextColumn x:Name="columnKW" Header="PRZYPISANY NR KW" Binding="{Binding KW}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
 
                 <StackPanel Grid.Column="0" Visibility="Hidden" x:Name="stackBledyKW" Background="Transparent" Panel.ZIndex="999" >
-                    <TextBox Padding="20" x:Name="textBlockBledy"   >
-
-
+                    <Button x:Name="zamknijTextBlockBledy" Click="ZamknijTextBlockBledy_Click" Margin="210,10,0,0" Width="70" HorizontalAlignment="Left">Zamknij</Button>
+                    <TextBox Padding="25" Margin=" 5" x:Name="textBlockBledy" MaxHeight="750"  MaxWidth="600">
                     </TextBox>
-                    <Button x:Name="zamknijTextBlockBledy" Click="ZamknijTextBlockBledy_Click" Margin="210,0,0,0" Width="70" HorizontalAlignment="Left">Zamknij</Button>
+                   
                 </StackPanel>
             </Grid>
             <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>

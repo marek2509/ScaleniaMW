@@ -109,6 +109,7 @@ namespace ScaleniaMW
                     DzialkaNkrZSQL tmp2 = new DzialkaNkrZSQL();
 
                     tmp2 = listaDzNkrzSQL.Find(x => x._grp == tmp._grp && x.NKR != 0);
+                    Console.WriteLine();
                     //stanPrzedZnalezionyZNKREM.wypiszwConsoli();
                     Console.WriteLine("tmp: " + tmp._grp + " " +tmp.NKR + tmp.ObrDzialka );
                     Console.WriteLine("tmp2: " + tmp2._grp + " " +tmp2.NKR + tmp2.ObrDzialka );
