@@ -273,52 +273,6 @@ namespace ScaleniaMW
             }
         }
 
-        private void Zapisz_Dopasowanie_Jedn_Click(object sender, RoutedEventArgs e)
-        {
-
-            SaveFileDialog svd = new SaveFileDialog();
-            svd.DefaultExt = ".txt";
-            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            if (svd.ShowDialog() == true)
-            {
-                using (Stream s = File.Open(svd.FileName, FileMode.Create))
-                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                    try
-                    {
-                        try
-                        {
-                            StringBuilder stringBuilder = new StringBuilder();
-                            stringBuilder.AppendLine("[IddN] [idJednS] [NKRN] [NrDzN] [NrRejGr]");
-                            foreach (var item in listaDopasowJednos)
-                            {
-
-                                stringBuilder.AppendLine(item.IdDz + "\t" + item.IdJednS + "\t" + item.NowyNKR + "\t" + item.NrDzialki + "\t" + item.PrzypisanyNrRej);
-
-                            }
-
-                            sw.Write(stringBuilder.ToString());
-
-                            sw.Close();
-                        }
-                        catch (Exception exc)
-                        {
-                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
-
-                        if (resultat == MessageBoxResult.Yes)
-                        {
-                            Application.Current.Shutdown();
-                        }
-                    }
-
-            }
-        }
-
         private void Button_ZaladujDoBazy(object sender, RoutedEventArgs e)
         {
             if (czyPolaczonoZBaza)

@@ -19,8 +19,6 @@
 
         <Menu Grid.Row="1" Background="#2676d0" Foreground="White">
             <MenuItem Header="Plik" >
-                <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Foreground="Black" Header="Zapisz dopasowanie jednostek do txt" Click="Zapisz_Dopasowanie_Jedn_Click"></MenuItem>
-                <Separator></Separator>
                 <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="otworzOknoPoczatkowe_Click"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Zamknij" Foreground="Black" Click="zamknijProgram_Click"></MenuItem>
@@ -151,7 +149,7 @@
         </DockPanel>
 
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Text="{Binding ElementName=textBlockLogInfo, Path=Text}" Margin="2"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
-        <Image Panel.ZIndex="-1" x:Name="ingCoZrobic" IsEnabled="False" Grid.Row="2"  Margin="450,0,0,0" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencilDuzy.png"  />
+        <Image Panel.ZIndex="-1" x:Name="ingCoZrobic" IsEnabled="False" Grid.Row="2"   Height="350" Margin="0,20,90,20" HorizontalAlignment="Right" VerticalAlignment="Stretch" Source="Resources/pencil-2.png"  />
 
     </Grid>
 

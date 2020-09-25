@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-         Title="SCALENIAMW inż. Marek Wojciechowicz - KW na mapę w stanie 'po scaleniu'" Height="450" Width="800" x:Name="windowKwNaMapePO">
+         Title="SCALENIAMW inż. Marek Wojciechowicz - KW/WARTOŚĆ na mapę w stanie 'po scaleniu'" Height="450" Width="800" x:Name="windowKwNaMapePO">
     <Grid>
         <Grid x:Name="gridNKRKW" Visibility="Visible">
             <Grid.RowDefinitions>

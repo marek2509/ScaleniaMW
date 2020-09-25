@@ -95,10 +95,11 @@
 
                 <DataGrid Grid.Column="0" ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
                 CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgDzialkiEdz"   VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3"/>
-              
-               
+
+                <Image Panel.ZIndex="0" x:Name="ingCoZrobic" IsEnabled="False" Grid.Row="2" Grid.Column="2" Margin="60" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencil-2.png"  />
+
                 <DataGrid   Grid.Row="2" Panel.ZIndex="1" Opacity="0.9" Grid.Column="2" HorizontalAlignment="Stretch"  ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
-                CanUserResizeRows="False" Visibility="Visible" AutoGenerateColumns="False" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF202929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3">
+                    CanUserResizeRows="False" Visibility="Visible" AutoGenerateColumns="False" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF202929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="NR DZIAŁKI" Binding="{Binding ObrDzialka}" />
                         <DataGridTextColumn Header="NKR" Binding="{Binding NKR}" />
