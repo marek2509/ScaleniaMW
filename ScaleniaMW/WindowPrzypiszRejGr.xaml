@@ -28,6 +28,11 @@
             </MenuItem>
             <MenuItem Header="Ustawienia FDB">
                 <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Foreground="Black" Click="ustawSciezkeFDB"></MenuItem>
+                <!--<DockPanel>
+                    <Label>ŚCIEŻKA:</Label>
+                    <TextBox Width="400" x:Name="textBoxSciezkaZWersza"></TextBox>
+                    <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Zaznacz by użyć tej ścieżki." IsChecked="False" x:Name="checkBoxCzyScirzkaZTexboxa"></CheckBox>
+                </DockPanel>-->
                 <MenuItem Header="Ustaw Login i Hasło" Foreground="Black" Click="UstawLoginIHaslo2"></MenuItem>
             </MenuItem>
             <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">

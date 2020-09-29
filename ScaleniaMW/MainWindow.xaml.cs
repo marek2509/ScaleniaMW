@@ -73,7 +73,6 @@ namespace ScaleniaMW
                 Email.przypiszIP();
                 //  Email.SendEmail("SCALENAMW", "użyto programu", "SCALENIAMW");
                 Console.WriteLine("czy wyslano: " + Email.SendEmail("SCALENAMW", "Właśnie użyto programu SCALENIAMW\n\nWersja programu: " + Assembly.GetExecutingAssembly().GetName().Version.ToString(), "SCALENIA_MW"));
-
             }
             catch (Exception e)
             {

@@ -59,7 +59,7 @@ namespace ScaleniaMW
        
         }
 
-            public static bool czyJestNowszaWersja(string FTPstring = @"ftp://generator-raportow.cba.pl/SCALENIAMWVersion")
+            public static bool czyJestNowszaWersja(string FTPstring = @"ftp://generator-raportow.cba.pl/SCALENIAMW2Version")
         {
             string wersjaZFtp = StringFileFromServer(FTPstring);
 
@@ -132,7 +132,7 @@ namespace ScaleniaMW
         }
 
 
-        static public void aktualizuj(string plikHttpAktualizacji = "http://generator-raportow.cba.pl/AktualizacjaSCALENIAMW.zip")
+        static public void aktualizuj(string plikHttpAktualizacji = "http://generator-raportow.cba.pl/AktualizacjaSCALENIAMW2.zip")
         {
             // Console.WriteLine(StringFileFromServer(plikFTPaktualizacji));
 
