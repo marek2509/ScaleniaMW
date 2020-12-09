@@ -10,11 +10,13 @@ namespace ScaleniaMW
 {
     static class Email
     {
+        public static bool CzyJuzWysylano { get; set; } //wykozystac do tylko jednego uruchamiania w programiee
         static bool CzyWysylac = false;
         public static string externalip;
 
         public static void przypiszIP()
         {
+
             externalip = new System.Net.WebClient().DownloadString("http://icanhazip.com");
             string strComputerName = Environment.MachineName.ToString();
             // SendEmail("GENERATOR RAPORTÓW", "Właśnie użyto programu GENERATOR RAPORTÓW\n" + strComputerName + "\n" + externalip, "GENERATOR RAPORTÓW");

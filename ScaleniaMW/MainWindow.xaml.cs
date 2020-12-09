@@ -40,7 +40,7 @@ namespace ScaleniaMW
         public MainWindow()
         {
             InitializeComponent();
-           
+
             try
             {
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -57,37 +57,40 @@ namespace ScaleniaMW
                 Console.WriteLine(e + " problem z oknem");
             }
 
+            Console.WriteLine("Czy juz wyslano: " + Email.CzyJuzWysylano );
+            if (!Email.CzyJuzWysylano) // okodowac
+            {
+                Email.CzyJuzWysylano = true;
+                try
+                {
 
-            try
-            {
-                Console.WriteLine("przypisz ip");
-                Email.przypiszIP();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+                    Email.przypiszIP();
+                    Console.WriteLine("przypisz ip");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("error przypisz ip");
+                }
 
-            try
-            {
-                Email.przypiszIP();
-                //  Email.SendEmail("SCALENAMW", "użyto programu", "SCALENIAMW");
-                Console.WriteLine("czy wyslano: " + Email.SendEmail("SCALENAMW", "Właśnie użyto programu SCALENIAMW\n\nWersja programu: " + Assembly.GetExecutingAssembly().GetName().Version.ToString(), "SCALENIA_MW"));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+                try
+                {
+                    Console.WriteLine("czy wyslano: " + Email.SendEmail("SCALENAMW", "Właśnie użyto programu SCALENIAMW\n\nWersja programu: " + Assembly.GetExecutingAssembly().GetName().Version.ToString(), "SCALENIA_MW"));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
 
-            try
-            {
-                AktualizacjaOprogramowania.aktualizuj();
-            }
-            catch
-            {
+                try
+                {
+                    AktualizacjaOprogramowania.aktualizuj();
+                }
+                catch
+                {
 
+                }
             }
-
 
             try
             {
@@ -378,7 +381,7 @@ namespace ScaleniaMW
             imageWritiing.Source = bi3;
             imgEdycDokum.Visibility = Visibility.Hidden;
             labelModyfDokumentow.Foreground = Brushes.White;
-            
+
             for (int i = 0; i < 25; i++)
             {
                 btModyfDokumentow.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonModyfDokum), DispatcherPriority.Background);
