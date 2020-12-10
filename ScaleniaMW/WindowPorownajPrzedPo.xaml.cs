@@ -187,7 +187,7 @@ namespace ScaleniaMW
                 // działające zapytanie na nrobr-nrdz NKR 
                 //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
                 //  command.CommandText = "select  j.ijr NKR__PO__SCAL, sum(d.ww) WART__PO__SCAL from DZIALKI_N d join JEDN_REJ_N j on j.ID_ID = d.rjdr group by ijr";
-                command.CommandText = "select  j.ID_ID ID__PO__SCAL, sum(d.ww) WART__PO__SCAL from DZIALKI_N d join JEDN_REJ_N j on j.ID_ID = d.rjdr where id_rd <> 0 group by j.id_id";
+                command.CommandText = "select  j.ID_ID ID__PO__SCAL, sum(d.ww) WART__PO__SCAL from DZIALKI_N d join JEDN_REJ_N j on j.ID_ID = d.rjdr where id_rd <> 0 and (j.id_sti <> 1 or j.id_sti is null) group by j.id_id";
 
 
                 //  
@@ -228,7 +228,8 @@ namespace ScaleniaMW
                 // pobranie tabeli idStare i NKR NOWY
 
                 // command.CommandText = "select id_jedns, jr.ijr from JEDN_SN join jedn_rej_N jr on jr.id_id = jedn_sn.id_jednn order by jr.ijr";
-                command.CommandText = "select ID_ID, ijr from jedn_rej_N order by ID_ID";
+                //command.CommandText = "select ID_ID, ijr from jedn_rej_N order by ID_ID";
+                command.CommandText = "select ID_ID, ijr from jedn_rej_N where id_sti <> 1 or id_sti is null order by ID_ID";
 
                 adapter = new FbDataAdapter(command);
                 dt = new DataTable();
@@ -252,7 +253,8 @@ namespace ScaleniaMW
                 // command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.grp, j.idgrp, j.ID_ID from dzialka d join jedn_rej j on j.ID_ID = d.rjdr order by idgrp";
 
                 // dodano do tabeli id jednN
-                command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id order by idgrp";
+                //obecnie poprawne
+                command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
                 /*
                                 for (int i = 0; i < dt.Rows.Count; i++)
                                 {
