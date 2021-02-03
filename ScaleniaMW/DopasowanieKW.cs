@@ -46,8 +46,6 @@ namespace ScaleniaMW
             {
                 KWPoDopasowane = kwPoDopas.ToString();
             }
-
-           
         }
 
         public void wypiszDaneDoKonsoli()

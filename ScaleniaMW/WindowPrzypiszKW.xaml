@@ -30,7 +30,7 @@
                 <MenuItem Header="Ustaw Login i Hasło" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" Click="UstawLoginIHaslo2"/>
             </MenuItem>
             <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
-                <MenuItem Header="Połącz i pobierz dane" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" Click="ItemImportJednostkiSN_Click"/>
+                <MenuItem Header="Połącz i pobierz dane" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" Click="ItemImportPolaczIPobierzDane_Click"/>
                 <MenuItem Header="Automatycznie przypisz KW" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}" >
                     <MenuItem Header="Tryb dokładny" Click="MenuItem_AutoPrzypiszJednostkiDokladny"></MenuItem>
                     <MenuItem Header="Tryb przybliżony" Click="MenuItem_AutoPrzypiszJednostkiPrzybliżony"></MenuItem>
@@ -113,6 +113,6 @@
             </StackPanel>
             <DataGrid Margin="5,0" x:Name="dgNrKwZSQL" CanUserDeleteRows="False" CellEditEnding="DgNrKwZSQL_CellEditEnding" CurrentCellChanged="DgNrKwZSQL_CurrentCellChanged"/>
         </DockPanel>
-        <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Margin="2" ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
+        <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Margin="2" ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}" MouseDown="KopiujDoSchowka_MouseDown"></TextBlock>
     </Grid>
 </Window>

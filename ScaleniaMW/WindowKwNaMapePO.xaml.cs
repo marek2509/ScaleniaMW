@@ -799,5 +799,7 @@ namespace ScaleniaMW
             textBlockLogInfo.Dispatcher.BeginInvoke(new TextLogInfoDelegate(SetLogInfoCopy), DispatcherPriority.Background);
 
         }
+
+ 
     }
 }

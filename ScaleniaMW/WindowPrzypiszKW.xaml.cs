@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -137,8 +138,9 @@ namespace ScaleniaMW
         List<DopasowanieKW> listaDopasowKW = new List<DopasowanieKW>();
         List<DopasowanieKW> listaDopasowKW_CzyLadowac = new List<DopasowanieKW>();
         bool czyPolaczonoZBaza = false;
-        private void ItemImportJednostkiSN_Click(object sender, RoutedEventArgs e)
+        private void ItemImportPolaczIPobierzDane_Click(object sender, RoutedEventArgs e)
         {
+        
             try
             {
                 listBoxDzialkiNowe.Items.Refresh();
@@ -160,7 +162,7 @@ namespace ScaleniaMW
                         {
                             listaDopasowKW_CzyLadowac = new List<DopasowanieKW>();
                             listaDopasowKW = new List<DopasowanieKW>();
-                          //  dgNrKwZSQL.ItemsSource = listaDopasowKW;
+                            //  dgNrKwZSQL.ItemsSource = listaDopasowKW;
                             Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
                             listBoxDzialkiNowe.Items.Refresh();
                             dgNrKwZSQL.ItemsSource = listaDopasowKW;
@@ -171,7 +173,13 @@ namespace ScaleniaMW
 
                         }
                     }
+                    else
+                    {
+                        textBlockLogInfo.Text = null;
+                    }
+
                     connection.Open();
+
                     FbCommand command = new FbCommand();
 
 
@@ -332,12 +340,12 @@ namespace ScaleniaMW
             }
         }
 
+        StringBuilder sbLadowanieDoBazy;
         private void Button_ZaladujDoBazy(object sender, RoutedEventArgs e)
         {
+            sbLadowanieDoBazy = new StringBuilder();
             if (czyPolaczonoZBaza)
             {
-
-
                 var resultat = MessageBox.Show("Czy chcesz rozpocząć ładowanie KW do bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
 
                 if (resultat == MessageBoxResult.Yes)
@@ -405,6 +413,7 @@ namespace ScaleniaMW
                                 else
                                 {
                                     var result = MessageBox.Show("BŁĘDNY NR KW: " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane + " NIE ZOSTANIE PRZYPISANY DO BAZY!\n", "UWAGA!", MessageBoxButton.OKCancel);
+                                    sbLadowanieDoBazy.AppendLine("BŁĘDNY NR KW: " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane);
                                     if (result == MessageBoxResult.Cancel)
                                     {
                                         break;
@@ -415,7 +424,9 @@ namespace ScaleniaMW
                         connection.Close();
                         MessageBox.Show("Zakończono przypisywanie KW do bazy.", "SUKCES!", MessageBoxButton.OK);
                         progresBar.Visibility = Visibility.Hidden;
-                        ItemImportJednostkiSN_Click(sender, e);
+                        ItemImportPolaczIPobierzDane_Click(sender, e);
+                        textBlockLogInfo.Text += "\n" + sbLadowanieDoBazy.ToString().TrimEnd();
+                       // textBlockLogInfo.Text = textBlockLogInfo.Text.Trim();
                     }
                 }
             }
@@ -425,15 +436,57 @@ namespace ScaleniaMW
             }
         }
 
+        StringBuilder sbWspolneKW;
+        public void usunMozliwoscPrzypisaniaKwBedacegoWKilkuJednostkach()
+        {
+            sbWspolneKW = new StringBuilder();
+            // usunięcie możliwości przypisania KW które występują w więcej niż jednej jednostce
+            var tmpListaKwNiepowtarzalna = listaDopasowKW.Where(x => x.KWPoDopasowane != null && x.KWPoDopasowane.Trim() != "").Select(x => x.KWPoDopasowane).ToList().OrderBy(x => x).Distinct();
+            List<int> NKRktorymUsunacKW = new List<int>();
+            foreach (var item in tmpListaKwNiepowtarzalna)
+            {
+
+                var tmpIJR = listaDopasowKW.FindAll(x => x.KWPoDopasowane == item).Select(x => x.NKRn).ToList().Distinct().ToList();
+
+                if (tmpIJR.Count > 1)
+                {
+                   
+                    sbWspolneKW.Append("wspólny nr księgi " + item + " dla wielu jednostek:");
+                    foreach (var NKR in tmpIJR)
+                    {
+                        sbWspolneKW.Append(NKR + ", ");
+                        NKRktorymUsunacKW.Add(NKR);
+                    }
+                    sbWspolneKW.Append("\n");
+                }
+
+            }
+
+            foreach (var item in NKRktorymUsunacKW)
+            {
+                listaDopasowKW.FindAll(x => x.NKRn == item).ForEach(x => x.KWPoDopasowane = null);
+               // listaDopasowKW.RemoveAll(x => x.NKRn == item);
+
+                Console.WriteLine("ktowym usunac " + item);
+            }
+
+            textBlockLogInfo.Text = sbWspolneKW.ToString().TrimEnd();
+
+        }
+
+        void odsiewrzlistyNkrDzialkiKw()
+        {
+            Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
+        }
 
         private void MenuItem_AutoPrzypiszJednostkiDokladny(object sender, RoutedEventArgs e)
         {
             if (czyPolaczonoZBaza)
             {
-                Console.WriteLine(sender.GetHashCode());
+     
                 Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "AutoPrzypiszKW");
-                Console.WriteLine(listaDopasowKW.Count);
-
+                usunMozliwoscPrzypisaniaKwBedacegoWKilkuJednostkach();
+                odsiewrzlistyNkrDzialkiKw();
                 dgNrKwZSQL.Items.Refresh();
             }
             else
@@ -450,6 +503,8 @@ namespace ScaleniaMW
                 Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "AutoPrzypiszKWPrzyblizony");
                 Console.WriteLine(listaDopasowKW.Count);
 
+                usunMozliwoscPrzypisaniaKwBedacegoWKilkuJednostkach();
+                odsiewrzlistyNkrDzialkiKw();
                 dgNrKwZSQL.Items.Refresh();
             }
             else
@@ -556,7 +611,7 @@ namespace ScaleniaMW
                         writeCommand.ExecuteNonQueryAsync();
                         connection.Close();
                         MessageBox.Show("KW usunięto pomyślnie.", "SUKCES!", MessageBoxButton.OK);
-                        ItemImportJednostkiSN_Click(sender, e);
+                        ItemImportPolaczIPobierzDane_Click(sender, e);
                     }
                 }
             }
@@ -649,6 +704,25 @@ namespace ScaleniaMW
             bi3.EndInit();
             imageHand.Stretch = Stretch.Fill;
             imageHand.Source = bi3;
+        }
+
+        private delegate void TextLogInfoDelegate();
+        public void SetLogInfoCopy()
+        {
+            Thread.Sleep(1000);
+            textBlockLogInfo.Text = tmpString;
+        }
+
+        string tmpString;
+        private void KopiujDoSchowka_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Clipboard.SetText(textBlockLogInfo.Text);
+            tmpString = textBlockLogInfo.Text;
+            textBlockLogInfo.Text = "Skopiowano do schowka";
+            //  Thread.Sleep(1000);
+
+            textBlockLogInfo.Dispatcher.BeginInvoke(new TextLogInfoDelegate(SetLogInfoCopy), DispatcherPriority.Background);
+
         }
     }
 }
