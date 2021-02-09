@@ -28,7 +28,7 @@
     <ProductName>SCALENIAMW2</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>9</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -106,6 +106,7 @@
     </ApplicationDefinition>
     <Compile Include="AktualizacjaOprogramowania.cs" />
     <Compile Include="BadanieKsiagWieczystych.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DopasowanieJednostek.cs" />
     <Compile Include="DopasowanieKW.cs" />
     <Compile Include="DzialkaNkrZSQL.cs" />
@@ -195,6 +196,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\WzorzecRejestrPoScaleniu.RTF" />
+    <None Include="Resources\WzorzecWykazEkwiwalentów.RTF" />
     <None Include="ScaleniaMW_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

@@ -47,6 +47,13 @@ namespace ScaleniaMW
             }
         }
         public string CzyDopOdch__3__proc { get; set; }
+        public bool OdchWProgramie { get; set; }
+        public bool ZgodawProgramie { get; set; }
+
+        public decimal WGSPzJednSN { get; set; }
+        public decimal RozniceWGSPZJednIWartPrzed { get; set; }
+
+
         decimal _odch_3_proc;
         decimal _wartPo;
         decimal _wartPrzed;
@@ -56,14 +63,19 @@ namespace ScaleniaMW
         {
         }
 
-        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0)
+        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0, bool zgoda = false, bool odchWPrgor = false, decimal _WGSPzJednSN = 0, decimal _RozniceWGSPZJEDNiWartPrzed =0)
         {
             NKR = nkr;
             WartPrzed = wartPrzed;
             WartPo = wartPo;
             Roznice = WartPo - WartPrzed;
+            ZgodawProgramie = zgoda;
+            OdchWProgramie = odchWPrgor;
+            WGSPzJednSN = _WGSPzJednSN;
+            RozniceWGSPZJednIWartPrzed = _RozniceWGSPZJEDNiWartPrzed;
+           
         }
-
+        
         public void wypiszWConsoli()
         {
             Console.WriteLine(NKR + "<NKR WartPrzed>" + WartPrzed + " " + WartPo + "<wart po ROZNICE>" + Roznice + " idPo:>" + IdPo + "nkrprzed>" + Nkr_Przed+ "czy3%>" + CzyDopOdch__3__proc);

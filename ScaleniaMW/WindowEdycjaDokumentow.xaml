@@ -22,6 +22,40 @@
                 <Separator></Separator>
                 <MenuItem Header="Zamknij" Foreground="Black" Click="zamknijProgram_Click"></MenuItem>
             </MenuItem>
+            <MenuItem Header="Opcje">
+                <RadioButton GroupName="radio" x:Name="checkBoxUsunKontury" IsChecked="True">
+                        Usuń kontury szacunkowe z raportu
+                </RadioButton>
+                <DockPanel VerticalAlignment="Center">
+                    <RadioButton GroupName="radio" VerticalContentAlignment="Center" x:Name="checkBoxPodzialSekcji" >
+                        Wstaw podział sekcji na stronie nieparzystej zamiast tekstu:
+                    </RadioButton>
+                    <TextBox x:Name="textBoxZastapNaSekcjeNieparzysta" VerticalAlignment="Top" Margin="5" MinWidth="20">!@#$</TextBox>
+                </DockPanel>
+            </MenuItem>
         </Menu>
+        <TextBlock Grid.Row="2" Padding="5">
+            <Label FontSize="12" FontWeight="Bold">WYKAZ WYDZIELONYCH EKWIWALENTÓW</Label>
+            <Button Padding="3" FontWeight="Bold" x:Name="buttonWzorzecWykWydzEkwiw" Click="ButtonPobierzWzorzecWykWydzEkwiw_Click">Pobierz wzorzec</Button> <LineBreak/>
+            1. Wygenerować 'Wykaz wydzielonych ekwiwalentów' w programie scalenia bez znaku podziału strony i z kombinacją symboli na końcu np.: !@#$ <LineBreak /> 
+            2. Usunąć kontury.<LineBreak /> 
+            ....   Opcje >  Usuń kontury   <LineBreak />
+            ....   Plik >  Otówrz   <LineBreak />
+            3. Zapisać w Word jako rtf.  <LineBreak /> 
+            4. Wstawić podział strony nieparzystej. <LineBreak /> 
+            ....   Opcje >   Wstaw podział sekcji na stronie nieparzystej  <LineBreak />
+            ....   Plik >  Otówrz   <LineBreak />
+            ....   następnie automatycznie wywołany zostanie zapis pliku.
+           <LineBreak/>
+            <Label FontSize="12" FontWeight="Bold">REJESTR PO SCALENIU</Label>
+            <Button Padding="3" FontWeight="Bold" Click="ButtonPobierzWzorzecRejestrPo_Click">Pobierz wzorzec</Button> <LineBreak/>
+           
+            1. Wygenerować 'Rejestr po scaleniu' w programie SCALENIA bez znaku podziału strony i z kombinacją symboli na końcu np.: !@#$ <LineBreak /> 
+            2. Zapisać w Word jako rtf.  <LineBreak /> 
+            3. Wstawić podział strony nieparzystej. <LineBreak /> 
+            ....   Opcje >   Wstaw podział sekcji na stronie nieparzystej  <LineBreak />
+            ....   Plik >  Otówrz<LineBreak />
+            ....  następnie automatycznie wywołany zostanie zapis pliku.
+        </TextBlock>
     </Grid>
 </Window>

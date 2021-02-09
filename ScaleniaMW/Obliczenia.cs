@@ -400,26 +400,39 @@ namespace ScaleniaMW
                                 }
                             }
                         }
-
-
-
                     }
                 }
+
 
                 if (sender.Equals("AutoPrzypiszJednostkiZDoborem"))
                 {
                     foreach (var pojedyncza in listaJednostekZSQL)
                     {
                         int jednostkaDoPorownania = pojedyncza.NowyNKR - pojedyncza.NrObr * (int)ParametrUzytyprzyTworzeniuNKR;
-
+                     //   Console.WriteLine("nowy nkr: " + x.NowyNKR + "== " + pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania);
                         if (listaJednostekZSQL.Exists(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania))
                         {
-                           // Console.WriteLine("Nowy NKR " + pojedyncza.NowyNKR + " idjednStarej: " + pojedyncza.NrJednEwopis + "  " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
+                            // Console.WriteLine("Nowy NKR " + pojedyncza.NowyNKR + " idjednStarej: " + pojedyncza.NrJednEwopis + "  " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
+                            /*
+                             if (pojedyncza.PrzypisanyNrRej.Equals(null))
+                             {
+                                 pojedyncza.PrzypisanyNrRej = listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).IdJednS;
+
+
+                                 Console.WriteLine("nkr: " + pojedyncza.NowyNKR + " XX " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
+
+                             }*/
 
                             if (pojedyncza.PrzypisanyNrRej.Equals(null))
                             {
                                 pojedyncza.PrzypisanyNrRej = listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).IdJednS;
+
+
+                                Console.WriteLine("nkr: " + pojedyncza.NowyNKR + " XX " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
+
                             }
+                            
+
                         }
                     }
                 }

@@ -15,13 +15,13 @@ namespace ScaleniaMW
         public int? IDGRP { get; set; }
         public int id_id;
         public double udzialPrzed = 1;
-
+        public decimal WartoscPrzedZJSNWWGSP { get; set; }
         public StanPrzedWartosci()
         {
 
         }
 
-        public StanPrzedWartosci(decimal wart, int ijr, int nkr, int idgrp, int idJednNowej, double udzial)
+        public StanPrzedWartosci(decimal wart, int ijr, int nkr, int idgrp, int idJednNowej, double udzial )
         {
             Console.WriteLine("1");
             Wartosc = Decimal.Round(wart,2);
@@ -43,7 +43,9 @@ namespace ScaleniaMW
             Console.WriteLine("6");
             udzialPrzed = udzial;
             Console.WriteLine("7");
+          //  WartoscPrzedZJSNWWGSP = _wartoscPrzedZJSNWWGSP;
         }                  
+
 
         public void wypiszwConsoli()
         {

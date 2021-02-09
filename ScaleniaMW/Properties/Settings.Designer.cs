@@ -190,5 +190,17 @@ namespace ScaleniaMW.Properties {
                 this["CheckBoxPodkreslenieWARTOSCI"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CheckBoxPodzialSekcji {
+            get {
+                return ((bool)(this["CheckBoxPodzialSekcji"]));
+            }
+            set {
+                this["CheckBoxPodzialSekcji"] = value;
+            }
+        }
     }
 }
