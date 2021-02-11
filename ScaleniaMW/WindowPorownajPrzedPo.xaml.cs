@@ -188,7 +188,7 @@ namespace ScaleniaMW
                 // działające zapytanie na nrobr-nrdz NKR 
                 //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
                 //  command.CommandText = "select  j.ijr NKR__PO__SCAL, sum(d.ww) WART__PO__SCAL from DZIALKI_N d join JEDN_REJ_N j on j.ID_ID = d.rjdr group by ijr";
-                command.CommandText = "select  j.ID_ID ID__PO__SCAL, sum(d.ww) WART__PO__SCAL from DZIALKI_N d join JEDN_REJ_N j on j.ID_ID = d.rjdr where id_rd <> 0 and (j.id_sti <> 1 or j.id_sti is null) group by j.id_id";
+                command.CommandText = "select j.ID_ID ID__PO__SCAL, sum(d.ww) WART__PO__SCAL from DZIALKI_N d join JEDN_REJ_N j on j.ID_ID = d.rjdr where id_rd <> 0 and (j.id_sti <> 1 or j.id_sti is null) group by j.id_id";
 
 
                 //  

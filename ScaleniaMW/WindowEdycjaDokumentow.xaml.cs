@@ -21,7 +21,7 @@ namespace ScaleniaMW
     /// </summary>
     public partial class WindowEdycjaDokumentow : Window
     {
-        public void odczytUstawien()
+       /* public void odczytUstawien()
         {
             try
             {
@@ -43,12 +43,12 @@ namespace ScaleniaMW
             {
                 Console.WriteLine("Nie zapisno ustawień");
             }
-        }
+        }*/
 
         public WindowEdycjaDokumentow()
         {
             InitializeComponent();
-            odczytUstawien();
+           // odczytUstawien();
         }
         string usunOd = "kontury";
         string usunDo = "bilans";
@@ -119,7 +119,7 @@ namespace ScaleniaMW
                     Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz ");
                 }
 
-
+                /*
                 if (checkBoxPodzialSekcji.IsChecked == true)
                 {
 
@@ -154,7 +154,7 @@ namespace ScaleniaMW
                         }
                     }
                 }
-
+                */
 
                 SaveFileDialog svd = new SaveFileDialog();
                 svd.DefaultExt = ".rtf";
