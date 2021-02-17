@@ -7,16 +7,21 @@
         mc:Ignorable="d"
         Title="SCALENIAMW inż. Marek Wojciechowicz - dopasuj KW dla nowych działek" Height="600" Width="1100" x:Name="windowPrzypiszKW">
     <Grid x:Name="gridPrzypiszKW" Visibility="Visible">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="37*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
-        <Menu Grid.Row="1" Background="#275ea2" Foreground="White">
+        <TextBlock Margin="10,0" x:Name="textBlockSciezka" Grid.ColumnSpan="2"></TextBlock>
+        <Menu Grid.Row="1" Background="#275ea2" Foreground="White" Grid.ColumnSpan="2">
             <MenuItem Header="Plik">
                 <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Foreground="Black" Header="Zapisz dopasowanie KW do pliku txt" ToolTip="[obr-dz] [KW]" Click="Zapisz_Dopasowanie_Jedn_Click"/>
+                <MenuItem x:Name="Zapisz_Niedopasowane_Jedn" Foreground="Black" Header="Zapisz niedopasowane KW do pliku txt" ToolTip="[obr-dz] [KW]" Click="Zapisz_Niedopasowane_Jedn_Click"/>
                 <Separator></Separator>
                 <MenuItem Header="Otwórz okno startowe" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}"  Click="otworzOknoPoczatkowe_Click"/>
                 <Separator></Separator>
@@ -44,12 +49,12 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel Grid.Row="2" x:Name="panelLogowania2"  Visibility="Hidden">
+        <StackPanel Grid.Row="2" x:Name="panelLogowania2"  Visibility="Hidden" Grid.ColumnSpan="2">
             <Label>Login:</Label>
             <TextBox  Text="{Binding ElementName=textBoxLogin, Path=Text}" x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
             <Label>Hasło:</Label>
             <PasswordBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
-            
+
 
             <WrapPanel>
                 <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo2">Zapisz</Button>
@@ -57,7 +62,7 @@
             </WrapPanel>
         </StackPanel>
 
-        <ProgressBar x:Name="progresBar" Grid.Row="2" Value="0" Visibility="Hidden" Margin="0,25,0,0"  Panel.ZIndex="100" Opacity="0.5">
+        <ProgressBar x:Name="progresBar" Grid.Row="2" Value="0" Visibility="Hidden" Margin="0,25,0,0"  Panel.ZIndex="100" Opacity="0.5" Grid.ColumnSpan="2">
         </ProgressBar>
 
         <DockPanel x:Name="tabControl2"  Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" >
@@ -113,6 +118,6 @@
             </StackPanel>
             <DataGrid Margin="5,0" x:Name="dgNrKwZSQL" CanUserDeleteRows="False" CellEditEnding="DgNrKwZSQL_CellEditEnding" CurrentCellChanged="DgNrKwZSQL_CurrentCellChanged"/>
         </DockPanel>
-        <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Margin="2" ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}" MouseDown="KopiujDoSchowka_MouseDown"></TextBlock>
+        <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Margin="2,0,2,2" ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}" MouseDown="KopiujDoSchowka_MouseDown" Grid.ColumnSpan="2"></TextBlock>
     </Grid>
 </Window>

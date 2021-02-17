@@ -621,28 +621,28 @@ namespace ScaleniaMW
                     Console.WriteLine(licznikZPustym + " licznik wskazal: " + licznik);
                 }
 
-                Console.WriteLine("tntntntnt");
-                Console.WriteLine(listaKWdlaNowychDzialek.Count);
-                Console.WriteLine(listaKWdlaNowychDzialek.Count + " " + listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == ""));
-                Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == null));
+                //Console.WriteLine("tntntntnt");
+                //Console.WriteLine(listaKWdlaNowychDzialek.Count);
+                //Console.WriteLine(listaKWdlaNowychDzialek.Count + " " + listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == ""));
+                //Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == null));
 
 
-                Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == ""));
-                Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == null));
+                //Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == ""));
+                //Console.WriteLine(listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == null));
 
-                Console.WriteLine("tntntntnt end");
+                //Console.WriteLine("tntntntnt end");
 
                 if (listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == "" || x.KWPoDopasowane == null))
                 {
 
-                    Console.WriteLine("x=<1");
+                    //Console.WriteLine("x=<1");
                     List<int> NowyNkr = new List<int>();
                     List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => (x.KWPoDopasowane == "" || x.KWPoDopasowane == null) && x.KWprzed != "");
                     // Console.WriteLine(listaKWdlaNowychDzialek.FindAll(x => x.KWprzed.Equals("")).Count + "count 11 ");
                     List<IDiNKR> lisIDnkr_NKR = tmpListNKRbezJednRej.GroupBy(x => new { x.NKRn, x.IdJednN }).Select(x => new IDiNKR { IdJednN = x.Key.IdJednN, NKR = x.Key.NKRn }).ToList();
                     NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
                     listBoxNkr.ItemsSource = NowyNkr;
-                    Console.WriteLine(NowyNkr.Count + "NKR");
+                    //Console.WriteLine(NowyNkr.Count + "NKR");
                     ///////////////////
                     List<string> NowyNrDz = new List<string>();
                     // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
@@ -681,8 +681,6 @@ namespace ScaleniaMW
 
                     if (sender.Equals("PrzypiszZaznJedn"))
                     {
-                        Console.WriteLine("sender jetsst " + sender.GetHashCode());
-
                         foreach (var item in listaKWdlaNowychDzialek)
                         {
                             //if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
@@ -694,14 +692,31 @@ namespace ScaleniaMW
 
                             if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDzN.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
                             {
-                                Console.WriteLine(item.NKRn + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDZ + " " + listBoxNoweDzialki.SelectedValue + " " + item.KWprzed + " " + listBoxNrKW.SelectedValue + " id");
+                                //  Console.WriteLine(item.NKRn + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDZ + " " + listBoxNoweDzialki.SelectedValue + " " + item.KWprzed + " " + listBoxNrKW.SelectedValue + " id");
 
                                 item.KWPoDopasowane = listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed;
+                              
+                                foreach (var item2 in listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed))
+                                {
+                                    if(item.NKRn != item2.NKRn)
+                                    {
+                                        var resultat = MessageBox.Show("KW jest przypisane w jednostce nr " + item2.NKRn  + "\nCZY PRZYPISAĆ  KW?" , "ERROR", MessageBoxButton.YesNo);
+
+                                        if (resultat == MessageBoxResult.No)
+                                        {
+                                            item.KWPoDopasowane = null;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                } 
                             }
                         }
                         if (listBoxNoweDzialki.Items.Count < 1)
                         {
-                            Console.WriteLine("to teraz");
                             listBoxNkr.SelectedIndex = 0;
                         }
 
@@ -711,7 +726,6 @@ namespace ScaleniaMW
                         listBoxNoweDzialki.SelectedIndex = 0;
 
                     }
-
                 }
                 else
                 {
@@ -721,8 +735,6 @@ namespace ScaleniaMW
                     listBoxNoweDzialki.ItemsSource = lll;
                     listBoxNkr.ItemsSource = lll;
                 }
-
-
             }
             else
             {

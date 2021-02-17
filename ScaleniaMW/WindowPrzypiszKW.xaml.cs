@@ -140,7 +140,7 @@ namespace ScaleniaMW
         bool czyPolaczonoZBaza = false;
         private void ItemImportPolaczIPobierzDane_Click(object sender, RoutedEventArgs e)
         {
-        
+
             try
             {
                 listBoxDzialkiNowe.Items.Refresh();
@@ -251,7 +251,7 @@ namespace ScaleniaMW
                     itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
                     dgNrKwZSQL.Items.Refresh();
                     czyPolaczonoZBaza = true;
-                    koniec:;
+                koniec:;
                 }
             }
             catch (Exception ex)
@@ -426,7 +426,7 @@ namespace ScaleniaMW
                         progresBar.Visibility = Visibility.Hidden;
                         ItemImportPolaczIPobierzDane_Click(sender, e);
                         textBlockLogInfo.Text += "\n" + sbLadowanieDoBazy.ToString().TrimEnd();
-                       // textBlockLogInfo.Text = textBlockLogInfo.Text.Trim();
+                        // textBlockLogInfo.Text = textBlockLogInfo.Text.Trim();
                     }
                 }
             }
@@ -450,7 +450,7 @@ namespace ScaleniaMW
 
                 if (tmpIJR.Count > 1)
                 {
-                   
+
                     sbWspolneKW.Append("wspólny nr księgi " + item + " dla wielu jednostek:");
                     foreach (var NKR in tmpIJR)
                     {
@@ -465,7 +465,7 @@ namespace ScaleniaMW
             foreach (var item in NKRktorymUsunacKW)
             {
                 listaDopasowKW.FindAll(x => x.NKRn == item).ForEach(x => x.KWPoDopasowane = null);
-               // listaDopasowKW.RemoveAll(x => x.NKRn == item);
+                // listaDopasowKW.RemoveAll(x => x.NKRn == item);
 
                 Console.WriteLine("ktowym usunac " + item);
             }
@@ -483,7 +483,7 @@ namespace ScaleniaMW
         {
             if (czyPolaczonoZBaza)
             {
-     
+
                 Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "AutoPrzypiszKW");
                 usunMozliwoscPrzypisaniaKwBedacegoWKilkuJednostkach();
                 odsiewrzlistyNkrDzialkiKw();
@@ -684,7 +684,7 @@ namespace ScaleniaMW
         private void ButtonPrzypisz_MouseEnter(object sender, MouseEventArgs e)
         {
             buttonPrzypisz.Foreground = Brushes.Black;
-           
+
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
             bi3.UriSource = new Uri("Resources/pen.png", UriKind.Relative);
@@ -722,8 +722,69 @@ namespace ScaleniaMW
             //  Thread.Sleep(1000);
 
             textBlockLogInfo.Dispatcher.BeginInvoke(new TextLogInfoDelegate(SetLogInfoCopy), DispatcherPriority.Background);
+        }
 
+
+
+        private void Zapisz_Niedopasowane_Jedn_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder sBListaKwNieprzypisana = new StringBuilder();
+            var str = listaDopasowKW.Where(x => x.KWPoDopasowane == null || x.KWPoDopasowane.Trim() == "").Select(x => x.KWprzed).Distinct().OrderBy(x => x).ToList();
+            Console.WriteLine("count :" + str.Count);
+
+            // sort po KW
+            foreach (var KWNiedopasow in str)
+            {
+                if (BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(KWNiedopasow))
+                {
+                    sBListaKwNieprzypisana.Append(KWNiedopasow + ";");
+                }
+                else
+                {
+                    sBListaKwNieprzypisana.Append("BŁĘDNY_NUMER_KW:" + KWNiedopasow + ";");
+                }
+
+
+                foreach (var Nkr in listaDopasowKW.FindAll(x => x.KWprzed == KWNiedopasow).Select(x => x.NKRn).Distinct().ToList())
+                {
+                    sBListaKwNieprzypisana.Append(Nkr + ",");
+                }
+                sBListaKwNieprzypisana.AppendLine();
+            }
+            // sort po NKR
+
+
+
+            SaveFileDialog svd = new SaveFileDialog();
+            svd.DefaultExt = ".txt";
+            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (svd.ShowDialog() == true)
+            {
+                using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                    try
+                    {
+                        try
+                        {
+                           sw.Write(sBListaKwNieprzypisana);
+
+                            sw.Close();
+                        }
+                        catch (Exception exc)
+                        {
+                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+
+                        if (resultat == MessageBoxResult.Yes)
+                        {
+                            Application.Current.Shutdown();
+                        }
+                    }
+            }
         }
     }
 }
-
