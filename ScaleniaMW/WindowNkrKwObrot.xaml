@@ -88,18 +88,19 @@
             <Grid x:Name="tabControl" Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" Background="#FFE5E5E5">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16*"></ColumnDefinition>
+                    <ColumnDefinition Width="481*"/>
+                    <ColumnDefinition Width="496*"/>
 
                 </Grid.ColumnDefinitions>
 
                 <DataGrid Grid.Column="0" ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
                 CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgDzialkiEdz"   VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3"/>
 
-                <Image Panel.ZIndex="0" x:Name="ingCoZrobic" IsEnabled="False" Grid.Row="2" Grid.Column="2" Margin="60" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencil-2.png"  />
+                <Image Panel.ZIndex="0" x:Name="ingCoZrobic" IsEnabled="False" Grid.Column="2" Margin="60,60,60,49" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencil-2.png"  />
 
-                <DataGrid   Grid.Row="2" Panel.ZIndex="1" Opacity="0.9" Grid.Column="2" HorizontalAlignment="Stretch"  ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
-                    CanUserResizeRows="False" Visibility="Visible" AutoGenerateColumns="False" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF202929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3">
+                <DataGrid Panel.ZIndex="1" Opacity="0.9" Grid.Column="2" HorizontalAlignment="Stretch"  ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
+                    CanUserResizeRows="False" Visibility="Visible" AutoGenerateColumns="False" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF202929" SelectedIndex="0" BorderThickness="2">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="NR DZIAŁKI" Binding="{Binding ObrDzialka}" />
                         <DataGridTextColumn Header="NKR" Binding="{Binding NKR}" />
@@ -109,11 +110,11 @@
 
 
 
-                <StackPanel Grid.Column="0" Visibility="Hidden" x:Name="stackBledyKW" Background="Transparent" Panel.ZIndex="999" >
+                <StackPanel Grid.Column="0" Visibility="Hidden" x:Name="stackBledyKW" Background="Transparent" Panel.ZIndex="999" Grid.ColumnSpan="2" >
                     <Button x:Name="zamknijTextBlockBledy" Click="ZamknijTextBlockBledy_Click" Margin="210,10,0,0" Width="70" HorizontalAlignment="Left">Zamknij</Button>
                     <TextBox Padding="25" Margin=" 5" x:Name="textBlockBledy" MaxHeight="750"  MaxWidth="600">
                     </TextBox>
-                   
+
                 </StackPanel>
             </Grid>
             <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>

@@ -21,34 +21,34 @@ namespace ScaleniaMW
     /// </summary>
     public partial class WindowEdycjaDokumentow : Window
     {
-       /* public void odczytUstawien()
-        {
-            try
-            {
-                checkBoxPodzialSekcji.IsChecked = Properties.Settings.Default.CheckBoxPodzialSekcji;
-            }
-            catch
-            {
-                Console.WriteLine("Nie odczytano ustawień");
-            }
-        }
+        /* public void odczytUstawien()
+         {
+             try
+             {
+                 checkBoxPodzialSekcji.IsChecked = Properties.Settings.Default.CheckBoxPodzialSekcji;
+             }
+             catch
+             {
+                 Console.WriteLine("Nie odczytano ustawień");
+             }
+         }
 
-        public void zapisUstawien()
-        {
-            try
-            {
-                Properties.Settings.Default.CheckBoxPodzialSekcji = (bool)checkBoxPodzialSekcji.IsChecked;
-            }
-            catch
-            {
-                Console.WriteLine("Nie zapisno ustawień");
-            }
-        }*/
+         public void zapisUstawien()
+         {
+             try
+             {
+                 Properties.Settings.Default.CheckBoxPodzialSekcji = (bool)checkBoxPodzialSekcji.IsChecked;
+             }
+             catch
+             {
+                 Console.WriteLine("Nie zapisno ustawień");
+             }
+         }*/
 
         public WindowEdycjaDokumentow()
         {
             InitializeComponent();
-           // odczytUstawien();
+            // odczytUstawien();
         }
         string usunOd = "kontury";
         string usunDo = "bilans";
@@ -83,6 +83,7 @@ namespace ScaleniaMW
         List<string> calyOdczzytanyTextLinie = new List<string>();
         private void Otworz_RTF_Click(object sender, RoutedEventArgs e)
         {
+            StringBuilder sb = new StringBuilder();
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.DefaultExt = ".edz";
             dlg.Filter = "All files(*.*) | *.*|TXT Files (*.txt)|*.txt| CSV(*.csv)|*.csv| EDZ(*.edz)|*.edz";
@@ -111,12 +112,57 @@ namespace ScaleniaMW
 
                             if (calyOdczzytanyTextLinie[i].ToLower().Contains("obr")) czyUsuwaclinie = false;
                         }
+                        calyOdczzytanyTextLinie.ForEach(x => sb.AppendLine(x));
+
+                   
                     }
+                    else
+                    {
+                        StringBuilder sbPuste = new StringBuilder();
+                        for (int i = 0; i < calyOdczzytanyTextLinie.Count; i++)
+                        {
+
+                            if (calyOdczzytanyTextLinie[i].Contains("pusty") || calyOdczzytanyTextLinie[i].Trim() == "")
+                            {
+                                sbPuste.AppendLine(calyOdczzytanyTextLinie[i]);
+                                sb.AppendLine(calyOdczzytanyTextLinie[i]);
+                                continue;
+                            }
+                            int ostatniMyslnik = calyOdczzytanyTextLinie[i].LastIndexOf('-');
+                            int dlTekstu = calyOdczzytanyTextLinie[i].Length;
+                            int ileZnakowUsunac = calyOdczzytanyTextLinie[i].IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
+                         //   Console.WriteLine( calyOdczzytanyTextLinie[i] +  " last index -: " + ostatniMyslnik + " Dł: " + dlTekstu + " wynik:" + calyOdczzytanyTextLinie[i].Remove(ostatniMyslnik, ileZnakowUsunac));
+
+                            calyOdczzytanyTextLinie[i] = calyOdczzytanyTextLinie[i].Remove(ostatniMyslnik, ileZnakowUsunac);
+                            int indexOstatniMyslnik = calyOdczzytanyTextLinie[i].LastIndexOf('-');
+                            int indexOstatniUkosnik = calyOdczzytanyTextLinie[i].LastIndexOf('/');
+                            Console.WriteLine("indexOstatniMyslnik " + indexOstatniMyslnik + "indexOstatniUkosnik " + indexOstatniUkosnik);
+                            if (indexOstatniMyslnik > indexOstatniUkosnik)
+                            {
+                                calyOdczzytanyTextLinie[i] = calyOdczzytanyTextLinie[i].Remove(indexOstatniMyslnik, 1);
+                                calyOdczzytanyTextLinie[i] = calyOdczzytanyTextLinie[i].Insert(indexOstatniMyslnik, "/");
+                            }
+
+                            sb.AppendLine(calyOdczzytanyTextLinie[i]);
+                        }
+                        textBoxPuste.Text = sbPuste.ToString();
+                    }
+
+
                     var resultat = MessageBox.Show("Wczytano.\nZapisz plik.", "Wczytano", MessageBoxButton.OK);
                 }
                 catch (Exception esa)
                 {
                     Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz ");
+                }
+
+                if (checkBoxUsunKontury.IsChecked == true)
+                {
+                    zapisDoPliku(sb.ToString());
+                }
+                else
+                {
+                    zapisDoPliku(sb.ToString(), ".txt");
                 }
 
                 /*
@@ -156,48 +202,57 @@ namespace ScaleniaMW
                 }
                 */
 
+
+
+
+
+
+                /*
                 SaveFileDialog svd = new SaveFileDialog();
-                svd.DefaultExt = ".rtf";
-                svd.Filter = "Text files (*.rtf)|*.rtf|All files (*.*)|*.*";
-                if (svd.ShowDialog() == true)
-                {
-                    using (Stream s = File.Open(svd.FileName, FileMode.Create))
-                    using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                
-                    try
+                    svd.DefaultExt = ".rtf";
+                    svd.Filter = "Text files (*.rtf)|*.rtf|All files (*.*)|*.*";
+                    if (svd.ShowDialog() == true)
                     {
-                        try
-                        {
-                            StringBuilder sb = new StringBuilder();
+                        using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                        using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
 
-                            calyOdczzytanyTextLinie.ForEach(x => sb.AppendLine(x));
+                            try
+                            {
+                                try
+                                {
+                                    
 
-                            sw.Write(sb.ToString());
-                            sw.Close();
-                        }
-                        catch (Exception exc)
-                        {
-                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+                                    sw.Write(sb.ToString());
+                                    sw.Close();
+                                }
+                                catch (Exception exc)
+                                {
+                                    MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
 
-                        if (resultat == MessageBoxResult.Yes)
-                        {
-                            Application.Current.Shutdown();
-                        }
-                    }
-                }
+                                if (resultat == MessageBoxResult.Yes)
+                                {
+                                    Application.Current.Shutdown();
+                                }
+                            }
+                    }*/
+
+
+
+
+
             }
         }
 
-        void zapisDoPliku(string tekstDoZapisu)
+        void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")
         {
             SaveFileDialog svd = new SaveFileDialog();
-            svd.DefaultExt = ".rtf";
-            svd.Filter = "Text files (*.rtf)|*.rtf|All files (*.*)|*.*";
+            svd.DefaultExt = format;
+            svd.Filter = "All files (*.*)|*.*";
             if (svd.ShowDialog() == true)
             {
                 using (Stream s = File.Open(svd.FileName, FileMode.Create))

@@ -75,7 +75,7 @@
                     <Button Visibility="Visible"  HorizontalAlignment="Right"  Margin="0,0,1,0" MouseEnter="ModyfDokum_MouseEnter"  MouseLeave="ModyfDokum_MouseLeave" 
                                     Click="ButtonModyfikacjaDokumentow_Click" Background="#2676d0"  Width="250" Height="100" x:Name="buttonModyfikacjaDokumentow" FontSize="13">
                         <StackPanel>
-                            <Label x:Name="labelModyfDokumentow"  FontWeight="Bold" Foreground="White">EDYCJA DOKUMENTÓW</Label>
+                            <Label x:Name="labelModyfDokumentow"  FontWeight="Bold" Foreground="White">EDYCJA DOKUMENTÓW / PLIKÓW</Label>
                             <Image x:Name="imageWritiing"  Source="Resources/writingWhite.png" Width="60"></Image>
                         </StackPanel>
                     </Button>

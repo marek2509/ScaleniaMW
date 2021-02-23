@@ -39,7 +39,6 @@ namespace ScaleniaMW
             {
                 Console.WriteLine(e + " problem z oknem");
             }
-
         }
 
         List<DzialkaEDZ> listaZEDZ = new List<DzialkaEDZ>();
@@ -324,7 +323,7 @@ namespace ScaleniaMW
                                 kodRodzajuNKRczyKW = 1;
                             }
 
-                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
+                            sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad,0));
                             textBlockLogInfo.Text = loginfo;
                             sw.Close();
                         }
