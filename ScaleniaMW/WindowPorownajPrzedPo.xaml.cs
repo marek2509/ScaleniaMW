@@ -255,14 +255,19 @@ namespace ScaleniaMW
 
                 // dodano do tabeli id jednN
                 //obecnie poprawne
-                command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
-                /*
-                                for (int i = 0; i < dt.Rows.Count; i++)
-                                {
-                                    stanPrzedWartoscis.Add(new StanPrzedWartosci((double)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], (int)dt.Rows[i][4]));
-                                }*/
+                 command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
 
-                adapter = new FbDataAdapter(command);
+                // command.CommandText = "select replace(d.ww,'.',','), j.ijr, case when idgrp is null then j.nkr else (select NKR from jedn_rej where id_id = j.idgrp) end NKR, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr, '.', ',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns = j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
+
+              //  command.CommandText = "select replace(d.ww,'.',','), j.ijr, case when j.idgrp is null then j.nkr when j.NKR = (select NKR from jedn_rej where id_id = j.idgrp) then j.NKR else null end NKR, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr, '.', ',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns = j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
+
+                    /*
+                                    for (int i = 0; i < dt.Rows.Count; i++)
+                                    {
+                                        stanPrzedWartoscis.Add(new StanPrzedWartosci((double)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], (int)dt.Rows[i][4]));
+                                    }*/
+
+                    adapter = new FbDataAdapter(command);
                 dt = new DataTable();
 
                 adapter.Fill(dt);
@@ -342,8 +347,12 @@ namespace ScaleniaMW
                 {
                     Console.WriteLine( ">>>" + dt.Rows[i][0] + " " + dt.Rows[i][1] + " "+ dt.Rows[i][2]);
                     // dt.Rows[i][1]
-                    zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).ZgodawProgramie = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][1]) == 1 ? true : false;
-                    zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).OdchWProgramie = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][2]) == 1 ? true : false;
+                    if (zsumwaneWartosciStanPO.Exists(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])))
+                    {
+                        zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).ZgodawProgramie = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][1]) == 1 ? true : false;
+                        zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).OdchWProgramie = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][2]) == 1 ? true : false;
+                    }
+
 
                 }
 
@@ -353,10 +362,12 @@ namespace ScaleniaMW
                 adapter = new FbDataAdapter(command);
                 dt = new DataTable();
                 adapter.Fill(dt);
+                Console.WriteLine("PRZED WEJSCIEM DO PETLI" );
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Console.WriteLine("xxx" + dt.Rows[i][0] + " " + dt.Rows[i][1]);
                     // dt.Rows[i][1]
+
                     var tmp = zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]));
                     if(tmp != null)
                     {
@@ -372,6 +383,8 @@ namespace ScaleniaMW
                 try
                 {
                     dgPorownanie.Visibility = Visibility.Visible;
+           
+
                     dgPorownanie.Items.Refresh();
 
                     Console.WriteLine("ustawiam SOURCE");
@@ -433,6 +446,7 @@ namespace ScaleniaMW
 
                             int ilePrzypisacOchTechn = zsumwaneWartosciStanPO.Count;
                             progresBar.Maximum = ilePrzypisacOchTechn;
+
 
                             foreach (var item in zsumwaneWartosciStanPO)
                             {

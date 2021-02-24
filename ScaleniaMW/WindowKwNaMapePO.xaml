@@ -75,9 +75,9 @@
                                                 <ListBoxItem >1:2000 [3m]</ListBoxItem>
                                                 <ListBoxItem Visibility="Collapsed" >1:2000 [3m]</ListBoxItem>
                                                 <ListBoxItem Visibility="Collapsed" >1:2000 [3m]</ListBoxItem>
+                                                <ListBoxItem  >1:5000 [6m] 1.8</ListBoxItem>
                                                 <ListBoxItem Visibility="Collapsed" >1:2000 [3m]</ListBoxItem>
-                                                <ListBoxItem Visibility="Collapsed" >1:2000 [3m]</ListBoxItem>
-                                                <ListBoxItem >1:5000 [8m]</ListBoxItem>
+                                                <ListBoxItem >1:5000 [8m] 2.5</ListBoxItem>
                                             </ListBox>
                                         </StackPanel>
                                         <Label Width="50" HorizontalAlignment="Left" Content="{Binding ElementName=listBoxOdsuniecieTekstu, Path=SelectedIndex}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>

@@ -78,7 +78,7 @@ namespace ScaleniaMW
         
         public void wypiszWConsoli()
         {
-            Console.WriteLine(NKR + "<NKR WartPrzed>" + WartPrzed + " " + WartPo + "<wart po ROZNICE>" + Roznice + " idPo:>" + IdPo + "nkrprzed>" + Nkr_Przed+ "czy3%>" + CzyDopOdch__3__proc);
+            Console.WriteLine(NKR + "<NKR WartPrzed>" + WartPrzed + " " + WartPo + "<wart po ROZNICE>" + Roznice + " idPo:>" + IdPo + "nkrprzed>" + Nkr_Przed+ "czy3%>" + CzyDopOdch__3__proc+ "  WGSPzJednSN " + WGSPzJednSN + "  RozniceWGSPZJednIWartPrzed " + RozniceWGSPZJednIWartPrzed);
         }
     }
 }
