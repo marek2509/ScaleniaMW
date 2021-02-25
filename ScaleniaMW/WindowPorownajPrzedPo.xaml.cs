@@ -255,24 +255,24 @@ namespace ScaleniaMW
 
                 // dodano do tabeli id jednN
                 //obecnie poprawne
-                 command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
+                command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
 
                 // command.CommandText = "select replace(d.ww,'.',','), j.ijr, case when idgrp is null then j.nkr else (select NKR from jedn_rej where id_id = j.idgrp) end NKR, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr, '.', ',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns = j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
 
-              //  command.CommandText = "select replace(d.ww,'.',','), j.ijr, case when j.idgrp is null then j.nkr when j.NKR = (select NKR from jedn_rej where id_id = j.idgrp) then j.NKR else null end NKR, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr, '.', ',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns = j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
+                //  command.CommandText = "select replace(d.ww,'.',','), j.ijr, case when j.idgrp is null then j.nkr when j.NKR = (select NKR from jedn_rej where id_id = j.idgrp) then j.NKR else null end NKR, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr, '.', ',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns = j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
 
-                    /*
-                                    for (int i = 0; i < dt.Rows.Count; i++)
-                                    {
-                                        stanPrzedWartoscis.Add(new StanPrzedWartosci((double)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], (int)dt.Rows[i][4]));
-                                    }*/
+                /*
+                                for (int i = 0; i < dt.Rows.Count; i++)
+                                {
+                                    stanPrzedWartoscis.Add(new StanPrzedWartosci((double)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], (int)dt.Rows[i][4]));
+                                }*/
 
-                    adapter = new FbDataAdapter(command);
+                adapter = new FbDataAdapter(command);
                 dt = new DataTable();
 
                 adapter.Fill(dt);
 
-              //  dgPorownanie.ItemsSource = dt.AsDataView();
+                //  dgPorownanie.ItemsSource = dt.AsDataView();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     stanPrzedWartoscis.Add(new StanPrzedWartosci(Convert.ToDecimal(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]),
@@ -331,7 +331,7 @@ namespace ScaleniaMW
 
                 foreach (var item in zsumwaneWartosciStanPO.FindAll(x => x.NKR == 0))
                 {
-                  //  Console.WriteLine("zero idpo>" + item.IdPo + " nkr>" + item.NKR + " " + idJrNowejNKRJeNowej.Find(x => x.idJednNowej == item.IdPo).NKRJednNowej);
+                    //  Console.WriteLine("zero idpo>" + item.IdPo + " nkr>" + item.NKR + " " + idJrNowejNKRJeNowej.Find(x => x.idJednNowej == item.IdPo).NKRJednNowej);
                     item.NKR = idJrNowejNKRJeNowej.Find(x => x.idJednNowej == item.IdPo).NKRJednNowej;
                 }
 
@@ -345,7 +345,7 @@ namespace ScaleniaMW
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    Console.WriteLine( ">>>" + dt.Rows[i][0] + " " + dt.Rows[i][1] + " "+ dt.Rows[i][2]);
+                    Console.WriteLine(">>>" + dt.Rows[i][0] + " " + dt.Rows[i][1] + " " + dt.Rows[i][2]);
                     // dt.Rows[i][1]
                     if (zsumwaneWartosciStanPO.Exists(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])))
                     {
@@ -356,25 +356,24 @@ namespace ScaleniaMW
 
                 }
 
-                
+
                 //dołączenie wartosci gospodarstwa z tabeli jedn_sn, Należy porównać to z moją wartością przed scaleniem bo są babole 
                 command.CommandText = "select jn.ijr, sum(jsn.wwgsp) from jedn_sn jsn join jedn_rej_n jn on jn.id_id = jsn.id_jednn group by ijr order by ijr";
                 adapter = new FbDataAdapter(command);
                 dt = new DataTable();
                 adapter.Fill(dt);
-                Console.WriteLine("PRZED WEJSCIEM DO PETLI" );
+                Console.WriteLine("PRZED WEJSCIEM DO PETLI");
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Console.WriteLine("xxx" + dt.Rows[i][0] + " " + dt.Rows[i][1]);
                     // dt.Rows[i][1]
 
                     var tmp = zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]));
-                    if(tmp != null)
+                    if (tmp != null)
                     {
                         tmp.WGSPzJednSN = Convert.ToDecimal(dt.Rows[i][1].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][1]);
                         tmp.RozniceWGSPZJednIWartPrzed = tmp.WartPrzed - tmp.WGSPzJednSN;
                     }
-
                 }
 
 
@@ -383,7 +382,7 @@ namespace ScaleniaMW
                 try
                 {
                     dgPorownanie.Visibility = Visibility.Visible;
-           
+
 
                     dgPorownanie.Items.Refresh();
 
@@ -450,21 +449,33 @@ namespace ScaleniaMW
 
                             foreach (var item in zsumwaneWartosciStanPO)
                             {
-                                writeCommand.Parameters.Add("@ID_ID", item.IdPo);   
 
-                                if(item.CzyDopOdch__3__proc.ToUpper() == "NIE")
+
+                                if (item.CzyDopOdch__3__proc != null)
                                 {
-                                    int zero = 0;
-                                    writeCommand.Parameters.Add("@wart01", zero);
-                                    Console.WriteLine("0  IdPo:" + item.IdPo + " NKR:" + item.NKR);
+
+
+                                    writeCommand.Parameters.Add("@ID_ID", item.IdPo);
+
+                                    if (item.CzyDopOdch__3__proc.ToUpper() == "NIE")
+                                    {
+                                        int zero = 0;
+                                        writeCommand.Parameters.Add("@wart01", zero);
+                                        Console.WriteLine("0  IdPo:" + item.IdPo + " NKR:" + item.NKR);
+                                    }
+                                    else
+                                    {
+                                        writeCommand.Parameters.Add("@wart01", 1);
+                                        Console.WriteLine("1  IdPo:" + item.IdPo + " NKR:" + item.NKR);
+                                    }
+                                    writeCommand.ExecuteNonQuery();
+                                    writeCommand.Parameters.Clear();
                                 }
                                 else
                                 {
-                                    writeCommand.Parameters.Add("@wart01", 1);
-                                    Console.WriteLine("1  IdPo:" + item.IdPo + " NKR:" + item.NKR);
+                                    textBlockLogInfo.Text += " BŁ.ODCH.: " + item.NKR;
                                 }
-                                    writeCommand.ExecuteNonQuery();
-                                    writeCommand.Parameters.Clear();
+
 
                                 progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
                             }
@@ -536,24 +547,31 @@ namespace ScaleniaMW
 
                             foreach (var item in zsumwaneWartosciStanPO)
                             {
-                                writeCommand.Parameters.Add("@ID_ID", item.IdPo);
 
-                                if (item.CzyDopOdch__3__proc.ToUpper() == "NIE" && item.Roznice>0)
+                                if (item.CzyDopOdch__3__proc != null)
                                 {
-                                    writeCommand.Parameters.Add("@zgoda01", 1);
-                                    Console.WriteLine("1  IdPo:" + item.IdPo + " NKR:" + item.NKR);
+                                    writeCommand.Parameters.Add("@ID_ID", item.IdPo);
+
+                                    if (item.CzyDopOdch__3__proc.ToUpper() == "NIE" && item.Roznice > 0)
+                                    {
+                                        writeCommand.Parameters.Add("@zgoda01", 1);
+                                        Console.WriteLine("1  IdPo:" + item.IdPo + " NKR:" + item.NKR);
+                                    }
+                                    else
+                                    {
+                                        int zero = 0;
+                                        writeCommand.Parameters.Add("@zgoda01", zero);
+                                        Console.WriteLine("0  IdPo:" + item.IdPo + " NKR:" + item.NKR);
+                                    }
+
+                                    writeCommand.ExecuteNonQuery();
+                                    writeCommand.Parameters.Clear();
+
                                 }
                                 else
                                 {
-                                    int zero = 0;
-                                    writeCommand.Parameters.Add("@zgoda01", zero);
-                                    Console.WriteLine("0  IdPo:" + item.IdPo + " NKR:" + item.NKR);
+                                    textBlockLogInfo.Text += " BŁ.ZG.: " + item.NKR;
                                 }
-
-                                writeCommand.ExecuteNonQuery();
-                                writeCommand.Parameters.Clear();
-
-
 
                                 progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
                             }

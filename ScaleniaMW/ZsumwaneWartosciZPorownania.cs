@@ -30,6 +30,7 @@ namespace ScaleniaMW
             }
         }
         public decimal Roznice { get; set; }
+
         public decimal Odch_3_Proc
         {
             get => _odch_3_proc;
@@ -46,6 +47,7 @@ namespace ScaleniaMW
                 }
             }
         }
+
         public string CzyDopOdch__3__proc { get; set; }
         public bool OdchWProgramie { get; set; }
         public bool ZgodawProgramie { get; set; }
