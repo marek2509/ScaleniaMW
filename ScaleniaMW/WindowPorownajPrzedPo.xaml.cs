@@ -540,19 +540,16 @@ namespace ScaleniaMW
                         }
                         if (!zsumwaneWartosciStanPO.Equals(null))
                         {
-
-
                             int ilePrzypisacOchTechn = zsumwaneWartosciStanPO.Count;
                             progresBar.Maximum = ilePrzypisacOchTechn;
 
                             foreach (var item in zsumwaneWartosciStanPO)
                             {
-
                                 if (item.CzyDopOdch__3__proc != null)
                                 {
                                     writeCommand.Parameters.Add("@ID_ID", item.IdPo);
 
-                                    if (item.CzyDopOdch__3__proc.ToUpper() == "NIE" && item.Roznice > 0)
+                                    if (item.CzyDopOdch__3__proc.ToUpper() == "NIE" && item.Roznice != 0)
                                     {
                                         writeCommand.Parameters.Add("@zgoda01", 1);
                                         Console.WriteLine("1  IdPo:" + item.IdPo + " NKR:" + item.NKR);
