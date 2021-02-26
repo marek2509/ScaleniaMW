@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW2 - inż. Marek Wojciechowicz - Wojewódzkie Biuro Geodezji w Białymstoku" x:Name="windowScaleniaMW"  Width="1000" SizeToContent="Height" ResizeMode="NoResize">
+        Title="SCALENIAMW2 - inż. M**** W**********[RODO]" x:Name="windowScaleniaMW"  Width="1000" SizeToContent="Height" ResizeMode="NoResize">
     <Grid>
         <DockPanel  x:Name="dockCoChceszZrobić" Panel.ZIndex="101">
 
