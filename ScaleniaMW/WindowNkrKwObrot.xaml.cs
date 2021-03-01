@@ -301,17 +301,11 @@ namespace ScaleniaMW
             if (svd.ShowDialog() == true)
             {
                 using (Stream s = File.Open(svd.FileName, FileMode.Create))
-                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
                 using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
                     try
                     {
                         try
                         {
-                            //StringBuilder sb = new StringBuilder();
-                            //foreach (var item in listaPunktów)
-                            //{
-                            //    sb.AppendLine(item.NazwaDz + "\t" + item.podajeKatUstawienia());
-                            //}
                             string loginfo = "";
                             int kodRodzajuNKRczyKW = 0;
                             if (sender.GetHashCode().Equals(obrNKR.GetHashCode()))
@@ -370,35 +364,16 @@ namespace ScaleniaMW
             {
                 try
                 {
-
                     ustawProperties(dlg.FileName);
-                    //czyPolaczonoZBaza = false;
-                    //itemImportJednostkiSN.Background = Brushes.Transparent;
-                    //itemImportJednostkiSN.Header = "Baza.fdb";
-
-                    //listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
-                    //listaDopasowJednos = new List<DopasowanieJednostek>();
-
-                    //dgNiedopJednostki.ItemsSource = null;
-                    //listBoxDzialkiNowe.ItemsSource = null;
-                    //listBoxNkr.ItemsSource = null;
-                    //listBoxNrRej.ItemsSource = null;
-
-                    //listBoxDzialkiNowe.Items.Refresh();
-                    //listBoxNkr.Items.Refresh();
-                    //listBoxNrRej.Items.Refresh();
-                    //dgNiedopJednostki.Items.Refresh();
                     itemPolaczZBaza.Background = Brushes.Transparent;
                 }
                 catch (Exception esa)
                 {
                     var resultat = MessageBox.Show(esa.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
-
                     if (resultat == MessageBoxResult.Yes)
                     {
                         Application.Current.Shutdown();
                     }
-
                     Console.WriteLine(esa + "Błędny format importu działek");
                 }
             }
@@ -464,14 +439,12 @@ namespace ScaleniaMW
             Properties.Settings.Default.Haslo = textBoxHaslo.Password;
             Properties.Settings.Default.Save();
             panelLogowania.Visibility = Visibility.Hidden;
-            //dataGrid.Visibility = Visibility.Visible;
             tabControl.Visibility = Visibility.Visible;
         }
 
         private void Button_Anuluj(object sender, RoutedEventArgs e)
         {
             panelLogowania.Visibility = Visibility.Hidden;
-            //dataGrid.Visibility = Visibility.Visible;
             tabControl.Visibility = Visibility.Visible;
         }
 
@@ -493,14 +466,13 @@ namespace ScaleniaMW
             Properties.Settings.Default.checkBoxBrakKW = (bool)checkWypiszBrakKW.IsChecked;
             Properties.Settings.Default.Save();
             panelOpcje.Visibility = Visibility.Hidden;
-
         }
 
         private void MenuItem_Opcje(object sender, RoutedEventArgs e)
         {
             checkDopiszBlad.IsChecked = Properties.Settings.Default.checkBoxDopiszBlad;
             checkWypiszBrakKW.IsChecked = Properties.Settings.Default.checkBoxBrakKW;
-            panelOpcje.Visibility = Visibility.Visible; // zrobić tak żeby te checkboxy dzialaly
+            panelOpcje.Visibility = Visibility.Visible;
         }
 
         private void CheckWypiszBrakKW_Checked(object sender, RoutedEventArgs e)
@@ -527,14 +499,11 @@ namespace ScaleniaMW
             Properties.Settings.Default.Save();
         }
 
-
         private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
         {
-
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             windowNkrKwObrot.Close();
-
         }
 
         private void zamknijProgram_Click(object sender, RoutedEventArgs e)
@@ -554,10 +523,8 @@ namespace ScaleniaMW
 
         private void LogBledowKW_Click(object sender, RoutedEventArgs e)
         {
-
             stackBledyKW.Visibility = Visibility.Visible;
             dgDzialkiEdz.Visibility = Visibility.Hidden;
-
         }
 
         private void ZamknijTextBlockBledy_Click(object sender, RoutedEventArgs e)

@@ -21,7 +21,7 @@
         <Menu Grid.Row="1" Background="#275ea2" Foreground="White" Grid.ColumnSpan="2">
             <MenuItem Header="Plik">
                 <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Foreground="Black" Header="Zapisz dopasowanie KW do pliku txt" ToolTip="[obr-dz] [KW]" Click="Zapisz_Dopasowanie_Jedn_Click"/>
-                <MenuItem x:Name="Zapisz_Niedopasowane_Jedn" Foreground="Black" Header="Zapisz niedopasowane KW do pliku txt" ToolTip="[obr-dz] [KW]" Click="Zapisz_Niedopasowane_Jedn_Click"/>
+                <MenuItem x:Name="Zapisz_Niedopasowane_Jedn" Foreground="Black" Header="Zapisz niedopasowane KW do pliku txt" ToolTip="KW;NKR1,NKR2,..." Click="Zapisz_Niedopasowane_Jedn_Click"/>
                 <Separator></Separator>
                 <MenuItem Header="Otwórz okno startowe" Foreground="{Binding ElementName=Zapisz_Dopasowanie_Jedn, Path=Foreground}"  Click="otworzOknoPoczatkowe_Click"/>
                 <Separator></Separator>

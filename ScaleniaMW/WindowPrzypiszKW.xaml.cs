@@ -656,7 +656,7 @@ namespace ScaleniaMW
 
         private void DgNrKwZSQL_CurrentCellChanged(object sender, EventArgs e)
         {
-
+          
             if (czybylaZmiana)
             {
                 czybylaZmiana = false;
@@ -725,12 +725,57 @@ namespace ScaleniaMW
         }
 
 
+        class KwDzialkaPrzed
+        {
+            public KwDzialkaPrzed(string kw, string dzialka)
+            {
+                KW = kw;
+                Dzialka = dzialka;
+            }
+
+            public string KW { get; set; }
+            public string Dzialka { get; set; }
+        }
 
         private void Zapisz_Niedopasowane_Jedn_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder sBListaKwNieprzypisana = new StringBuilder();
             var str = listaDopasowKW.Where(x => x.KWPoDopasowane == null || x.KWPoDopasowane.Trim() == "").Select(x => x.KWprzed).Distinct().OrderBy(x => x).ToList();
             Console.WriteLine("count :" + str.Count);
+
+            List<KwDzialkaPrzed> kwDzialkaPrzed = new List<KwDzialkaPrzed>();
+
+
+            try
+            {
+                using (var connection = new FbConnection(connectionString))
+                {
+                    connection.Open();
+
+                    FbCommand command = new FbCommand();
+
+                    FbTransaction transaction = connection.BeginTransaction();
+
+                    command.Connection = connection;
+                    command.Transaction = transaction;
+                    command.CommandText = "select kw, o.id || '-' || idd from dzialka d join obreby o on o.id_id = d.idobr where kw<>''";
+                    FbDataAdapter adapter = new FbDataAdapter(command);
+                    dt = new DataTable();
+
+                    adapter.Fill(dt);
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        kwDzialkaPrzed.Add(new KwDzialkaPrzed(dt.Rows[i][0].ToString(), dt.Rows[i][1].ToString()));
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+
+
+
 
             // sort po KW
             foreach (var KWNiedopasow in str)
@@ -749,13 +794,33 @@ namespace ScaleniaMW
                 {
                     sBListaKwNieprzypisana.Append(Nkr + ",");
                 }
+
+                if( kwDzialkaPrzed.Exists(x => x.KW == KWNiedopasow))
+                {
+                    sBListaKwNieprzypisana = sBListaKwNieprzypisana.Replace(",", ";Nr DZ:", sBListaKwNieprzypisana.Length - 1, 1);
+
+
+                    foreach (var dzPrzed in kwDzialkaPrzed.FindAll(x => x.KW == KWNiedopasow).OrderBy(x => x.Dzialka))
+                {
+
+                        sBListaKwNieprzypisana.Append(dzPrzed.Dzialka + ", ");
+                }
+
+                }
                 sBListaKwNieprzypisana.AppendLine();
             }
             // sort po NKR
 
+            for (int i = 0; i < sBListaKwNieprzypisana.Length; i++)
+            {
+                Console.WriteLine("SPRAWDZ LINIE NR " + i + " " + sBListaKwNieprzypisana[i]);
+            }
+ 
+
+            
 
 
-            SaveFileDialog svd = new SaveFileDialog();
+                SaveFileDialog svd = new SaveFileDialog();
             svd.DefaultExt = ".txt";
             svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             if (svd.ShowDialog() == true)

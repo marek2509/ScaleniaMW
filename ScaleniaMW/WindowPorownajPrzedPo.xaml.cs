@@ -17,7 +17,6 @@ namespace ScaleniaMW
     {
         public WindowPorownajPrzedPo()
         {
-
             InitializeComponent();
             try
             {
@@ -31,11 +30,9 @@ namespace ScaleniaMW
 
         private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
         {
-
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             windowPorownajPrzedPo.Close();
-
         }
 
         private void zamknijProgram_Click(object sender, RoutedEventArgs e)
@@ -62,9 +59,6 @@ namespace ScaleniaMW
             //dlg.InitialDirectory = @"C:\";
             dlg.DefaultExt = ".edz";
             dlg.Filter = "All files(*.*) | *.*|TXT Files (*.txt)|*.txt| CSV(*.csv)|*.csv| EDZ(*.edz)|*.edz";
-
-
-
 
             Nullable<bool> resulDialog = dlg.ShowDialog();
             if (resulDialog == true)
