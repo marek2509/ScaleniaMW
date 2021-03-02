@@ -45,11 +45,14 @@ namespace ScaleniaMW
              }
          }*/
 
+
+
         public WindowEdycjaDokumentow()
         {
             InitializeComponent();
             // odczytUstawien();
         }
+
         string usunOd = "kontury";
         string usunDo = "bilans";
         private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
@@ -114,37 +117,21 @@ namespace ScaleniaMW
                         }
                         calyOdczzytanyTextLinie.ForEach(x => sb.AppendLine(x));
 
-                   
+
                     }
                     else
                     {
                         StringBuilder sbPuste = new StringBuilder();
                         for (int i = 0; i < calyOdczzytanyTextLinie.Count; i++)
                         {
-                      
-                            if (calyOdczzytanyTextLinie[i].Contains("pusty") || calyOdczzytanyTextLinie[i].Trim() == "")
+                            try
                             {
-                                sbPuste.AppendLine(calyOdczzytanyTextLinie[i]);
-                                sb.AppendLine(calyOdczzytanyTextLinie[i]);
-                                continue;
+                                sb.AppendLine(UsunWartZSzacunku(calyOdczzytanyTextLinie[i], ref sbPuste));
                             }
-                            int ostatniMyslnik = calyOdczzytanyTextLinie[i].LastIndexOf('-');
-                            int dlTekstu = calyOdczzytanyTextLinie[i].Length;
-                            int ileZnakowUsunac = calyOdczzytanyTextLinie[i].IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
-                         //   Console.WriteLine( calyOdczzytanyTextLinie[i] +  " last index -: " + ostatniMyslnik + " Dł: " + dlTekstu + " wynik:" + calyOdczzytanyTextLinie[i].Remove(ostatniMyslnik, ileZnakowUsunac));
-
-                            calyOdczzytanyTextLinie[i] = calyOdczzytanyTextLinie[i].Remove(ostatniMyslnik, ileZnakowUsunac);
-                            int indexOstatniMyslnik = calyOdczzytanyTextLinie[i].LastIndexOf('-');
-                            int indexOstatniUkosnik = calyOdczzytanyTextLinie[i].LastIndexOf('/');
-                            Console.WriteLine("indexOstatniMyslnik " + indexOstatniMyslnik + "indexOstatniUkosnik " + indexOstatniUkosnik);
-                            if (indexOstatniMyslnik > indexOstatniUkosnik)
+                            catch
                             {
-                                calyOdczzytanyTextLinie[i] = calyOdczzytanyTextLinie[i].Remove(indexOstatniMyslnik, 1);
-                                calyOdczzytanyTextLinie[i] = calyOdczzytanyTextLinie[i].Insert(indexOstatniMyslnik, "/");
+                                sbPuste.AppendLine("Błędny format linii:" + calyOdczzytanyTextLinie[i]);
                             }
-                            
-
-                            sb.AppendLine(UsunWartZSzacunku(calyOdczzytanyTextLinie[i], ref sbPuste));
                         }
                         textBoxPuste.Text = sbPuste.ToString();
                     }
@@ -165,147 +152,106 @@ namespace ScaleniaMW
                 {
                     zapisDoPliku(sb.ToString(), ".txt");
                 }
+            }
+        }
 
-                /*
-                if (checkBoxPodzialSekcji.IsChecked == true)
+
+
+
+        bool SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(string liniaZTektowki)
+        {
+           
+
+            liniaZTektowki = liniaZTektowki.Trim();
+           
+            int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
+            if (ostatniMyslnik > liniaZTektowki.LastIndexOf('/'))
+            {
+                if(ostatniMyslnik < liniaZTektowki.Length - 1)
                 {
-
-                    for (int i = 0; i < calyOdczzytanyTextLinie.Count; i++)
+                    if (char.IsNumber(liniaZTektowki[ostatniMyslnik + 1]))
                     {
-
-                        if (calyOdczzytanyTextLinie[i].Contains(textBoxZastapNaSekcjeNieparzysta.Text))
-                        {
-
-                            int indexwykrzyk = calyOdczzytanyTextLinie[i].IndexOf(textBoxZastapNaSekcjeNieparzysta.Text);
-
-                            calyOdczzytanyTextLinie[i] = calyOdczzytanyTextLinie[i].Replace(textBoxZastapNaSekcjeNieparzysta.Text, "");
-                            int indexKlamry = calyOdczzytanyTextLinie[i].IndexOf('}', indexwykrzyk);
-
-                            if (indexKlamry < 0)
-                            {
-                                for (; i < calyOdczzytanyTextLinie.Count; i++)
-                                {
-                                    indexKlamry = calyOdczzytanyTextLinie[i].IndexOf('}');
-
-                                    if (indexKlamry >= 0)
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            calyOdczzytanyTextLinie[i] = calyOdczzytanyTextLinie[i].Remove(indexKlamry, 1);
-                            calyOdczzytanyTextLinie[i] =  calyOdczzytanyTextLinie[i].Insert(indexKlamry, Constants.podzialSekcjiNaStronieNieparzystej0);
-                            Console.WriteLine("index !@#$: " + indexwykrzyk + " index }" + indexKlamry);
-
-
-                        }
+                        return true;
+                    }
+                    else{
+                        return false;
                     }
                 }
-                */
-
-
-
-
-
-
-                /*
-                SaveFileDialog svd = new SaveFileDialog();
-                    svd.DefaultExt = ".rtf";
-                    svd.Filter = "Text files (*.rtf)|*.rtf|All files (*.*)|*.*";
-                    if (svd.ShowDialog() == true)
-                    {
-                        using (Stream s = File.Open(svd.FileName, FileMode.Create))
-                        using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-
-                            try
-                            {
-                                try
-                                {
-                                    
-
-                                    sw.Write(sb.ToString());
-                                    sw.Close();
-                                }
-                                catch (Exception exc)
-                                {
-                                    MessageBox.Show(exc.ToString() + "  problem z plikiem");
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
-
-                                if (resultat == MessageBoxResult.Yes)
-                                {
-                                    Application.Current.Shutdown();
-                                }
-                            }
-                    }*/
-
-
-
-
-
             }
-        }
-
-
-       // 6-106                    6-38/Lzr                           506
-       // 4-1/1                    4-898/Lzr-ŁVI-11478                  90.47
-       /*
-        bool sprawdzCzySzacunekCzyKlasyfikacja(string liniaZTektowki)
-        {
-            liniaZTektowki = liniaZTektowki.Trim();
-            bool pierwszaPrzerwa = false;
-
-            for (int i = 0; i < liniaZTektowki.Length; i++)
+            else
             {
-                char charZLinii = liniaZTektowki[i];
-
-                if (pierwszaPrzerwa == false && charZLinii == ' ')
-                {
-                    pierwszaPrzerwa = true;
-                }
-                else if (pierwszaPrzerwa == true && charZLinii != ' ')
-                {
-                    pierwszaPrzerwa = false;
-                }
-                if (pierwszaPrzerwa == false && charZLinii == ' ')
-                {
-                   // if ()
-                }
+                return false;
             }
+            return true;
         }
-        */
 
-        string UsunWartZSzacunku(string liniaZTektowki, ref StringBuilder sbPuste)  
+
+        string UsunWartZSzacunku(string liniaZTektowki, ref StringBuilder sbPuste)
         {
 
-        
-
-            
             if (liniaZTektowki.Contains("pusty") || liniaZTektowki.Trim() == "")
             {
-               sbPuste.AppendLine(liniaZTektowki);
-               return(liniaZTektowki);
+                sbPuste.AppendLine(liniaZTektowki);
+                return (liniaZTektowki);
             }
             int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
             int dlTekstu = liniaZTektowki.Length;
-            int ileZnakowUsunac = liniaZTektowki.IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
-            //   Console.WriteLine( calyOdczzytanyTextLinie[i] +  " last index -: " + ostatniMyslnik + " Dł: " + dlTekstu + " wynik:" + calyOdczzytanyTextLinie[i].Remove(ostatniMyslnik, ileZnakowUsunac));
 
-            liniaZTektowki = liniaZTektowki.Remove(ostatniMyslnik, ileZnakowUsunac);
-            int indexOstatniMyslnik = liniaZTektowki.LastIndexOf('-');
-            int indexOstatniUkosnik = liniaZTektowki.LastIndexOf('/');
-            Console.WriteLine("indexOstatniMyslnik " + indexOstatniMyslnik + "indexOstatniUkosnik " + indexOstatniUkosnik);
-            if (indexOstatniMyslnik > indexOstatniUkosnik)
+
+            if (SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(liniaZTektowki))
             {
-                liniaZTektowki = liniaZTektowki.Remove(indexOstatniMyslnik, 1);
-                liniaZTektowki = liniaZTektowki.Insert(indexOstatniMyslnik, "/");
+                Console.WriteLine(liniaZTektowki + " szacunek TRUE");
+                int ileZnakowUsunac = liniaZTektowki.IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
+                liniaZTektowki = liniaZTektowki.Remove(ostatniMyslnik, ileZnakowUsunac);
+            }
+
+
+            while (true)
+            {
+                int indexOstatniMyslnik = liniaZTektowki.LastIndexOf('-');
+                int indexOstatniUkosnik = liniaZTektowki.LastIndexOf('/');
+
+                if (indexOstatniMyslnik > indexOstatniUkosnik)
+                {
+                    liniaZTektowki = liniaZTektowki.Remove(indexOstatniMyslnik, 1);
+                    liniaZTektowki = liniaZTektowki.Insert(indexOstatniMyslnik, "/");
+                }
+                else
+                {
+                    break;
+                }
             }
             return liniaZTektowki;
         }
 
+        // 6-106                    6-38/Lzr                           506
+        // 4-1/1                    4-898/Lzr-ŁVI-11478                  90.47
+        string UsunWartZKlasyfkacji(string liniaZTektowki, ref StringBuilder sbPuste)
+        {
+
+            if (liniaZTektowki.Contains("pusty") || liniaZTektowki.Trim() == "")
+            {
+                sbPuste.AppendLine(liniaZTektowki);
+                return (liniaZTektowki);
+            }
+
+            int ukosnikKonturu = liniaZTektowki.IndexOf('/', liniaZTektowki.IndexOf(' '));
+            int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
+            if (ostatniMyslnik > ukosnikKonturu)
+            {
+
+
+
+            }
+
+            liniaZTektowki.Replace('-', '/');
+            int ileZnakowUsunac = liniaZTektowki.IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
+            //   Console.WriteLine( calyOdczzytanyTextLinie[i] +  " last index -: " + ostatniMyslnik + " Dł: " + dlTekstu + " wynik:" + calyOdczzytanyTextLinie[i].Remove(ostatniMyslnik, ileZnakowUsunac));
+
+            //   liniaZTektowki = liniaZTektowki.Replace(ostatniMyslnik, ileZnakowUsunac);
+
+            return liniaZTektowki;
+        }
 
 
         void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")

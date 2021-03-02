@@ -192,7 +192,7 @@ namespace ScaleniaMW
                     // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
                     command.CommandText = "select dn.id_id, dn.idd, ds.kw, dn.kw, jn.ijr NKR, jn.id_id id_NKR, sn.id_jedns from dzialki_N dn " +
                         "join JEDN_REJ_N jn on jn.ID_ID = dn.rjdr join JEDN_SN sn on sn.ID_jednn = dn.rjdr " +
-                        "join dzialka ds on ds.rjdr = sn.id_jedns order by dn.rjdr";
+                        "join dzialka ds on ds.rjdr = sn.id_jedns order by dn.rjdr,  dn.idd, ds.kw";
 
                     FbDataAdapter adapter = new FbDataAdapter(command);
                     dt = new DataTable();
@@ -283,6 +283,7 @@ namespace ScaleniaMW
             if (czyPolaczonoZBaza)
             {
                 Console.WriteLine(" super ");
+
                 Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "PrzypiszZaznJedn");
 
                 listBoxNkr.Items.Refresh();
@@ -446,7 +447,7 @@ namespace ScaleniaMW
             foreach (var item in tmpListaKwNiepowtarzalna)
             {
 
-                var tmpIJR = listaDopasowKW.FindAll(x => x.KWPoDopasowane == item).Select(x => x.NKRn).ToList().Distinct().ToList();
+                var tmpIJR = listaDopasowKW.FindAll(x => x.KWprzed == item).Select(x => x.NKRn).ToList().Distinct().ToList();
 
                 if (tmpIJR.Count > 1)
                 {

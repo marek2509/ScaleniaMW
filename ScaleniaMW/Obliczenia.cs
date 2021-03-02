@@ -695,7 +695,7 @@ namespace ScaleniaMW
                                 //  Console.WriteLine(item.NKRn + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDZ + " " + listBoxNoweDzialki.SelectedValue + " " + item.KWprzed + " " + listBoxNrKW.SelectedValue + " id");
 
                                 item.KWPoDopasowane = listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed;
-                              
+
                                 foreach (var item2 in listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed))
                                 {
                                     if(item.NKRn != item2.NKRn)
@@ -705,12 +705,13 @@ namespace ScaleniaMW
                                         if (resultat == MessageBoxResult.No)
                                         {
                                             item.KWPoDopasowane = null;
-                                            break;
+                                            goto wyjdzZPrzycisku;
                                         }
                                         else
                                         {
                                             break;
                                         }
+
                                     }
                                 } 
                             }
@@ -719,7 +720,7 @@ namespace ScaleniaMW
                         {
                             listBoxNkr.SelectedIndex = 0;
                         }
-
+                    wyjdzZPrzycisku:
                         Obliczenia.DopasujNrKWDoNowychDzialek(ref listaKWdlaNowychDzialek, listBoxNkr, listBoxNoweDzialki, listBoxNrKW);
                         // listBoxNrKW.SelectedIndex = 0;
                         listBoxNrKW.SelectedIndex = listBoxNrKW.SelectedIndex >= 0 && listBoxNrKW.SelectedIndex < listBoxNrKW.Items.Count ? listBoxNrKW.SelectedIndex : 0;
