@@ -314,7 +314,7 @@ namespace ScaleniaMW
                         {
                             StringBuilder stringBuilder = new StringBuilder();
                             stringBuilder.AppendLine("[IdDZ] [NrDz] [NKRN] [KW]");
-                            foreach (var item in listaDopasowKW)
+                            foreach (var item in listaDopasowKW.Select(x => new {x.IdDzN, x.NrDZ, x.NKRn, x.KWPoDopasowane }).Distinct())
                             {
                                 stringBuilder.AppendLine(item.IdDzN + "\t" + item.NrDZ + "\t" + item.NKRn + "\t" + item.KWPoDopasowane);
                             }
@@ -580,9 +580,7 @@ namespace ScaleniaMW
             //dataGrid.Visibility = Visibility.Visible;
             tabControl2.Visibility = Visibility.Visible;
         }
-
-
-
+        
         private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
