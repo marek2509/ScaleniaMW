@@ -681,25 +681,21 @@ namespace ScaleniaMW
 
                     if (sender.Equals("PrzypiszZaznJedn"))
                     {
+                        bool czyPrzypisanoJedenToNieWyswietlajOstrzerzenia = false;
                         foreach (var item in listaKWdlaNowychDzialek)
                         {
-                            //if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
-                            //{
-                            //    Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
-                            //    item.wypiszWConsoli();
-                            //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
-                            //}
-
                             if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDzN.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
                             {
-                                //  Console.WriteLine(item.NKRn + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDZ + " " + listBoxNoweDzialki.SelectedValue + " " + item.KWprzed + " " + listBoxNrKW.SelectedValue + " id");
-
+                          
                                 item.KWPoDopasowane = listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed;
 
-                                foreach (var item2 in listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed))
+                                foreach (var item2 in listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed).ToList())
                                 {
-                                    if(item.NKRn != item2.NKRn)
+                                    Console.WriteLine("NR ILE :" + listaKWdlaNowychDzialek.FindAll(x => x.KWPoDopasowane == listIddzKWPrzed[listBoxNrKW.SelectedIndex].KwPrzed).ToList().Count);
+
+                                    if (item.NKRn != item2.NKRn && !czyPrzypisanoJedenToNieWyswietlajOstrzerzenia)
                                     {
+                                        czyPrzypisanoJedenToNieWyswietlajOstrzerzenia = true;
                                         var resultat = MessageBox.Show("KW jest przypisane w jednostce nr " + item2.NKRn  + "\nCZY PRZYPISAĆ  KW?" , "ERROR", MessageBoxButton.YesNo);
 
                                         if (resultat == MessageBoxResult.No)
@@ -709,6 +705,7 @@ namespace ScaleniaMW
                                         }
                                         else
                                         {
+                                            
                                             break;
                                         }
 

@@ -411,6 +411,19 @@ namespace ScaleniaMW
             windowScaleniaMW.Close();
         }
 
+        private void ButtonKontrolaBazy_MouseEnter(object sender, MouseEventArgs e)
+        {
 
+        }
+
+        private void ButtonKontrolaBazy_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ButtonKontrolaBazy_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

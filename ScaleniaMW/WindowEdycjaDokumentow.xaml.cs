@@ -160,11 +160,15 @@ namespace ScaleniaMW
 
         bool SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(string liniaZTektowki)
         {
-           
-
             liniaZTektowki = liniaZTektowki.Trim();
            
             int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
+
+            if(liniaZTektowki.LastIndexOf('/') < liniaZTektowki.IndexOf(' '))
+            {
+                return false;
+            }
+            else
             if (ostatniMyslnik > liniaZTektowki.LastIndexOf('/'))
             {
                 if(ostatniMyslnik < liniaZTektowki.Length - 1)
@@ -206,27 +210,43 @@ namespace ScaleniaMW
             }
 
 
+            /*  while (true)
+              {
+                  int indexOstatniMyslnik = liniaZTektowki.LastIndexOf('-');
+                  int indexOstatniUkosnik = liniaZTektowki.LastIndexOf('/');
+
+                  if (indexOstatniMyslnik > indexOstatniUkosnik)
+                  {
+                      liniaZTektowki = liniaZTektowki.Remove(indexOstatniMyslnik, 1);
+                      liniaZTektowki = liniaZTektowki.Insert(indexOstatniMyslnik, "/");
+                  }
+                  else
+                  {
+                      break;
+                  }
+              }*/
             while (true)
             {
-                int indexOstatniMyslnik = liniaZTektowki.LastIndexOf('-');
-                int indexOstatniUkosnik = liniaZTektowki.LastIndexOf('/');
+                int pierwsza_przerwa = liniaZTektowki.LastIndexOf(' ');
+                int ostatni_Myslnik = liniaZTektowki.LastIndexOf('-');
 
-                if (indexOstatniMyslnik > indexOstatniUkosnik)
+                if (ostatni_Myslnik > pierwsza_przerwa)
                 {
-                    liniaZTektowki = liniaZTektowki.Remove(indexOstatniMyslnik, 1);
-                    liniaZTektowki = liniaZTektowki.Insert(indexOstatniMyslnik, "/");
+                    liniaZTektowki = liniaZTektowki.Remove(ostatni_Myslnik, 1);
+                    liniaZTektowki = liniaZTektowki.Insert(ostatni_Myslnik, "/");
                 }
                 else
                 {
                     break;
                 }
             }
-            return liniaZTektowki;
-        }
 
+                return liniaZTektowki;
+            
+        }
         // 6-106                    6-38/Lzr                           506
         // 4-1/1                    4-898/Lzr-ŁVI-11478                  90.47
-        string UsunWartZKlasyfkacji(string liniaZTektowki, ref StringBuilder sbPuste)
+      /*  string UsunWartZKlasyfkacji(string liniaZTektowki, ref StringBuilder sbPuste)
         {
 
             if (liniaZTektowki.Contains("pusty") || liniaZTektowki.Trim() == "")
@@ -251,7 +271,7 @@ namespace ScaleniaMW
             //   liniaZTektowki = liniaZTektowki.Replace(ostatniMyslnik, ileZnakowUsunac);
 
             return liniaZTektowki;
-        }
+        }*/
 
 
         void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")

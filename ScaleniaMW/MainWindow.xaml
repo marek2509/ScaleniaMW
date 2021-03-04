@@ -79,7 +79,14 @@
                             <Image x:Name="imageWritiing"  Source="Resources/writingWhite.png" Width="60"></Image>
                         </StackPanel>
                     </Button>
-                    
+                    <Button Visibility="Visible"  HorizontalAlignment="Right"  Margin="0,0,1,0" MouseEnter="ButtonKontrolaBazy_MouseEnter"  MouseLeave="ButtonKontrolaBazy_MouseLeave" 
+                                    Click="ButtonKontrolaBazy_Click"  Background="#2676d0"  Width="250" Height="100" x:Name="buttonKontrolaBazy" FontSize="13">
+                        <StackPanel>
+                            <Label x:Name="labelKontrolaBazy"  FontWeight="Bold" Foreground="White">EDYCJA DOKUMENTÓW / PLIKÓW</Label>
+                            <Image x:Name="imageKontrolaBazy"  Source="Resources/writingWhite.png" Width="60"></Image>
+                        </StackPanel>
+                    </Button>
+
                 </StackPanel>
             </Grid>
         </DockPanel>
