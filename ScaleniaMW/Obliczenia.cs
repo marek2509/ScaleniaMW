@@ -634,7 +634,6 @@ namespace ScaleniaMW
 
                 if (listaKWdlaNowychDzialek.Exists(x => x.KWPoDopasowane == "" || x.KWPoDopasowane == null))
                 {
-
                     //Console.WriteLine("x=<1");
                     List<int> NowyNkr = new List<int>();
                     List<DopasowanieKW> tmpListNKRbezJednRej = listaKWdlaNowychDzialek.FindAll(x => (x.KWPoDopasowane == "" || x.KWPoDopasowane == null) && x.KWprzed != "");
@@ -705,10 +704,8 @@ namespace ScaleniaMW
                                         }
                                         else
                                         {
-                                            
                                             break;
                                         }
-
                                     }
                                 } 
                             }

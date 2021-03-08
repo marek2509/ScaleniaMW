@@ -148,6 +148,7 @@ namespace ScaleniaMW
                 listBoxNrKW.Items.Refresh();
                 dgNrKwZSQL.Items.Refresh();
                 aktualizujSciezkeZPropertis();
+                kwObrDzPrzypisanaWStaniePosLista = new List<KwObrDzPrzypisanaWStaniePo>();
                 using (var connection = new FbConnection(connectionString))
                 {
                     if (itemImportJednostkiSN.Background.Equals(Brushes.LightSeaGreen))
@@ -252,6 +253,34 @@ namespace ScaleniaMW
                     dgNrKwZSQL.Items.Refresh();
                     czyPolaczonoZBaza = true;
                 koniec:;
+
+
+                    //pobierz dane do exportu KW OBR DZ  do utworzenia pliku importu "popraw dane" w programie scalenia
+
+                    using (var connectioner = new FbConnection(connectionString))
+                    {
+                        connectioner.Open();
+                        FbCommand commander = new FbCommand();
+                        FbTransaction transactioner = connectioner.BeginTransaction();
+                        commander.Connection = connectioner;
+                        commander.Transaction = transactioner;
+                        commander.CommandText = "select idobr, idd, kw from dzialki_n d where kw is not null and  kw <>''";
+                        FbDataAdapter adapterer = new FbDataAdapter(commander);
+                        DataTable dt2 = new DataTable();
+
+                        adapterer.Fill(dt2);
+
+                        for (int i = 0; i < dt2.Rows.Count; i++)
+                        {
+                            kwObrDzPrzypisanaWStaniePosLista.Add(new KwObrDzPrzypisanaWStaniePo
+                            {
+                                KW = dt2.Rows[i][2].ToString(),
+                                IdObr = Convert.ToInt32( dt2.Rows[i][0]),
+                                NrDz = dt2.Rows[i][1].ToString()
+                            });
+                        }
+                        connectioner.Close();
+                    }
                 }
             }
             catch (Exception ex)
@@ -262,6 +291,13 @@ namespace ScaleniaMW
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
                 przejdzDoOknaLogowania(ex.Message);
             }
+        }
+        List<KwObrDzPrzypisanaWStaniePo> kwObrDzPrzypisanaWStaniePosLista = new List<KwObrDzPrzypisanaWStaniePo>();
+        class KwObrDzPrzypisanaWStaniePo
+        {
+            public string KW { get; set; }
+            public int IdObr { get; set; }
+            public string NrDz { get; set; }
         }
 
         private void ListBoxNkr_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -297,6 +333,8 @@ namespace ScaleniaMW
             }
         }
 
+
+
         private void Zapisz_Dopasowanie_Jedn_Click(object sender, RoutedEventArgs e)
         {
 
@@ -312,11 +350,15 @@ namespace ScaleniaMW
                     {
                         try
                         {
+
                             StringBuilder stringBuilder = new StringBuilder();
-                            stringBuilder.AppendLine("[IdDZ] [NrDz] [NKRN] [KW]");
-                            foreach (var item in listaDopasowKW.Select(x => new {x.IdDzN, x.NrDZ, x.NKRn, x.KWPoDopasowane }).Distinct())
+                            stringBuilder.AppendLine("****");
+                            stringBuilder.AppendLine("UPDATE dzialki_n set kw =:KW where idd =:NRDZ and idobr=:IDOBREB");
+                            stringBuilder.AppendLine("****");
+                            stringBuilder.AppendLine("KW	IDOBREB	NRDZ");
+                            foreach (var item in kwObrDzPrzypisanaWStaniePosLista)
                             {
-                                stringBuilder.AppendLine(item.IdDzN + "\t" + item.NrDZ + "\t" + item.NKRn + "\t" + item.KWPoDopasowane);
+                                stringBuilder.AppendLine(item.KW + "\t" + item.IdObr + "\t" + item.NrDz);
                             }
 
                             sw.Write(stringBuilder.ToString());

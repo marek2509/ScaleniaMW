@@ -40,7 +40,7 @@ namespace ScaleniaMW
         public MainWindow()
         {
             InitializeComponent();
-
+           // Console.WriteLine("Assembly.GetExecutingAssembly().GetName().Version.ToString():" +Assembly.GetExecutingAssembly().GetName().Version.ToString());
             try
             {
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());

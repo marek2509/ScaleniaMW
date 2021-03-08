@@ -161,23 +161,24 @@ namespace ScaleniaMW
         bool SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(string liniaZTektowki)
         {
             liniaZTektowki = liniaZTektowki.Trim();
-           
+
             int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
 
-            if(liniaZTektowki.LastIndexOf('/') < liniaZTektowki.IndexOf(' '))
+            if (liniaZTektowki.LastIndexOf('/') < liniaZTektowki.IndexOf(' '))
             {
                 return false;
             }
             else
             if (ostatniMyslnik > liniaZTektowki.LastIndexOf('/'))
             {
-                if(ostatniMyslnik < liniaZTektowki.Length - 1)
+                if (ostatniMyslnik < liniaZTektowki.Length - 1)
                 {
                     if (char.IsNumber(liniaZTektowki[ostatniMyslnik + 1]))
                     {
                         return true;
                     }
-                    else{
+                    else
+                    {
                         return false;
                     }
                 }
@@ -209,12 +210,46 @@ namespace ScaleniaMW
                 liniaZTektowki = liniaZTektowki.Remove(ostatniMyslnik, ileZnakowUsunac);
             }
 
+            if (liniaZTektowki.IndexOf('/', liniaZTektowki.IndexOf(' ')) > liniaZTektowki.IndexOf(' '))
+            {
+                while (true)
+                {
+                    int pierwsza_przerwa = liniaZTektowki.IndexOf(' ');
+                    int zamiana_Myslnik = liniaZTektowki.IndexOf('-', liniaZTektowki.LastIndexOf('/'));
+                    Console.WriteLine(liniaZTektowki + " pp " + pierwsza_przerwa + " om " + zamiana_Myslnik);
+                    if (zamiana_Myslnik > pierwsza_przerwa)
+                    {
+                        liniaZTektowki = liniaZTektowki.Remove(zamiana_Myslnik, 1);
+                        liniaZTektowki = liniaZTektowki.Insert(zamiana_Myslnik, "/");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                while (true)
+                {
+                    int pierwsza_przerwa = liniaZTektowki.IndexOf(' ');
+                    int ostatni_Myslnik = liniaZTektowki.LastIndexOf('-');
 
+                    if (ostatni_Myslnik > pierwsza_przerwa)
+                    {
+                        liniaZTektowki = liniaZTektowki.Remove(ostatni_Myslnik, 1);
+                        liniaZTektowki = liniaZTektowki.Insert(ostatni_Myslnik, "/");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
             /*  while (true)
               {
                   int indexOstatniMyslnik = liniaZTektowki.LastIndexOf('-');
                   int indexOstatniUkosnik = liniaZTektowki.LastIndexOf('/');
-
                   if (indexOstatniMyslnik > indexOstatniUkosnik)
                   {
                       liniaZTektowki = liniaZTektowki.Remove(indexOstatniMyslnik, 1);
@@ -225,53 +260,43 @@ namespace ScaleniaMW
                       break;
                   }
               }*/
-            while (true)
-            {
-                int pierwsza_przerwa = liniaZTektowki.LastIndexOf(' ');
-                int ostatni_Myslnik = liniaZTektowki.LastIndexOf('-');
-
-                if (ostatni_Myslnik > pierwsza_przerwa)
-                {
-                    liniaZTektowki = liniaZTektowki.Remove(ostatni_Myslnik, 1);
-                    liniaZTektowki = liniaZTektowki.Insert(ostatni_Myslnik, "/");
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-                return liniaZTektowki;
-            
-        }
-        // 6-106                    6-38/Lzr                           506
-        // 4-1/1                    4-898/Lzr-ŁVI-11478                  90.47
-      /*  string UsunWartZKlasyfkacji(string liniaZTektowki, ref StringBuilder sbPuste)
-        {
-
-            if (liniaZTektowki.Contains("pusty") || liniaZTektowki.Trim() == "")
-            {
-                sbPuste.AppendLine(liniaZTektowki);
-                return (liniaZTektowki);
-            }
-
-            int ukosnikKonturu = liniaZTektowki.IndexOf('/', liniaZTektowki.IndexOf(' '));
-            int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
-            if (ostatniMyslnik > ukosnikKonturu)
-            {
 
 
-
-            }
-
-            liniaZTektowki.Replace('-', '/');
-            int ileZnakowUsunac = liniaZTektowki.IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
-            //   Console.WriteLine( calyOdczzytanyTextLinie[i] +  " last index -: " + ostatniMyslnik + " Dł: " + dlTekstu + " wynik:" + calyOdczzytanyTextLinie[i].Remove(ostatniMyslnik, ileZnakowUsunac));
-
-            //   liniaZTektowki = liniaZTektowki.Replace(ostatniMyslnik, ileZnakowUsunac);
 
             return liniaZTektowki;
-        }*/
+
+        }
+
+
+
+        // 6-106                    6-38/Lzr                           506
+        // 4-1/1                    4-898/Lzr-ŁVI-11478                  90.47
+        /*  string UsunWartZKlasyfkacji(string liniaZTektowki, ref StringBuilder sbPuste)
+          {
+
+              if (liniaZTektowki.Contains("pusty") || liniaZTektowki.Trim() == "")
+              {
+                  sbPuste.AppendLine(liniaZTektowki);
+                  return (liniaZTektowki);
+              }
+
+              int ukosnikKonturu = liniaZTektowki.IndexOf('/', liniaZTektowki.IndexOf(' '));
+              int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
+              if (ostatniMyslnik > ukosnikKonturu)
+              {
+
+
+
+              }
+
+              liniaZTektowki.Replace('-', '/');
+              int ileZnakowUsunac = liniaZTektowki.IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
+              //   Console.WriteLine( calyOdczzytanyTextLinie[i] +  " last index -: " + ostatniMyslnik + " Dł: " + dlTekstu + " wynik:" + calyOdczzytanyTextLinie[i].Remove(ostatniMyslnik, ileZnakowUsunac));
+
+              //   liniaZTektowki = liniaZTektowki.Replace(ostatniMyslnik, ileZnakowUsunac);
+
+              return liniaZTektowki;
+          }*/
 
 
         void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")
