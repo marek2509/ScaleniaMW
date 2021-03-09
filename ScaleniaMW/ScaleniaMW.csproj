@@ -107,6 +107,7 @@
     <Compile Include="AktualizacjaOprogramowania.cs" />
     <Compile Include="BadanieKsiagWieczystych.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="DbWykazEkwiw.cs" />
     <Compile Include="DopasowanieJednostek.cs" />
     <Compile Include="DopasowanieKW.cs" />
     <Compile Include="DzialkaNkrZSQL.cs" />
