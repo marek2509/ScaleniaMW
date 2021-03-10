@@ -438,8 +438,7 @@ namespace ScaleniaMW
                 DataTable WlascicielePrzed = odczytajZSql(Constants.SQL_WlascicielAdresyUdzialyIdNkrStary);
                 List<WlascicielStanPrzed> WlascicielePrzedTMP = new List<WlascicielStanPrzed>();
                 for (int i = 0; i < WlascicielePrzed.Rows.Count; i++)
-                {
-                    Console.WriteLine("checkPoint 1");
+                { 
                     int idJednS = WlascicielePrzed.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][0]);                                  Console.WriteLine("checkPoint 2");
                     string udzial = WlascicielePrzed.Rows[i][1].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][1].ToString();                             Console.WriteLine("checkPoint 3:" + WlascicielePrzed.Rows[i][2]);
                     double udzial_NR = WlascicielePrzed.Rows[i][2].Equals(DBNull.Value) ? 0 : Convert.ToDouble(WlascicielePrzed.Rows[i][2]);                               Console.WriteLine("checkPoint 4");
@@ -462,7 +461,7 @@ namespace ScaleniaMW
                     }
                 }
 
-
+                /*
                 Console.WriteLine("check 6");
 
                     foreach (var item in JednostkiRejestroweNowe.Jedn_REJ_N)
@@ -497,7 +496,7 @@ namespace ScaleniaMW
                     }
                  
                     Console.WriteLine();
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -543,8 +542,21 @@ namespace ScaleniaMW
         }
 
 
+        public string GenerujWWE()
+        {
+            StringBuilder dokHTML = new StringBuilder();
+            dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow);
+            foreach (var JednoskaRejNowa in JednostkiRejestroweNowe.Jedn_REJ_N)
+            {
+                dokHTML.Append( HtmlDokumentWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
+            }
+            dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
+            return dokHTML.ToString();
+        }
 
-
-
+        private void Generuj_Wykaz_wydz_ekw_Click(object sender, RoutedEventArgs e)
+        {
+            zapisDoPliku(GenerujWWE(), ".doc");
+        }
     }
 }
