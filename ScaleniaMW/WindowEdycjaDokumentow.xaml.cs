@@ -214,7 +214,6 @@ namespace ScaleniaMW
             return liniaZTektowki;
         }
 
-
         void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")
         {
             SaveFileDialog svd = new SaveFileDialog();
@@ -333,15 +332,15 @@ namespace ScaleniaMW
             }
         }
 
-
-
         private void PolaczZBaza(object sender, RoutedEventArgs e)
         {
             try
             {
+                ListaObrebow.ClearData();
+                JednostkiRejestroweNowe.ClearData();
+
                 itemPolaczZBaza.Background = Brushes.SeaGreen;
                 itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
-
 
                 DataTable obreby = odczytajZSql(Constants.SQL_Obreby);
                 for (int i = 0; i < obreby.Rows.Count; i++)
@@ -349,7 +348,6 @@ namespace ScaleniaMW
                     ListaObrebow.DodajObreb(Convert.ToInt32(obreby.Rows[i][0]), Convert.ToInt32(obreby.Rows[i][1]), obreby.Rows[i][2].ToString());
                 }
 
-                //jn.id_id, jn.ijr, jn.nkr, jn.ODCHT, jn.zgoda, jn.uwg, jn.id_obr
                 DataTable jednostkaRejestrowa = odczytajZSql(Constants.SQLJedn_rej_N);
                 for (int i = 0; i < jednostkaRejestrowa.Rows.Count; i++)
                 {
@@ -363,28 +361,143 @@ namespace ScaleniaMW
                     JednostkiRejestroweNowe.DodajJrNowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, idobr);    // jednostkaRejestrowa.Rows[i][0]);
                 }
 
-
-             //   dgMy.ItemsSource = JednostkiRejestroweNowe.Jedn_REJ_N;
-
-                DataTable wlasciciele = odczytajZSql(Constants.SQLWlascicieleAdresyUdziayIdNKRNOWY);
-                for (int i = 0; i < wlasciciele.Rows.Count; i++)
+                DataTable WlascicielePO = odczytajZSql(Constants.SQLWlascicieleAdresyUdziayIdNKRNOWY);
+                for (int i = 0; i < WlascicielePO.Rows.Count; i++)
                 {
-                    int idJednN = wlasciciele.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(wlasciciele.Rows[i][0]);
-                    string udzial = wlasciciele.Rows[i][1].ToString().Equals(DBNull.Value) ? "" : wlasciciele.Rows[i][1].ToString();
-                    double udzial_NR = wlasciciele.Rows[i][2].Equals(DBNull.Value) ? 0 : Convert.ToDouble(wlasciciele.Rows[i][2]);       
-                    string nazwaWlasciciela = wlasciciele.Rows[i][3].ToString().Equals(DBNull.Value) ? "" : wlasciciele.Rows[i][3].ToString();
-                    string adres = wlasciciele.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : wlasciciele.Rows[i][4].ToString();
-                    int idMalzenstwa = wlasciciele.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(wlasciciele.Rows[i][5]);
+                    int idJednN = WlascicielePO.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePO.Rows[i][0]);
+                    string udzial = WlascicielePO.Rows[i][1].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][1].ToString();
+                    double udzial_NR = WlascicielePO.Rows[i][2].Equals(DBNull.Value) ? 0 : Convert.ToDouble(WlascicielePO.Rows[i][2]);
+                    string nazwaWlasciciela = WlascicielePO.Rows[i][3].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][3].ToString();
+                    string adres = WlascicielePO.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][4].ToString();
+                    int idMalzenstwa = WlascicielePO.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePO.Rows[i][5]);
 
-                    
                     Wlasciciel wlasciciel = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa);
                     JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN).DodajWlasciciela(wlasciciel);
                 }
 
-                Console.WriteLine("heja");
-                JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.Ijr == 4103).Wlasciciele.ForEach(x => x.WypiszWKoncoli());
-                Console.WriteLine("endo:");
+                DataTable Jedn_SN = odczytajZSql(Constants.SQLJedn_SN);
+                for (int i = 0; i < Jedn_SN.Rows.Count; i++)
+                {
+                    int idJednN = Jedn_SN.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Jedn_SN.Rows[i][0]);
+                    int idJednS = Jedn_SN.Rows[i][1].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Jedn_SN.Rows[i][1]);
+                    int IJR = Jedn_SN.Rows[i][2].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Jedn_SN.Rows[i][2]);
+                    int Idobr = Jedn_SN.Rows[i][3].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Jedn_SN.Rows[i][3]);
+                    string Ud_z_Jedn = Jedn_SN.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : Jedn_SN.Rows[i][4].ToString();
+                    decimal WrtPrzed = Jedn_SN.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToDecimal(Jedn_SN.Rows[i][5]);
+                    double PowPrzed = Jedn_SN.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToDouble(Jedn_SN.Rows[i][6]);
 
+                    ZJednRejStarej zJednRej = new ZJednRejStarej(idJednS, IJR, Ud_z_Jedn, WrtPrzed, PowPrzed, Idobr);
+                    JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN).DodajZJrStarej(zJednRej);
+                }
+
+                DataTable Dzialki_nowe = odczytajZSql(Constants.SQL_Dzialki_N);
+                for (int i = 0; i < Dzialki_nowe.Rows.Count; i++)
+                {
+                    
+                    int Id_dz = Dzialki_nowe.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_nowe.Rows[i][0]);
+                    int Id_obr = Dzialki_nowe.Rows[i][1].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_nowe.Rows[i][1]);
+                    string NrDz = Dzialki_nowe.Rows[i][2].ToString().Equals(DBNull.Value) ? "" : Dzialki_nowe.Rows[i][2].ToString();
+                    double PowDz = Dzialki_nowe.Rows[i][3].Equals(DBNull.Value) ? 0 : Convert.ToDouble(Dzialki_nowe.Rows[i][3]);
+                    int Rjdr = Dzialki_nowe.Rows[i][4].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_nowe.Rows[i][4]);
+                    int RjdrPrzed = Dzialki_nowe.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_nowe.Rows[i][5]);
+                    string KW = Dzialki_nowe.Rows[i][6].ToString().Equals(DBNull.Value) ? "" : Dzialki_nowe.Rows[i][6].ToString();
+                    decimal Wartosc = Dzialki_nowe.Rows[i][7].Equals(DBNull.Value) ? 0 : Convert.ToDecimal(Dzialki_nowe.Rows[i][7]);
+
+                    Dzialka_N dzialka = new Dzialka_N(Id_dz, Id_obr, NrDz, PowDz, Rjdr, RjdrPrzed, KW, Wartosc);
+                    JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == Rjdr).DodajDzialke(dzialka);
+
+                }
+
+                DataTable Dzialki_przed = odczytajZSql(Constants.SQL_Dzialka);
+                List<Dzialka> DzialkaStaraTMP = new List<Dzialka>();
+                for (int i = 0; i < Dzialki_przed.Rows.Count; i++)
+                {
+
+                    int Id_dz = Dzialki_przed.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_przed.Rows[i][0]);
+                    int Id_obr = Dzialki_przed.Rows[i][1].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_przed.Rows[i][1]);
+                    string NrDz = Dzialki_przed.Rows[i][2].ToString().Equals(DBNull.Value) ? "" : Dzialki_przed.Rows[i][2].ToString();
+                    double PowDz = Dzialki_przed.Rows[i][3].Equals(DBNull.Value) ? 0 : Convert.ToDouble(Dzialki_przed.Rows[i][3]);
+                    int Rjdr = Dzialki_przed.Rows[i][4].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_przed.Rows[i][4]);
+                    string KW = Dzialki_przed.Rows[i][5].ToString().Equals(DBNull.Value) ? "" : Dzialki_przed.Rows[i][5].ToString();
+                    decimal Wartosc = Dzialki_przed.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToDecimal(Dzialki_przed.Rows[i][6]);
+
+                    DzialkaStaraTMP.Add(new Dzialka(Id_dz, Id_obr, NrDz, PowDz, Rjdr, KW, Wartosc));
+                }
+
+                foreach (var JN in JednostkiRejestroweNowe.Jedn_REJ_N)
+                {
+                    foreach (var JRst in JN.zJednRejStarej)
+                    {
+                        foreach (var dzialkaPrzed in DzialkaStaraTMP.FindAll(x => x.Rjdr == JRst.Id_Jedns))
+                        {
+                            JRst.DodajDzialkePrzed(dzialkaPrzed);
+                        }  
+                    }
+                }
+
+                DataTable WlascicielePrzed = odczytajZSql(Constants.SQL_WlascicielAdresyUdzialyIdNkrStary);
+                List<WlascicielStanPrzed> WlascicielePrzedTMP = new List<WlascicielStanPrzed>();
+                for (int i = 0; i < WlascicielePrzed.Rows.Count; i++)
+                {
+                    Console.WriteLine("checkPoint 1");
+                    int idJednS = WlascicielePrzed.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][0]);                                  Console.WriteLine("checkPoint 2");
+                    string udzial = WlascicielePrzed.Rows[i][1].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][1].ToString();                             Console.WriteLine("checkPoint 3:" + WlascicielePrzed.Rows[i][2]);
+                    double udzial_NR = WlascicielePrzed.Rows[i][2].Equals(DBNull.Value) ? 0 : Convert.ToDouble(WlascicielePrzed.Rows[i][2]);                               Console.WriteLine("checkPoint 4");
+                    string nazwaWlasciciela = WlascicielePrzed.Rows[i][3].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][3].ToString();                   Console.WriteLine("checkPoint 5");
+                    string adres = WlascicielePrzed.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][4].ToString();                              Console.WriteLine("checkPoint 6");
+                    int idMalzenstwa = WlascicielePrzed.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][5]);                         Console.WriteLine("checkPoint 7");
+
+                    // Wlasciciel wlascicielPrzed = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa);
+                    WlascicielePrzedTMP.Add(new WlascicielStanPrzed(idJednS, udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa));
+                }
+
+                foreach (var JN in JednostkiRejestroweNowe.Jedn_REJ_N)
+                {
+                    foreach (var JRst in JN.zJednRejStarej)
+                    {
+                        foreach (var wlascicielPrzed in WlascicielePrzedTMP.FindAll(x => x.IdJednPrzed == JRst.Id_Jedns))
+                        {
+                            JRst.DodajWlascicielaWStaniePrzed(wlascicielPrzed);
+                        }
+                    }
+                }
+
+
+                Console.WriteLine("check 6");
+
+                    foreach (var item in JednostkiRejestroweNowe.Jedn_REJ_N)
+                {
+                    Console.WriteLine(item.IjrPo + " Obr:" + item.NrObr + " " + item.NazwaObrebu + " Numwr JR:" + item.Nkr + " " + item.Uwaga);
+                    Console.Write("Właśc: ");
+                    foreach (var wlas in item.Wlasciciele)
+                    {
+                        Console.WriteLine(wlas.NazwaWlasciciela + " " + wlas.Adres);
+                    }
+                    Console.Write("z jednostek: ");
+                    foreach (var zJR in item.zJednRejStarej)
+                    {
+
+                        Console.WriteLine(zJR.NrObr + " " + zJR.NazwaObrebu + " " + zJR.Ijr_Przed + " " + zJR.Ud_Z_Jrs + " " + zJR.WrtJednPrzed + " " + zJR.Pow_Przed);
+                        Console.WriteLine("Wlasciciele:");
+                        foreach (var wlasciciel in zJR.Wlasciciele)
+                        {
+                            Console.WriteLine(wlasciciel.NazwaWlasciciela + " " + wlasciciel.Adres);
+                        }
+                        Console.WriteLine("DZIALKI PRZED: ");
+                        foreach (var dzialkaStara in zJR.Dzialki)
+                        {
+                            Console.WriteLine(dzialkaStara.NrDz + " " + dzialkaStara.PowDz + " " + dzialkaStara.Wartosc + " " + dzialkaStara.KW);
+                        }   
+
+                    }
+                    Console.WriteLine("DZIALKI: ");
+                    foreach (var dzialkas in item.Dzialki_Nowe)
+                    {
+                        Console.WriteLine(dzialkas.NrDz + " " + dzialkas.Wartosc + " " + dzialkas.PowDz);
+                    }
+                 
+                    Console.WriteLine();
+                }
             }
             catch (Exception ex)
             {
