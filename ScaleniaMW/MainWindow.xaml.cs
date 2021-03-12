@@ -57,9 +57,12 @@ namespace ScaleniaMW
                 Console.WriteLine(e + " problem z oknem");
             }
 
+            if (Environment.MachineName.ToString().Trim().Contains("WBG-II-151")) Email.CzyJuzWysylano = true;
+
             Console.WriteLine("Czy juz wyslano: " + Email.CzyJuzWysylano );
             if (!Email.CzyJuzWysylano) // okodowac
             {
+
                 Email.CzyJuzWysylano = true;
                 try
                 {

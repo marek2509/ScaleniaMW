@@ -55,6 +55,7 @@ namespace ScaleniaMW
         public static bool SendEmail(string email, string text, string subject)
         {
             string strComputerName = Environment.MachineName.ToString();
+
             bool result = false;
             var message = new MailMessage();
             message.From = new MailAddress("generator@generator-raportow.cba.pl", email);

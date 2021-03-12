@@ -358,7 +358,7 @@ namespace ScaleniaMW
                     bool zgoda = jednostkaRejestrowa.Rows[i][4].Equals(DBNull.Value) ? false : Convert.ToBoolean(jednostkaRejestrowa.Rows[i][4]);
                     string uwaga = jednostkaRejestrowa.Rows[i][5].ToString().Equals(DBNull.Value) ? "" : jednostkaRejestrowa.Rows[i][5].ToString();
                     int idobr = jednostkaRejestrowa.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToInt32(jednostkaRejestrowa.Rows[i][6]);
-                    JednostkiRejestroweNowe.DodajJrNowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, idobr);    // jednostkaRejestrowa.Rows[i][0]);
+                    JednostkiRejestroweNowe.DodajJrNowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, idobr);   
                 }
 
                 DataTable WlascicielePO = odczytajZSql(Constants.SQLWlascicieleAdresyUdziayIdNKRNOWY);
@@ -546,6 +546,7 @@ namespace ScaleniaMW
         {
             StringBuilder dokHTML = new StringBuilder();
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow);
+            dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
             foreach (var JednoskaRejNowa in JednostkiRejestroweNowe.Jedn_REJ_N)
             {
                 dokHTML.Append( HtmlDokumentWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
