@@ -9,8 +9,6 @@ namespace ScaleniaMW
 {
     static class HtmlDokumentWykazWydzEkwiwalentow
     {
-
-
         //table { border: 2px solid black; border-collapse: collapse; width: 100%;}  th{ border-bottom:  2px solid black; border-left: 1px solid black; border-right: 1px solid black;	} tr, td{  border: 1px solid black; } #tableNoneBorder{ width: 100%; border: none; border-collapse: collapse; }
         public const string HTML_PodzialSekcjiNaStronieNieparzystej = "<span style='font-size:12.0pt;font-family:\"Times New Roman\",\"serif\";mso-fareast-font-family: \"Times New Roman\";mso-ansi-language:PL;mso-fareast-language:PL;mso-bidi-language: AR-SA'><br clear=all style='page-break-before:right;mso-break-type:section-break'></span>";
         public const string HTML_PoczatekWykazyWydzEkwiwalentow = "<html><head><meta content=\"text/html; charset=windows-1250\"> <meta name=Generator content=\"Microsoft Word 12 (filtered)\"> <style> body { font-family: \"Arial Narrow\", Arial, sans-serif; font-style: italic; font-size: 11pt; }</style> </head> <body lang=PL>";// <div class=WordSection1>";
@@ -61,6 +59,7 @@ namespace ScaleniaMW
                     dokHTML.AppendLine(WierszWlasciciel("małżeństwo", Udzial: wlascicelPo.Udzial));
                     dokHTML.AppendLine(WierszWlasciciel(wlascicelPo.NazwaWlasciciela, wlascicelPo.Adres));
                 }
+                else
                 if (wlascicelPo.IdMalzenstwa > 0 && licznikMalzenski > 0)
                 {
                     dokHTML.AppendLine(WierszWlasciciel(wlascicelPo.NazwaWlasciciela, wlascicelPo.Adres, gruboscPodkreslenia: 2));
@@ -99,74 +98,99 @@ namespace ScaleniaMW
 
             //tytuł tabeli Ekwiwalent nalezny / zaprjektowany
             dokHTML.AppendLine("<br /> <div style=\"text-align: center;\"> <span style=\"background-color:" + kolorZakreslacza + "\"><b><u><i>Ekwiwalent należny/zaprojektowany</i></u></b></span></div>");
-            foreach (var jednostkaStara in JednoskaRejNowa.zJednRejStarej)
+            if (JednoskaRejNowa.zJednRejStarej.Count > 0)
             {
-                dokHTML.AppendLine("<div><span>Obręb:&nbsp;<b  style = \"color: blue; \">" + jednostkaStara.NrObr + "&nbsp;" + jednostkaStara.NazwaObrebu + "</b></span></div>");
-                dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + jednostkaStara.Ijr_Przed);
 
-
-
-                if (CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa))
+                foreach (var jednostkaStara in JednoskaRejNowa.zJednRejStarej)
                 {
-                    dokHTML.AppendLine("</span><br /><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
-                    dokHTML.Append(GenerujTabeleWlascicieliPRZED(jednostkaStara, szerTabeli));
+                    dokHTML.AppendLine("<div><span>Obręb:&nbsp;<b  style = \"color: blue; \">" + jednostkaStara.NrObr + "&nbsp;" + jednostkaStara.NazwaObrebu + "</b></span></div>");
+                    dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + jednostkaStara.Ijr_Przed);
+
+
+
+                    if (CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa))
+                    {
+                        dokHTML.AppendLine("</span><br /><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
+                        dokHTML.Append(GenerujTabeleWlascicieliPRZED(jednostkaStara, szerTabeli));
+                    }
+
+
+                    //tabela Ekwiwalentów nagłówki
+                    dokHTML.AppendLine("<table  width=" + szerTabeli + " style =\"border: 1px solid black; border-collapse: collapse; font-size: 9pt; \"><tr><th colspan=\"8\"><b>Ekwiwalenty</b></th></tr>");
+                    dokHTML.AppendLine("<tr><th style =\"border: 1px solid black;\"  colspan=\"4\" width=50%><b>Należny</b></th><th style =\"border: 1px solid black;\"  colspan=\"4\"  width=50%><b>Zaprojektowany</b></th></tr>");
+                    dokHTML.AppendLine("<tr><th style =\"border: 1px solid black;\" width=12%><b>Działka</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Pow. ewid.</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Wartość</b></th><th style =\"border: 1px solid black;\"  width=14%><b>KW</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Działka</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Pow.</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Wartość</b></th><th style =\"border: 1px solid black;\"  width=14%><b>KW</b></th></tr>");
+
+                    // treść zasadnicza 
+
+
+                    if (JednoskaRejNowa.Dzialki_Nowe.Count > 0 && JednoskaRejNowa.Dzialki_Nowe.First().RjdrPrzed == jednostkaStara.Id_Jedns)
+                    {
+                        int iloscDzialekPrzed = jednostkaStara.Dzialki.Count;
+                        int iloscDzialekPo = JednoskaRejNowa.Dzialki_Nowe.Count;
+
+                        int liczbaIteracjiPetli = iloscDzialekPo < iloscDzialekPrzed ? iloscDzialekPrzed : iloscDzialekPo;
+
+                        for (int i = 0; i < liczbaIteracjiPetli; i++)
+                        {
+                            string nrdzPrzed = iloscDzialekPrzed > i ? jednostkaStara.Dzialki[i].NrDz : "";
+                            string pewDzialki = iloscDzialekPrzed > i ? jednostkaStara.Dzialki[i].PowDz.ToString("F4", CultureInfo.InvariantCulture) : "";
+                            string wartPrzed = iloscDzialekPrzed > i ? jednostkaStara.Dzialki[i].Wartosc.ToString("F2", CultureInfo.InvariantCulture) : "";
+                            string kwPrzed = iloscDzialekPrzed > i ? jednostkaStara.Dzialki[i].KW : "";
+
+                            string nrdzPo = iloscDzialekPo > i ? JednoskaRejNowa.Dzialki_Nowe[i].NrDz : "";
+                            string powDzialkiPo = iloscDzialekPo > i ? JednoskaRejNowa.Dzialki_Nowe[i].PowDz.ToString("F4", CultureInfo.InvariantCulture) : "";
+                            string wartPo = iloscDzialekPo > i ? JednoskaRejNowa.Dzialki_Nowe[i].Wartosc.ToString("F2", CultureInfo.InvariantCulture) : "";
+                            string kwPo = iloscDzialekPo > i ? JednoskaRejNowa.Dzialki_Nowe[i].KW : "";
+
+                            // Ekwiwalent należny
+                            dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: center; \">" + nrdzPrzed + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + pewDzialki + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + wartPrzed + "</td><td style =\"border: 1px solid black; text-align: center; \">" + kwPrzed + "</td>");
+
+                            // Ekwiwalent zaprojektowany
+                            dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: center;  color: red; \">" + nrdzPo + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + powDzialkiPo + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + wartPo + "</td><td style =\"border: 1px solid black; text-align: center; \">" + kwPo + "</td></tr>");
+
+                        }
+                        dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + jednostkaStara.Dzialki.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + jednostkaStara.Dzialki.Sum(x => x.Wartosc).ToString("F2", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td>");
+                        dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + SumaWartosciPo.ToString("F2", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td></tr>");
+                    }
+                    else
+                    {
+                        foreach (var dzialkaPrzed in jednostkaStara.Dzialki)
+                        {
+
+                            dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; margin-left:5px; \">" + dzialkaPrzed.NrDz + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + dzialkaPrzed.PowDz.ToString("F4", CultureInfo.InvariantCulture) + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + dzialkaPrzed.Wartosc.ToString("F2", CultureInfo.InvariantCulture) + "</td><td style =\"border: 1px solid black;\"   text-align: center;>" + dzialkaPrzed.KW + "</td><td style =\"border: 1px solid black;\" ></td><td style =\"border: 1px solid black;\" ></td><td style =\"border: 1px solid black;\" ></td><td style =\"border: 1px solid black;\" ></td></tr>");
+                        }
+                        dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + jednostkaStara.Dzialki.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + jednostkaStara.Dzialki.Sum(x => x.Wartosc).ToString("F2", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td>");
+                        dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<b>-.----</b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + "<b>-.--</b>" + "</td><td style =\"border: 1px solid black; text-align: center; \"></td></tr>");
+
+                    }
+                    dokHTML.AppendLine("</table>");
+                    dokHTML.AppendLine("<br />");
                 }
+            }
+            else // Przypadek gdy jest tylko stan PO
+            {
+
+
                 //tabela Ekwiwalentów nagłówki
                 dokHTML.AppendLine("<table  width=" + szerTabeli + " style =\"border: 1px solid black; border-collapse: collapse; font-size: 9pt; \"><tr><th colspan=\"8\"><b>Ekwiwalenty</b></th></tr>");
                 dokHTML.AppendLine("<tr><th style =\"border: 1px solid black;\"  colspan=\"4\" width=50%><b>Należny</b></th><th style =\"border: 1px solid black;\"  colspan=\"4\"  width=50%><b>Zaprojektowany</b></th></tr>");
                 dokHTML.AppendLine("<tr><th style =\"border: 1px solid black;\" width=12%><b>Działka</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Pow. ewid.</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Wartość</b></th><th style =\"border: 1px solid black;\"  width=14%><b>KW</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Działka</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Pow.</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Wartość</b></th><th style =\"border: 1px solid black;\"  width=14%><b>KW</b></th></tr>");
+                dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: center; \">" + "" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + "" + "</td><td style =\"border: 1px solid black; text-align: center; \">" + "" + "</td>");
 
-                // treść zasadnicza 
-
-
-                if (JednoskaRejNowa.Dzialki_Nowe.First().RjdrPrzed == jednostkaStara.Id_Jedns)
+                // Ekwiwalent zaprojektowany
+                foreach (var dzialkaNowa in JednoskaRejNowa.Dzialki_Nowe)
                 {
-                    int iloscDzialekPrzed = jednostkaStara.Dzialki.Count;
-                    int iloscDzialekPo = JednoskaRejNowa.Dzialki_Nowe.Count;
-
-                    int liczbaIteracjiPetli = iloscDzialekPo < iloscDzialekPrzed ? iloscDzialekPrzed : iloscDzialekPo;
-
-                    for (int i = 0; i < liczbaIteracjiPetli; i++)
-                    {
-
-
-                        string nrdzPrzed = iloscDzialekPrzed > i ? jednostkaStara.Dzialki[i].NrDz : "";
-                        string pewDzialki = iloscDzialekPrzed > i ? jednostkaStara.Dzialki[i].PowDz.ToString("F4", CultureInfo.InvariantCulture) : "";
-                        string wartPrzed = iloscDzialekPrzed > i ? jednostkaStara.Dzialki[i].Wartosc.ToString("F2", CultureInfo.InvariantCulture) : "";
-                        string kwPrzed = iloscDzialekPrzed > i ? jednostkaStara.Dzialki[i].KW : "";
-
-                        string nrdzPo = iloscDzialekPo > i ? JednoskaRejNowa.Dzialki_Nowe[i].NrDz : "";
-                        string powDzialkiPo = iloscDzialekPo > i ? JednoskaRejNowa.Dzialki_Nowe[i].PowDz.ToString("F4", CultureInfo.InvariantCulture) : "";
-                        string wartPo = iloscDzialekPo > i ? JednoskaRejNowa.Dzialki_Nowe[i].Wartosc.ToString("F2", CultureInfo.InvariantCulture) : "";
-                        string kwPo = iloscDzialekPo > i ? JednoskaRejNowa.Dzialki_Nowe[i].KW : "";
-
-                        // Ekwiwalent należny
-                        dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: center; \">" + nrdzPrzed + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + pewDzialki + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + wartPrzed + "</td><td style =\"border: 1px solid black; text-align: center; \">" + kwPrzed + "</td>");
-
-                        // Ekwiwalent zaprojektowany
-                        dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: center;  color: red; \">" + nrdzPo + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + powDzialkiPo + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + wartPo + "</td><td style =\"border: 1px solid black; text-align: center; \">" + kwPo + "</td></tr>");
-
-                    }
-                    dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + jednostkaStara.Dzialki.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + jednostkaStara.Dzialki.Sum(x => x.Wartosc).ToString("F2", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td>");
-                    dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + SumaWartosciPo.ToString("F2", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td></tr>");
-                }
-                else
-                {
-                    foreach (var dzialkaPrzed in jednostkaStara.Dzialki)
-                    {
-
-                        dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; margin-left:5px; \">" + dzialkaPrzed.NrDz + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + dzialkaPrzed.PowDz.ToString("F4", CultureInfo.InvariantCulture) + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + dzialkaPrzed.Wartosc.ToString("F2", CultureInfo.InvariantCulture) + "</td><td style =\"border: 1px solid black;\"   text-align: center;>" + dzialkaPrzed.KW + "</td><td style =\"border: 1px solid black;\" ></td><td style =\"border: 1px solid black;\" ></td><td style =\"border: 1px solid black;\" ></td><td style =\"border: 1px solid black;\" ></td></tr>");
-                    }
-                    dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + jednostkaStara.Dzialki.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + jednostkaStara.Dzialki.Sum(x => x.Wartosc).ToString("F2", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td>");
-                    dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<b>-.----</b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + "<b>-.--</b>" + "</td><td style =\"border: 1px solid black; text-align: center; \"></td></tr>");
+                    dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: center;  color: red; \">" + dzialkaNowa.NrDz + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + dzialkaNowa.PowDz + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + dzialkaNowa.Wartosc + "</td><td style =\"border: 1px solid black; text-align: center; \">" + dzialkaNowa.KW + "</td></tr>");
 
                 }
 
 
-
+                dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + "-.----" + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + "-.--" + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td>");
+                dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + SumaWartosciPo.ToString("F2", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td></tr>");
                 dokHTML.AppendLine("</table>");
                 dokHTML.AppendLine("<br />");
             }
+
 
             // BILANS POWIERZCHNI I WARTOŚCI WYDZIELONYCH EKWIWALENTÓW
             dokHTML.AppendLine("<br /> <div style=\"text-align: center; margin-bottom: 5px;\"> <span style=\"color: red\"><b><u>BILANS POWIERZCHNI I WARTOŚCI WYDZIELONYCH EKWIWALENTÓW</u></b></span></div>");
