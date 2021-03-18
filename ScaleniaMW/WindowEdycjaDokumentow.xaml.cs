@@ -7,7 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace ScaleniaMW
 {
@@ -20,7 +23,7 @@ namespace ScaleniaMW
         {
             InitializeComponent();
             textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
-            // odczytUstawien();
+            // odczytUstawien();            
         }
 
         string usunOd = "kontury";
@@ -552,12 +555,23 @@ namespace ScaleniaMW
                 dokHTML.Append( HtmlDokumentWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
             }
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
+
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text +="W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
+            //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
+
+            
             return dokHTML.ToString();
         }
 
         private void Generuj_Wykaz_wydz_ekw_Click(object sender, RoutedEventArgs e)
         {
             zapisDoPliku(GenerujWWE(), ".doc");
+        }
+
+        private void RichTextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
         }
     }
 }

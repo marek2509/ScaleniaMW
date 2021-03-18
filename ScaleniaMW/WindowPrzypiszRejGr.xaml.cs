@@ -699,9 +699,35 @@ namespace ScaleniaMW
             {
                 MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
             }
-
-
         }
+
+        private void MenuItem_ClickPrzypiszDoNKRPoIjrPrzed(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var resultat = MessageBox.Show("Czy chcesz przypisać [IJR przed] do [NKR po]?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+                if (resultat == MessageBoxResult.Yes)
+                {
+                    aktualizujSciezkeZPropertis();
+                    using (var connection = new FbConnection(connectionString))
+                    {
+                        connection.Open();
+                        FbCommand writeCommand = new FbCommand("UPDATE JEDN_REJ_N JN SET NKR = (select IJR from JEDN_REJ JS where JS.NKR = JN.IJR) WHERE NKR is null", connection);
+                        //writeCommand.ExecuteNonQuery();
+                        writeCommand.ExecuteNonQueryAsync();
+                        connection.Close();
+                        MessageBox.Show("NKRy usunięto pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Coś poszło nie tak", "Smuteczek!", MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+        }
+
+
+        //koniec klasy
     }
 }
 

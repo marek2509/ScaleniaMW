@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,20 +98,20 @@ namespace ScaleniaMW
 
 
             //tytuł tabeli Ekwiwalent nalezny / zaprjektowany
-            dokHTML.AppendLine("<br /> <div style=\"text-align: center;\"> <span style=\"background-color:" + kolorZakreslacza + "\"><b><u><i>Ekwiwalent należny/zaprojektowany</i></u></b></span></div>");
+            dokHTML.AppendLine("<br /> <div style=\"text-align: center; margin-bottom: 5px;\"> <span style=\"background-color:" + kolorZakreslacza + "\"><b><u><i>Ekwiwalent należny/zaprojektowany</i></u></b></span></div>");
             if (JednoskaRejNowa.zJednRejStarej.Count > 0)
             {
 
                 foreach (var jednostkaStara in JednoskaRejNowa.zJednRejStarej)
                 {
                     dokHTML.AppendLine("<div><span>Obręb:&nbsp;<b  style = \"color: blue; \">" + jednostkaStara.NrObr + "&nbsp;" + jednostkaStara.NazwaObrebu + "</b></span></div>");
-                    dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + jednostkaStara.Ijr_Przed);
+                    dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + jednostkaStara.Ijr_Przed + "</span>");
 
 
-
+                    Console.WriteLine("czy generowac wlasc przed: "  +  CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa));
                     if (CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa))
                     {
-                        dokHTML.AppendLine("</span><br /><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
+                        dokHTML.AppendLine("<br/><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
                         dokHTML.Append(GenerujTabeleWlascicieliPRZED(jednostkaStara, szerTabeli));
                     }
 
@@ -169,21 +170,19 @@ namespace ScaleniaMW
             }
             else // Przypadek gdy jest tylko stan PO
             {
-
-
+                Console.WriteLine("stan tylko Po :" + JednoskaRejNowa.IjrPo);
                 //tabela Ekwiwalentów nagłówki
                 dokHTML.AppendLine("<table  width=" + szerTabeli + " style =\"border: 1px solid black; border-collapse: collapse; font-size: 9pt; \"><tr><th colspan=\"8\"><b>Ekwiwalenty</b></th></tr>");
-                dokHTML.AppendLine("<tr><th style =\"border: 1px solid black;\"  colspan=\"4\" width=50%><b>Należny</b></th><th style =\"border: 1px solid black;\"  colspan=\"4\"  width=50%><b>Zaprojektowany</b></th></tr>");
+                dokHTML.AppendLine("<tr><th style =\"border: 1px solid black;\" colspan=\"4\" width=50%><b>Należny</b></th><th style =\"border: 1px solid black;\"  colspan=\"4\"  width=50%><b>Zaprojektowany</b></th></tr>");
                 dokHTML.AppendLine("<tr><th style =\"border: 1px solid black;\" width=12%><b>Działka</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Pow. ewid.</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Wartość</b></th><th style =\"border: 1px solid black;\"  width=14%><b>KW</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Działka</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Pow.</b></th><th style =\"border: 1px solid black;\"  width=12%><b>Wartość</b></th><th style =\"border: 1px solid black;\"  width=14%><b>KW</b></th></tr>");
                 dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: center; \">" + "" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + "" + "</td><td style =\"border: 1px solid black; text-align: center; \">" + "" + "</td>");
 
                 // Ekwiwalent zaprojektowany
                 foreach (var dzialkaNowa in JednoskaRejNowa.Dzialki_Nowe)
                 {
-                    dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: center;  color: red; \">" + dzialkaNowa.NrDz + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + dzialkaNowa.PowDz + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + dzialkaNowa.Wartosc + "</td><td style =\"border: 1px solid black; text-align: center; \">" + dzialkaNowa.KW + "</td></tr>");
+                    dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: center;  color: red; \">" + dzialkaNowa.NrDz + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + dzialkaNowa.PowDz.ToString("F4", CultureInfo.InvariantCulture) + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" >" + dzialkaNowa.Wartosc.ToString("F2", CultureInfo.InvariantCulture) + "</td><td style =\"border: 1px solid black; text-align: center; \">" + dzialkaNowa.KW + "</td></tr>");
 
                 }
-
 
                 dokHTML.AppendLine("<tr><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + "-.----" + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + "-.--" + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td>");
                 dokHTML.AppendLine("<td style =\"border: 1px solid black; text-align: right; margin-right:5px; \">" + "<i><b>Razem:</i></b>" + "</td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; \"><b>" + JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: right; margin-right:5px; color: green; \" ><b>" + SumaWartosciPo.ToString("F2", CultureInfo.InvariantCulture) + "</b></td><td style =\"border: 1px solid black; text-align: center; \"></td></tr>");
@@ -225,6 +224,7 @@ namespace ScaleniaMW
 
             dokHTML.AppendLine("</table>");
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+
             return dokHTML.ToString();
         }
 
@@ -271,18 +271,19 @@ namespace ScaleniaMW
             int ilczbWlasNowych = JednoskaRejNowa.Wlasciciele.Count;
             List<int> liczbaWlascicieliDlaJednostek = new List<int>();
             JednoskaRejNowa.zJednRejStarej.ForEach(x => liczbaWlascicieliDlaJednostek.Add(x.Wlasciciele.Count));
-            bool czyLiczbaWlascicieliTakaSama = true;
+          //  bool czyLiczbaWlascicieliTakaSama = true;
             // int WIluJednJestTyleSamoWlascicieli
             foreach (var lplWlasc in liczbaWlascicieliDlaJednostek)
             {
                 if (lplWlasc != ilczbWlasNowych)
                 {
-                    czyLiczbaWlascicieliTakaSama = false;
+                    Console.WriteLine("LP WLAS: " + lplWlasc + "lP PO:" + ilczbWlasNowych);
+                    return  true; 
+
                 }
             }
 
-            if (czyLiczbaWlascicieliTakaSama)
-            {
+
                 foreach (var NowiWlasciciele in JednoskaRejNowa.Wlasciciele)
                 {
                     foreach (var zJednStarej in JednoskaRejNowa.zJednRejStarej)
@@ -295,9 +296,6 @@ namespace ScaleniaMW
                     }
 
                 }
-            }
-
-
             return false;
         }
     }

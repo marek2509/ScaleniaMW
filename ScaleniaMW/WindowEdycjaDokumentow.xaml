@@ -52,7 +52,7 @@
             </MenuItem>
         </Menu>
         <TextBox Grid.Row="2"  Text="" x:Name="textBoxPuste"></TextBox>
-        <DataGrid Grid.Row="2" x:Name="dgMy"></DataGrid>
+        <TextBox Grid.Row="2" x:Name="richTextBox" VerticalScrollBarVisibility="Auto"></TextBox>
         <StackPanel Grid.Row="2" x:Name="panelLogowania" Visibility="Hidden">
 
             <Label>Login:</Label>

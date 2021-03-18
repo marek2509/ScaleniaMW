@@ -49,9 +49,9 @@
                 <Separator></Separator>
                 <Separator></Separator>
 
-                <MenuItem Header="Nadaj NKR w stanie po ''scaleniu''" ToolTip="W tabeli JEDN_REJ_N zostaną ponumerowane jednostki od 1 do n" Click="NadajNKrWStaniePo" Foreground="Black"/>
-                <MenuItem Header="Wyczyść NKR w stanie po ''scaleniu''" Foreground="Black" Click="MenuItem_ClickWyczyscNKRwStaniePo"/>
-            </MenuItem>
+                <MenuItem Header="Nadaj NKR w stanie po ''scaleniu' od 1 do n'" ToolTip="W tabeli JEDN_REJ_N [NKR] zostaną zanumerowane jednostki od 1 do n" Click="NadajNKrWStaniePo" Foreground="Black"/>
+                <MenuItem Header="Nadaj NKR w stanie po ''scaleniu'' 4001 -> 1" ToolTip="W tabeli JEDN_REJ_N [NKR] zostaną zanumerowane jednostki dla 4001 przypisze 1" Click="MenuItem_ClickPrzypiszDoNKRPoIjrPrzed" Foreground="Black"></MenuItem>
+                <MenuItem Header="Wyczyść NKR w stanie po ''scaleniu''" Foreground="Black" Click="MenuItem_ClickWyczyscNKRwStaniePo"/></MenuItem>
         </Menu>
 
         <StackPanel x:Name="StackPanelWyboruRodzajuNumeracji" Panel.ZIndex="1"  Background="White" Grid.Row="2" Visibility="Hidden">
