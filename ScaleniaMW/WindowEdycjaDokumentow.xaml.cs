@@ -224,7 +224,13 @@ namespace ScaleniaMW
             svd.Filter = "All files (*.*)|*.*";
             if (svd.ShowDialog() == true)
             {
-                using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                try
+                {
+
+                 using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                {
+
+
                 //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
                 using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
                     try
@@ -250,6 +256,13 @@ namespace ScaleniaMW
                             Application.Current.Shutdown();
                         }
                     }
+                }
+
+                }
+                catch (Exception ed)
+                {
+                    MessageBox.Show(ed.Message.ToString(), "ERROR", MessageBoxButton.OK);
+                }
             }
         }
 
@@ -337,6 +350,7 @@ namespace ScaleniaMW
 
         private void PolaczZBaza(object sender, RoutedEventArgs e)
         {
+            richTextBox.Text = "";
             try
             {
                 ListaObrebow.ClearData();
@@ -361,7 +375,7 @@ namespace ScaleniaMW
                     bool zgoda = jednostkaRejestrowa.Rows[i][4].Equals(DBNull.Value) ? false : Convert.ToBoolean(jednostkaRejestrowa.Rows[i][4]);
                     string uwaga = jednostkaRejestrowa.Rows[i][5].ToString().Equals(DBNull.Value) ? "" : jednostkaRejestrowa.Rows[i][5].ToString();
                     int idobr = jednostkaRejestrowa.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToInt32(jednostkaRejestrowa.Rows[i][6]);
-                    JednostkiRejestroweNowe.DodajJrNowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, idobr);   
+                    JednostkiRejestroweNowe.DodajJrNowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, idobr);
                 }
 
                 DataTable WlascicielePO = odczytajZSql(Constants.SQLWlascicieleAdresyUdziayIdNKRNOWY);
@@ -396,7 +410,7 @@ namespace ScaleniaMW
                 DataTable Dzialki_nowe = odczytajZSql(Constants.SQL_Dzialki_N);
                 for (int i = 0; i < Dzialki_nowe.Rows.Count; i++)
                 {
-                    
+
                     int Id_dz = Dzialki_nowe.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_nowe.Rows[i][0]);
                     int Id_obr = Dzialki_nowe.Rows[i][1].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_nowe.Rows[i][1]);
                     string NrDz = Dzialki_nowe.Rows[i][2].ToString().Equals(DBNull.Value) ? "" : Dzialki_nowe.Rows[i][2].ToString();
@@ -434,21 +448,21 @@ namespace ScaleniaMW
                         foreach (var dzialkaPrzed in DzialkaStaraTMP.FindAll(x => x.Rjdr == JRst.Id_Jedns))
                         {
                             JRst.DodajDzialkePrzed(dzialkaPrzed);
-                        }  
+                        }
                     }
                 }
 
                 DataTable WlascicielePrzed = odczytajZSql(Constants.SQL_WlascicielAdresyUdzialyIdNkrStary);
                 List<WlascicielStanPrzed> WlascicielePrzedTMP = new List<WlascicielStanPrzed>();
                 for (int i = 0; i < WlascicielePrzed.Rows.Count; i++)
-                { 
-                    int idJednS = WlascicielePrzed.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][0]);                                 
-                    string udzial = WlascicielePrzed.Rows[i][1].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][1].ToString();                         
-                    double udzial_NR = WlascicielePrzed.Rows[i][2].Equals(DBNull.Value) ? 0 : Convert.ToDouble(WlascicielePrzed.Rows[i][2]);                           
-                    string nazwaWlasciciela = WlascicielePrzed.Rows[i][3].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][3].ToString();               
-                    string adres = WlascicielePrzed.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][4].ToString();                          
-                    int idMalzenstwa = WlascicielePrzed.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][5]);                         
-                                                                                                                                                                      
+                {
+                    int idJednS = WlascicielePrzed.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][0]);
+                    string udzial = WlascicielePrzed.Rows[i][1].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][1].ToString();
+                    double udzial_NR = WlascicielePrzed.Rows[i][2].Equals(DBNull.Value) ? 0 : Convert.ToDouble(WlascicielePrzed.Rows[i][2]);
+                    string nazwaWlasciciela = WlascicielePrzed.Rows[i][3].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][3].ToString();
+                    string adres = WlascicielePrzed.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][4].ToString();
+                    int idMalzenstwa = WlascicielePrzed.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][5]);
+
                     // Wlasciciel wlascicielPrzed = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa);
                     WlascicielePrzedTMP.Add(new WlascicielStanPrzed(idJednS, udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa));
                 }
@@ -544,16 +558,21 @@ namespace ScaleniaMW
             panelLogowania.Visibility = Visibility.Hidden;
         }
 
-
+        /*
         public string GenerujWWE()
         {
+
             StringBuilder dokHTML = new StringBuilder();
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow);
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+
+
             foreach (var JednoskaRejNowa in JednostkiRejestroweNowe.Jedn_REJ_N)
             {
                 dokHTML.Append( HtmlDokumentWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
             }
+
+
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
 
             JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text +="W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
@@ -562,11 +581,69 @@ namespace ScaleniaMW
 
             
             return dokHTML.ToString();
+        }*/
+
+        public string GenerujWWE(List<JR_Nowa> jR_Nowa)
+        {
+            StringBuilder dokHTML = new StringBuilder();
+            dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow);
+            dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+
+            foreach (var JednoskaRejNowa in jR_Nowa)
+            {
+                dokHTML.Append(HtmlDokumentWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
+            }
+
+
+            dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
+            //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
+            return dokHTML.ToString();
         }
+
+
+
 
         private void Generuj_Wykaz_wydz_ekw_Click(object sender, RoutedEventArgs e)
         {
-            zapisDoPliku(GenerujWWE(), ".doc");
+
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
+            List<List<JR_Nowa>> jR_s = new List<List<JR_Nowa>>();
+
+
+            int naIlePlikowDzielimy = (int)Math.Ceiling(JednostkiRejestroweNowe.Jedn_REJ_N.Count / 100d);
+
+            if (naIlePlikowDzielimy >= 2)
+            {
+                MessageBox.Show("Ze względu na wielkość wykaz podzielono na " + naIlePlikowDzielimy + " pliki. Zapisz każdy z nich.", "UWAGA!", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (naIlePlikowDzielimy > 4)
+            {
+                MessageBox.Show("Ze względu na wielkość wykaz podzielono na " + naIlePlikowDzielimy + " plików. Zapisz każdy z nich.", "UWAGA!", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+
+
+            for (int i = 0; i < naIlePlikowDzielimy; i++)
+            {
+
+                if (i == naIlePlikowDzielimy - 1)
+                {
+                    jR_s.Add(JednostkiRejestroweNowe.Jedn_REJ_N.GetRange(i * 100, (JednostkiRejestroweNowe.Jedn_REJ_N.Count - (i * 100))));
+                }
+                else
+                {
+                    jR_s.Add(JednostkiRejestroweNowe.Jedn_REJ_N.GetRange(i * 100, 100));
+                }
+                Console.WriteLine(i * 100);
+            }
+
+            foreach (var item in jR_s)
+            {
+                zapisDoPliku(GenerujWWE(item), ".doc");
+            }
+
+
         }
 
         private void RichTextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)

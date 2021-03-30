@@ -108,9 +108,11 @@ namespace ScaleniaMW
                     dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + jednostkaStara.Ijr_Przed + "</span>");
 
 
-                    Console.WriteLine("czy generowac wlasc przed: "  +  CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa));
+                    // Console.WriteLine("czy generowac wlasc przed: "  +  CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa));
                     if (CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa))
                     {
+                        Console.WriteLine("inny wlasciciel przed dla NKRu: " + JednoskaRejNowa.IjrPo);
+
                         dokHTML.AppendLine("<br/><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
                         dokHTML.Append(GenerujTabeleWlascicieliPRZED(jednostkaStara, szerTabeli));
                     }
@@ -277,7 +279,7 @@ namespace ScaleniaMW
             {
                 if (lplWlasc != ilczbWlasNowych)
                 {
-                    Console.WriteLine("LP WLAS: " + lplWlasc + "lP PO:" + ilczbWlasNowych);
+                   // Console.WriteLine("LP WLAS: " + lplWlasc + "lP PO:" + ilczbWlasNowych);
                     return  true; 
 
                 }
