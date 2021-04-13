@@ -25,13 +25,18 @@
                 <Label FontWeight="Bold"  Background="#1e304f" Foreground="White" Grid.Column="2" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić</Label>
 
                 <DockPanel Grid.Column="3" Background="#1e304f">
+                    <DockPanel Margin="40,0,40,0" >
+                        <DockPanel.Background>
+                            <ImageBrush/>
+                        </DockPanel.Background>
 
-                    <Label Foreground="LightGray" x:Name="FBPort" >Firebird Port:</Label>
+                        <Image  Source="Resources/firebird.png" Height="28"></Image>
+                   
                     <StackPanel VerticalAlignment="Center" >
-                        <RadioButton x:Name="FbPort3051"  Foreground="{Binding ElementName=FBPort, Path=Foreground}" GroupName="portFB" Checked="FbPort3051FB2_5_Checked">3051 FB 2.5</RadioButton>
-                        <RadioButton x:Name="FbPort3050"  Foreground="{Binding ElementName=FBPort, Path=Foreground}" GroupName="portFB" Checked="FbPort3050FB3_0_Checked">3050 FB 3.0</RadioButton>
+                        <RadioButton x:Name="FbPort3051"  Foreground="LightGray" GroupName="portFB" Checked="FbPort3051FB2_5_Checked">3051 FB 2.5</RadioButton>
+                            <RadioButton x:Name="FbPort3050"  Foreground="{Binding ElementName=FbPort3051, Path=Foreground}" GroupName="portFB" Checked="FbPort3050FB3_0_Checked">3050 FB 3.0</RadioButton>
                     </StackPanel>
-
+                    </DockPanel>
                 </DockPanel>
 
 

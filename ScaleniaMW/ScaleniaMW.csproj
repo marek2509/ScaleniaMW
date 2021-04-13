@@ -28,7 +28,7 @@
     <ProductName>SCALENIAMW2</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>18</ApplicationRevision>
+    <ApplicationRevision>20</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -259,6 +259,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="pencil-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\firebird.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
