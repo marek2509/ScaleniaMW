@@ -20,7 +20,21 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="270"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Background="#1e304f" FontWeight="Bold" Foreground="White" Grid.ColumnSpan="4" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić</Label>
+
+                <StackPanel Grid.ColumnSpan="2"  Background="#1e304f"  ></StackPanel>
+                <Label FontWeight="Bold"  Background="#1e304f" Foreground="White" Grid.Column="2" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić</Label>
+
+                <DockPanel Grid.Column="3" Background="#1e304f">
+
+                    <Label Foreground="LightGray" x:Name="FBPort" >Firebird Port:</Label>
+                    <StackPanel VerticalAlignment="Center" >
+                        <RadioButton x:Name="FbPort3051"  Foreground="{Binding ElementName=FBPort, Path=Foreground}" GroupName="portFB" Checked="FbPort3051FB2_5_Checked">3051 FB 2.5</RadioButton>
+                        <RadioButton x:Name="FbPort3050"  Foreground="{Binding ElementName=FBPort, Path=Foreground}" GroupName="portFB" Checked="FbPort3050FB3_0_Checked">3050 FB 3.0</RadioButton>
+                    </StackPanel>
+
+                </DockPanel>
+
+
                 <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
 
 
@@ -71,7 +85,7 @@
                             <Image x:Name="imagePorownanieWaga"  Source="Resources/wagaWhite.png" Width="60"></Image>
                         </StackPanel>
                     </Button>
-                    
+
                     <Button Visibility="Visible"  HorizontalAlignment="Right"  Margin="0,0,1,0" MouseEnter="ModyfDokum_MouseEnter"  MouseLeave="ModyfDokum_MouseLeave" 
                                     Click="ButtonModyfikacjaDokumentow_Click" Background="#2676d0"  Width="250" Height="100" x:Name="buttonModyfikacjaDokumentow" FontSize="13">
                         <StackPanel>
@@ -79,7 +93,7 @@
                             <Image x:Name="imageWritiing"  Source="Resources/writingWhite.png" Width="60"></Image>
                         </StackPanel>
                     </Button>
-                    
+
                     <Button Visibility="Visible" IsEnabled="False"  HorizontalAlignment="Right"  Margin="0,0,1,0" MouseEnter="ButtonKontrolaBazy_MouseEnter"  MouseLeave="ButtonKontrolaBazy_MouseLeave" 
                                     Click="ButtonKontrolaBazy_Click"  Background="#2676d0"  Width="250" Height="100" x:Name="buttonKontrolaBazy" FontSize="13">
                         <StackPanel>

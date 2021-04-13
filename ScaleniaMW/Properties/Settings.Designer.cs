@@ -202,5 +202,17 @@ namespace ScaleniaMW.Properties {
                 this["CheckBoxPodzialSekcji"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3051")]
+        public int FBPort {
+            get {
+                return ((int)(this["FBPort"]));
+            }
+            set {
+                this["FBPort"] = value;
+            }
+        }
     }
 }

@@ -148,9 +148,9 @@ namespace ScaleniaMW
             dgPorownanie.Visibility = Visibility.Visible;
         }
 
-        public static void aktualizujSciezkeZPropertis()
+        public static void aktualizujConnectionStringZPropertis()
         {
-            connectionString = @"User=" + Properties.Settings.Default.Login + ";Password=" + Properties.Settings.Default.Haslo + ";Database= " + Properties.Settings.Default.PathFDB + "; DataSource=localhost; Port=3050;Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
+            connectionString = @"User=" + Properties.Settings.Default.Login + ";Password=" + Properties.Settings.Default.Haslo + ";Database= " + Properties.Settings.Default.PathFDB + "; DataSource=localhost; Port=" + Constants.PortFB + ";Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
                                   "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
         }
 
@@ -168,7 +168,7 @@ namespace ScaleniaMW
         {
             stanPrzedWartoscis = new List<StanPrzedWartosci>();
             //  listaDzNkrzSQL = new List<DzialkaNkrZSQL>();
-            aktualizujSciezkeZPropertis();
+            aktualizujConnectionStringZPropertis();
             Console.WriteLine(connectionString);
             using (var connection = new FbConnection(connectionString))
             {
@@ -493,7 +493,7 @@ namespace ScaleniaMW
                 var resultat = MessageBox.Show("Czy chcesz usunąć wcześniej zaznaczone ''Odchyłki techniczne'' z bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
                 if (resultat == MessageBoxResult.Yes)
                 {
-                    aktualizujSciezkeZPropertis();
+                    aktualizujConnectionStringZPropertis();
                     using (var connection = new FbConnection(connectionString))
                     {
                         connection.Open();
@@ -586,7 +586,7 @@ namespace ScaleniaMW
                 var resultat = MessageBox.Show("Czy chcesz usunąć wcześniej zaznaczone ''Zgody na powiększenie gospodarstwa'' z bazy?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
                 if (resultat == MessageBoxResult.Yes)
                 {
-                    aktualizujSciezkeZPropertis();
+                    aktualizujConnectionStringZPropertis();
                     using (var connection = new FbConnection(connectionString))
                     {
                         connection.Open();
@@ -612,7 +612,7 @@ namespace ScaleniaMW
                 var resultat = MessageBox.Show("Czy chcesz zaznaczyć wszystkim ''Odchyłki techniczne''?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
                 if (resultat == MessageBoxResult.Yes)
                 {
-                    aktualizujSciezkeZPropertis();
+                    aktualizujConnectionStringZPropertis();
                     using (var connection = new FbConnection(connectionString))
                     {
                         connection.Open();
@@ -637,7 +637,7 @@ namespace ScaleniaMW
                 var resultat = MessageBox.Show("Czy chcesz zaznaczyć wszystkim ''Zgodę na powiększenie gospodarstwa''?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
                 if (resultat == MessageBoxResult.Yes)
                 {
-                    aktualizujSciezkeZPropertis();
+                    aktualizujConnectionStringZPropertis();
                     using (var connection = new FbConnection(connectionString))
                     {
                         connection.Open();

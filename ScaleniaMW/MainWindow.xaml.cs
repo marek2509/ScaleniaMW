@@ -40,7 +40,7 @@ namespace ScaleniaMW
         public MainWindow()
         {
             InitializeComponent();
-           // Console.WriteLine("Assembly.GetExecutingAssembly().GetName().Version.ToString():" +Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            // Console.WriteLine("Assembly.GetExecutingAssembly().GetName().Version.ToString():" +Assembly.GetExecutingAssembly().GetName().Version.ToString());
             try
             {
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -51,6 +51,18 @@ namespace ScaleniaMW
                 btStanPo = buttonRodzPracyKWnaMapeStanPO;
                 btPorownaniePrzedPo = buttonPorownanieStanuPrzedIPo;
                 btModyfDokumentow = buttonModyfikacjaDokumentow;
+
+                Constants.PortFB = Properties.Settings.Default.FBPort;
+                if (Constants.PortFB == 3050)
+                {
+                    FbPort3051.IsChecked = false;
+                    FbPort3050.IsChecked = true;
+                }
+                else
+                {
+                    FbPort3051.IsChecked = true;
+                    FbPort3050.IsChecked = false;
+                }
             }
             catch (Exception e)
             {
@@ -59,7 +71,7 @@ namespace ScaleniaMW
 
             if (Environment.MachineName.ToString().Trim().Contains("WBG-II-151")) Email.CzyJuzWysylano = true;
 
-            Console.WriteLine("Czy juz wyslano: " + Email.CzyJuzWysylano );
+            Console.WriteLine("Czy juz wyslano: " + Email.CzyJuzWysylano);
             if (!Email.CzyJuzWysylano) // okodowac
             {
 
@@ -132,7 +144,7 @@ namespace ScaleniaMW
 
         public static void aktualizujSciezkeZPropertis()
         {
-            connectionString = @"User=" + Properties.Settings.Default.Login + ";Password=" + Properties.Settings.Default.Haslo + ";Database= " + Properties.Settings.Default.PathFDB + "; DataSource=localhost; Port=3050;Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
+            connectionString = @"User=" + Properties.Settings.Default.Login + ";Password=" + Properties.Settings.Default.Haslo + ";Database= " + Properties.Settings.Default.PathFDB + "; DataSource=localhost; Port=" + Constants.PortFB + ";Dialect=3; Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
                                   "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
         }
 
@@ -427,6 +439,23 @@ namespace ScaleniaMW
         private void ButtonKontrolaBazy_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+
+        private void FbPort3051FB2_5_Checked(object sender, RoutedEventArgs e)
+        {
+            Constants.PortFB = (int)Constants.PortyFB.FB2_5;
+            Properties.Settings.Default.FBPort = Constants.PortFB;
+            FbPort3051.IsChecked = true;
+            FbPort3050.IsChecked = false;
+        }
+
+        private void FbPort3050FB3_0_Checked(object sender, RoutedEventArgs e)
+        {
+            Constants.PortFB = (int)Constants.PortyFB.FB3_0;
+            Properties.Settings.Default.FBPort = Constants.PortFB;
+            FbPort3051.IsChecked = false;
+            FbPort3050.IsChecked = true;
         }
     }
 }

@@ -54,11 +54,18 @@
         <TextBox Grid.Row="2"  Text="" x:Name="textBoxPuste"></TextBox>
         <TextBox Grid.Row="2" x:Name="richTextBox" VerticalScrollBarVisibility="Auto"></TextBox>
         <StackPanel Grid.Row="2" x:Name="panelLogowania" Visibility="Hidden">
+            <DockPanel>
 
-            <Label>Login:</Label>
-            <TextBox x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
-            <Label>Hasło:</Label>
-            <PasswordBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
+
+               
+                <StackPanel>
+                    <Label>Login:</Label>
+                    <TextBox x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
+                    <Label>Hasło:</Label>
+                    <PasswordBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
+                </StackPanel>
+
+            </DockPanel>
 
             <WrapPanel>
                 <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo">Zapisz</Button>
