@@ -28,7 +28,7 @@
     <ProductName>SCALENIAMW2</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>20</ApplicationRevision>
+    <ApplicationRevision>21</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -192,14 +192,13 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\WzorzecRejestrPoScaleniu.RTF" />
-    <None Include="Resources\WzorzecWykazEkwiwalentów.RTF" />
     <None Include="ScaleniaMW_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +261,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\firebird.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\back-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\previous.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

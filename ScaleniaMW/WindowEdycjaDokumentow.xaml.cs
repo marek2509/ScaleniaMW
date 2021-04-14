@@ -266,15 +266,7 @@ namespace ScaleniaMW
             }
         }
 
-        private void ButtonPobierzWzorzecWykWydzEkwiw_Click(object sender, RoutedEventArgs e)
-        {
-            zapisDoPliku(Properties.Resources.WzorzecWykazEkwiwalentów.ToString());
-        }
-
-        private void ButtonPobierzWzorzecRejestrPo_Click(object sender, RoutedEventArgs e)
-        {
-            zapisDoPliku(Properties.Resources.WzorzecRejestrPoScaleniu.ToString());
-        }
+     
 
         public void ustawProperties(string FileName)
         {

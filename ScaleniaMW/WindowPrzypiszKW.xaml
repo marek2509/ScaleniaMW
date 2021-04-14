@@ -17,7 +17,18 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Margin="10,0" x:Name="textBlockSciezka" Grid.ColumnSpan="2"></TextBlock>
+
+
+        <DockPanel Grid.ColumnSpan="2">
+            <Button Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
+                <Image Width="20" Source="Resources/previous.png" ></Image>
+            </Button>
+
+            <TextBlock Margin="0,0,10,0" x:Name="textBlockSciezka"></TextBlock>
+        </DockPanel>
+
+
+
         <Menu Grid.Row="1" Background="#275ea2" Foreground="White" Grid.ColumnSpan="2">
             <MenuItem Header="Plik">
                 <MenuItem x:Name="Zapisz_Dopasowanie_Jedn" Foreground="Black" Header="Utwórz kopię zapasową KW do pliku (popraw dane)txt" ToolTip="[KW] [OBR] [NRDZ]" Click="Zapisz_Dopasowanie_Jedn_Click"/>

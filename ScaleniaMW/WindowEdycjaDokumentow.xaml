@@ -13,7 +13,15 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Margin="10,0" x:Name="textBlockSciezka"></TextBlock>
+        <DockPanel>
+            <Button Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
+                <Image Width="20" Source="Resources/previous.png" ></Image>
+            </Button>
+           
+            
+            <TextBlock Margin="0,0,10,0" x:Name="textBlockSciezka" ></TextBlock>
+        </DockPanel>
+
         <Menu Grid.Row="1" Background="#2676d0" Foreground="White">
             <MenuItem Header="Plik" >
                 <MenuItem x:Name="Otworz_RTF" Foreground="Black" Header="Otwórz plik RTF/txt" Click="Otworz_RTF_Click"></MenuItem>

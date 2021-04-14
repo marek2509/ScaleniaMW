@@ -59,23 +59,5 @@ namespace ScaleniaMW.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu {\rtf1\ansi\deff0\deftab255{\fonttbl{\f0\fnil\fcharset238 Arial CE;}{\f1\fnil\fcharset238 Arial CE;}{\f2\fnil\fcharset2 WingDings;}{\f3\fnil\fcharset238 Arial Narrow;}{\f4\fnil\fcharset238 Times New Roman;}}{\colortbl\red0\green0\blue0;\red255\green0\blue0;\red0\green128\blue0;\red0\green0\blue255;\red255\green255\blue0;\red255\green0\blue255;\red128\green0\blue128;\red128\green0\blue0;\red0\green255\blue0;\red0\green255\blue255;\red0\green128\blue128;\red0\green0\blue128;\red255\green255\blue255;\red192\gr [obcięto pozostałą część ciągu]&quot;;.
-        /// </summary>
-        internal static string WzorzecRejestrPoScaleniu {
-            get {
-                return ResourceManager.GetString("WzorzecRejestrPoScaleniu", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu {\rtf1\ansi\deff0\deftab255{\fonttbl{\f0\fnil\fcharset238 Arial CE;}{\f1\fnil\fcharset0 Arial CE;}{\f2\fnil\fcharset238 Arial CE;}{\f3\fnil\fcharset2 WingDings;}{\f4\fnil\fcharset238 Arial Narrow;}}{\colortbl\red0\green0\blue0;\red255\green0\blue0;\red0\green128\blue0;\red0\green0\blue255;\red255\green255\blue0;\red255\green0\blue255;\red128\green0\blue128;\red128\green0\blue0;\red0\green255\blue0;\red0\green255\blue255;\red0\green128\blue128;\red0\green0\blue128;\red255\green255\blue255;\red192\green192\bl [obcięto pozostałą część ciągu]&quot;;.
-        /// </summary>
-        internal static string WzorzecWykazEkwiwalentów {
-            get {
-                return ResourceManager.GetString("WzorzecWykazEkwiwalentów", resourceCulture);
-            }
-        }
     }
 }
