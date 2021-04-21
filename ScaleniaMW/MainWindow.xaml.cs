@@ -438,7 +438,9 @@ namespace ScaleniaMW
 
         private void ButtonKontrolaBazy_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowKontrolaBazy windidKontrolaBazy = new WindowKontrolaBazy();
+            windidKontrolaBazy.Show();
+            windowScaleniaMW.Close();
         }
 
 

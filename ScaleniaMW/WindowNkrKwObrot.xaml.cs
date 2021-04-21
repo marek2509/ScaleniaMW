@@ -348,7 +348,6 @@ namespace ScaleniaMW
 
         private void ustawSciezkeFDB(object sender, RoutedEventArgs e)
         {
-
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             if (!(Properties.Settings.Default.PathFDB.Equals("") || Properties.Settings.Default.PathFDB.Equals(null)))
             {
@@ -374,7 +373,6 @@ namespace ScaleniaMW
                     {
                         Application.Current.Shutdown();
                     }
-                    Console.WriteLine(esa + "Błędny format importu działek");
                 }
             }
         }
@@ -422,10 +420,8 @@ namespace ScaleniaMW
 
         void przejdzDoUstawLoginIHaslo()
         {
-            textBoxLogin.Text = Properties.Settings.Default.Login;
-            textBoxHaslo.Password = Properties.Settings.Default.Haslo;
-            panelLogowania.Visibility = Visibility.Visible;
-            tabControl.Visibility = Visibility.Hidden;
+            WindowLogowanie windowLogowanie = new WindowLogowanie();
+            windowLogowanie.Show();
         }
 
         private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
@@ -435,17 +431,17 @@ namespace ScaleniaMW
 
         private void ButtonZapiszLogIHaslo(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.Login = textBoxLogin.Text;
+       /*     Properties.Settings.Default.Login = textBoxLogin.Text;
             Properties.Settings.Default.Haslo = textBoxHaslo.Password;
             Properties.Settings.Default.Save();
             panelLogowania.Visibility = Visibility.Hidden;
-            tabControl.Visibility = Visibility.Visible;
+            tabControl.Visibility = Visibility.Visible;*/
         }
 
         private void Button_Anuluj(object sender, RoutedEventArgs e)
         {
-            panelLogowania.Visibility = Visibility.Hidden;
-            tabControl.Visibility = Visibility.Visible;
+          /*  panelLogowania.Visibility = Visibility.Hidden;
+            tabControl.Visibility = Visibility.Visible;*/
         }
 
         private void CheckBoxIgnorujKropkeIPrzecinej_Checked(object sender, RoutedEventArgs e)

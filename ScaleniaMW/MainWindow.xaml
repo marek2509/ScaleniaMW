@@ -99,12 +99,12 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Visibility="Visible" IsEnabled="False"  HorizontalAlignment="Right"  Margin="0,0,1,0" MouseEnter="ButtonKontrolaBazy_MouseEnter"  MouseLeave="ButtonKontrolaBazy_MouseLeave" 
-                                    Click="ButtonKontrolaBazy_Click"  Background="#2676d0"  Width="250" Height="100" x:Name="buttonKontrolaBazy" FontSize="13">
+                    <Button Visibility="Visible" IsEnabled="true"  HorizontalAlignment="Right"  Margin="0,0,1,0" MouseEnter="ButtonKontrolaBazy_MouseEnter"  MouseLeave="ButtonKontrolaBazy_MouseLeave" 
+                                    Click="ButtonKontrolaBazy_Click"  Background="#275ea2"  Width="250" Height="100" x:Name="buttonKontrolaBazy" FontSize="13">
                         <StackPanel>
-                            <Label x:Name="labelKontrolaBazy"  FontWeight="Bold" Foreground="IndianRed">TU POWSTANIE OPCJA</Label>
-                            <Label   FontWeight="Bold" Foreground="IndianRed">KONTROLI BAZY</Label>
-                            <Image x:Name="imageKontrolaBazy"   Width="60"></Image>
+                            <Label x:Name="labelKontrolaBazy"  FontWeight="Bold" Foreground="White">KONTROLA BAZY</Label>
+                          
+                            <Image x:Name="imageKontrolaBazy"  Source="Resources/controlBlack.ico"  Width="60"></Image>
                         </StackPanel>
                     </Button>
 

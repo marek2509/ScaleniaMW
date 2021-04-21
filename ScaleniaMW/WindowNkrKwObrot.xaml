@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="SCALENIAMW inż. Marek Wojciechowicz - NKR/KW na mapę" Height="600" Width="1000" x:Name="windowNkrKwObrot">
+        Title="SCALENIAMW inż. Marek Wojciechowicz - NKR/KW na mapę" Height="600" Width="1000" x:Name="windowNkrKwObrot" >
     <Window.Resources>
         <Color x:Key="mojKolor1">#FF62AEF9</Color>
     </Window.Resources>
