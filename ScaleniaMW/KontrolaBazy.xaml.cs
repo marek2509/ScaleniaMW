@@ -24,7 +24,7 @@ namespace ScaleniaMW
         {
             InitializeComponent();
             textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
-           KontroleDanychZFDB.NkrZPodejrzanymIJRem();
+
             //  BazaFB.Get_DB_Connection();
 
             // MyDataGrid.ItemsSource = BazaFB.Get_DataTable("select * from dzialka").AsDataView();
@@ -76,11 +76,86 @@ namespace ScaleniaMW
 
         private void MenuItem_ClickWykonajKontrole(object sender, RoutedEventArgs e)
         {
+            bool ZmienKolorKarciePrzed = false;
+            bool ZmienKolorKarciePo = false;
+
+            // tab item przed
             dgStanPrzedBledyKW.ItemsSource = KontroleDanychZFDB.sprawdzKwPrzedScaleniem();
+            int ileElemKwPrzed = KontroleDanychZFDB.sprawdzKwPrzedScaleniem().Count;
+            if (ileElemKwPrzed > 0)
+            {
+                ZmienKolorKarciePrzed = true;
+                tabItemKWPRzed.Foreground = Brushes.Red;
+            }
+            else tabItemKWPRzed.Foreground = Brushes.Black;
+
+            if (ZmienKolorKarciePrzed)
+            {
+                tabItemStanPRZED.Foreground = Brushes.Red;
+            }
+            else
+            {
+                tabItemStanPRZED.Foreground = Brushes.Black;
+            }
+
+            //tab Item Po
+            //KW PO czy błędne
             dgStanPoBledyKW.ItemsSource = KontroleDanychZFDB.sprawdzKwPoScaleniu();
+            int ileElemKwPo = KontroleDanychZFDB.sprawdzKwPoScaleniu().Count;
+            if (ileElemKwPo > 0)
+            {
+                tabItemKWPo.Foreground = Brushes.Red;
+                ZmienKolorKarciePo = true;
+            }
+            else
+            {
+                tabItemKWPo.Foreground = Brushes.Black;
+            }
+
+            //przypisanie jednostki RJDRprzed w stanie Po
             dgStanPoNrJrPrzedWDz.ItemsSource = KontroleDanychZFDB.WypiszNkrZNieprzypiasnymNrIJR();
-        
-            //  dgStanPoNrJrPodejrzanyWNkr
+            dgStanPoNrJrPodejrzanyWNkr.ItemsSource = KontroleDanychZFDB.NkrZPodejrzanymIJRem();
+            int ileElemRjdrPrzedWDz = KontroleDanychZFDB.WypiszNkrZNieprzypiasnymNrIJR().Count;
+            int ileElemPodejrzanyNKR = KontroleDanychZFDB.NkrZPodejrzanymIJRem().Count;
+
+            if (ileElemRjdrPrzedWDz > 0 || ileElemPodejrzanyNKR > 0)
+            {
+                tabItemNRJRPrzedWDzPo.Foreground = Brushes.Red;
+                ZmienKolorKarciePo = true;
+            }
+            else
+            {
+                tabItemNRJRPrzedWDzPo.Foreground = Brushes.Black;
+            }
+
+
+            // udzialu przed w stanie Po
+            var wynikZapytaniaSqlUdzialyPrzedWStaniePo = KontroleDanychZFDB.UdzialyPrzedWStaniePo();
+            int ileElemWTabeli = wynikZapytaniaSqlUdzialyPrzedWStaniePo.Rows.Count;
+
+            if (ileElemWTabeli > 0)
+            {
+                tabItemUdzialyPrzedWPo.Foreground = Brushes.Red;
+                ZmienKolorKarciePo = true;
+            }
+            else
+            {
+                tabItemUdzialyPrzedWPo.Foreground = Brushes.Black;
+            }
+            dgUdzialyPrzedWStaniePo.ItemsSource = wynikZapytaniaSqlUdzialyPrzedWStaniePo.AsDataView();
+
+            //zmiana koloru zakładki karty PO scaleniu
+            if (ZmienKolorKarciePo)
+            {
+                tabItemStanPO.Foreground = Brushes.Red;
+            }
+            else
+            {
+                tabItemStanPO.Foreground = Brushes.Black;
+            }
+
+
+
         }
     }
 }

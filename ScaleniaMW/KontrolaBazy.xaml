@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="WindowKontrolaBazy" Height="450" Width="800" x:Name="windowKontrolaBazy" Icon="/Resources/controlBlack.ico">
+        Title="Kontrola Bazy" Height="450" Width="800" x:Name="windowKontrolaBazy" Icon="/Resources/controlBlack.ico">
     <Grid>
 
         <Grid.RowDefinitions>
@@ -30,9 +30,9 @@
             </MenuItem>
         </Menu>
         <TabControl  Grid.Row="2" >
-            <TabItem Header="Stan przed scaleniem">
+            <TabItem Header="Stan przed scaleniem" x:Name="tabItemStanPRZED">
                 <TabControl>
-                    <TabItem Header="KW">
+                    <TabItem Header="KW" x:Name="tabItemKWPRzed">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"></RowDefinition>
@@ -43,12 +43,10 @@
                         </Grid>
                     </TabItem>
                 </TabControl>
-       
-                
             </TabItem>
-            <TabItem Header="Stan po scaleniu">
+            <TabItem Header="Stan po scaleniu"  x:Name="tabItemStanPO">
                 <TabControl>
-                    <TabItem Header="KW">
+                    <TabItem Header="KW"  x:Name="tabItemKWPo">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"></RowDefinition>
@@ -59,7 +57,7 @@
                         </Grid>
 
                     </TabItem>
-                    <TabItem Header="NrJR Przed w dz.">
+                    <TabItem Header="NrJR przed w działkach 'po'"  x:Name="tabItemNRJRPrzedWDzPo">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"></RowDefinition>
@@ -69,17 +67,19 @@
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-
                             <Label Grid.Row="0" Grid.Column="0" FontStyle="Italic">NKR i działki w których nie przypisano 'NrJRPrzed'.</Label>
                             <DataGrid Grid.Row="1" Grid.Column="0"  x:Name="dgStanPoNrJrPrzedWDz"></DataGrid>
                             <Label Grid.Row="0" Grid.Column="1" FontStyle="Italic">NKR i działki w których 'NrJRPrzed' może być niepoprawny.</Label>
                             <DataGrid Grid.Row="1" Grid.Column="1"  x:Name="dgStanPoNrJrPodejrzanyWNkr"></DataGrid>
-                            
                         </Grid>
+                    </TabItem>
+                    <TabItem Header="Udziały jednostek przed w stanie 'po'"  x:Name="tabItemUdzialyPrzedWPo" >
+                        <DataGrid x:Name="dgUdzialyPrzedWStaniePo">
+                            
+                        </DataGrid>
                     </TabItem>
                 </TabControl>
             </TabItem>
         </TabControl>
-      
     </Grid>
 </Window>
