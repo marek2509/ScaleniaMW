@@ -132,7 +132,7 @@ namespace ScaleniaMW
             // udzialu przed w stanie Po
             var wynikZapytaniaSqlUdzialyPrzedWStaniePo = KontroleDanychZFDB.UdzialyPrzedWStaniePo();
             int ileElemWTabeli = wynikZapytaniaSqlUdzialyPrzedWStaniePo.Rows.Count;
-
+            dgUdzialyPrzedWStaniePo.ItemsSource = wynikZapytaniaSqlUdzialyPrzedWStaniePo.AsDataView();
             if (ileElemWTabeli > 0)
             {
                 tabItemUdzialyPrzedWPo.Foreground = Brushes.Red;
@@ -142,18 +142,44 @@ namespace ScaleniaMW
             {
                 tabItemUdzialyPrzedWPo.Foreground = Brushes.Black;
             }
-            dgUdzialyPrzedWStaniePo.ItemsSource = wynikZapytaniaSqlUdzialyPrzedWStaniePo.AsDataView();
+            
+            // wartosci przed z jednostek i z działek - porównanie
+            var wynikListaWartoscizJednIDzialek = KontroleDanychZFDB.sprawdzenieSumWartosci();
+            int ileElemWarZJednIDzialki = wynikListaWartoscizJednIDzialek.Count;
+            dgSumaWartZDzIJedn.ItemsSource = wynikListaWartoscizJednIDzialek;
+            if (ileElemWarZJednIDzialki > 0)
+            {
+                tabItemSumyZDzialekIZJednostki.Foreground = Brushes.Red;
+                ZmienKolorKarciePo = true;
+            }
+            else
+            {
+                tabItemSumyZDzialekIZJednostki.Foreground = Brushes.Black;
+            }
 
-            //zmiana koloru zakładki karty PO scaleniu
+            //porównanie własności(właścicieli) w stanie przed i po            
+            textBoxWlasnosciPrzedPo.Text = KontroleDanychZFDB.GenerujTabeleRroznychWlasnosci();
+            if (textBoxWlasnosciPrzedPo.Text != "")
+            {
+                ZmienKolorKarciePo = true;
+                tabItemWlasnoscPrzePo.Foreground = Brushes.Red;
+            }
+            else
+            {
+                tabItemWlasnoscPrzePo.Foreground = Brushes.Red;
+            }
+                //this.dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                //zmiana koloru zakładki karty PO scaleniu
             if (ZmienKolorKarciePo)
             {
                 tabItemStanPO.Foreground = Brushes.Red;
+                MessageBox.Show("Znaleziono błędy. Zaznaczono karty na czerwono");
             }
             else
             {
                 tabItemStanPO.Foreground = Brushes.Black;
+                MessageBox.Show("Nie znaleziono błędów.");
             }
-
 
 
         }

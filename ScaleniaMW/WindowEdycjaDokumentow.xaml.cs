@@ -469,43 +469,6 @@ namespace ScaleniaMW
                         }
                     }
                 }
-
-                /*
-                Console.WriteLine("check 6");
-
-                    foreach (var item in JednostkiRejestroweNowe.Jedn_REJ_N)
-                {
-                    Console.WriteLine(item.IjrPo + " Obr:" + item.NrObr + " " + item.NazwaObrebu + " Numwr JR:" + item.Nkr + " " + item.Uwaga);
-                    Console.Write("Właśc: ");
-                    foreach (var wlas in item.Wlasciciele)
-                    {
-                        Console.WriteLine(wlas.NazwaWlasciciela + " " + wlas.Adres);
-                    }
-                    Console.Write("z jednostek: ");
-                    foreach (var zJR in item.zJednRejStarej)
-                    {
-
-                        Console.WriteLine(zJR.NrObr + " " + zJR.NazwaObrebu + " " + zJR.Ijr_Przed + " " + zJR.Ud_Z_Jrs + " " + zJR.WrtJednPrzed + " " + zJR.Pow_Przed);
-                        Console.WriteLine("Wlasciciele:");
-                        foreach (var wlasciciel in zJR.Wlasciciele)
-                        {
-                            Console.WriteLine(wlasciciel.NazwaWlasciciela + " " + wlasciciel.Adres);
-                        }
-                        Console.WriteLine("DZIALKI PRZED: ");
-                        foreach (var dzialkaStara in zJR.Dzialki)
-                        {
-                            Console.WriteLine(dzialkaStara.NrDz + " " + dzialkaStara.PowDz + " " + dzialkaStara.Wartosc + " " + dzialkaStara.KW);
-                        }   
-
-                    }
-                    Console.WriteLine("DZIALKI: ");
-                    foreach (var dzialkas in item.Dzialki_Nowe)
-                    {
-                        Console.WriteLine(dzialkas.NrDz + " " + dzialkas.Wartosc + " " + dzialkas.PowDz);
-                    }
-                 
-                    Console.WriteLine();
-                }*/
             }
             catch (Exception ex)
             {

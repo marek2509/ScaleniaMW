@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="Kontrola Bazy" Height="450" Width="800" x:Name="windowKontrolaBazy" Icon="/Resources/controlBlack.ico">
+        Title="Kontrola Bazy" Height="600" Width="900" x:Name="windowKontrolaBazy" Icon="/Resources/controlBlack.ico">
     <Grid>
 
         <Grid.RowDefinitions>
@@ -26,7 +26,7 @@
                 <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
             </MenuItem>
             <MenuItem Header="Wykonaj kontrolę bazy" Foreground="PaleVioletRed" Click="MenuItem_ClickWykonajKontrole" >
-                
+
             </MenuItem>
         </Menu>
         <TabControl  Grid.Row="2" >
@@ -35,7 +35,7 @@
                     <TabItem Header="KW" x:Name="tabItemKWPRzed">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" FontStyle="Italic">Kontrola poprawności numerów KW. Stan przed scaleniem. Błędne KW zestawiono w tabeli poniżej.</Label>
@@ -49,7 +49,7 @@
                     <TabItem Header="KW"  x:Name="tabItemKWPo">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" FontStyle="Italic">Kontrola poprawności numerów KW. Stan po scaleniu. Błędne KW zestawiono w tabeli poniżej.</Label>
@@ -60,7 +60,7 @@
                     <TabItem Header="NrJR przed w działkach 'po'"  x:Name="tabItemNRJRPrzedWDzPo">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -74,9 +74,37 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Udziały jednostek przed w stanie 'po'"  x:Name="tabItemUdzialyPrzedWPo" >
-                        <DataGrid x:Name="dgUdzialyPrzedWStaniePo">
-                            
-                        </DataGrid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label  FontStyle="Italic">Sprawdza sumę udziałów jednostek z przed scalenia w stanie 'po'.</Label>
+                            <DataGrid x:Name="dgUdzialyPrzedWStaniePo" Grid.Row="1">
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Wartosci gospodarstw"  x:Name="tabItemSumyZDzialekIZJednostki" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label  FontStyle="Italic">Sprawdza sumę wartości należnej gospodartwa z jednostek i z działek.</Label>
+                            <DataGrid x:Name="dgSumaWartZDzIJedn" Grid.Row="1">
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Własności przed/po" x:Name="tabItemWlasnoscPrzePo">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label  FontStyle="Italic">Wypisuje jednostki, w których są różni właściciele w stanach 'przed' i 'po'</Label>
+                            <TextBox x:Name="textBoxWlasnosciPrzedPo" Grid.Row="1" TextWrapping="Wrap" Padding="10" VerticalScrollBarVisibility="Visible">
+                            </TextBox>
+                        </Grid>
                     </TabItem>
                 </TabControl>
             </TabItem>
