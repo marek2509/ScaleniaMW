@@ -327,7 +327,7 @@ namespace ScaleniaMW
             }
         }
 
-        public static bool CzyJestRóżnaWlasnosc(JR_Nowa JednoskaRejNowa)
+         static bool CzyJestRóżnaWlasnosc(JR_Nowa JednoskaRejNowa)
         {
 
             int ilczbWlasNowych = JednoskaRejNowa.Wlasciciele.Count;

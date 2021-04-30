@@ -285,5 +285,8 @@
   <ItemGroup>
     <Resource Include="Resources\controlBlack.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\controlWhite.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

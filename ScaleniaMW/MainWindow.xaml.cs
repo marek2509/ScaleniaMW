@@ -348,6 +348,20 @@ namespace ScaleniaMW
                 btModyfDokumentow.Width = 250;
         }
 
+        private void UpdateProgressbuttonKontrolaBazy()
+        {
+            buttonKontrolaBazy.Width += 0.4;
+            if (buttonKontrolaBazy.ActualWidth > 275)
+                buttonKontrolaBazy.Width = 250;
+        }
+
+        private void UpdateRegresbuttonKontrolaBazy()
+        {
+            buttonKontrolaBazy.Width -= 0.4;
+            if (buttonKontrolaBazy.ActualWidth < 250)
+                buttonKontrolaBazy.Width = 250;
+        }
+
         private delegate void ProgressBarDelegate();
 
         private void PorownanieStanuPrzedIPo_MouseLeave(object sender, MouseEventArgs e)
@@ -428,12 +442,32 @@ namespace ScaleniaMW
 
         private void ButtonKontrolaBazy_MouseEnter(object sender, MouseEventArgs e)
         {
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/controlBlack.ico", UriKind.Relative);
+            bi3.EndInit();
+            imageKontrolaBazy.Source = bi3;
+            labelKontrolaBazy.Foreground = Brushes.Black;
 
+            for (int i = 0; i < 25; i++)
+            {
+                buttonKontrolaBazy.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonKontrolaBazy), DispatcherPriority.Background);
+            }
         }
 
         private void ButtonKontrolaBazy_MouseLeave(object sender, MouseEventArgs e)
         {
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/controlWhite.png", UriKind.Relative);
+            bi3.EndInit();
+            imageKontrolaBazy.Source = bi3;
+            labelKontrolaBazy.Foreground = Brushes.White;
 
+            for (int i = 0; i < 25; i++)
+            {
+                btModyfDokumentow.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonKontrolaBazy), DispatcherPriority.Background);
+            }
         }
 
         private void ButtonKontrolaBazy_Click(object sender, RoutedEventArgs e)

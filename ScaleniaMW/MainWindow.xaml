@@ -104,7 +104,7 @@
                         <StackPanel>
                             <Label x:Name="labelKontrolaBazy"  FontWeight="Bold" Foreground="White">KONTROLA BAZY</Label>
                           
-                            <Image x:Name="imageKontrolaBazy"  Source="Resources/controlBlack.ico"  Width="60"></Image>
+                            <Image x:Name="imageKontrolaBazy"  Source="Resources/controlWhite.png"  Width="60"></Image>
                         </StackPanel>
                     </Button>
 
