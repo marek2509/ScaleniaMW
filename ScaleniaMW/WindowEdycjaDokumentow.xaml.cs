@@ -217,7 +217,7 @@ namespace ScaleniaMW
             return liniaZTektowki;
         }
 
-        void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")
+        public void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")
         {
             SaveFileDialog svd = new SaveFileDialog();
             svd.DefaultExt = format;
@@ -604,6 +604,13 @@ namespace ScaleniaMW
         private void RichTextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
         {
 
+        }
+
+        private void MenuItem_ClicGenerujWWEdlaWybranego(object sender, RoutedEventArgs e)
+        {
+
+            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR();
+            windowPobierzNKR.Show();
         }
     }
 }

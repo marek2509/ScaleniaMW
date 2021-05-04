@@ -248,7 +248,7 @@ namespace ScaleniaMW
                     licznikMalzenskiPrzed++;
                     dokHTML.AppendLine(WierszWlasciciel("małżeństwo", Udzial: wlascicelPrzed.Udzial));
                     dokHTML.AppendLine(WierszWlasciciel(wlascicelPrzed.NazwaWlasciciela, wlascicelPrzed.Adres));
-                }
+                } else
                 if (wlascicelPrzed.IdMalzenstwa > 0 && licznikMalzenskiPrzed > 0)
                 {
                     dokHTML.AppendLine(WierszWlasciciel(wlascicelPrzed.NazwaWlasciciela, wlascicelPrzed.Adres, gruboscPodkreslenia: 2, czyWyrzucicOstatniePodkreslenie: czyWyrzucicOstatniePodkreslenie));

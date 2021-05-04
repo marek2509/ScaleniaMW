@@ -178,7 +178,7 @@ namespace ScaleniaMW
         {
             List<ModelSWartosciZDzialekIZjednRej> listaWarosci = new List<ModelSWartosciZDzialekIZjednRej>();
 
-          DataTable dt =  BazaFB.Get_DataTable(sprawdzenieSumWartosciZDzialekIZJednRej);
+            DataTable dt = BazaFB.Get_DataTable(sprawdzenieSumWartosciZDzialekIZJednRej);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -327,7 +327,7 @@ namespace ScaleniaMW
             }
         }
 
-         static bool CzyJestRóżnaWlasnosc(JR_Nowa JednoskaRejNowa)
+        static bool CzyJestRóżnaWlasnosc(JR_Nowa JednoskaRejNowa)
         {
 
             int ilczbWlasNowych = JednoskaRejNowa.Wlasciciele.Count;
@@ -361,15 +361,18 @@ namespace ScaleniaMW
 
 
 
-
+        static List<int> idNkrZeZmiana;
         public static string GenerujTabeleRroznychWlasnosci()
         {
+            idNkrZeZmiana = new List<int>();
             pobierzWlascicieliZBazy();
             StringBuilder sb = new StringBuilder();
             foreach (var JednoskaRejNowa in JednostkiRejestroweNowe.Jedn_REJ_N)
             {
                 if (CzyJestRóżnaWlasnosc(JednoskaRejNowa))
                 {
+                    idNkrZeZmiana.Add(JednoskaRejNowa.IdJednRejN);
+
                     sb.AppendLine("Obręb: " + JednoskaRejNowa.NazwaObrebu + "\nNKR: " + JednoskaRejNowa.IjrPo.ToString());
                     sb.AppendLine("----------------Własność PRZED scaleniem:");
                     JednoskaRejNowa.zJednRejStarej.ForEach(x => x.Wlasciciele.ForEach(y => sb.AppendLine(y.NazwaWlasciciela + " ADRES: " + y.Adres)));
@@ -379,6 +382,23 @@ namespace ScaleniaMW
                     sb.AppendLine("____________________________________________________________________________________________");
                 }
             }
+
+            var resultQuerySql = BazaFB.Get_DataTable("select jn.id_id, jn.ijr from jedn_sn jsn join jedn_rej js on js.id_id = jsn.id_jedns join jedn_rej_n jn on jn.id_id = jsn.id_jednn where (upper(js.historia) like '%NAZWA%' or upper(js.historia) like '%UDZIAŁ%') and js.dtw is not null order by jn.ijr");
+            List<string> listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed = new List<string>();
+            for (int i = 0; i < resultQuerySql.Rows.Count; i++)
+            {
+                if (idNkrZeZmiana.Exists(x => x == Convert.ToInt32(resultQuerySql.Rows[i][0])))
+                {
+                    listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Insert(0, "Id: " + resultQuerySql.Rows[i][0] + " NKR: " +  resultQuerySql.Rows[i][1]);
+                }
+            }
+
+            sb.Insert(0, "____________________________________________________________________________________________\n");
+            listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Distinct().ToList().ForEach(x => sb.Insert(0,x+"\n"));
+            sb.Insert(0, "Jednostki na które zwrócić szczególną uwagę, ponieważ były edytowane w stanie przed:\n");
+            Console.WriteLine("length: " + sb.Length);
+          //  listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed // sb.Insert(0,)
+            Console.WriteLine("length: " + sb.Length);
             return sb.ToString();
         }
 
@@ -393,5 +413,5 @@ namespace ScaleniaMW
         public double RÓŻNICA { get; set; }
     }
 
-  
+
 }
