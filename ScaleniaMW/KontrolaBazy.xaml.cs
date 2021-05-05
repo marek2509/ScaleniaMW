@@ -89,6 +89,20 @@ namespace ScaleniaMW
             }
             else tabItemKWPRzed.Foreground = Brushes.Black;
 
+
+            dgBrakJednRejPrzed.ItemsSource = KontroleDanychZFDB.jednostkiBezGrupRejestrowychPrzed().AsDataView();
+            int ileElemBrakJRPrzed = KontroleDanychZFDB.jednostkiBezGrupRejestrowychPrzed().Rows.Count;
+            if (ileElemBrakJRPrzed > 0)
+            {
+                ZmienKolorKarciePrzed = true;
+                tabItemGrRejPrzed.Foreground = Brushes.Red;
+            }else
+            {
+                tabItemGrRejPrzed.Foreground = Brushes.Black;
+            }
+
+
+
             if (ZmienKolorKarciePrzed)
             {
                 tabItemStanPRZED.Foreground = Brushes.Red;
@@ -168,8 +182,23 @@ namespace ScaleniaMW
             {
                 tabItemWlasnoscPrzePo.Foreground = Brushes.Red;
             }
-                //this.dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                //zmiana koloru zakładki karty PO scaleniu
+
+
+            // jednRej bez grup rejestrowych
+            dgBrakJednRejPo.ItemsSource = KontroleDanychZFDB.jednostkiBezGrupRejestrowychPo().AsDataView();
+            int ileElemBrakJRPo = KontroleDanychZFDB.jednostkiBezGrupRejestrowychPo().Rows.Count;
+            if (ileElemBrakJRPo > 0)
+            {
+                ZmienKolorKarciePrzed = true;
+                tabItemGrRejPo.Foreground = Brushes.Red;
+            }
+            else
+            {
+                tabItemGrRejPo.Foreground = Brushes.Black;
+            }
+
+            //this.dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            //zmiana koloru zakładki karty PO scaleniu
             if (ZmienKolorKarciePo)
             {
                 tabItemStanPO.Foreground = Brushes.Red;

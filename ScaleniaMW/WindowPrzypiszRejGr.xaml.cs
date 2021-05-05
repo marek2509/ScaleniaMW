@@ -726,6 +726,31 @@ namespace ScaleniaMW
             }
         }
 
+        private void MenuItem_ClickPrzypiszGrRej(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var resultat = MessageBox.Show("Czy chcesz przypisać grupę rejestrową w stanie po scaleniu na podstawie stanu 'przed'?\n Procesu nie da się odwrócić!", "UWAGA!", MessageBoxButton.YesNo);
+                if (resultat == MessageBoxResult.Yes)
+                {
+                    aktualizujSciezkeZPropertis();
+                    using (var connection = new FbConnection(connectionString))
+                    {
+                        connection.Open();
+                        FbCommand writeCommand = new FbCommand("update UDZIALY_N set grj =( SELECT first 1 grj FROM udzialy u  WHERE udzialy_n.id_podm = u.id_podm and u.grj is not null and (udzialy_n.id_podm is not null or udzialy_n.id_podm not like ''))", connection);
+                        //writeCommand.ExecuteNonQuery();
+                        writeCommand.ExecuteNonQueryAsync();
+                        connection.Close();
+                        MessageBox.Show("Grupy rejestrowe przypisano pomyślnie!", "SUKCES!", MessageBoxButton.OK);
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Coś poszło nie tak", "Smuteczek!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         //koniec klasy
     }

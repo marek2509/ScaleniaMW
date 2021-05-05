@@ -13,10 +13,12 @@ namespace ScaleniaMW
     {
         static readonly string SqlKwPrzed = "select  o.id || '-' || d.idd dzialka, d.kw  from dzialka   d join obreby o on o.id_id = d.idobr where(status<> 1 or status is null) and kw<> '' and kw is not null";
         static readonly string SqlKwPo = "select  o.id || '-' || d.idd dzialka, d.kw  from dzialki_n   d join obreby o on o.id_id = d.idobr where kw<> '' and kw is not null";
-        static readonly string NKRzNieprzypisanymIjr = "select distinct jn.id_id ID,  jn.ijr nowy__nkr, dn.idd nr__dz from  JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id where dn.rjdrprzed is null or dn.rjdrprzed like '' order by id_jednn";
-        static readonly string NKRzPodejrzanymNrIjr = "select  js.ijr stara_jedn_ewop, js.id_id staraId, jn.ijr nowy_nkr, id_jednn, dn.idd, dn.rjdrprzed , (select ijr from jedn_rej where dn.rjdrprzed = id_id ) Przypisany_IJR from  JEDN_SN sn  join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";
-        static readonly string UdzialyJednPrzedWStaniePo = @"select sum(ud_nr) SUMA__UDZIALU , js.ijr, o.naz obreb from jedn_sn jsn join jedn_rej js on js.Id_id = jsn.id_jedns join obreby o on o.id_id = js.id_obr group by id_jedns, js.ijr, o.naz HAVING sum(ud_nr)  <> 1 order by SUMA__UDZIALU";
-        static readonly string sprawdzenieSumWartosciZDzialekIZJednRej = @"select ijr, (select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) sumA_z_GOSPODARSTW ,(select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) suma_Z_DZIALEK, round((select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) - (select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) ,2) roznica from jedn_rej_n j2 where id_sti <> 1 or id_sti is null order by roznica, ijr";
+        static readonly string SQLNKRzNieprzypisanymIjr = "select distinct jn.id_id ID,  jn.ijr nowy__nkr, dn.idd nr__dz from  JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id where dn.rjdrprzed is null or dn.rjdrprzed like '' order by id_jednn";
+        static readonly string SQLNKRzPodejrzanymNrIjr = "select  js.ijr stara_jedn_ewop, js.id_id staraId, jn.ijr nowy_nkr, id_jednn, dn.idd, dn.rjdrprzed , (select ijr from jedn_rej where dn.rjdrprzed = id_id ) Przypisany_IJR from  JEDN_SN sn  join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";
+        static readonly string SQLUdzialyJednPrzedWStaniePo = @"select sum(ud_nr) SUMA__UDZIALU , js.ijr, o.naz obreb from jedn_sn jsn join jedn_rej js on js.Id_id = jsn.id_jedns join obreby o on o.id_id = js.id_obr group by id_jedns, js.ijr, o.naz HAVING sum(ud_nr)  <> 1 order by SUMA__UDZIALU";
+        static readonly string SQLsprawdzenieSumWartosciZDzialekIZJednRej = @"select ijr, (select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) sumA_z_GOSPODARSTW ,(select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) suma_Z_DZIALEK, round((select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) - (select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) ,2) roznica from jedn_rej_n j2 where id_sti <> 1 or id_sti is null order by roznica, ijr";
+        static readonly string SQLbrakGrupyRejestrowejDlaJednostkiIWlascPrzed = @"select ijr, nkr, grj GRUPA_WLASC, gr grupa_JEDNOSTKI from udzialy  u join jedn_rej j on j.id_id = u.id_podm where grj is null or grj like '' or gr is null or gr like '' group by ijr, nkr, grj, gr order by NKR";
+        static readonly string SQLbrakGrupyRejestrowejDlaJednostkiIWLASCPo = @"select ijr, nkr, grj GRUPA_WLASC, gr grupa_JEDNOSTKI from udzialy_n  u join jedn_rej_n j on j.id_id = u.id_podm where grj is null or grj like '' or gr is null or gr like '' group by ijr, nkr, grj, gr order by NKR";
 
         public class ModelJednostekPodejrzanych
         {
@@ -61,7 +63,7 @@ namespace ScaleniaMW
         {
             List<ModelJednostekPodejrzanych> surweZBazy = new List<ModelJednostekPodejrzanych>();
             List<JednkostkiKtoreMogaByc> jednkostkiKtoreMogaBycList = new List<JednkostkiKtoreMogaByc>();
-            DataTable dt = BazaFB.Get_DataTable(NKRzPodejrzanymNrIjr);
+            DataTable dt = BazaFB.Get_DataTable(SQLNKRzPodejrzanymNrIjr);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
 
@@ -127,7 +129,7 @@ namespace ScaleniaMW
 
         public static DataView WypiszNkrZNieprzypiasnymNrIJR()
         {
-            return BazaFB.Get_DataTable(NKRzNieprzypisanymIjr).AsDataView();
+            return BazaFB.Get_DataTable(SQLNKRzNieprzypisanymIjr).AsDataView();
         }
 
         public class DzKW
@@ -170,15 +172,24 @@ namespace ScaleniaMW
 
         public static DataTable UdzialyPrzedWStaniePo()
         {
-            return BazaFB.Get_DataTable(UdzialyJednPrzedWStaniePo);
+            return BazaFB.Get_DataTable(SQLUdzialyJednPrzedWStaniePo);
         }
 
+        public static DataTable jednostkiBezGrupRejestrowychPrzed()
+        {
+            return BazaFB.Get_DataTable(SQLbrakGrupyRejestrowejDlaJednostkiIWlascPrzed);
+        }
+
+        public static DataTable jednostkiBezGrupRejestrowychPo()
+        {
+            return BazaFB.Get_DataTable(SQLbrakGrupyRejestrowejDlaJednostkiIWLASCPo);
+        }
 
         public static List<ModelSWartosciZDzialekIZjednRej> sprawdzenieSumWartosci()
         {
             List<ModelSWartosciZDzialekIZjednRej> listaWarosci = new List<ModelSWartosciZDzialekIZjednRej>();
 
-            DataTable dt = BazaFB.Get_DataTable(sprawdzenieSumWartosciZDzialekIZJednRej);
+            DataTable dt = BazaFB.Get_DataTable(SQLsprawdzenieSumWartosciZDzialekIZJednRej);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -192,8 +203,6 @@ namespace ScaleniaMW
             }
             return listaWarosci.FindAll(x => x.RÓŻNICA != 0);
         }
-
-
 
         public static void pobierzWlascicieliZBazy()
         {
@@ -358,9 +367,6 @@ namespace ScaleniaMW
             return false;
         }
 
-
-
-
         static List<int> idNkrZeZmiana;
         public static string GenerujTabeleRroznychWlasnosci()
         {
@@ -395,7 +401,10 @@ namespace ScaleniaMW
 
             sb.Insert(0, "____________________________________________________________________________________________\n");
             listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Distinct().ToList().ForEach(x => sb.Insert(0,x+"\n"));
-            sb.Insert(0, "Jednostki na które zwrócić szczególną uwagę, ponieważ były edytowane w stanie przed:\n");
+            if (listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Count > 0)
+            {
+                sb.Insert(0, "Jednostki na które zwrócić szczególną uwagę, ponieważ były edytowane w stanie przed:\n");
+            }
             Console.WriteLine("length: " + sb.Length);
           //  listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed // sb.Insert(0,)
             Console.WriteLine("length: " + sb.Length);

@@ -77,11 +77,28 @@
 
                 <Image x:Name="ingCoZrobic" Grid.Column="2" Grid.Row="1"  Margin="15,1,250,1" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencil-2.png"  Opacity="0.4" Grid.ColumnSpan="2"/>
                 <Image x:Name="imgNKR" Grid.Column="2" Grid.Row="1" Visibility="Hidden" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NKRnaMape.png"  Opacity="0.7" Margin="0,1"/>
-                <Image x:Name="imgNrJRprzypisz" Grid.Column="2" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrJRPrzypisz.png"  Opacity="0.7" Margin="0,1"/>
+                <Image x:Name="imgNrJRprzypisz" Grid.Column="2" Grid.Row="1" Visibility="Hidden"  Height="350"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Source="Resources/NrJRPrzypisz.png"  Opacity="0.7" Margin="0,1"/>
+                <DockPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Bottom"   Visibility="{Binding ElementName=imgNrJRprzypisz, Path=Visibility}">
+                    <StackPanel>
+                        <Label FontSize="{Binding ElementName=labelCoMoznaZrobic, Path=FontSize}">Dodatkowo:</Label>
+                        <Label FontSize="{Binding ElementName=labelCoMoznaZrobic, Path=FontSize}"></Label>
+                    </StackPanel>
+                    <StackPanel  >
+                        <Label x:Name="labelCoMoznaZrobic" FontSize="10" VerticalAlignment="Bottom">-Nadaj NKR w stanie po scaleniu od 1 do n lub wpisz IJR ze stanu przed </Label>
+                        <Label FontSize="{Binding ElementName=labelCoMoznaZrobic, Path=FontSize}" VerticalContentAlignment="Top" >-Przypisz grupę rejestrową w stanie "po" z jednostek "przed"</Label> 
+                    </StackPanel>
+
+                </DockPanel>
+                <StackPanel x:Name="labelPorownanieWartPrzedPo" Grid.Column="2" Grid.Row="1" Visibility="Hidden">
+                    <Label>-Ustaw odchyłkę techniczną </Label>
+                    <Label>-Ustaw zgodę na powiększenie gospodastwa </Label>
+                </StackPanel>
                 <Image x:Name="imgKWprzypisz" Grid.Column="2" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrKWPrzypisz.png"  Opacity="0.7" Margin="0,1"/>
                 <Image x:Name="imgKWpNaMape" Grid.Column="2" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/KWNaMape.png"  Opacity="0.7" Margin="0,1"/>
                 <Image x:Name="imgEdycDokum" Grid.Column="2" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/poprawDokumenPrzedPo.png"  Opacity="0.7" Margin="0,1"/>
 
+                
+                
                 <StackPanel Grid.Column="3" Grid.Row="1">
                     <Button   HorizontalAlignment="Right"  Margin="0,1,1,0" MouseEnter="PorownanieStanuPrzedIPo_MouseEnter"  MouseLeave="PorownanieStanuPrzedIPo_MouseLeave" 
                                     Click="PorownanieStanuPrzedIPo_Click" Background="#1e90ff"  Width="250" Height="100" x:Name="buttonPorownanieStanuPrzedIPo" FontSize="13">

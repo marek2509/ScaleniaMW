@@ -366,6 +366,7 @@ namespace ScaleniaMW
 
         private void PorownanieStanuPrzedIPo_MouseLeave(object sender, MouseEventArgs e)
         {
+            labelPorownanieWartPrzedPo.Visibility = Visibility.Hidden;
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
             bi3.UriSource = new Uri("Resources/wagaWhite.png", UriKind.Relative);
@@ -381,6 +382,8 @@ namespace ScaleniaMW
 
         private void PorownanieStanuPrzedIPo_MouseEnter(object sender, MouseEventArgs e)
         {
+            labelPorownanieWartPrzedPo.Visibility = Visibility.Visible;
+
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
             bi3.UriSource = new Uri("Resources/waga.png", UriKind.Relative);
@@ -392,6 +395,8 @@ namespace ScaleniaMW
             {
                 btPorownaniePrzedPo.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonPorownaniePrzedPo), DispatcherPriority.Background);
             }
+
+
         }
 
         private void PorownanieStanuPrzedIPo_Click(object sender, RoutedEventArgs e)

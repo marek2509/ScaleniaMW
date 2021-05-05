@@ -42,6 +42,20 @@
                             <DataGrid Grid.Row="1" x:Name="dgStanPrzedBledyKW"></DataGrid>
                         </Grid>
                     </TabItem>
+                    <TabItem Header="Brak Grupy Rejestrowej" x:Name="tabItemGrRejPrzed" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="115*"/>
+                                <ColumnDefinition Width="766*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" FontStyle="Italic" Grid.ColumnSpan="2">Wypisuje jednostki w których brakuje grup rejestrowych jednostkom jak również właścicielom.</Label>
+                            <DataGrid Grid.Row="1" x:Name="dgBrakJednRejPrzed" Grid.ColumnSpan="2"></DataGrid>
+                        </Grid>
+                    </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="Stan po scaleniu"  x:Name="tabItemStanPO">
@@ -104,6 +118,20 @@
                             <Label  FontStyle="Italic">Wypisuje jednostki, w których są różni właściciele w stanach 'przed' i 'po'</Label>
                             <TextBox x:Name="textBoxWlasnosciPrzedPo" Grid.Row="1" TextWrapping="Wrap" Padding="10" VerticalScrollBarVisibility="Visible">
                             </TextBox>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Brak Grupy Rejestrowej" x:Name="tabItemGrRejPo" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="115*"/>
+                                <ColumnDefinition Width="766*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" FontStyle="Italic" Grid.ColumnSpan="2">Wypisuje jednostki w których brakuje grup rejestrowych jednostkom jak również właścicielom.</Label>
+                            <DataGrid Grid.Row="1" x:Name="dgBrakJednRejPo" Grid.ColumnSpan="2"></DataGrid>
                         </Grid>
                     </TabItem>
                 </TabControl>
