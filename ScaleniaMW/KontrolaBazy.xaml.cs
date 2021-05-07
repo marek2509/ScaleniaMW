@@ -67,10 +67,14 @@ namespace ScaleniaMW
             }
         }
 
+
+        WindowLogowanie windowLogowanie = new WindowLogowanie();
         private void UstawLoginIHaslo(object sender, RoutedEventArgs e)
         {
-            WindowLogowanie windowLogowanie = new WindowLogowanie();
+            Console.WriteLine("CZY OKNO JEST AKTYWNE");
+            Console.WriteLine(windowLogowanie.IsActive);
             windowLogowanie.Show();
+            Console.WriteLine(windowLogowanie.IsActive);
         }
 
 

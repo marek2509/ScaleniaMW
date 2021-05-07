@@ -41,5 +41,10 @@ namespace ScaleniaMW
         {
             windowLogowanie.Close();
         }
+
+        private void WindowLogowanie_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
     }
 }

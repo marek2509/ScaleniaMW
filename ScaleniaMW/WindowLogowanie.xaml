@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="Logowanie" Height="220" Width="200" x:Name="windowLogowanie" Topmost="True" ResizeMode="NoResize">
+        Title="Logowanie" Height="220" Width="200" x:Name="windowLogowanie" Topmost="True" ResizeMode="NoResize" Closing="WindowLogowanie_Closing">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="panelLogowania" >
 

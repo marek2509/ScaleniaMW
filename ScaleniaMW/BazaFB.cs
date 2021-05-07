@@ -70,9 +70,10 @@ namespace ScaleniaMW
             if (cn_connection.State != ConnectionState.Closed) cn_connection.Close();
         }
 
+       static WindowLogowanie windowLogowanie = new WindowLogowanie();
         static void przejdzDoUstawLoginIHaslo()
         {
-            WindowLogowanie windowLogowanie = new WindowLogowanie();
+
             windowLogowanie.Show();
         }
 
