@@ -26,7 +26,7 @@ namespace ScaleniaMW
         { //select id_podm, ud , ud_nr from udzialy_n u      join jedn_rej_n j on j.id_id = u.id_jedn  where  (j.id_obr = 1 and j.ijr = 11000) or(j.ijr = 20007 and j.id_obr = 2) or(j.ijr = 30002 and  j.id_obr = 3)   group by id_podm, ud , ud_nr
 
 
-            string s = "select id_podm, ud , ud_nr from udzialy_n u      join jedn_rej_n j on j.id_id = u.id_jedn  where ";
+            string s = "select id_podm, ud , ud_nr from udzialy u      join jedn_rej j on j.id_id = u.id_jedn  where ";
 
 
             for (int i = 0; i < listaWybranychJednstek_N.Count; i++)
@@ -55,7 +55,7 @@ namespace ScaleniaMW
 
         public static DataView sprawdzSpojnoscWybranychJednostek()
         {
-            string s = "select id_podm, ud, count(id_podm)  from udzialy_n u join jedn_rej_n j on j.id_id = u.id_jedn where ";
+            string s = "select id_podm, ud, count(id_podm)  from udzialy u join jedn_rej j on j.id_id = u.id_jedn where ";
 
 
             for (int i = 0; i < listaWybranychJednstek_N.Count; i++)
@@ -112,7 +112,7 @@ namespace ScaleniaMW
         {
             listaWybranychJednstek_N.Clear();
             listaJednostki_N.Clear();
-            var jedn = BazaFB.Get_DataTable("select id_id, ijr, id_obr from jedn_rej_n where id_sti <> 1 or id_sti is null");
+            var jedn = BazaFB.Get_DataTable("select id_id, ijr, id_obr from jedn_rej where id_sti <> 1 or id_sti is null");
 
             for (int i = 0; i < jedn.Rows.Count; i++)
             {
@@ -172,7 +172,7 @@ namespace ScaleniaMW
         {
        
         }
-    }
+
         public class Jednostki_N
         {
             public int ID_ID { get; set; }
@@ -212,8 +212,5 @@ namespace ScaleniaMW
             public int id_jedn_n { get; set; }
             public int IJR_n { get; set; }
         }
-
-
-
     }
 }
