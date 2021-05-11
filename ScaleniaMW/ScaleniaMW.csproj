@@ -140,6 +140,9 @@
     <Compile Include="WindowPobierzNKR.xaml.cs">
       <DependentUpon>WindowPobierzNKR.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowPodzialWspolnoty.xaml.cs">
+      <DependentUpon>WindowPodzialWspolnoty.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowPorownajPrzedPo.xaml.cs">
       <DependentUpon>WindowPorownajPrzedPo.xaml</DependentUpon>
     </Compile>
@@ -149,6 +152,7 @@
     <Compile Include="WindowPrzypiszRejGr.xaml.cs">
       <DependentUpon>WindowPrzypiszRejGr.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wspolnota.cs" />
     <Compile Include="ZsumwaneWartosciZPorownania.cs" />
     <Page Include="KontrolaBazy.xaml">
       <SubType>Designer</SubType>
@@ -183,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowPobierzNKR.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowPodzialWspolnoty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -49,6 +49,7 @@ namespace ScaleniaMW
             dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + JednoskaRejNowa.Nkr +
                 "</span><br /><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
 
+
             // tabela z obecnymi właścicielami
             int licznikMalzenski = 0;
             dokHTML.AppendLine("<table width=" + szerTabeli + ">");
@@ -105,16 +106,25 @@ namespace ScaleniaMW
                 foreach (var jednostkaStara in JednoskaRejNowa.zJednRejStarej)
                 {
                     dokHTML.AppendLine("<div><span>Obręb:&nbsp;<b  style = \"color: blue; \">" + jednostkaStara.NrObr + "&nbsp;" + jednostkaStara.NazwaObrebu + "</b></span></div>");
-                    dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + jednostkaStara.Ijr_Przed + "</span>");
+
+
+
+                   
 
 
                     // Console.WriteLine("czy generowac wlasc przed: "  +  CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa));
                     if (CzyGenerowacWlascicieliZStarychJEdnostek(JednoskaRejNowa))
                     {
+                        dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + jednostkaStara.Ijr_Przed + "</span>");
                         Console.WriteLine("inny wlasciciel przed dla NKRu: " + JednoskaRejNowa.IjrPo);
 
                         dokHTML.AppendLine("<br/><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
                         dokHTML.Append(GenerujTabeleWlascicieliPRZED(jednostkaStara, szerTabeli));
+                    }
+                    else
+                    {
+                        dokHTML.AppendLine("<div><span>Numer jednostki rejestrowej " + jednostkaStara.Ijr_Przed + "</span>");
+                        dokHTML.AppendLine("</div>");
                     }
 
 

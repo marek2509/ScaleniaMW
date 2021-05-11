@@ -125,6 +125,15 @@
                         </StackPanel>
                     </Button>
 
+                    <Button Visibility="Visible" IsEnabled="true"  HorizontalAlignment="Right"  Margin="0,0,1,0" MouseEnter="ButtonWspolnota_MouseEnter"  MouseLeave="ButtonWspolnota_MouseLeave" 
+                                    Click="ButtonWspolnota_Click"  Background="#275ea2"  Width="250" Height="100" x:Name="buttonWspolnota" FontSize="13">
+                        <StackPanel>
+                            <Label x:Name="labelPodzialWspolnoty"  FontWeight="Bold" Foreground="White">KONTROLA BAZY</Label>
+
+                            <Image x:Name="imageWspolnota"   Width="60"></Image>
+                        </StackPanel>
+                    </Button>
+                    
                 </StackPanel>
             </Grid>
         </DockPanel>

@@ -498,5 +498,22 @@ namespace ScaleniaMW
             FbPort3051.IsChecked = false;
             FbPort3050.IsChecked = true;
         }
+
+        private void ButtonWspolnota_Click(object sender, RoutedEventArgs e)
+        {
+            WindowPodzialWspolnoty windowPodzWsp = new WindowPodzialWspolnoty();
+            windowPodzWsp.Show();
+            windowScaleniaMW.Close();
+        }
+
+        private void ButtonWspolnota_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ButtonWspolnota_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }

@@ -1,0 +1,100 @@
+﻿<Window x:Class="ScaleniaMW.WindowPodzialWspolnoty"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScaleniaMW"
+        mc:Ignorable="d"
+        Title="WindowPodzialWspolnoty" Height="450" Width="800" x:Name="windowPodzialWspolnoty">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="textBlockSciezka"></TextBlock>
+        <Menu>
+            <MenuItem Header="Ustawienia FDB" Foreground="Black">
+                <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+                <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Połącz z bazą" x:Name="menuItemPolaczZbaza"  Click="MenuItemPolaczZbaza_Click">
+                
+            </MenuItem>
+        </Menu>
+        <StackPanel Grid.Row="1" x:Name="stackPobierzInfo">
+
+
+            <DataGrid Height="100" x:Name="dgJednostkiNowe" IsReadOnly="True" SelectionMode="Single" CanUserSortColumns="False">
+
+            </DataGrid>
+            <Button Content="Wybierz zaznaczoną jednostkę do podziału" Click="ButtonWybierzZaznJednostke_Click" ></Button>
+            <Label x:Name="labelWybraneJednostki"></Label>
+
+            <Label>Dane tworzonych jednostek:</Label>
+            <DockPanel>
+                <Label>Obręb:</Label>
+                <ComboBox x:Name="listBoxObreby" Width="250"></ComboBox>
+                <Label>Gmina:</Label>
+                <ComboBox x:Name="listBoxGm" Width="250"></ComboBox>
+                <Label>Gr. rej.:</Label>
+                <ComboBox x:Name="comboGrupa"  Width="50" SelectedIndex="24">
+                    <ComboBoxItem>1.1</ComboBoxItem>
+                    <ComboBoxItem>1.2</ComboBoxItem>
+                    <ComboBoxItem>1.3</ComboBoxItem>
+                    <ComboBoxItem>1.4</ComboBoxItem>
+                    <ComboBoxItem>1.5</ComboBoxItem>
+                    <ComboBoxItem>1.6</ComboBoxItem>
+                    <ComboBoxItem>1.7</ComboBoxItem>
+                    <ComboBoxItem>1.8</ComboBoxItem>
+                    <ComboBoxItem>2.1</ComboBoxItem>
+                    <ComboBoxItem>2.2</ComboBoxItem>
+                    <ComboBoxItem>2.3</ComboBoxItem>
+                    <ComboBoxItem>2.4</ComboBoxItem>
+                    <ComboBoxItem>3</ComboBoxItem>
+                    <ComboBoxItem>4.1</ComboBoxItem>
+                    <ComboBoxItem>4.2</ComboBoxItem>
+                    <ComboBoxItem>4.3</ComboBoxItem>
+                    <ComboBoxItem>5.1</ComboBoxItem>
+                    <ComboBoxItem>5.2</ComboBoxItem>
+                    <ComboBoxItem>5.3</ComboBoxItem>
+                    <ComboBoxItem>5.4</ComboBoxItem>
+                    <ComboBoxItem>6.1</ComboBoxItem>
+                    <ComboBoxItem>6.2</ComboBoxItem>
+                    <ComboBoxItem>6.3</ComboBoxItem>
+                    <ComboBoxItem>7.1</ComboBoxItem>
+                    <ComboBoxItem>7.2</ComboBoxItem>
+                    <ComboBoxItem>8.1</ComboBoxItem>
+                    <ComboBoxItem>8.2</ComboBoxItem>
+                    <ComboBoxItem>8.3</ComboBoxItem>
+                    <ComboBoxItem>9</ComboBoxItem>
+                    <ComboBoxItem>10</ComboBoxItem>
+                    <ComboBoxItem>11.1</ComboBoxItem>
+                    <ComboBoxItem>11.2</ComboBoxItem>
+                    <ComboBoxItem>11.3</ComboBoxItem>
+                    <ComboBoxItem>12.1</ComboBoxItem>
+                    <ComboBoxItem>12.2</ComboBoxItem>
+                    <ComboBoxItem>12.3</ComboBoxItem>
+                    <ComboBoxItem>12.4</ComboBoxItem>
+                    <ComboBoxItem>13.1</ComboBoxItem>
+                    <ComboBoxItem>13.2</ComboBoxItem>
+                    <ComboBoxItem>13.3</ComboBoxItem>
+                    <ComboBoxItem>14.1</ComboBoxItem>
+                    <ComboBoxItem>14.2</ComboBoxItem>
+                    <ComboBoxItem>14.3</ComboBoxItem>
+                    <ComboBoxItem>14.4</ComboBoxItem>
+                    <ComboBoxItem>15.1</ComboBoxItem>
+                    <ComboBoxItem>15.2</ComboBoxItem>
+                    <ComboBoxItem>15.3</ComboBoxItem>
+
+                </ComboBox>
+            </DockPanel>
+            <DockPanel>
+                <Label>Od jakiego nr jednostki rozpocząć tworzenie:</Label>
+                <TextBox x:Name="textBoxNrPierwszejJednostki"></TextBox>
+            </DockPanel>
+            <Button Content="Twórz nowe jednostki" x:Name="tworzNoweJedn" Click="TworzNoweJedn_Click" >
+                
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
