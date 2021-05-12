@@ -72,12 +72,12 @@ namespace ScaleniaMW
         private void ButtonWybierzZaznJednostke_Click(object sender, RoutedEventArgs e)
         {
       
-            if (dgJednostkiNowe.SelectedIndex < Wspolnota.listaJednostki_N.Count && dgJednostkiNowe.SelectedIndex >=0)
+            if (dgJednostkiNowe.SelectedIndex < Wspolnota.listaJednostki_s.Count && dgJednostkiNowe.SelectedIndex >=0)
             {
-                if (!Wspolnota.listaWybranychJednstek_N.Exists(x => x == Wspolnota.listaJednostki_N[dgJednostkiNowe.SelectedIndex]))
+                if (!Wspolnota.listaWybranychJednstek_s.Exists(x => x == Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex]))
                 {
-                    Wspolnota.listaWybranychJednstek_N.Add(Wspolnota.listaJednostki_N[dgJednostkiNowe.SelectedIndex]);
-                    labelWybraneJednostki.Content += Wspolnota.listaJednostki_N[dgJednostkiNowe.SelectedIndex].IJR + " " + Wspolnota.listaJednostki_N[dgJednostkiNowe.SelectedIndex].NazwaObrebu + "\n";
+                    Wspolnota.listaWybranychJednstek_s.Add(Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex]);
+                    labelWybraneJednostki.Content += Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].IJR + " " + Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].NazwaObrebu + "\n";
 
                 }
                 else
@@ -102,7 +102,7 @@ namespace ScaleniaMW
             listBoxObreby.ItemsSource = Wspolnota.listObreby.Select(x => x.Nazwa);
             listBoxObreby.SelectedIndex = 0;
 
-            dgJednostkiNowe.ItemsSource = Wspolnota.listaJednostki_N;
+            dgJednostkiNowe.ItemsSource = Wspolnota.listaJednostki_s;
 
         }
 

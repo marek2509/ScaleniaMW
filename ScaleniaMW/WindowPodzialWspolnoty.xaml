@@ -87,6 +87,10 @@
                     <ComboBoxItem>15.3</ComboBoxItem>
 
                 </ComboBox>
+                <Label>RWD:</Label>
+                <ComboBox x:Name="comboRWD" Width="50" SelectedIndex="24">
+                    
+                </ComboBox>
             </DockPanel>
             <DockPanel>
                 <Label>Od jakiego nr jednostki rozpocząć tworzenie:</Label>
