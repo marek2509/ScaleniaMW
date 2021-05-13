@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace ScaleniaMW
 {
@@ -35,16 +37,20 @@ namespace ScaleniaMW
             public decimal WartoscJednostki { get; set; }
             public double PEW { get; set; }
             public int? ID_Obr;
-        
-            
         }
 
+        public class RWD
+        {
+            public int ID_ID { get; set; }
+            public string Symbol { get; set; }
+        }
+
+        public static readonly string SQLIdpdmNazwaWlascAdres = "select distinct p.id_id, case when upper(p.typ) like 'F' then (select case when dim is null then nzw || ' ' || pim else nzw || ' ' ||  pim || ' ' || dim end from osoby o where p.id_os = o.id_id) when upper(p.typ) like 'P' then(select NPE from INSTYTUCJE i where p.id_os = i.id_id) when upper(p.typ) like 'I' then (select NPE from INNE_PODM inne where p.id_os = inne.id_id) when upper(p.typ) like 'M' then (select case when maz.dim is null and zona.dim is null then '' || maz.nzw  || ' '  ||  maz.pim || ' ' ||  zona.nzw || ' ' || zona.pim when maz.dim is null and zona is not null then '' || maz.nzw  || ' '  ||  maz.pim || ' ' ||  zona.nzw || ' ' || zona.pim || ' ' ||  zona.dim when maz.dim is not null and zona.dim is null then '' || maz.nzw  || ' '  ||  maz.pim || ' '  ||  maz.dim || ' ' ||  zona.nzw || ' ' || zona.pim else '' ||  maz.nzw  || ' '  ||  maz.pim || ' '  ||  maz.dim || ' ' ||  zona.nzw || ' ' || zona.pim || ' ' ||  zona.dim end from malzenstwa m join osoby maz on maz.id_id = m.maz join osoby zona on zona.id_id = m.zona where p.id_os = m.id_id) end Wlasciciele, case when upper(p.typ) like 'F' then(select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from osoby o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrl is not null then nra || '/' || nrl when nra is not null then nra else '' end from osoby o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from osoby o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from osoby o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from osoby o1 where o1.id_id = p.id_os) when upper(p.typ) like 'P' then( select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from instytucje o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrlok is not null then nra || '/' || nrlok when nra is not null then nra else '' end from instytucje o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from instytucje o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from instytucje o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from instytucje o1 where o1.id_id = p.id_os) when upper(p.typ) like 'I' then(select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from INNE_PODM o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrlok is not null then nra || '/' || nrlok when nra is not null then nra else '' end from INNE_PODM o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from INNE_PODM o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from INNE_PODM o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from INNE_PODM o1 where p.id_os = o1.id_id) when upper(p.typ) like 'M' then(select '' || (select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from osoby o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrl is not null then nra || '/' || nrl when nra is not null then nra else '' end from osoby o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from osoby o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from osoby o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from osoby o1 where o1.id_id = maz.id_id) || ' ' || (select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from osoby o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrl is not null then nra || '/' || nrl when nra is not null then nra else '' end from osoby o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from osoby o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from osoby o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from osoby o1 where o1.id_id = zona.id_id) from malzenstwa m join osoby maz on maz.id_id = m.maz join osoby zona on zona.id_id = m.zona where p.id_os = m.id_id) end Adresy from udzialy u right join jedn_rej jn on jn.id_id = u.id_jedn join podmioty p on p.ID_ID = u.id_podm where jn.id_sti<> 1  or jn.id_sti is null order by Wlasciciele";
         public class Gmina
         {
             public int ID_ID { get; set; }
             public string Nazwa { get; set; }
         }
-
         public class ModelJednostkiTworzonejZeWspolnowy
         {
             public int id_podm { get; set; }
@@ -52,20 +58,58 @@ namespace ScaleniaMW
             public string ud { get; set; }
             public int id_jedn_n { get; set; }
             public int IJR_n { get; set; }
+            public int id_sortowania = 0;
         }
 
+        
+        private static void UpdateProgressJedn_rej()
+        {
+            progressBarJedn_rej.Value += 1;
+
+        }
+
+        private static void UpdateProgressJedn_SN()
+        {
+            progressBarJednSN.Value += 1;
+            
+        }
+
+        private static void UpdateProgressUdzialy()
+        {
+            progressBarUzdialy.Value += 1;
+        }
+
+        private delegate void ProgressBarDelegate();
+        private delegate void ProgressLabelDelegadate();
+
+        //   progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
+
+
+        public static DockPanel dpTworzenie = new DockPanel();
+        public static ProgressBar progressBarJedn_rej = new ProgressBar();
+        public static ProgressBar progressBarUzdialy = new ProgressBar();
+        public static ProgressBar progressBarJednSN = new ProgressBar();
         public static List<int> listaIjrBedaceWBazie = new List<int>();
         public static List<Gmina> listGminy = new List<Gmina>();
         public static List<Obreb> listObreby = new List<Obreb>();
         public static List<Jednostki_s> listaJednostki_s = new List<Jednostki_s>();
         public static List<Jednostki_s> listaWybranychJednstek_s = new List<Jednostki_s>();
         public static List<ModelJednostkiTworzonejZeWspolnowy> jednTworzZeWspolnoty = new List<ModelJednostkiTworzonejZeWspolnowy>();
-
+        public static List<RWD> listaRWD = new List<RWD>();
         //wstaw w tabele jedn_sn
         //insert into JEDN_SN(id_id,id_sti, id_gm, ud, ud_nr, dtu, osou, id_jedns, id_jednn, wwgsp, powwgsp) values((select first 1  id_id + 1 from JEDN_sn order by id_Id desc),0, @id_gm , @ud, @ud_nr(select cast('NOW' as timestamp) from rdb$database), 1, @id_jedns, @id_jednN, 0, 0)
 
         public static int ileJednostekTrzebaUtworzyc()
         { //select id_podm, ud , ud_nr from udzialy_n u      join jedn_rej_n j on j.id_id = u.id_jedn  where  (j.id_obr = 1 and j.ijr = 11000) or(j.ijr = 20007 and j.id_obr = 2) or(j.ijr = 30002 and  j.id_obr = 3)   group by id_podm, ud , ud_nr
+
+            List<int> id_Podm_kolejnosc = new List<int>();
+            var sortowanie = BazaFB.Get_DataTable(SQLIdpdmNazwaWlascAdres);
+            for (int i = 0; i < sortowanie.Rows.Count; i++)
+            {
+                id_Podm_kolejnosc.Add(Convert.ToInt32(sortowanie.Rows[i][0]));
+            }
+
+
             string s = "select id_podm, ud , ud_nr from udzialy u      join jedn_rej j on j.id_id = u.id_jedn  where ";
             for (int i = 0; i < listaWybranychJednstek_s.Count; i++)
             {
@@ -80,10 +124,14 @@ namespace ScaleniaMW
             }
             s += " group by id_podm, ud , ud_nr";
             DataTable dt = BazaFB.Get_DataTable(s);
+            List<ModelJednostkiTworzonejZeWspolnowy> jednDoUtworz = new List<ModelJednostkiTworzonejZeWspolnowy>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                jednTworzZeWspolnoty.Add(new ModelJednostkiTworzonejZeWspolnowy { id_podm = Convert.ToInt32(dt.Rows[i][0]), ud = dt.Rows[i][1].ToString(), ud_nr = Convert.ToDouble(dt.Rows[i][2]) });
+                jednDoUtworz.Add(new ModelJednostkiTworzonejZeWspolnowy { id_podm = Convert.ToInt32(dt.Rows[i][0]), ud = dt.Rows[i][1].ToString(), ud_nr = Convert.ToDouble(dt.Rows[i][2]), id_sortowania = id_Podm_kolejnosc.FindIndex(x => x == Convert.ToInt32(dt.Rows[i][0])) });
             }
+            //    jednTworzZeWspolnoty = new List<ModelJednostkiTworzonejZeWspolnowy>( (List<ModelJednostkiTworzonejZeWspolnowy>)jednTworzZeWspolnoty.OrderBy(x => x.id_sortowania));
+            jednTworzZeWspolnoty = jednDoUtworz.OrderBy(x => x.id_sortowania).ToList();
+
             return BazaFB.Get_DataTable(s).Rows.Count;
         }
 
@@ -147,40 +195,45 @@ namespace ScaleniaMW
             listaIjrBedaceWBazie.Clear();
             listaWybranychJednstek_s.Clear();
             listaJednostki_s.Clear();
-           // var jedn = BazaFB.Get_DataTable("select id_id, ijr, id_obr from jedn_rej where id_sti <> 1 or id_sti is null");
-          //  var jedn = BazaFB.Get_DataTable(@"select j.id_id, j.ijr, j.id_obr, sum(d.ww) Wartosc, sum(d.pew) PEWm2 from jedn_rej j join dzialka d on d.rjdr = j.id_id where j.id_sti <> 1 or j.id_sti is null group by j.id_id, j.ijr, j.id_obr");
+            listaRWD.Clear();
+            // var jedn = BazaFB.Get_DataTable("select id_id, ijr, id_obr from jedn_rej where id_sti <> 1 or id_sti is null");
+            // var jedn = BazaFB.Get_DataTable(@"select j.id_id, j.ijr, j.id_obr, sum(d.ww) Wartosc, sum(d.pew) PEWm2 from jedn_rej j join dzialka d on d.rjdr = j.id_id where j.id_sti <> 1 or j.id_sti is null group by j.id_id, j.ijr, j.id_obr");
             var jedn = BazaFB.Get_DataTable(@"select j.id_id, j.ijr, j.id_obr, sum(d.ww) Wartosc, sum(d.pew) PEWm2 from jedn_rej j join dzialka d on d.rjdr = j.id_id where j.id_sti <> 1 or j.id_sti is null group by j.id_id, j.ijr, j.id_obr order by id_obr, ijr");
-            
             for (int i = 0; i < jedn.Rows.Count; i++)
             {
-        
                 listaJednostki_s.Add(new Jednostki_s { ID_ID = Convert.ToInt32(jedn.Rows[i][0]), IJR = Convert.ToInt32(jedn.Rows[i][1]), ID_Obr = jedn.Rows[i][2].Equals(DBNull.Value) ? (int?)null : Convert.ToInt32(jedn.Rows[i][2]), WartoscJednostki = Convert.ToDecimal(jedn.Rows[i][3]), PEW = Convert.ToDouble(jedn.Rows[i][4]) });
             }
+
             var NKR_PO_Z_BAZY = BazaFB.Get_DataTable("select ijr from jedn_rej_n");
             for (int i = 0; i < NKR_PO_Z_BAZY.Rows.Count; i++)
             {
                 listaIjrBedaceWBazie.Add(Convert.ToInt32(NKR_PO_Z_BAZY.Rows[i][0]));
             }
 
+            var RWD = BazaFB.Get_DataTable("select id_id, symbol from RODZ_WLADA");
+            for (int i = 0; i < RWD.Rows.Count; i++)
+            {
+                listaRWD.Add(new RWD { ID_ID = Convert.ToInt32(RWD.Rows[i][0]), Symbol = RWD.Rows[i][1].ToString() });
+                Console.WriteLine(RWD.Rows[i][0] + " " + RWD.Rows[i][1]);
+            }
         }
 
-        public static void TworzenieJednostek(int pierwszyIjr, int id_gm, int id_obr, string gr = "null")
+        public static void TworzenieJednostek(int pierwszyIjr, int id_gm, int id_obr, int RWD_id, string gr = "null")
         {
+            dpTworzenie.Visibility = Visibility.Visible;
             int id_idJedn = Convert.ToInt32(BazaFB.Get_DataTable("select first 1 id_id+1 from JEDN_REJ_N order by id_Id desc").Rows[0][0]);
-            Console.WriteLine();
-
-            gr = gr == "null" ? "null" :  gr;
+            gr = gr == "null" ? "null" : gr;
             using (var connection = new FbConnection(BazaFB.connectionString()))
             {
                 connection.Open();
-               // FbCommand writeCommandJedn_rej_N = new FbCommand("insert into JEDN_REJ_N(id_id, id_gm, ijr, dtu, dtw, osou, osow, id_obr, gsp, GR, zgoda) values((select first 1  id_id + 1 from JEDN_REJ_N order by id_Id desc), @id_gm , @Ijr, (select cast('NOW' as timestamp) from rdb$database), (select cast('NOW' as timestamp) from rdb$database), 1, 1, @id_obr, 0,  @gr, 0)", connection);
+                // FbCommand writeCommandJedn_rej_N = new FbCommand("insert into JEDN_REJ_N(id_id, id_gm, ijr, dtu, dtw, osou, osow, id_obr, gsp, GR, zgoda) values((select first 1  id_id + 1 from JEDN_REJ_N order by id_Id desc), @id_gm , @Ijr, (select cast('NOW' as timestamp) from rdb$database), (select cast('NOW' as timestamp) from rdb$database), 1, 1, @id_obr, 0,  @gr, 0)", connection);
                 FbCommand writeCommandJedn_rej_N = new FbCommand("insert into JEDN_REJ_N(id_id, id_gm, ijr, dtu, dtw, osou, osow, id_obr, gsp, GR, zgoda) values((select gen_id(ID_JEDN_REJ_N, 1)from rdb$database), @id_gm , @Ijr, (select cast('NOW' as timestamp) from rdb$database), (select cast('NOW' as timestamp) from rdb$database), 1, 1, @id_obr, 0,  @gr, 0)", connection);
-
-
+                progressBarJedn_rej.Maximum = jednTworzZeWspolnoty.Count - 1;
+                progressBarJedn_rej.Value = 0;
                 //select gen_id(ID_JEDN_REJ_N, 1)from rdb$database     -wstawianie unikalnego ID
                 foreach (var item in jednTworzZeWspolnoty)
                 {
-                    for (; ; ) 
+                    for (; ; )
                     {
                         if (listaIjrBedaceWBazie.Exists(x => x == pierwszyIjr))
                         {
@@ -202,52 +255,68 @@ namespace ScaleniaMW
                     writeCommandJedn_rej_N.Parameters.Add("@gr", gr);
                     writeCommandJedn_rej_N.ExecuteNonQuery();
                     writeCommandJedn_rej_N.Parameters.Clear();
+                    progressBarJedn_rej.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgressJedn_rej), DispatcherPriority.Background);
                 }
 
                 // dodawanie danych do tabeli jedn_SN
                 // FbCommand writeCommandJednSN = new FbCommand("insert into JEDN_SN(id_id, id_sti, id_gm, ud, ud_nr, dtu, osou, id_jedns, id_jednn, wwgsp, powwgsp) values((select first 1  id_id + 1 from JEDN_sn order by id_Id desc), 0, @id_gm, @ud, @ud_nr, (select cast('NOW' as timestamp) from rdb$database), 1, @id_jedns, @id_jednN, @wwgsp, @powgsp)", connection);
                 FbCommand writeCommandJednSN = new FbCommand("insert into JEDN_SN(id_id, id_sti, id_gm, ud, ud_nr, dtu, osou, id_jedns, id_jednn, wwgsp, powwgsp) values((select gen_id(ID_JEDN_SN, 1)from rdb$database), 0, @id_gm, @ud, @ud_nr, (select cast('NOW' as timestamp) from rdb$database), 1, @id_jedns, @id_jednN, @wwgsp, @powgsp)", connection);
+                progressBarJednSN.Maximum = ((jednTworzZeWspolnoty.Count) * listaWybranychJednstek_s.Count) - 1;
+                progressBarJednSN.Value = 0;
+
                 foreach (var jedn_n in jednTworzZeWspolnoty)
                 {
                     foreach (var wybraneJednWspolnoty in listaWybranychJednstek_s)
                     {
-                 
-                    writeCommandJednSN.Parameters.Add("@id_gm", id_gm);
-                    writeCommandJednSN.Parameters.Add("@ud", jedn_n.ud);
-                    writeCommandJednSN.Parameters.Add("@ud_nr", jedn_n.ud_nr);
-                    writeCommandJednSN.Parameters.Add("@id_jednN", jedn_n.id_jedn_n);
-                    writeCommandJednSN.Parameters.Add("@id_jedns", wybraneJednWspolnoty.ID_ID);
 
-                    decimal wartUdzialu = (decimal)jedn_n.ud_nr * wybraneJednWspolnoty.WartoscJednostki;
-                    double PEWudzialu = jedn_n.ud_nr * wybraneJednWspolnoty.PEW;
-                    writeCommandJednSN.Parameters.Add("@wwgsp", wartUdzialu);
-                    writeCommandJednSN.Parameters.Add("@powgsp", PEWudzialu);
+                        writeCommandJednSN.Parameters.Add("@id_gm", id_gm);
+                        writeCommandJednSN.Parameters.Add("@ud", jedn_n.ud);
+                        writeCommandJednSN.Parameters.Add("@ud_nr", jedn_n.ud_nr);
+                        writeCommandJednSN.Parameters.Add("@id_jednN", jedn_n.id_jedn_n);
+                        writeCommandJednSN.Parameters.Add("@id_jedns", wybraneJednWspolnoty.ID_ID);
+
+                        decimal wartUdzialu = (decimal)jedn_n.ud_nr * wybraneJednWspolnoty.WartoscJednostki;
+                        double PEWudzialu = jedn_n.ud_nr * wybraneJednWspolnoty.PEW;
+                        writeCommandJednSN.Parameters.Add("@wwgsp", wartUdzialu);
+                        writeCommandJednSN.Parameters.Add("@powgsp", PEWudzialu);
                         writeCommandJednSN.ExecuteNonQuery();
                         writeCommandJednSN.Parameters.Clear();
+                        progressBarJedn_rej.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgressJedn_SN), DispatcherPriority.Background);
                     }
                 }
 
                 //insert into UDZIALY_N(id_id, id_sti, id_gm, rwd, rwd2, ud, ud_nr, dtu, osou, id_jedn, id_podm, rodzaj, grj) values((select gen_id(ID_UDZIALY_N, 1)from rdb$database), 0, @id_gm, @rwd, @rwd, '1/1', 1, (select cast('NOW' as timestamp) from rdb$database), 1, @id_jedn, @id_podm, @rodzaj, @grj
                 FbCommand writeCommandUdzialy_N = new FbCommand("insert into UDZIALY_N(id_id, id_sti, id_gm, rwd, rwd2, ud, ud_nr, dtu, osou, id_jedn, id_podm, rodzaj, grj) values((select gen_id(ID_UDZIALY_N, 1)from rdb$database), 0, @id_gm, @rwd, @rwd, '1/1', 1, (select cast('NOW' as timestamp) from rdb$database), 1, @id_jedn, @id_podm, @rodzaj, @grj)", connection);
-
+                Object o = new object();
+                o = null;
+                progressBarUzdialy.Maximum = jednTworzZeWspolnoty.Count - 1;
+                progressBarUzdialy.Value = 0;
                 foreach (var jedn_n in jednTworzZeWspolnoty)
                 {
                     writeCommandUdzialy_N.Parameters.Add("@id_gm", id_gm);
-                    writeCommandUdzialy_N.Parameters.Add("@rwd", 11);
+                    writeCommandUdzialy_N.Parameters.Add("@rwd", RWD_id);
+
+
+
                     writeCommandUdzialy_N.Parameters.Add("@id_jedn", jedn_n.id_jedn_n);
                     writeCommandUdzialy_N.Parameters.Add("@id_podm", jedn_n.id_podm);
                     writeCommandUdzialy_N.Parameters.Add("@rodzaj", 1);
                     writeCommandUdzialy_N.Parameters.Add("@grj", gr);
-                    
+
+                    Console.WriteLine(writeCommandUdzialy_N.CommandText);
+                    Console.WriteLine(writeCommandUdzialy_N.CommandPlan);
+                    Console.WriteLine(writeCommandUdzialy_N.CommandExplainedPlan);
+                    Console.WriteLine(writeCommandUdzialy_N.Container);
                     writeCommandUdzialy_N.ExecuteNonQuery();
-                    writeCommandUdzialy_N.Parameters.Clear(); 
+                    writeCommandUdzialy_N.Parameters.Clear();
+                    progressBarJedn_rej.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgressUdzialy), DispatcherPriority.Background);
                 }
-
-
-
-
                 connection.Close();
                 MessageBox.Show("UTWORZONO JEDNOSTKI!");
+                progressBarJednSN.Value = 0;
+                progressBarUzdialy.Value = 0;
+                progressBarJedn_rej.Value = 0;
+                dpTworzenie.Visibility = Visibility.Hidden;
             }
 
         }

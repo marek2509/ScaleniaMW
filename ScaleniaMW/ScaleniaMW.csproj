@@ -119,6 +119,7 @@
       <DependentUpon>KontrolaBazy.xaml</DependentUpon>
     </Compile>
     <Compile Include="KontroleDanychZFDB.cs" />
+    <Compile Include="Plik.cs" />
     <Compile Include="WindowEdycjaDokumentow.xaml.cs">
       <DependentUpon>WindowEdycjaDokumentow.xaml</DependentUpon>
     </Compile>

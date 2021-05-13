@@ -22,7 +22,10 @@ namespace ScaleniaMW
         public WindowPodzialWspolnoty()
         {
             InitializeComponent();
-
+            Wspolnota.progressBarJedn_rej = progresBarJedn_rej_n;
+            Wspolnota.progressBarUzdialy = progresBarUdzialy_n;
+            Wspolnota.progressBarJednSN = ProgresBarJedn_SN;
+            Wspolnota.dpTworzenie = dockTworzenieJednUdzPodm;
         }
 
         private void ustawSciezkeFDB(object sender, RoutedEventArgs e)
@@ -77,22 +80,18 @@ namespace ScaleniaMW
                 if (!Wspolnota.listaWybranychJednstek_s.Exists(x => x == Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex]))
                 {
                     Wspolnota.listaWybranychJednstek_s.Add(Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex]);
-                    labelWybraneJednostki.Content += Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].IJR + " " + Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].NazwaObrebu + "\n";
-
+                    labelWybraneJednostki.Text += Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].IJR + " " + Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].NazwaObrebu + "\n";
                 }
                 else
                 {
-                    labelWybraneJednostki.Content += "Ta jednostka jest już wybrana\n";
+                    labelWybraneJednostki.Text += "Ta jednostka jest już wybrana\n";
                 }
-               
-
             }
-           
         }
 
         private void MenuItemPolaczZbaza_Click(object sender, RoutedEventArgs e)
         {
-            labelWybraneJednostki.Content = "";
+            labelWybraneJednostki.Text = "";
             Wspolnota.pobierzGminy();
             Wspolnota.pobierzObreby();
             Wspolnota.pobierzJednostki_n();
@@ -101,20 +100,17 @@ namespace ScaleniaMW
             listBoxGm.SelectedIndex = 0;
             listBoxObreby.ItemsSource = Wspolnota.listObreby.Select(x => x.Nazwa);
             listBoxObreby.SelectedIndex = 0;
-
             dgJednostkiNowe.ItemsSource = Wspolnota.listaJednostki_s;
-
+            comboRWD.ItemsSource = Wspolnota.listaRWD.Select(x => x.Symbol);
+            comboRWD.SelectedIndex = Wspolnota.listaRWD.FindIndex(x => x.Symbol.ToUpper() == "WŁ");
         }
 
         private void TworzNoweJedn_Click(object sender, RoutedEventArgs e)
         {
-
-
-
             if (Wspolnota.sprawdzSpojnoscWybranychJednostek() != null)
             {
                 dgJednostkiNowe.ItemsSource = Wspolnota.sprawdzSpojnoscWybranychJednostek();
-                labelWybraneJednostki.Content = "BRAK SPOJNOŚCI W WYBRANYCH JEDNOSTKACH!";
+                labelWybraneJednostki.Text = "BRAK SPOJNOŚCI W WYBRANYCH JEDNOSTKACH!";
             }
             else
             {
@@ -122,22 +118,36 @@ namespace ScaleniaMW
                 try
                 {
                     Wspolnota.ileJednostekTrzebaUtworzyc();
+                    Console.WriteLine(">" + textBoxNrPierwszejJednostki.Text + "<");
                     nrPierwszej = Convert.ToInt32(textBoxNrPierwszejJednostki.Text);
                     Console.WriteLine(nrPierwszej);
                     Console.WriteLine("Wybrana gm: " + Wspolnota.listGminy[listBoxGm.SelectedIndex].Nazwa);
                     Console.WriteLine("Wybrany obręb: " + Wspolnota.listObreby[listBoxObreby.SelectedIndex].Nazwa);
                 }
-                catch
+                catch (Exception ec)
                 {
-                    MessageBox.Show("Błędny format numeru pierwszej jednostki");
+                    MessageBox.Show("Błędny format numeru pierwszej jednostki\n" + ec.Message);
                     goto koniec;
                 }
-
-                 Wspolnota.TworzenieJednostek(nrPierwszej, Wspolnota.listGminy[listBoxGm.SelectedIndex].ID_ID, Wspolnota.listObreby[listBoxObreby.SelectedIndex].IdObrebu, comboGrupa.SelectionBoxItem.ToString());
-
-
+                 Wspolnota.TworzenieJednostek(nrPierwszej, Wspolnota.listGminy[listBoxGm.SelectedIndex].ID_ID, Wspolnota.listObreby[listBoxObreby.SelectedIndex].IdObrebu, Wspolnota.listaRWD[comboRWD.SelectedIndex].ID_ID , comboGrupa.SelectionBoxItem.ToString());
             }
         koniec:;
         }
+
+        private void TextBoxNrPierwszejJednostki_TextChanged(object sender, TextChangedEventArgs e)
+        {
+        
+            String textDoZbadania = textBoxNrPierwszejJednostki.Text;
+    
+            textBoxNrPierwszejJednostki.Text = Plik.UsuniecieInnychZnakowNizCyfry(textDoZbadania);
+            Console.WriteLine(textBoxNrPierwszejJednostki.GetLastVisibleLineIndex());
+            Console.WriteLine(textBoxNrPierwszejJednostki.GetFirstVisibleLineIndex());
+            Console.WriteLine(textBoxNrPierwszejJednostki.CaretIndex);
+   
+            textBoxNrPierwszejJednostki.CaretIndex = textBoxNrPierwszejJednostki.Text.Length;
+        }
+
+
+
     }
 }

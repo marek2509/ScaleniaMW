@@ -345,6 +345,7 @@ namespace ScaleniaMW
         {
             progresBar.Value += 1;
         }
+
         private delegate void ProgressBarDelegate();
 
         void UstawLoginIHaslo()
