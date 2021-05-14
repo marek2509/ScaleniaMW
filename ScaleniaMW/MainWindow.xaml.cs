@@ -506,14 +506,49 @@ namespace ScaleniaMW
             windowScaleniaMW.Close();
         }
 
+
         private void ButtonWspolnota_MouseEnter(object sender, MouseEventArgs e)
         {
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/wspolnota.png", UriKind.Relative);
+            bi3.EndInit();
+            imageWspolnota.Source = bi3;
+            labelPodzialWspolnoty.Foreground = Brushes.Black;
 
+            for (int i = 0; i < 25; i++)
+            {
+                buttonWspolnota.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateProgressbuttonWspolnota), DispatcherPriority.Background);
+            }
         }
 
         private void ButtonWspolnota_MouseLeave(object sender, MouseEventArgs e)
         {
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("Resources/wspolnotaWhite.png", UriKind.Relative);
+            bi3.EndInit();
+            imageWspolnota.Source = bi3;
+            labelPodzialWspolnoty.Foreground = Brushes.White;
 
+            for (int i = 0; i < 25; i++)
+            {
+                buttonWspolnota.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonWspolnota), DispatcherPriority.Background);
+            }
+        }
+
+        private void UpdateProgressbuttonWspolnota()
+        {
+            buttonWspolnota.Width += 0.4;
+            if (buttonWspolnota.ActualWidth > 275)
+                buttonWspolnota.Width = 250;
+        }
+
+        private void UpdateRegresbuttonWspolnota()
+        {
+            buttonWspolnota.Width -= 0.4;
+            if (buttonWspolnota.ActualWidth < 250)
+                buttonWspolnota.Width = 250;
         }
     }
 }

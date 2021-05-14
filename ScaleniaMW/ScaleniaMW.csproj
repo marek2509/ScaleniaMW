@@ -28,7 +28,7 @@
     <ProductName>SCALENIAMW2</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>23</ApplicationRevision>
+    <ApplicationRevision>25</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -303,6 +303,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\controlWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\wspolnota.png" />
+    <Resource Include="Resources\wspolnotaWhite.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

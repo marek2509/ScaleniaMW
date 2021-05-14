@@ -26,6 +26,7 @@ namespace ScaleniaMW
             Wspolnota.progressBarUzdialy = progresBarUdzialy_n;
             Wspolnota.progressBarJednSN = ProgresBarJedn_SN;
             Wspolnota.dpTworzenie = dockTworzenieJednUdzPodm;
+            Wspolnota.checkBoxCzyDopisywacDoIstniejaczych = checkBoxCzyDopisywacDoIstniejacychJedostek;
         }
 
         private void ustawSciezkeFDB(object sender, RoutedEventArgs e)

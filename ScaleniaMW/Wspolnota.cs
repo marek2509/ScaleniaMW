@@ -88,7 +88,7 @@ namespace ScaleniaMW
 
         //   progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
 
-
+        public static CheckBox checkBoxCzyDopisywacDoIstniejaczych = new CheckBox();
         public static DockPanel dpTworzenie = new DockPanel();
         public static ProgressBar progressBarJedn_rej = new ProgressBar();
         public static ProgressBar progressBarUzdialy = new ProgressBar();
@@ -262,21 +262,25 @@ namespace ScaleniaMW
                 connection.Open();
                 // FbCommand writeCommandJedn_rej_N = new FbCommand("insert into JEDN_REJ_N(id_id, id_gm, ijr, dtu, dtw, osou, osow, id_obr, gsp, GR, zgoda) values((select first 1  id_id + 1 from JEDN_REJ_N order by id_Id desc), @id_gm , @Ijr, (select cast('NOW' as timestamp) from rdb$database), (select cast('NOW' as timestamp) from rdb$database), 1, 1, @id_obr, 0,  @gr, 0)", connection);
                 FbCommand writeCommandJedn_rej_N = new FbCommand("insert into JEDN_REJ_N(id_id, id_gm, ijr, dtu, dtw, osou, osow, id_obr, gsp, GR, zgoda) values((select gen_id(ID_JEDN_REJ_N, 1)from rdb$database), @id_gm , @Ijr, (select cast('NOW' as timestamp) from rdb$database), (select cast('NOW' as timestamp) from rdb$database), 1, 1, @id_obr, 0,  @gr, 0)", connection);
-                progressBarJedn_rej.Maximum = jednTworzZeWspolnoty.Count - 1;
+                progressBarJedn_rej.Maximum = jednTworzZeWspolnoty.Count - 1 - ListaId_PodmId_Jedn_N.Count;
                 progressBarJedn_rej.Value = 0;
+                if (checkBoxCzyDopisywacDoIstniejaczych.IsChecked == true)
+                {
+                    progressBarUzdialy.Maximum -= ListaId_PodmId_Jedn_N.Count;
+                }
                 //select gen_id(ID_JEDN_REJ_N, 1)from rdb$database     -wstawianie unikalnego ID
                 foreach (var item in jednTworzZeWspolnoty)
                 {
-                    int idpdmDoBAzy;
-
-
-                    if (ListaId_PodmId_Jedn_N.Exists(x => x.Id_Podm == item.id_podm))
+                    if (ListaId_PodmId_Jedn_N.Exists(x => x.Id_Podm == item.id_podm) && checkBoxCzyDopisywacDoIstniejaczych.IsChecked == true)
                     {
-
+                      //  Console.WriteLine("jaka jednostke pominięto: " + item.id_podm);
+                        item.id_jedn_n = ListaId_PodmId_Jedn_N.Find(x => x.Id_Podm == item.id_podm).Id_Jedn_N;
+                       continue;
                     }
                     else
-                    { }
-                    for (; ; )
+                    {
+
+                        for (; ; )
                         {
                             if (listaIjrBedaceWBazie.Exists(x => x == pierwszyIjr))
                             {
@@ -290,8 +294,8 @@ namespace ScaleniaMW
                         }// wybranie nowego IJR który się nie pokryje z istniejącym 
                         item.IJR_n = pierwszyIjr;
                         item.id_jedn_n = id_idJedn++;
+                    }
 
-                  
 
 
                     writeCommandJedn_rej_N.Parameters.Add("@id_gm", id_gm);
@@ -311,6 +315,7 @@ namespace ScaleniaMW
 
                 foreach (var jedn_n in jednTworzZeWspolnoty)
                 {
+
                     foreach (var wybraneJednWspolnoty in listaWybranychJednstek_s)
                     {
 
@@ -328,16 +333,28 @@ namespace ScaleniaMW
                         writeCommandJednSN.Parameters.Clear();
                         progressBarJedn_rej.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgressJedn_SN), DispatcherPriority.Background);
                     }
+
                 }
 
                 //insert into UDZIALY_N(id_id, id_sti, id_gm, rwd, rwd2, ud, ud_nr, dtu, osou, id_jedn, id_podm, rodzaj, grj) values((select gen_id(ID_UDZIALY_N, 1)from rdb$database), 0, @id_gm, @rwd, @rwd, '1/1', 1, (select cast('NOW' as timestamp) from rdb$database), 1, @id_jedn, @id_podm, @rodzaj, @grj
                 FbCommand writeCommandUdzialy_N = new FbCommand("insert into UDZIALY_N(id_id, id_sti, id_gm, rwd, rwd2, ud, ud_nr, dtu, osou, id_jedn, id_podm, rodzaj, grj) values((select gen_id(ID_UDZIALY_N, 1)from rdb$database), 0, @id_gm, @rwd, @rwd, '1/1', 1, (select cast('NOW' as timestamp) from rdb$database), 1, @id_jedn, @id_podm, @rodzaj, @grj)", connection);
                 Object o = new object();
                 o = null;
+
                 progressBarUzdialy.Maximum = jednTworzZeWspolnoty.Count - 1;
-                progressBarUzdialy.Value = 0;
+                if(checkBoxCzyDopisywacDoIstniejaczych.IsChecked== true)
+                {
+                    progressBarUzdialy.Maximum -= ListaId_PodmId_Jedn_N.Count;
+                }
+                    progressBarUzdialy.Value = 0;
                 foreach (var jedn_n in jednTworzZeWspolnoty)
                 {
+                    //tikotiko
+                    if (ListaId_PodmId_Jedn_N.Exists(x => x.Id_Podm == jedn_n.id_podm) && checkBoxCzyDopisywacDoIstniejaczych.IsChecked == true)
+                    {
+                        continue;
+                    }
+
                     writeCommandUdzialy_N.Parameters.Add("@id_gm", id_gm);
                     writeCommandUdzialy_N.Parameters.Add("@rwd", RWD_id);
 
@@ -351,6 +368,7 @@ namespace ScaleniaMW
                     writeCommandUdzialy_N.ExecuteNonQuery();
                     writeCommandUdzialy_N.Parameters.Clear();
                     progressBarJedn_rej.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgressUdzialy), DispatcherPriority.Background);
+
                 }
                 connection.Close();
                 MessageBox.Show("UTWORZONO JEDNOSTKI!");

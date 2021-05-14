@@ -29,9 +29,14 @@ namespace ScaleniaMW
             Console.WriteLine(textBoxNkrDoWWE.Text);
             WindowEdycjaDokumentow wED = new WindowEdycjaDokumentow();
             Console.WriteLine(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text.Trim()).Count);
-
-            wED.zapisDoPliku(wED.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
-
+            if(JednostkiRejestroweNowe.Jedn_REJ_N.Exists(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text))
+            {
+                wED.zapisDoPliku(wED.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
+            }
+            else
+            {
+                MessageBox.Show("Nie odnaleziono jednostki nr " + textBoxNkrDoWWE.Text + "!");
+            }
             windowPobierzNKR.Close();
         }
     }
