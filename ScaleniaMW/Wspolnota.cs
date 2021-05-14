@@ -60,7 +60,11 @@ namespace ScaleniaMW
             public int IJR_n { get; set; }
             public int id_sortowania = 0;
         }
-
+        public class Id_PodmId_Jedn_N
+        {
+            public int Id_Podm { get; set; }
+            public int Id_Jedn_N { get; set; }
+        }
         
         private static void UpdateProgressJedn_rej()
         {
@@ -93,9 +97,11 @@ namespace ScaleniaMW
         public static List<Gmina> listGminy = new List<Gmina>();
         public static List<Obreb> listObreby = new List<Obreb>();
         public static List<Jednostki_s> listaJednostki_s = new List<Jednostki_s>();
+       // public static List<Jednostki_s> listaJednostki_N = new List<Jednostki_s>();
         public static List<Jednostki_s> listaWybranychJednstek_s = new List<Jednostki_s>();
         public static List<ModelJednostkiTworzonejZeWspolnowy> jednTworzZeWspolnoty = new List<ModelJednostkiTworzonejZeWspolnowy>();
         public static List<RWD> listaRWD = new List<RWD>();
+        public static List<Id_PodmId_Jedn_N> ListaId_PodmId_Jedn_N = new List<Id_PodmId_Jedn_N>(); // lista potrzebna do tego żeby rozpoznać przypisać podmioty do jednotek istniejących innych niż współnotowe
         //wstaw w tabele jedn_sn
         //insert into JEDN_SN(id_id,id_sti, id_gm, ud, ud_nr, dtu, osou, id_jedns, id_jednn, wwgsp, powwgsp) values((select first 1  id_id + 1 from JEDN_sn order by id_Id desc),0, @id_gm , @ud, @ud_nr(select cast('NOW' as timestamp) from rdb$database), 1, @id_jedns, @id_jednN, 0, 0)
 
@@ -130,10 +136,47 @@ namespace ScaleniaMW
                 jednDoUtworz.Add(new ModelJednostkiTworzonejZeWspolnowy { id_podm = Convert.ToInt32(dt.Rows[i][0]), ud = dt.Rows[i][1].ToString(), ud_nr = Convert.ToDouble(dt.Rows[i][2]), id_sortowania = id_Podm_kolejnosc.FindIndex(x => x == Convert.ToInt32(dt.Rows[i][0])) });
             }
             //    jednTworzZeWspolnoty = new List<ModelJednostkiTworzonejZeWspolnowy>( (List<ModelJednostkiTworzonejZeWspolnowy>)jednTworzZeWspolnoty.OrderBy(x => x.id_sortowania));
-            jednTworzZeWspolnoty = jednDoUtworz.OrderBy(x => x.id_sortowania).ToList();
+            jednTworzZeWspolnoty = jednDoUtworz.OrderBy(x => x.id_sortowania).ToList(); // pobranie danych do utworzenia noweych jednostek
+
+
+            foreach (var item in listaWybranychJednstek_s)
+            {
+                Console.WriteLine("wybrane : " + item.ID_ID + " " + item.IJR);
+            }
+
+            var id_podm_jedn = BazaFB.Get_DataTable("select  id_podm, id_jedn from jedn_rej_n jn join udzialy_n u on u.id_jedn = jn.id_id where jn.id_sti is null or jn.id_sti <> 1 group by ijr, id_podm, id_jedn");
+            for (int i = 0; i < id_podm_jedn.Rows.Count; i++)
+            {
+                Console.WriteLine();
+               if(!listaWybranychJednstek_s.Exists(x => x.ID_ID == Convert.ToInt32(id_podm_jedn.Rows[i][1]))) // jesli w aktualnych jednostkach jest ta z której bede tworzyc nowe to trzeba ją wyrzucić
+                {
+                    Console.WriteLine("NIE ISTNIEJE:" +  id_podm_jedn.Rows[i][1].ToString());
+
+                    if(jednTworzZeWspolnoty.Exists(x => x.id_podm == Convert.ToInt32(id_podm_jedn.Rows[i][0])))
+                    {
+                        ListaId_PodmId_Jedn_N.Add(new Id_PodmId_Jedn_N { Id_Podm = Convert.ToInt32(id_podm_jedn.Rows[i][0]), Id_Jedn_N = Convert.ToInt32(id_podm_jedn.Rows[i][1]) });
+                    }
+                } 
+            }
+
+            foreach (var item in ListaId_PodmId_Jedn_N)
+            {
+               if( ListaId_PodmId_Jedn_N.FindAll(x => x.Id_Jedn_N == item.Id_Jedn_N).Count > 1)
+                {
+                    Console.WriteLine("SPRAWDZAM CZY SA DWA: ");
+                    ListaId_PodmId_Jedn_N.FindAll(x => x.Id_Jedn_N == item.Id_Jedn_N).ForEach(x => Console.WriteLine(x.Id_Jedn_N + "JEDN I PODM" + x.Id_Podm));
+                }
+                else
+                {
+                   // Console.WriteLine("xxxxxxx: " + item.Id_Jedn_N + " " + item.Id_Podm);
+                }
+            }
+
 
             return BazaFB.Get_DataTable(s).Rows.Count;
         }
+
+
 
         public static DataView sprawdzSpojnoscWybranychJednostek()
         {
@@ -190,7 +233,7 @@ namespace ScaleniaMW
             }
         }
 
-        public static void pobierzJednostki_n()
+        public static void pobierzJednostki()
         {
             listaIjrBedaceWBazie.Clear();
             listaWybranychJednstek_s.Clear();
@@ -214,7 +257,6 @@ namespace ScaleniaMW
             for (int i = 0; i < RWD.Rows.Count; i++)
             {
                 listaRWD.Add(new RWD { ID_ID = Convert.ToInt32(RWD.Rows[i][0]), Symbol = RWD.Rows[i][1].ToString() });
-                Console.WriteLine(RWD.Rows[i][0] + " " + RWD.Rows[i][1]);
             }
         }
 
@@ -303,10 +345,6 @@ namespace ScaleniaMW
                     writeCommandUdzialy_N.Parameters.Add("@rodzaj", 1);
                     writeCommandUdzialy_N.Parameters.Add("@grj", gr);
 
-                    Console.WriteLine(writeCommandUdzialy_N.CommandText);
-                    Console.WriteLine(writeCommandUdzialy_N.CommandPlan);
-                    Console.WriteLine(writeCommandUdzialy_N.CommandExplainedPlan);
-                    Console.WriteLine(writeCommandUdzialy_N.Container);
                     writeCommandUdzialy_N.ExecuteNonQuery();
                     writeCommandUdzialy_N.Parameters.Clear();
                     progressBarJedn_rej.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgressUdzialy), DispatcherPriority.Background);

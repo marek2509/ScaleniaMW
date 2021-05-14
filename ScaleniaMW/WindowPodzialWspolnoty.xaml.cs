@@ -94,7 +94,7 @@ namespace ScaleniaMW
             labelWybraneJednostki.Text = "";
             Wspolnota.pobierzGminy();
             Wspolnota.pobierzObreby();
-            Wspolnota.pobierzJednostki_n();
+            Wspolnota.pobierzJednostki();
             menuItemPolaczZbaza.Background = Brushes.LightGreen;
             listBoxGm.ItemsSource = Wspolnota.listGminy.Select(x => x.Nazwa);
             listBoxGm.SelectedIndex = 0;
@@ -117,12 +117,13 @@ namespace ScaleniaMW
                 int nrPierwszej = 0;
                 try
                 {
-                    Wspolnota.ileJednostekTrzebaUtworzyc();
+                    Wspolnota.ileJednostekTrzebaUtworzyc(); // pobranie danych do utworzenia nowych jednostek
                     Console.WriteLine(">" + textBoxNrPierwszejJednostki.Text + "<");
                     nrPierwszej = Convert.ToInt32(textBoxNrPierwszejJednostki.Text);
                     Console.WriteLine(nrPierwszej);
                     Console.WriteLine("Wybrana gm: " + Wspolnota.listGminy[listBoxGm.SelectedIndex].Nazwa);
                     Console.WriteLine("Wybrany obręb: " + Wspolnota.listObreby[listBoxObreby.SelectedIndex].Nazwa);
+
                 }
                 catch (Exception ec)
                 {
