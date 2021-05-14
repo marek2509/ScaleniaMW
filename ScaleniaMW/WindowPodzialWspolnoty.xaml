@@ -95,6 +95,17 @@
                     </DockPanel>
 
                     <DockPanel>
+                        <CheckBox VerticalContentAlignment="Center">Czy dopisywać do istniejących</CheckBox>
+                        <Separator BorderThickness="8" BorderBrush="Black" Height="20" RenderTransformOrigin="0.5,0.5">
+                            <Separator.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Separator.RenderTransform>
+                        </Separator>
                         <Label>Od jakiego nr jednostki rozpocząć tworzenie:</Label>
                         <TextBox x:Name="textBoxNrPierwszejJednostki" TextChanged="TextBoxNrPierwszejJednostki_TextChanged"></TextBox>
                     </DockPanel>
