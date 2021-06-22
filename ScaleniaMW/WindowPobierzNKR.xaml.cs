@@ -37,6 +37,7 @@ namespace ScaleniaMW
             {
                 MessageBox.Show("Nie odnaleziono jednostki nr " + textBoxNkrDoWWE.Text + "!");
             }
+
             windowPobierzNKR.Close();
         }
     }

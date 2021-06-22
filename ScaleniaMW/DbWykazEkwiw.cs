@@ -45,7 +45,7 @@ namespace ScaleniaMW
         public string NazwaObrebu
         {
             get => ListaObrebow.Obreby.Exists(x => x.IdObrebu == _id_obr) ? ListaObrebow.Obreby.Find(x => x.IdObrebu == _id_obr).Nazwa : "BRAK_OBREBU";
-
+                
             private set
             {
             }

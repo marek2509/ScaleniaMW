@@ -50,7 +50,10 @@
             </MenuItem>
             <MenuItem Header="Opcje">
                 <RadioButton GroupName="radio" x:Name="checkBoxZrobNowaKlasyfZSzac"  IsChecked="True" >
-                    Utwórz nową klasyfikację z "PrzBaz" z szacunku
+                    Zamień myślnik na ukośnik i usuń wartość
+                </RadioButton>
+                <RadioButton GroupName="radio" x:Name="checkBoxZamienNaUkosnik">
+                    Zamień myślnik na ukośnik (bez usówania wartości)
                 </RadioButton>
                 <RadioButton GroupName="radio" x:Name="checkBoxUsunKontury">
                     Usuń kontury szacunkowe z raportu

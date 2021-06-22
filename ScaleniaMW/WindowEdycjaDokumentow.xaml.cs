@@ -91,6 +91,22 @@ namespace ScaleniaMW
 
 
                     }
+                    else if (checkBoxZrobNowaKlasyfZSzac.IsChecked == true)
+                    {
+                        StringBuilder sbPuste = new StringBuilder();
+                        for (int i = 0; i < calyOdczzytanyTextLinie.Count; i++)
+                        {
+                            try
+                            {
+                                sb.AppendLine(UsunWartZSzacunku(calyOdczzytanyTextLinie[i], ref sbPuste));
+                            }
+                            catch
+                            {
+                                sbPuste.AppendLine("Błędny format linii:" + calyOdczzytanyTextLinie[i]);
+                            }
+                        }
+                        textBoxPuste.Text = sbPuste.ToString();
+                    }
                     else
                     {
                         StringBuilder sbPuste = new StringBuilder();
@@ -133,8 +149,28 @@ namespace ScaleniaMW
 
             int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
 
+            if (char.IsNumber(liniaZTektowki[ostatniMyslnik + 1]))
+            {
+                Console.WriteLine(liniaZTektowki[ostatniMyslnik + 1] + " " + liniaZTektowki);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            /*
             if (liniaZTektowki.LastIndexOf('/') < liniaZTektowki.IndexOf(' '))
             {
+                if(liniaZTektowki.IndexOf('-', liniaZTektowki.IndexOf(' ')) > 0 )
+                {
+                    Console.WriteLine(liniaZTektowki.IndexOf('-', liniaZTektowki.IndexOf(' ')) + " - po spacji" );
+                    Console.WriteLine(liniaZTektowki);
+                }
+
+
+
+
+
                 return false;
             }
             else
@@ -144,6 +180,7 @@ namespace ScaleniaMW
                 {
                     if (char.IsNumber(liniaZTektowki[ostatniMyslnik + 1]))
                     {
+                        Console.WriteLine(liniaZTektowki[ostatniMyslnik + 1] + " " + liniaZTektowki);
                         return true;
                     }
                     else
@@ -156,7 +193,7 @@ namespace ScaleniaMW
             {
                 return false;
             }
-            return true;
+            return true;*/
         }
 
         string UsunWartZSzacunku(string liniaZTektowki, ref StringBuilder sbPuste)
@@ -171,7 +208,7 @@ namespace ScaleniaMW
             int dlTekstu = liniaZTektowki.Length;
 
 
-            if (SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(liniaZTektowki))
+            if (SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(liniaZTektowki) && checkBoxZamienNaUkosnik.IsChecked == false)
             {
                 Console.WriteLine(liniaZTektowki + " szacunek TRUE");
                 int ileZnakowUsunac = liniaZTektowki.IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
@@ -227,36 +264,36 @@ namespace ScaleniaMW
                 try
                 {
 
-                 using (Stream s = File.Open(svd.FileName, FileMode.Create))
-                {
-
-
-                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                    try
+                    using (Stream s = File.Open(svd.FileName, FileMode.Create))
                     {
-                        try
-                        {
-                            StringBuilder sb = new StringBuilder();
 
-                            sw.Write(tekstDoZapisu);
-                            sw.Close();
-                        }
-                        catch (Exception exc)
-                        {
-                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
 
-                        if (resultat == MessageBoxResult.Yes)
-                        {
-                            Application.Current.Shutdown();
-                        }
+                        //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                        using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                            try
+                            {
+                                try
+                                {
+                                    StringBuilder sb = new StringBuilder();
+
+                                    sw.Write(tekstDoZapisu);
+                                    sw.Close();
+                                }
+                                catch (Exception exc)
+                                {
+                                    MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+
+                                if (resultat == MessageBoxResult.Yes)
+                                {
+                                    Application.Current.Shutdown();
+                                }
+                            }
                     }
-                }
 
                 }
                 catch (Exception ed)
@@ -266,7 +303,7 @@ namespace ScaleniaMW
             }
         }
 
-     
+
 
         public void ustawProperties(string FileName)
         {
