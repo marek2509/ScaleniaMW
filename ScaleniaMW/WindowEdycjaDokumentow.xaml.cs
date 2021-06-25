@@ -202,6 +202,7 @@ namespace ScaleniaMW
             if (liniaZTektowki.Contains("pusty") || liniaZTektowki.Trim() == "")
             {
                 sbPuste.AppendLine(liniaZTektowki);
+                richTextBox.Text = sbPuste.ToString();
                 return (liniaZTektowki);
             }
             int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
