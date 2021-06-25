@@ -208,7 +208,7 @@ namespace ScaleniaMW
             int dlTekstu = liniaZTektowki.Length;
 
 
-            if (SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(liniaZTektowki) && checkBoxZamienNaUkosnik.IsChecked == false)
+            if (SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(liniaZTektowki) && checkBoxZrobNowaKlasyfZSzac.IsChecked == true)
             {
                 Console.WriteLine(liniaZTektowki + " szacunek TRUE");
                 int ileZnakowUsunac = liniaZTektowki.IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
@@ -217,6 +217,7 @@ namespace ScaleniaMW
 
             if (liniaZTektowki.IndexOf('/', liniaZTektowki.IndexOf(' ')) > liniaZTektowki.IndexOf(' '))
             {
+                Console.WriteLine("z numerem konturu");
                 while (true)
                 {
                     int pierwsza_przerwa = liniaZTektowki.IndexOf(' ');
@@ -229,32 +230,60 @@ namespace ScaleniaMW
                     }
                     else
                     {
+                        if (checkBoxZamienNaUkosnik.IsChecked == true)
+                        {
+                            int ostatniUkosnik = liniaZTektowki.LastIndexOf('/');
+                            liniaZTektowki = liniaZTektowki.Remove(ostatniUkosnik, 1);
+                            liniaZTektowki = liniaZTektowki.Insert(ostatniUkosnik, "-");
+                        }
+                        
                         break;
                     }
                 }
             }
             else
             {
+                Console.WriteLine("bez numeru konturu");
                 while (true)
                 {
                     int pierwsza_przerwa = liniaZTektowki.IndexOf(' ');
-                    int ostatni_Myslnik = liniaZTektowki.LastIndexOf('-');
 
-                    if (ostatni_Myslnik > pierwsza_przerwa)
+                  //  int ukośnikPoPrzerwie = liniaZTektowki.IndexOf(' ', liniaZTektowki.LastIndexOf('/'));
+
+                    int myslnikDoPodmianki = liniaZTektowki.IndexOf('-', pierwsza_przerwa);
+                    Console.WriteLine("mysln do podm "  + myslnikDoPodmianki);
+
+                    if (myslnikDoPodmianki > 0)
                     {
-                        liniaZTektowki = liniaZTektowki.Remove(ostatni_Myslnik, 1);
-                        liniaZTektowki = liniaZTektowki.Insert(ostatni_Myslnik, "/");
+                        liniaZTektowki = liniaZTektowki.Remove(myslnikDoPodmianki, 1);
+                        liniaZTektowki = liniaZTektowki.Insert(myslnikDoPodmianki, "/");
                     }
                     else
                     {
+                        break;
+                    }
+
+
+
+                    Console.WriteLine(myslnikDoPodmianki + "<mysln:  " + liniaZTektowki);
+                    /*
+                    if (myslnikDoPodmianki > pierwsza_przerwa)
+                    {
+                        liniaZTektowki = liniaZTektowki.Remove(myslnikDoPodmianki, 1);
+                        liniaZTektowki = liniaZTektowki.Insert(myslnikDoPodmianki, "/");
+                    }
+                    else
+                    {*/
+                    /*
                         if(checkBoxZamienNaUkosnik.IsChecked == true)
                         {
                             int ostatniUkosnik = liniaZTektowki.LastIndexOf('/');
                             liniaZTektowki = liniaZTektowki.Remove(ostatniUkosnik, 1);
                             liniaZTektowki = liniaZTektowki.Insert(ostatniUkosnik, "-");
-                        }
-                        break;
-                    }
+                        }*/
+
+                    /*    break;
+                    }*/
                 }
             }
             return liniaZTektowki;
