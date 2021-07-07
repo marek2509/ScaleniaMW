@@ -236,6 +236,7 @@ namespace ScaleniaMW
                             int ostatniUkosnik = liniaZTektowki.LastIndexOf('/');
                             liniaZTektowki = liniaZTektowki.Remove(ostatniUkosnik, 1);
                             liniaZTektowki = liniaZTektowki.Insert(ostatniUkosnik, "-");
+
                         }
                         
                         break;
@@ -261,6 +262,13 @@ namespace ScaleniaMW
                     }
                     else
                     {
+                        if (checkBoxZamienNaUkosnik.IsChecked == true)
+                        {
+                            int ostatniUkosnik = liniaZTektowki.LastIndexOf('/');
+                            liniaZTektowki = liniaZTektowki.Remove(ostatniUkosnik, 1);
+                            liniaZTektowki = liniaZTektowki.Insert(ostatniUkosnik, "-");
+
+                        }
                         break;
                     }
 
