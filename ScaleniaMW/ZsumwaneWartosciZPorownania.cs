@@ -54,7 +54,7 @@ namespace ScaleniaMW
 
         public decimal WGSPzJednSN { get; set; }
         public decimal RozniceWGSPZJednIWartPrzed { get; set; }
-
+        public string NazwaWlascosi { get; set; }
 
         decimal _odch_3_proc;
         decimal _wartPo;
@@ -65,7 +65,7 @@ namespace ScaleniaMW
         {
         }
 
-        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0, bool zgoda = false, bool odchWPrgor = false, decimal _WGSPzJednSN = 0, decimal _RozniceWGSPZJEDNiWartPrzed =0)
+        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0, bool zgoda = false, bool odchWPrgor = false, decimal _WGSPzJednSN = 0, decimal _RozniceWGSPZJEDNiWartPrzed = 0)
         {
             NKR = nkr;
             WartPrzed = wartPrzed;
@@ -75,7 +75,6 @@ namespace ScaleniaMW
             OdchWProgramie = odchWPrgor;
             WGSPzJednSN = _WGSPzJednSN;
             RozniceWGSPZJednIWartPrzed = _RozniceWGSPZJEDNiWartPrzed;
-           
         }
         
         public void wypiszWConsoli()

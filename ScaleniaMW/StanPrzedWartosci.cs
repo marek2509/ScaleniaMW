@@ -23,13 +23,9 @@ namespace ScaleniaMW
 
         public StanPrzedWartosci(decimal wart, int ijr, int nkr, int idgrp, int idJednNowej, double udzial )
         {
-            Console.WriteLine("1");
             Wartosc = Decimal.Round(wart,2);
-            Console.WriteLine("2");
             IJR = ijr;
-            Console.WriteLine("3");
             NKR = nkr;
-            Console.WriteLine("4");
             if (idgrp == 0)
             {
                 IDGRP = null;
@@ -38,11 +34,8 @@ namespace ScaleniaMW
             {
                 IDGRP =  idgrp;
             }
-            Console.WriteLine("5");
             id_id = idJednNowej;
-            Console.WriteLine("6");
             udzialPrzed = udzial;
-            Console.WriteLine("7");
           //  WartoscPrzedZJSNWWGSP = _wartoscPrzedZJSNWWGSP;
         }                  
 

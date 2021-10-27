@@ -40,15 +40,6 @@ namespace ScaleniaMW
             InitializeComponent();
             try
             {
-                tekstPomoc += "1. Ustawiena FDB > Ustaw ścieżkę -wybieramy ścieżkę FDB programu scalenia np. 'scalenia.fdb'\n" +
-                                     "2. Ustawienia FDB > Ustaw login i hasło -takie jak przy logowaniu w programie scalenia, domyślne(SYSDBA, masterkey).\n" +
-                                     "3. Baza.fdb > Połącz i pobierz dane -potrzebne do przypisania KW(przed) w stanie po scalenu z bazy 'scalenia.fdb'.\n" +
-                                     "4. Baza.fdb > Automatycznie przypisz KW -Automatycznie przypisz KW,\n" +
-                                     "\t\t\t\t       -Tryb dokładny -Przypisze jeśli księgi we wszystkich działkach były takie same.\n" +
-                                     "\t\t\t\t       -Tryb przybliżony -Przypisze jeśli była przynajmniej jedna działka z księgą a pozostałe działki były bez księgi.\n" +
-                                     "5. Baza.fdb > Przypisz zaznaczoną jednostkę -przycisk przypisuje wybraną jednostkę z listy 'KW' \n" +
-                                     "6. Baza.fdb > Załaduj do bazy FDB -przypisane KW zostaną wprowadzone do pliku 'scalenia.fdb'\n" +
-                                     "7. Baza.fdb > Usuń wszystkie z bazy -usunie wszystkie przypisane KW znajdujące się w pliku'scalenia.fdb'";
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 windowPrzypiszKW.Title += " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -200,14 +191,6 @@ namespace ScaleniaMW
 
                     adapter.Fill(dt);
                     //dgNrKwZSQL.ItemsSource = dt.AsDataView();
-                    foreach (var item in dt.Columns)
-                    {
-
-                        Console.Write(item + " << ");
-                    }
-
-                    Console.WriteLine("row count:" + dt.Rows.Count);
-                    Console.WriteLine("column count:" + dt.Columns.Count);
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
@@ -232,8 +215,6 @@ namespace ScaleniaMW
                         Console.WriteLine(listaDopasowKW.Count);
                         dgNrKwZSQL.ItemsSource = listaDopasowKW;
                         dgNrKwZSQL.Items.Refresh();
-
-                        Console.WriteLine("ustawiam SOURCE");
                     }
                     catch (Exception excp)
                     {
@@ -318,8 +299,6 @@ namespace ScaleniaMW
         {
             if (czyPolaczonoZBaza)
             {
-                Console.WriteLine(" super ");
-
                 Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "PrzypiszZaznJedn");
 
                 listBoxNkr.Items.Refresh();
@@ -429,11 +408,6 @@ namespace ScaleniaMW
 
                             if (listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane != listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane)
                             {
-                                //if ((listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "") && (listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "" || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null))
-                                //{
-                                //    progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
-                                //    continue;
-                                //}
                                 if (BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane) || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "")
                                 {
                                     if (listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "")
@@ -483,6 +457,7 @@ namespace ScaleniaMW
         public void usunMozliwoscPrzypisaniaKwBedacegoWKilkuJednostkach()
         {
             sbWspolneKW = new StringBuilder();
+
             // usunięcie możliwości przypisania KW które występują w więcej niż jednej jednostce
             var tmpListaKwNiepowtarzalna = listaDopasowKW.Where(x => x.KWPoDopasowane != null && x.KWPoDopasowane.Trim() != "").Select(x => x.KWPoDopasowane).ToList().OrderBy(x => x).Distinct();
             List<int> NKRktorymUsunacKW = new List<int>();

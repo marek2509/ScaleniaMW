@@ -105,8 +105,6 @@ namespace ScaleniaMW
                 tabItemGrRejPrzed.Foreground = Brushes.Black;
             }
 
-
-
             if (ZmienKolorKarciePrzed)
             {
                 tabItemStanPRZED.Foreground = Brushes.Red;
