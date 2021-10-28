@@ -158,6 +158,7 @@ namespace ScaleniaMW
             {
                 return false;
             }
+
             /*
             if (liniaZTektowki.LastIndexOf('/') < liniaZTektowki.IndexOf(' '))
             {
@@ -251,6 +252,7 @@ namespace ScaleniaMW
                     int pierwsza_przerwa = liniaZTektowki.IndexOf(' ');
 
                   //  int ukośnikPoPrzerwie = liniaZTektowki.IndexOf(' ', liniaZTektowki.LastIndexOf('/'));
+
 
                     int myslnikDoPodmianki = liniaZTektowki.IndexOf('-', pierwsza_przerwa);
                     Console.WriteLine("mysln do podm "  + myslnikDoPodmianki);

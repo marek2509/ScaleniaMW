@@ -497,6 +497,7 @@ namespace ScaleniaMW
             Properties.Settings.Default.FBPort = Constants.PortFB;
             FbPort3051.IsChecked = false;
             FbPort3050.IsChecked = true;
+            Properties.Settings.Default.Save();
         }
 
         private void ButtonWspolnota_Click(object sender, RoutedEventArgs e)
