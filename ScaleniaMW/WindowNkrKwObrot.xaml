@@ -67,7 +67,7 @@
                 <GroupBox>
                     <GroupBox.Header>Opcje dla Eksportu</GroupBox.Header>
                     <StackPanel>
-                        <CheckBox x:Name="checkBoxIgnorujKropkeIPrzecinej" Unchecked="CheckBoxIgnorujKropkeIPrzecinej_Unchecked" Checked="CheckBoxIgnorujKropkeIPrzecinej_Checked">Ignoruj przecinek "," i kropkę "." przy porównianiu DZIAŁEK z pliku .EDZ i .FDB podczas Exportu plików tekstowych</CheckBox>
+                        <CheckBox x:Name="checkBoxIgnorujKropkeIPrzecinej" Unchecked="CheckBoxIgnorujKropkeIPrzecinej_Unchecked" Checked="CheckBoxIgnorujKropkeIPrzecinej_Checked">Zamień przecinek "," z kropką "." przy porównianiu DZIAŁEK z pliku .EDZ i bazy .FDB dla Exportu plików tekstowych</CheckBox>
                         <GroupBox Width="500" HorizontalAlignment="Left">
                             <GroupBox.Header>Eksport KW</GroupBox.Header>
                             <StackPanel>
@@ -89,10 +89,10 @@
                 <Label>Hasło:</Label>
                 <PasswordBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
 
-                <WrapPanel>
+                <!--<WrapPanel>
                     <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo">Zapisz</Button>
                     <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj">Anuluj</Button>
-                </WrapPanel>
+                </WrapPanel>-->
             </StackPanel>
             <Grid x:Name="tabControl" Grid.Row="2" Height="AUTO" Width="AUTO" Grid.ColumnSpan="2" Background="#FFE5E5E5">
 
@@ -121,12 +121,12 @@
 
                 <StackPanel Grid.Column="0" Visibility="Hidden" x:Name="stackBledyKW" Background="Transparent" Panel.ZIndex="999" Grid.ColumnSpan="2" >
                     <Button x:Name="zamknijTextBlockBledy" Click="ZamknijTextBlockBledy_Click" Margin="210,10,0,0" Width="70" HorizontalAlignment="Left">Zamknij</Button>
-                    <TextBox Padding="25" Margin=" 5" x:Name="textBlockBledy" MaxHeight="750"  MaxWidth="600">
+                    <TextBox Padding="25" Margin=" 5" x:Name="textBlockBledy" MaxHeight="450" MaxWidth="600"  VerticalScrollBarVisibility="Auto">
                     </TextBox>
 
                 </StackPanel>
             </Grid>
-            <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
+            <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo" ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
         </Grid>
     </Grid>
 </Window>

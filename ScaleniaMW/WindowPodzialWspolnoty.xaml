@@ -9,19 +9,28 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="textBlockSciezka"></TextBlock>
-        <Menu>
-            <MenuItem Header="Ustawienia FDB" Foreground="Black">
-                <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
-                <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="Połącz z bazą" x:Name="menuItemPolaczZbaza"  Click="MenuItemPolaczZbaza_Click">
+        <DockPanel Grid.Row="0">
+            
+            <Button Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
+                <Image Width="20" Source="Resources/previous.png" ></Image>
+            </Button>
+            <TextBlock x:Name="textBlockSciezka" Height="20" MinWidth="770"></TextBlock>
+        </DockPanel>
+            <Menu Grid.Row="1">
+                <MenuItem Header="Ustawienia FDB" Foreground="Black">
+                    <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+                    <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Połącz z bazą" x:Name="menuItemPolaczZbaza"  Click="MenuItemPolaczZbaza_Click">
 
-            </MenuItem>
-        </Menu>
-        <StackPanel Grid.Row="1" x:Name="stackPobierzInfo">
+                </MenuItem>
+            </Menu>
+
+        
+        <StackPanel Grid.Row="2" x:Name="stackPobierzInfo">
 
 
             <DataGrid Height="200" x:Name="dgJednostkiNowe" IsReadOnly="True" SelectionMode="Single" CanUserSortColumns="False">

@@ -429,21 +429,6 @@ namespace ScaleniaMW
             przejdzDoUstawLoginIHaslo();
         }
 
-        private void ButtonZapiszLogIHaslo(object sender, RoutedEventArgs e)
-        {
-       /*     Properties.Settings.Default.Login = textBoxLogin.Text;
-            Properties.Settings.Default.Haslo = textBoxHaslo.Password;
-            Properties.Settings.Default.Save();
-            panelLogowania.Visibility = Visibility.Hidden;
-            tabControl.Visibility = Visibility.Visible;*/
-        }
-
-        private void Button_Anuluj(object sender, RoutedEventArgs e)
-        {
-          /*  panelLogowania.Visibility = Visibility.Hidden;
-            tabControl.Visibility = Visibility.Visible;*/
-        }
-
         private void CheckBoxIgnorujKropkeIPrzecinej_Checked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek = (bool)checkBoxIgnorujKropkeIPrzecinej.IsChecked;

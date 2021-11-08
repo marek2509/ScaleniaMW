@@ -149,7 +149,11 @@ namespace ScaleniaMW
             textBoxNrPierwszejJednostki.CaretIndex = textBoxNrPierwszejJednostki.Text.Length;
         }
 
-
-
+        private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            windowPodzialWspolnoty.Close();
+        }
     }
 }

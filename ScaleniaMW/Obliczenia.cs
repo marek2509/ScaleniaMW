@@ -40,14 +40,14 @@ namespace ScaleniaMW
 
             if (czyIgnorowacPrzecinkiIKropki)
             {
-
-
                 foreach (var item in punkt)
                 {
+                    var tmpCompare = item.Nr_Dz.Trim().Replace("-", "@").Replace(".", "-").Replace("@", ".");
 
-                    if (dzialkaNkrZSQL.Exists(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
+                    if (dzialkaNkrZSQL.Exists(x => x.ObrDzialka.Trim().Equals(tmpCompare)))
                     {
-                        nkrZSQL = dzialkaNkrZSQL.Find(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
+                        nkrZSQL = dzialkaNkrZSQL.Find(x => x.ObrDzialka.Trim().Equals(tmpCompare));
+                        //nkrZSQL = dzialkaNkrZSQL.Find(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
                         string KW = nkrZSQL.KW;
                         ileDopasowano++;
                         switch (intKodExpo0NKR1KW)

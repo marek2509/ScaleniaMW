@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -69,9 +70,7 @@ namespace ScaleniaMW
                 try
                 {
                     calyOdczzytanyTextLinie = odczytZPlikuLinie(dlg.FileName);
-
-                    //  calyOdczzytanyTextLinie.ForEach(x => Console.WriteLine(x));
-                    if (checkBoxUsunKontury.IsChecked == true)
+                    if (checkBoxUsunKontury.IsChecked == true) // usuwanie konturów z dokumentu
                     {
                         bool czyUsuwaclinie = false;
                         for (int i = 0; i < calyOdczzytanyTextLinie.Count; i++)
@@ -88,24 +87,6 @@ namespace ScaleniaMW
                             if (calyOdczzytanyTextLinie[i].ToLower().Contains("obr")) czyUsuwaclinie = false;
                         }
                         calyOdczzytanyTextLinie.ForEach(x => sb.AppendLine(x));
-
-
-                    }
-                    else if (checkBoxZrobNowaKlasyfZSzac.IsChecked == true)
-                    {
-                        StringBuilder sbPuste = new StringBuilder();
-                        for (int i = 0; i < calyOdczzytanyTextLinie.Count; i++)
-                        {
-                            try
-                            {
-                                sb.AppendLine(UsunWartZSzacunku(calyOdczzytanyTextLinie[i], ref sbPuste));
-                            }
-                            catch
-                            {
-                                sbPuste.AppendLine("Błędny format linii:" + calyOdczzytanyTextLinie[i]);
-                            }
-                        }
-                        textBoxPuste.Text = sbPuste.ToString();
                     }
                     else
                     {
@@ -114,7 +95,7 @@ namespace ScaleniaMW
                         {
                             try
                             {
-                                sb.AppendLine(UsunWartZSzacunku(calyOdczzytanyTextLinie[i], ref sbPuste));
+                                sb.AppendLine(UsunWartZSzacunkuIZamienNaUkosniki(calyOdczzytanyTextLinie[i], ref sbPuste, (bool)checkBoxZrobNowaKlasyfZSzac.IsChecked));
                             }
                             catch
                             {
@@ -123,8 +104,6 @@ namespace ScaleniaMW
                         }
                         textBoxPuste.Text = sbPuste.ToString();
                     }
-
-
                     var resultat = MessageBox.Show("Wczytano.\nZapisz plik.", "Wczytano", MessageBoxButton.OK);
                 }
                 catch (Exception esa)
@@ -143,163 +122,102 @@ namespace ScaleniaMW
             }
         }
 
-        bool SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(string liniaZTektowki)
+        string UsunWartZSzacunkuIZamienNaUkosniki(string liniaZTektowki, ref StringBuilder sbPuste, bool usunWartosc = true)
         {
-            liniaZTektowki = liniaZTektowki.Trim();
-
-            int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
-
-            if (char.IsNumber(liniaZTektowki[ostatniMyslnik + 1]))
-            {
-                Console.WriteLine(liniaZTektowki[ostatniMyslnik + 1] + " " + liniaZTektowki);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-            /*
-            if (liniaZTektowki.LastIndexOf('/') < liniaZTektowki.IndexOf(' '))
-            {
-                if(liniaZTektowki.IndexOf('-', liniaZTektowki.IndexOf(' ')) > 0 )
-                {
-                    Console.WriteLine(liniaZTektowki.IndexOf('-', liniaZTektowki.IndexOf(' ')) + " - po spacji" );
-                    Console.WriteLine(liniaZTektowki);
-                }
-
-
-
-
-
-                return false;
-            }
-            else
-            if (ostatniMyslnik > liniaZTektowki.LastIndexOf('/'))
-            {
-                if (ostatniMyslnik < liniaZTektowki.Length - 1)
-                {
-                    if (char.IsNumber(liniaZTektowki[ostatniMyslnik + 1]))
-                    {
-                        Console.WriteLine(liniaZTektowki[ostatniMyslnik + 1] + " " + liniaZTektowki);
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                return false;
-            }
-            return true;*/
-        }
-
-        string UsunWartZSzacunku(string liniaZTektowki, ref StringBuilder sbPuste)
-        {
-
             if (liniaZTektowki.Contains("pusty") || liniaZTektowki.Trim() == "")
             {
                 sbPuste.AppendLine(liniaZTektowki);
                 richTextBox.Text = sbPuste.ToString();
                 return (liniaZTektowki);
             }
-            int ostatniMyslnik = liniaZTektowki.LastIndexOf('-');
-            int dlTekstu = liniaZTektowki.Length;
+
+            var tmpSplitString = liniaZTektowki.Split(' '); // temporary elem
+            List<string> splitedString = new List<string>();   // main list with true value without whitespace
 
 
-            if (SprawdzCzySzacunekTRUECzyKlasyfikacjaFALSE(liniaZTektowki) && checkBoxZrobNowaKlasyfZSzac.IsChecked == true)
+            foreach (var item in tmpSplitString) // assign value and reject wrong value (whitespace)
             {
-                Console.WriteLine(liniaZTektowki + " szacunek TRUE");
-                int ileZnakowUsunac = liniaZTektowki.IndexOf(' ', ostatniMyslnik) - ostatniMyslnik;
-                liniaZTektowki = liniaZTektowki.Remove(ostatniMyslnik, ileZnakowUsunac);
-            }
-
-            if (liniaZTektowki.IndexOf('/', liniaZTektowki.IndexOf(' ')) > liniaZTektowki.IndexOf(' '))
-            {
-                Console.WriteLine("z numerem konturu");
-                while (true)
+                if(item != "")
                 {
-                    int pierwsza_przerwa = liniaZTektowki.IndexOf(' ');
-                    int zamiana_Myslnik = liniaZTektowki.IndexOf('-', liniaZTektowki.LastIndexOf('/'));
-                    Console.WriteLine(liniaZTektowki + " pp " + pierwsza_przerwa + " om " + zamiana_Myslnik);
-                    if (zamiana_Myslnik > pierwsza_przerwa)
-                    {
-                        liniaZTektowki = liniaZTektowki.Remove(zamiana_Myslnik, 1);
-                        liniaZTektowki = liniaZTektowki.Insert(zamiana_Myslnik, "/");
-                    }
-                    else
-                    {
-                        if (checkBoxZamienNaUkosnik.IsChecked == true)
-                        {
-                            int ostatniUkosnik = liniaZTektowki.LastIndexOf('/');
-                            liniaZTektowki = liniaZTektowki.Remove(ostatniUkosnik, 1);
-                            liniaZTektowki = liniaZTektowki.Insert(ostatniUkosnik, "-");
-
-                        }
-                        
-                        break;
-                    }
+                    splitedString.Add(item);
                 }
+            }
+             
+            if(splitedString.Count != 3)
+            {
+                sbPuste.AppendLine("ERROR: " +liniaZTektowki);
+                return liniaZTektowki;
             }
             else
             {
-                Console.WriteLine("bez numeru konturu");
-                while (true)
+
+                if (usunWartosc) // warunek dla opcji czy usuwać wartość!!!
                 {
-                    int pierwsza_przerwa = liniaZTektowki.IndexOf(' ');
-
-                  //  int ukośnikPoPrzerwie = liniaZTektowki.IndexOf(' ', liniaZTektowki.LastIndexOf('/'));
-
-
-                    int myslnikDoPodmianki = liniaZTektowki.IndexOf('-', pierwsza_przerwa);
-                    Console.WriteLine("mysln do podm "  + myslnikDoPodmianki);
-
-                    if (myslnikDoPodmianki > 0)
+                    string tmpLandUseContour = splitedString[1];
+                    // sprawdzenie czy kontur posiada wartość
+                    Regex regex = new Regex(@"^[-+]?([0-9]+(\.[0-9]*)?|\.[0-9]+)$");
+                    var wartoscKontury = tmpLandUseContour.Remove(0, tmpLandUseContour.LastIndexOf('-') + 1);
+                  
+                    // jeśli nie posiada wartości to nie usuwaj
+                    if (!regex.IsMatch(wartoscKontury))
                     {
-                        liniaZTektowki = liniaZTektowki.Remove(myslnikDoPodmianki, 1);
-                        liniaZTektowki = liniaZTektowki.Insert(myslnikDoPodmianki, "/");
+                        sbPuste.AppendLine("Brak wartości dla konturu: " + liniaZTektowki);
                     }
                     else
                     {
-                        if (checkBoxZamienNaUkosnik.IsChecked == true)
-                        {
-                            int ostatniUkosnik = liniaZTektowki.LastIndexOf('/');
-                            liniaZTektowki = liniaZTektowki.Remove(ostatniUkosnik, 1);
-                            liniaZTektowki = liniaZTektowki.Insert(ostatniUkosnik, "-");
-
-                        }
-                        break;
+                        //usunięcie wartości z konturu
+                        splitedString[1] = tmpLandUseContour.Remove(tmpLandUseContour.LastIndexOf('-'));
                     }
-
-
-
-                    Console.WriteLine(myslnikDoPodmianki + "<mysln:  " + liniaZTektowki);
-                    /*
-                    if (myslnikDoPodmianki > pierwsza_przerwa)
-                    {
-                        liniaZTektowki = liniaZTektowki.Remove(myslnikDoPodmianki, 1);
-                        liniaZTektowki = liniaZTektowki.Insert(myslnikDoPodmianki, "/");
-                    }
-                    else
-                    {*/
-                    /*
-                        if(checkBoxZamienNaUkosnik.IsChecked == true)
-                        {
-                            int ostatniUkosnik = liniaZTektowki.LastIndexOf('/');
-                            liniaZTektowki = liniaZTektowki.Remove(ostatniUkosnik, 1);
-                            liniaZTektowki = liniaZTektowki.Insert(ostatniUkosnik, "-");
-                        }*/
-
-                    /*    break;
-                    }*/
+              
                 }
+
+
+
+
+
+                // zamiana myślników na ukośniki
+                Console.WriteLine(splitedString[1]);
+                var tmpArray = splitedString[1].Split('/');
+                StringBuilder sb = new StringBuilder();
+                if (tmpArray.Length == 2)
+                {
+                    sb.Append(tmpArray[0]);
+                    sb.Append("/");
+                    sb.Append(tmpArray[1].Replace("-", "/"));
+                    splitedString[1] = sb.ToString();
+                }
+                else if(tmpArray.Length == 1)
+                {
+                    splitedString[1] = tmpArray[0].Replace("-", "/");
+                }
+                else
+                {
+                    sbPuste.AppendLine("ERROR: " + liniaZTektowki);
+                    return liniaZTektowki;
+                }
+
+
+                // merge  text line
+                StringBuilder processedValue = new StringBuilder();
+                processedValue.Append(splitedString[0]);
+                 while(processedValue.Length < 25)
+                {
+                    processedValue.Append(" ");
+                }
+
+                processedValue.Append(splitedString[1]);
+                while(processedValue.Length < 67 - splitedString[2].Length)
+                {
+                    processedValue.Append(" ");
+                }
+                processedValue.Append(splitedString[2]);
+
+                return processedValue.ToString();
             }
-            return liniaZTektowki;
+
         }
 
+      
         public void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")
         {
             SaveFileDialog svd = new SaveFileDialog();
@@ -649,39 +567,39 @@ namespace ScaleniaMW
             List<List<JR_Nowa>> jR_s = new List<List<JR_Nowa>>();
 
 
-            int naIlePlikowDzielimy = (int)Math.Ceiling(JednostkiRejestroweNowe.Jedn_REJ_N.Count / 100d);
+            //int naIlePlikowDzielimy = (int)Math.Ceiling(JednostkiRejestroweNowe.Jedn_REJ_N.Count / 100d);
 
-            if (naIlePlikowDzielimy >= 2)
-            {
-                MessageBox.Show("Ze względu na wielkość wykaz podzielono na " + naIlePlikowDzielimy + " pliki. Zapisz każdy z nich.", "UWAGA!", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if (naIlePlikowDzielimy > 4)
-            {
-                MessageBox.Show("Ze względu na wielkość wykaz podzielono na " + naIlePlikowDzielimy + " plików. Zapisz każdy z nich.", "UWAGA!", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-
-
-
-            for (int i = 0; i < naIlePlikowDzielimy; i++)
-            {
-
-                if (i == naIlePlikowDzielimy - 1)
-                {
-                    jR_s.Add(JednostkiRejestroweNowe.Jedn_REJ_N.GetRange(i * 100, (JednostkiRejestroweNowe.Jedn_REJ_N.Count - (i * 100))));
-                }
-                else
-                {
-                    jR_s.Add(JednostkiRejestroweNowe.Jedn_REJ_N.GetRange(i * 100, 100));
-                }
-                Console.WriteLine(i * 100);
-            }
-
-            foreach (var item in jR_s)
-            {
-                zapisDoPliku(GenerujWWE(item), ".doc");
-            }
+            //if (naIlePlikowDzielimy >= 2)
+            //{
+            //    MessageBox.Show("Ze względu na wielkość wykaz podzielono na " + naIlePlikowDzielimy + " pliki. Zapisz każdy z nich.", "UWAGA!", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
+            //else if (naIlePlikowDzielimy > 4)
+            //{
+            //    MessageBox.Show("Ze względu na wielkość wykaz podzielono na " + naIlePlikowDzielimy + " plików. Zapisz każdy z nich.", "UWAGA!", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
 
 
+
+            //for (int i = 0; i < naIlePlikowDzielimy; i++)
+            //{
+
+            //    if (i == naIlePlikowDzielimy - 1)
+            //    {
+            //        jR_s.Add(JednostkiRejestroweNowe.Jedn_REJ_N.GetRange(i * 100, (JednostkiRejestroweNowe.Jedn_REJ_N.Count - (i * 100))));
+            //    }
+            //    else
+            //    {
+            //        jR_s.Add(JednostkiRejestroweNowe.Jedn_REJ_N.GetRange(i * 100, 100));
+            //    }
+            //    Console.WriteLine(i * 100);
+            //}
+
+            //foreach (var item in jR_s)
+            //{
+            //    zapisDoPliku(GenerujWWE(item), ".doc");
+            //}
+
+            zapisDoPliku(GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
         }
 
         private void RichTextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
