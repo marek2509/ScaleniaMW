@@ -723,7 +723,7 @@ namespace ScaleniaMW
             }
             catch
             {
-                MessageBox.Show("Coś poszło nie tak", "Smuteczek!", MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Coś poszło nie tak", "Smuteczek :(", MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
 

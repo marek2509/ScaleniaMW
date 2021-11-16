@@ -193,12 +193,18 @@ namespace ScaleniaMW
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
+                Console.WriteLine("--------");
+                Console.WriteLine(dt.Rows[i][0] + " " + dt.Rows[i][0]);
+                Console.WriteLine(dt.Rows[i][1] + " " + dt.Rows[i][1].GetType());
+                Console.WriteLine(dt.Rows[i][2] + " " + dt.Rows[i][2].GetType());
+                Console.WriteLine(dt.Rows[i][3] + " " + dt.Rows[i][3].GetType());
+
                 listaWarosci.Add(new ModelSWartosciZDzialekIZjednRej
                 {
-                    NKR = Convert.ToInt32(dt.Rows[i][0]),
-                    WARTOŚĆ__Z__GOSPODARSTW = Convert.ToDouble(dt.Rows[i][1]),
-                    WARTOŚĆ__Z__DZIAŁEK = Convert.ToDouble(dt.Rows[i][2]),
-                    RÓŻNICA = Convert.ToDouble(dt.Rows[i][3])
+                    NKR = Convert.ToInt32(dt.Rows[i][0].Equals(DBNull.Value) ? 0 : dt.Rows[i][0]),
+                    WARTOŚĆ__Z__GOSPODARSTW = Convert.ToDouble(dt.Rows[i][1].Equals(DBNull.Value) ? 0 : dt.Rows[i][1]),
+                    WARTOŚĆ__Z__DZIAŁEK = Convert.ToDouble(dt.Rows[i][2].Equals(DBNull.Value) ? 0 : dt.Rows[i][2]),
+                    RÓŻNICA = Convert.ToDouble(dt.Rows[i][3].Equals(DBNull.Value) ? 0 : dt.Rows[i][3])
                 });
             }
             return listaWarosci.FindAll(x => x.RÓŻNICA != 0);

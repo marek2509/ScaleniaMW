@@ -98,8 +98,8 @@ namespace ScaleniaMW
         bool czyPolaczonoZBaza = false;
         private void PolaczZBaza(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 odczytajZSql();
                 itemPolaczZBaza.Background = Brushes.SeaGreen;
                 StringBuilder stringBuilder = new StringBuilder();
@@ -107,15 +107,15 @@ namespace ScaleniaMW
                 itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
 
                 czyPolaczonoZBaza = true;
-            }
-            catch (Exception ex)
-            {
-                czyPolaczonoZBaza = false;
-                itemPolaczZBaza.Background = Brushes.Red;
-                itemPolaczZBaza.Header = "Połącz z bazą";
-                textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
-                przejdzDoOknaLogowania(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    czyPolaczonoZBaza = false;
+            //    itemPolaczZBaza.Background = Brushes.Red;
+            //    itemPolaczZBaza.Header = "Połącz z bazą";
+            //    textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
+            //    przejdzDoOknaLogowania(ex.Message);
+            //}
         }
 
         void przejdzDoOknaLogowania(string s)
@@ -365,20 +365,17 @@ namespace ScaleniaMW
                 Console.WriteLine("PRZED WEJSCIEM DO PETLI");
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    var tmp = zsumwaneWartosciStanPO.Find(x => x.IdPo == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]));
+                    if(zsumwaneWartosciStanPO.Exists(x => x.IdPo == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])))
+                    {
+                        var tmp = zsumwaneWartosciStanPO.Find(x => x.IdPo == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]));
                         tmp.NazwaWlascosi = dt.Rows[i][1].ToString();
+                    }         
                 }
-                //SQLIdJNUdWlasciciel
 
-                Console.WriteLine(zsumwaneWartosciStanPO.Count + "COUNT 1");
                 try
                 {
                     dgPorownanie.Visibility = Visibility.Visible;
-
-
                     dgPorownanie.Items.Refresh();
-
-                    Console.WriteLine("ustawiam SOURCE");
                 }
                 catch (Exception excp)
                 {
