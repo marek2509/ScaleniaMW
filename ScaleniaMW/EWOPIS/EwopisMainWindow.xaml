@@ -1,0 +1,17 @@
+﻿<Window x:Class="ScaleniaMW.EWOPIS.EwopisMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScaleniaMW.EWOPIS"
+        mc:Ignorable="d"
+        Title="EWOPISMW - inż. Marek Wojciechowicz" Height="450" Width="800" x:Name="windowMainEwopis" Icon="./img/LOGOEWM.png">
+
+        <DockPanel>
+            
+        <Image x:Name="imgLogo" Source="./img/LOGO_DUŻY1.png" Height="300"/>
+        <!--<Button Click="Button_Click">Import Działek do EWOPIS</Button>-->
+        </DockPanel>
+        
+
+</Window>

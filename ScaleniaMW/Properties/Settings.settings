@@ -50,5 +50,17 @@
     <Setting Name="FBPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3051</Value>
     </Setting>
+    <Setting Name="EwopisPort3050" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EwopisLogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EwopisHaslo" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EwopisSciezkaFDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -19,17 +19,14 @@
             </Button>
             <TextBlock x:Name="textBlockSciezka" Height="20" MinWidth="770"></TextBlock>
         </DockPanel>
-            <Menu Grid.Row="1">
-                <MenuItem Header="Ustawienia FDB" Foreground="Black">
-                    <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
-                    <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
-                </MenuItem>
-                <MenuItem Header="Połącz z bazą" x:Name="menuItemPolaczZbaza"  Click="MenuItemPolaczZbaza_Click">
-
-                </MenuItem>
-            </Menu>
-
-        
+        <Menu Grid.Row="1">
+            <MenuItem Header="Ustawienia FDB" Foreground="Black">
+                <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+                <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Połącz z bazą" x:Name="menuItemPolaczZbaza"  Click="MenuItemPolaczZbaza_Click">
+            </MenuItem>
+        </Menu>
         <StackPanel Grid.Row="2" x:Name="stackPobierzInfo">
 
 

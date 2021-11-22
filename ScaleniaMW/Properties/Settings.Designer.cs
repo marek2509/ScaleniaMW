@@ -214,5 +214,53 @@ namespace ScaleniaMW.Properties {
                 this["FBPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EwopisPort3050 {
+            get {
+                return ((bool)(this["EwopisPort3050"]));
+            }
+            set {
+                this["EwopisPort3050"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EwopisLogin {
+            get {
+                return ((string)(this["EwopisLogin"]));
+            }
+            set {
+                this["EwopisLogin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EwopisHaslo {
+            get {
+                return ((string)(this["EwopisHaslo"]));
+            }
+            set {
+                this["EwopisHaslo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EwopisSciezkaFDB {
+            get {
+                return ((string)(this["EwopisSciezkaFDB"]));
+            }
+            set {
+                this["EwopisSciezkaFDB"] = value;
+            }
+        }
     }
 }

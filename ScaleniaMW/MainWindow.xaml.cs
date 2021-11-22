@@ -551,5 +551,13 @@ namespace ScaleniaMW
             if (buttonWspolnota.ActualWidth < 250)
                 buttonWspolnota.Width = 250;
         }
+
+        private void Ewopis_Click(object sender, RoutedEventArgs e)
+        {
+            EWOPIS.EwopisMainWindow ewopisMainWindow = new EWOPIS.EwopisMainWindow();
+            ewopisMainWindow.Show();
+            windowScaleniaMW.Close();
+
+        }
     }
 }

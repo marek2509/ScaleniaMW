@@ -61,11 +61,9 @@ namespace ScaleniaMW
                                 {
                                     if (nkrZSQL.KW.Equals(""))
                                     {
-
                                         if (czyDopisacBrakKw)
                                         {
                                             KW = "Brak KW";
-
                                             sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
                                             break;
                                         }
@@ -74,7 +72,6 @@ namespace ScaleniaMW
                                             Console.WriteLine("break KW");
                                             break;
                                         }
-
                                     }
 
                                     if (czyDopisacBlad)
@@ -87,16 +84,13 @@ namespace ScaleniaMW
                                             Console.WriteLine(KW);
                                         }
                                     }
-
                                     sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
-
                                     break;
                                 }
                             default:
                                 Console.WriteLine("Default case");
                                 break;
                         }
-
                     }
                     else
                     {
@@ -124,7 +118,6 @@ namespace ScaleniaMW
                                 {
                                     if (nkrZSQL.KW.Equals(""))
                                     {
-
                                         if (czyDopisacBrakKw)
                                         {
                                             KW = "Brak KW";
@@ -139,8 +132,6 @@ namespace ScaleniaMW
 
                                     if (czyDopisacBlad)
                                     {
-
-
                                         if (!BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(nkrZSQL.KW))
                                         {
                                             KW = nkrZSQL.KW + "@Błąd";
@@ -176,7 +167,6 @@ namespace ScaleniaMW
                     Console.WriteLine("Default case");
                     break;
             }
-
             return sb.ToString();
         }
 
@@ -527,11 +517,9 @@ namespace ScaleniaMW
                 int licznikZPustym = 0;
                 if (sender.Equals("AutoPrzypiszKW"))
                 {
-
                     for (int i = listaKWdlaNowychDzialek[0].IdJednN; i <= listaKWdlaNowychDzialek[listaKWdlaNowychDzialek.Count - 1].IdJednN; i++)
                     {
                         List<DopasowanieKW> tmpListaKW = listaKWdlaNowychDzialek.FindAll(x => x.IdJednN.Equals(i));
-
                         int nrNiePustego = 0;
 
                         for (int j = 0; j < tmpListaKW.Count; j++)
@@ -559,8 +547,6 @@ namespace ScaleniaMW
                         {
                             foreach (var item in tmpListaKW)
                             {
-
-
                                 if (item.KWPoDopasowane == null || item.KWPoDopasowane.Trim() == "")
                                 {
                                     //  Console.WriteLine(item.NKRn + " " + item.KWprzed +" " + item.KWPoDopasowane);
@@ -695,7 +681,7 @@ namespace ScaleniaMW
                                     if (item.NKRn != item2.NKRn && !czyPrzypisanoJedenToNieWyswietlajOstrzerzenia)
                                     {
                                         czyPrzypisanoJedenToNieWyswietlajOstrzerzenia = true;
-                                        var resultat = MessageBox.Show("KW jest przypisane w jednostce nr " + item2.NKRn  + "\nCZY PRZYPISAĆ  KW?" , "ERROR", MessageBoxButton.YesNo);
+                                        var resultat = MessageBox.Show("KW jest przypisana w jednostce nr " + item2.NKRn  + "\nCZY PRZYPISAĆ  KW?" , "ERROR", MessageBoxButton.YesNo);
 
                                         if (resultat == MessageBoxResult.No)
                                         {

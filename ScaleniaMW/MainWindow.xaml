@@ -21,14 +21,13 @@
                     <ColumnDefinition Width="270"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.ColumnSpan="2"  Background="#1e304f"  ></StackPanel>
+                <StackPanel Grid.ColumnSpan="2"  Background="#1e304f"  >
+                    <Button Width="auto" Height="43" x:Name="Ewopis" HorizontalAlignment="Left" Padding="20 10" Click="Ewopis_Click">EWOPIS</Button>
+                </StackPanel>
                 <Label FontWeight="Bold"  Background="#1e304f" Foreground="White" Grid.Column="2" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić</Label>
 
                 <DockPanel Grid.Column="3" Background="#1e304f">
                     <DockPanel Margin="40,0,40,0" >
-                        <DockPanel.Background>
-                            <ImageBrush/>
-                        </DockPanel.Background>
 
                         <Image  Source="Resources/firebird.png" Height="28"></Image>
                    
