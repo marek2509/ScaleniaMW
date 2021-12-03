@@ -32,6 +32,20 @@
         <TabControl  Grid.Row="2" >
             <TabItem Header="Stan przed scaleniem" x:Name="tabItemStanPRZED">
                 <TabControl>
+                    <TabItem Header="Suma udziałów" x:Name="tabItemUdzialyWJednostkach" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="115*"/>
+                                <ColumnDefinition Width="766*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" FontStyle="Italic" Grid.ColumnSpan="2">Wypisuje jednostki, w których suma udziałów jest różna od 1</Label>
+                            <DataGrid Grid.Row="1" x:Name="dgUdzialyWJednostkachPRZED" Grid.ColumnSpan="2"></DataGrid>
+                        </Grid>
+                    </TabItem>
                     <TabItem Header="KW" x:Name="tabItemKWPRzed">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -56,10 +70,25 @@
                             <DataGrid Grid.Row="1" x:Name="dgBrakJednRejPrzed" Grid.ColumnSpan="2"></DataGrid>
                         </Grid>
                     </TabItem>
+              
                 </TabControl>
             </TabItem>
             <TabItem Header="Stan po scaleniu"  x:Name="tabItemStanPO">
                 <TabControl>
+                    <TabItem Header="Suma udziałów" x:Name="tabItemUdzialyWJednostkachPo" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="115*"/>
+                                <ColumnDefinition Width="766*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" FontStyle="Italic" Grid.ColumnSpan="2">Wypisuje jednostki, w których suma udziałów jest różna od 1</Label>
+                            <DataGrid Grid.Row="1" x:Name="dgUdzialyWJednostkachPo" Grid.ColumnSpan="2"></DataGrid>
+                        </Grid>
+                    </TabItem>
                     <TabItem Header="KW"  x:Name="tabItemKWPo">
                         <Grid>
                             <Grid.RowDefinitions>

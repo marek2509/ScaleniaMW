@@ -64,6 +64,7 @@ namespace ScaleniaMW
         {
             public int Id_Podm { get; set; }
             public int Id_Jedn_N { get; set; }
+            public int NKR { get; set; }
         }
 
         private static void UpdateProgressJedn_rej()
@@ -139,18 +140,21 @@ namespace ScaleniaMW
             jednTworzZeWspolnoty = jednDoUtworz.OrderBy(x => x.id_sortowania).ToList(); // pobranie danych do utworzenia noweych jednostek
 
             // wyszukiwanie jednostek do których można dopisać wspolnotę
-            var id_podm_jedn = BazaFB.Get_DataTable("select  id_podm, id_jedn, id_jedns from jedn_rej_n jn join udzialy_n u on u.id_jedn = jn.id_id join jedn_sn jsn on jsn.id_jednn = jn.id_id where jn.id_sti is null or jn.id_sti <> 1 group by ijr, id_podm, id_jedn, id_jedns");
+            //var id_podm_jedn = BazaFB.Get_DataTable("select  id_podm, id_jedn, id_jedns from jedn_rej_n jn join udzialy_n u on u.id_jedn = jn.id_id join jedn_sn jsn on jsn.id_jednn = jn.id_id where jn.id_sti is null or jn.id_sti <> 1 group by ijr, id_podm, id_jedn, id_jedns");
+
+            var id_podm_jedn = BazaFB.Get_DataTable(@"select ijr, id_podm, jn.id_id from jedn_rej_n jn join udzialy_n u on u.id_jedn = jn.id_id join jedn_sn jsn on jsn.id_jednn = jn.id_id where jn.id_sti is null or jn.id_sti <> 1 group by ijr, id_podm, jn.id_id  order by jn.id_id");
+
             for (int i = 0; i < id_podm_jedn.Rows.Count; i++)
             {
-                if (!listaWybranychJednstek_s.Exists(x => x.ID_ID == Convert.ToInt32(id_podm_jedn.Rows[i][2]))) // jesli w aktualnych jednostkach jest ta z której bede tworzyc nowe to trzeba ją wyrzucić
-                {
-                    if (jednTworzZeWspolnoty.Exists(x => x.id_podm == Convert.ToInt32(id_podm_jedn.Rows[i][0])))
+                    if (jednTworzZeWspolnoty.Exists(x => x.id_podm == Convert.ToInt32(id_podm_jedn.Rows[i][1])))
                     {
-                        ListaId_PodmId_Jedn_N.Add(new Id_PodmId_Jedn_N { Id_Podm = Convert.ToInt32(id_podm_jedn.Rows[i][0]), Id_Jedn_N = Convert.ToInt32(id_podm_jedn.Rows[i][1]) });
-                        Console.WriteLine("Do edycji:" + id_podm_jedn.Rows[i][1].ToString());
+                        ListaId_PodmId_Jedn_N.Add(new Id_PodmId_Jedn_N { NKR = Convert.ToInt32(id_podm_jedn.Rows[i][0]), Id_Podm = Convert.ToInt32(id_podm_jedn.Rows[i][1]), Id_Jedn_N = Convert.ToInt32(id_podm_jedn.Rows[i][2]) });
+                        //Console.WriteLine("Do edycji:" + id_podm_jedn.Rows[i][0].ToString() + " " + id_podm_jedn.Rows[i][1].ToString() + " " + id_podm_jedn.Rows[i][2].ToString());
                     }
-                }
             }
+
+            //ListaId_PodmId_Jedn_N.ForEach(z => Console.WriteLine(z.Id_Podm));
+
             List<int> jakieIdJednUsunac = new List<int>();
             foreach (var item in ListaId_PodmId_Jedn_N)
             {
@@ -158,6 +162,7 @@ namespace ScaleniaMW
                 {
                     // Console.WriteLine("SPRAWDZAM CZY SA DWA: ");
                     //   ListaId_PodmId_Jedn_N.FindAll(x => x.Id_Jedn_N == item.Id_Jedn_N).ForEach(x => Console.WriteLine(x.Id_Jedn_N + "JEDN I PODM" + x.Id_Podm));
+
                     jakieIdJednUsunac.Add(item.Id_Jedn_N);
                 }
             }
@@ -166,6 +171,11 @@ namespace ScaleniaMW
             {
                 ListaId_PodmId_Jedn_N.RemoveAll(x => x.Id_Jedn_N == item);
             }
+
+            ListaId_PodmId_Jedn_N.ForEach(x =>
+            {
+                Console.WriteLine("jednostki istniejące " + x.NKR + " " + x.Id_Jedn_N + " " + x.Id_Podm);
+            });
             return BazaFB.Get_DataTable(s).Rows.Count;
         }
 
@@ -269,17 +279,29 @@ namespace ScaleniaMW
                     progressBarUzdialy.Maximum -= ListaId_PodmId_Jedn_N.Count;
                 }
                 //select gen_id(ID_JEDN_REJ_N, 1)from rdb$database     -wstawianie unikalnego ID
+                Console.WriteLine("z czego");
+                //jednTworzZeWspolnoty.ForEach(x => Console.WriteLine(x.IJR_n + " " + x.id_podm));
+
+                //ListaId_PodmId_Jedn_N.ForEach(x =>
+                //{
+                //    Console.WriteLine("jednostki istniejące " + x.Id_Jedn_N + " " + x.Id_Podm);
+                //});
+
+
                 foreach (var item in jednTworzZeWspolnoty)
                 {
                     if (ListaId_PodmId_Jedn_N.Exists(x => x.Id_Podm == item.id_podm) && checkBoxCzyDopisywacDoIstniejaczych.IsChecked == true)
                     {
                       //  Console.WriteLine("jaka jednostke pominięto: " + item.id_podm);
+
                         item.id_jedn_n = ListaId_PodmId_Jedn_N.Find(x => x.Id_Podm == item.id_podm).Id_Jedn_N;
+
+
+                        Console.WriteLine("sprawdzam czy można dopisać!" + item.id_jedn_n + " " );
                        continue;
                     }
                     else
                     {
-
                         for (; ; )
                         {
                             if (listaIjrBedaceWBazie.Exists(x => x == pierwszyIjr))
@@ -315,9 +337,8 @@ namespace ScaleniaMW
 
                 foreach (var jedn_n in jednTworzZeWspolnoty)
                 {
-
-                    foreach (var wybraneJednWspolnoty in listaWybranychJednstek_s)
-                    {
+                        foreach (var wybraneJednWspolnoty in listaWybranychJednstek_s)
+                        {
 
                         writeCommandJednSN.Parameters.Add("@id_gm", id_gm);
                         writeCommandJednSN.Parameters.Add("@ud", jedn_n.ud);
@@ -332,8 +353,7 @@ namespace ScaleniaMW
                         writeCommandJednSN.ExecuteNonQuery();
                         writeCommandJednSN.Parameters.Clear();
                         progressBarJedn_rej.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgressJedn_SN), DispatcherPriority.Background);
-                    }
-
+                        }
                 }
 
                 //insert into UDZIALY_N(id_id, id_sti, id_gm, rwd, rwd2, ud, ud_nr, dtu, osou, id_jedn, id_podm, rodzaj, grj) values((select gen_id(ID_UDZIALY_N, 1)from rdb$database), 0, @id_gm, @rwd, @rwd, '1/1', 1, (select cast('NOW' as timestamp) from rdb$database), 1, @id_jedn, @id_podm, @rodzaj, @grj
@@ -349,7 +369,6 @@ namespace ScaleniaMW
                     progressBarUzdialy.Value = 0;
                 foreach (var jedn_n in jednTworzZeWspolnoty)
                 {
-                    //tikotiko
                     if (ListaId_PodmId_Jedn_N.Exists(x => x.Id_Podm == jedn_n.id_podm) && checkBoxCzyDopisywacDoIstniejaczych.IsChecked == true)
                     {
                         continue;
@@ -357,8 +376,6 @@ namespace ScaleniaMW
 
                     writeCommandUdzialy_N.Parameters.Add("@id_gm", id_gm);
                     writeCommandUdzialy_N.Parameters.Add("@rwd", RWD_id);
-
-
 
                     writeCommandUdzialy_N.Parameters.Add("@id_jedn", jedn_n.id_jedn_n);
                     writeCommandUdzialy_N.Parameters.Add("@id_podm", jedn_n.id_podm);
@@ -368,10 +385,19 @@ namespace ScaleniaMW
                     writeCommandUdzialy_N.ExecuteNonQuery();
                     writeCommandUdzialy_N.Parameters.Clear();
                     progressBarJedn_rej.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgressUdzialy), DispatcherPriority.Background);
-
                 }
+
                 connection.Close();
-                MessageBox.Show("UTWORZONO JEDNOSTKI!");
+
+               if(jednTworzZeWspolnoty.Count <= 0)
+                {
+                    MessageBox.Show("Brak wybranych jednostek.");
+                }
+                else
+                {
+                    MessageBox.Show("UTWORZONO JEDNOSTKI!");
+                }
+
                 progressBarJednSN.Value = 0;
                 progressBarUzdialy.Value = 0;
                 progressBarJedn_rej.Value = 0;
@@ -380,7 +406,16 @@ namespace ScaleniaMW
 
         }
 
+        public static void SprawdzCzyMoznaDopisacDoIsniejacej()
+        {
+            foreach (var item in jednTworzZeWspolnoty)
+            {
+                Console.WriteLine(item);
 
+
+
+            }
+        }
 
     }
 }

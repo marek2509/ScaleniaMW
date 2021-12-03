@@ -54,7 +54,7 @@ namespace ScaleniaMW
                         {
                             case 0:
                                 {
-                                    sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + nkrZSQL.NKR + "\" _");
+                                    sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + nkrZSQL.NKR + "\" _");
                                     break;
                                 }
                             case 1:
@@ -64,7 +64,7 @@ namespace ScaleniaMW
                                         if (czyDopisacBrakKw)
                                         {
                                             KW = "Brak KW";
-                                            sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
+                                            sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
                                             break;
                                         }
                                         else
@@ -84,7 +84,7 @@ namespace ScaleniaMW
                                             Console.WriteLine(KW);
                                         }
                                     }
-                                    sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
+                                    sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
                                     break;
                                 }
                             default:
@@ -112,7 +112,7 @@ namespace ScaleniaMW
                         switch (intKodExpo0NKR1KW)
                         {
                             case 0:
-                                sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + nkrZSQL.NKR + "\" _");
+                                sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + nkrZSQL.NKR + "\" _");
                                 break;
                             case 1:
                                 {
@@ -121,7 +121,7 @@ namespace ScaleniaMW
                                         if (czyDopisacBrakKw)
                                         {
                                             KW = "Brak KW";
-                                            sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
+                                            sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
                                             break;
                                         }
                                         else
@@ -138,7 +138,7 @@ namespace ScaleniaMW
                                             Console.WriteLine(KW);
                                         }
                                     }
-                                    sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
+                                    sb.AppendLine(" " + (item.DzX1 + przesuniecieXtekstu).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + KW + "\" _");
                                     break;
                                 }
                             default:
@@ -218,7 +218,7 @@ namespace ScaleniaMW
                             {
                                 case 0:
                                     {
-                                        sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + item2.NKR + "\" _");
+                                        sb.AppendLine(" " + item.DzX1.ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + item2.NKR + "\" _");
                                         break;
                                     }
                                 case 1:
@@ -230,7 +230,7 @@ namespace ScaleniaMW
                                             {
                                                 KW = "Brak KW";
 
-                                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
+                                                sb.AppendLine(" " + item.DzX1.ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
                                                 break;
                                             }
                                             else
@@ -252,7 +252,7 @@ namespace ScaleniaMW
                                             }
                                         }
 
-                                        sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
+                                        sb.AppendLine(" " + item.DzX1.ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
 
                                         break;
                                     }
@@ -284,7 +284,7 @@ namespace ScaleniaMW
                             switch (intKodExpo0NKR1KW)
                             {
                                 case 0:
-                                    sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + item3.NKR + "\" _");
+                                    sb.AppendLine(" " + item.DzX1.ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + item3.NKR + "\" _");
                                     break;
                                 case 1:
                                     {
@@ -294,7 +294,7 @@ namespace ScaleniaMW
                                             if (czyDopisacBrakKw)
                                             {
                                                 KW = "Brak KW";
-                                                sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
+                                                sb.AppendLine(" " + item.DzX1.ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
                                                 break;
                                             }
                                             else
@@ -313,7 +313,7 @@ namespace ScaleniaMW
                                                 Console.WriteLine(KW);
                                             }
                                         }
-                                        sb.AppendLine(" " + item.DzX1.ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
+                                        sb.AppendLine(" " + item.DzX1.ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " 5 " + "\"" + KW + "\" _");
                                         break;
                                     }
                                 default:
@@ -783,7 +783,7 @@ namespace ScaleniaMW
                             {
                                 wartosc = "Brak WARTOSCI";
 
-                                sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
+                                sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
                             }
                             else
                             {
@@ -792,7 +792,7 @@ namespace ScaleniaMW
                         }
                         else
                         {
-                            sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
+                            sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
                         }
                     }
                     else
@@ -819,13 +819,13 @@ namespace ScaleniaMW
                             if (czyDopisacBrakKw)
                             {
                                 wartosc = "Brak Wartości";
-                                sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
+                                sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
                             }
 
                         }
                         else
                         {
-                            sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E").Replace(",", ".") + " " + item.DzY1.ToString("E").Replace(",", ".") + " " + 1.ToString("E").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
+                            sb.AppendLine(" " + (item.DzX1 - przyrostXdoPrzesuniaeciaNr).ToString("E9").Replace(",", ".") + " " + item.DzY1.ToString("E9").Replace(",", ".") + " " + 1.ToString("E9").Replace(",", ".") + " " + item.podajeKatUstawienia().ToString().Replace(",", ".") + " " + justyfikacja + " " + "\"" + wartosc + "\" _");
 
                         }
 

@@ -131,6 +131,8 @@ namespace ScaleniaMW
                 return (liniaZTektowki);
             }
 
+            Regex regex = new Regex(@"^[-+]?([0-9]+(\.[0-9]*)?|\.[0-9]+)$");
+
             var tmpSplitString = liniaZTektowki.Split(' '); // temporary elem
             List<string> splitedString = new List<string>();   // main list with true value without whitespace
 
@@ -150,14 +152,12 @@ namespace ScaleniaMW
             }
             else
             {
+                // sprawdzenie czy kontur posiada wartość
+                string tmpLandUseContour = splitedString[1];
+                var wartoscKontury = tmpLandUseContour.Remove(0, tmpLandUseContour.LastIndexOf('-') + 1);
 
                 if (usunWartosc) // warunek dla opcji czy usuwać wartość!!!
-                {
-                    string tmpLandUseContour = splitedString[1];
-                    // sprawdzenie czy kontur posiada wartość
-                    Regex regex = new Regex(@"^[-+]?([0-9]+(\.[0-9]*)?|\.[0-9]+)$");
-                    var wartoscKontury = tmpLandUseContour.Remove(0, tmpLandUseContour.LastIndexOf('-') + 1);
-                  
+                {                 
                     // jeśli nie posiada wartości to nie usuwaj
                     if (!regex.IsMatch(wartoscKontury))
                     {
@@ -212,9 +212,27 @@ namespace ScaleniaMW
                 }
                 processedValue.Append(splitedString[2]);
 
+
+                //jeśli nie usuwać wartości to zrób tak żeby przed wartością był myślnik
+
+                if (regex.IsMatch(wartoscKontury))
+                {
+                    sbPuste.AppendLine("Brak wartości dla konturu: " + liniaZTektowki);
+                
+                    if (!usunWartosc)
+                    {
+                        var tmpString = processedValue.ToString();
+                        var startString = tmpString.Remove(tmpString.LastIndexOf('/'));
+                        var endString = tmpString.Remove(0, tmpString.LastIndexOf('/')+1);
+                        processedValue.Clear();
+                        processedValue.Append(startString);
+                        processedValue.Append("-");
+                        processedValue.Append(endString);
+                    }
+                }
+
                 return processedValue.ToString();
             }
-
         }
 
       

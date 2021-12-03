@@ -19,6 +19,20 @@ namespace ScaleniaMW
         static readonly string SQLsprawdzenieSumWartosciZDzialekIZJednRej = @"select ijr, (select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) sumA_z_GOSPODARSTW ,(select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) suma_Z_DZIALEK, round((select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) - (select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) ,2) roznica from jedn_rej_n j2 where id_sti <> 1 or id_sti is null order by roznica, ijr";
         static readonly string SQLbrakGrupyRejestrowejDlaJednostkiIWlascPrzed = @"select ijr, nkr, grj GRUPA_WLASC, gr grupa_JEDNOSTKI from udzialy  u join jedn_rej j on j.id_id = u.id_jedn where grj is null or grj like '' or gr is null or gr like '' group by ijr, nkr, grj, gr order by NKR";
         static readonly string SQLbrakGrupyRejestrowejDlaJednostkiIWLASCPo = @"select ijr, nkr, grj GRUPA_WLASC, gr grupa_JEDNOSTKI from udzialy_n  u join jedn_rej_n j on j.id_id = u.id_jedn where grj is null or grj like '' or gr is null or gr like '' group by ijr, nkr, grj, gr order by NKR";
+        static readonly string SQLPrzedJednoskiZUdzialamiRoznymiOd1 = @"select j.ijr, sum( u.ud_nr) from jedn_rej j join udzialy u on u.id_jedn = j.id_id group by j.id_id, ijr having sum(u.ud_nr) <> 1";
+        static readonly string SQLPoJednoskiZUdzialamiRoznymiOd1 = @"select j.ijr, sum( u.ud_nr) from jedn_rej_n j join udzialy_n u on u.id_jedn = j.id_id group by j.id_id, ijr having sum(u.ud_nr) <> 1";
+
+        public static DataTable udzialyRozneOd1Przed() //zwraca listę złych numerów KW
+        {
+            return BazaFB.Get_DataTable(SQLPrzedJednoskiZUdzialamiRoznymiOd1);
+
+        }
+
+        public static DataTable udzialyRozneOd1Po() //zwraca listę złych numerów KW
+        {
+            return BazaFB.Get_DataTable(SQLPoJednoskiZUdzialamiRoznymiOd1);
+
+        }
 
         public class ModelJednostekPodejrzanych
         {

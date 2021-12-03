@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +28,7 @@ namespace ScaleniaMW
             Wspolnota.progressBarJednSN = ProgresBarJedn_SN;
             Wspolnota.dpTworzenie = dockTworzenieJednUdzPodm;
             Wspolnota.checkBoxCzyDopisywacDoIstniejaczych = checkBoxCzyDopisywacDoIstniejacychJedostek;
+            textBlockSciezka.Text = Properties.Settings.Default.PathFDB.ToString();
         }
 
         private void ustawSciezkeFDB(object sender, RoutedEventArgs e)
@@ -48,6 +50,8 @@ namespace ScaleniaMW
                 try
                 {
                     BazaFB.ustawProperties(dlg.FileName, ref textBlockSciezka);
+                    Properties.Settings.Default.PathFDB = textBlockSciezka.Text;
+                    Properties.Settings.Default.Save();
                 }
                 catch (Exception esa)
                 {
@@ -111,28 +115,37 @@ namespace ScaleniaMW
             if (Wspolnota.sprawdzSpojnoscWybranychJednostek() != null)
             {
                 dgJednostkiNowe.ItemsSource = Wspolnota.sprawdzSpojnoscWybranychJednostek();
-                labelWybraneJednostki.Text = "BRAK SPOJNOŚCI W WYBRANYCH JEDNOSTKACH!";
+                MessageBox.Show("BRAK SPOJNOŚCI W WYBRANYCH JEDNOSTKACH!");
             }
             else
             {
-                int nrPierwszej = 0;
-                try
-                {
-                    Wspolnota.ileJednostekTrzebaUtworzyc(); // pobranie danych do utworzenia nowych jednostek
-                    Console.WriteLine(">" + textBoxNrPierwszejJednostki.Text + "<");
-                    nrPierwszej = Convert.ToInt32(textBoxNrPierwszejJednostki.Text);
-                    Console.WriteLine(nrPierwszej);
-                    Console.WriteLine("Wybrana gm: " + Wspolnota.listGminy[listBoxGm.SelectedIndex].Nazwa);
-                    Console.WriteLine("Wybrany obręb: " + Wspolnota.listObreby[listBoxObreby.SelectedIndex].Nazwa);
+               if( Wspolnota.listaJednostki_s.Count > 0){
 
+         
+
+                    int nrPierwszej = 1;
+                    try
+                    {
+                        Wspolnota.ileJednostekTrzebaUtworzyc(); // pobranie danych do utworzenia nowych jednostek
+                        Console.WriteLine(">" + textBoxNrPierwszejJednostki.Text + "<");
+                        if(textBoxNrPierwszejJednostki.Text != "")
+                        {
+                            nrPierwszej = Convert.ToInt32(textBoxNrPierwszejJednostki.Text);
+                        }
+
+                    }
+                    catch (Exception ec)
+                    {
+                        MessageBox.Show("Błędny format numeru pierwszej jednostki\n" + ec.Message);
+                        goto koniec;
+                    }
+
+            
+                     Wspolnota.TworzenieJednostek(nrPierwszej, Wspolnota.listGminy[listBoxGm.SelectedIndex].ID_ID, Wspolnota.listObreby[listBoxObreby.SelectedIndex].IdObrebu, Wspolnota.listaRWD[comboRWD.SelectedIndex].ID_ID , comboGrupa.SelectionBoxItem.ToString());
+                     //Wspolnota.SprawdzCzyMoznaDopisacDoIsniejacej();
                 }
-                catch (Exception ec)
-                {
-                    MessageBox.Show("Błędny format numeru pierwszej jednostki\n" + ec.Message);
-                    goto koniec;
-                }
-                 Wspolnota.TworzenieJednostek(nrPierwszej, Wspolnota.listGminy[listBoxGm.SelectedIndex].ID_ID, Wspolnota.listObreby[listBoxObreby.SelectedIndex].IdObrebu, Wspolnota.listaRWD[comboRWD.SelectedIndex].ID_ID , comboGrupa.SelectionBoxItem.ToString());
             }
+            MenuItemPolaczZbaza_Click(sender, e);
         koniec:;
         }
 

@@ -60,7 +60,7 @@
                 <GroupBox>
                     <GroupBox.Header>Opcje dla Eksportu</GroupBox.Header>
                     <StackPanel>
-                        <CheckBox x:Name="checkBoxIgnorujKropkeIPrzecinej" Unchecked="CheckBoxIgnorujKropkeIPrzecinej_Unchecked" Checked="CheckBoxIgnorujKropkeIPrzecinej_Checked">Ignoruj przecinek "," i kropkę "." przy porównianiu DZIAŁEK z pliku .EDZ i .FDB podczas Exportu plików tekstowych</CheckBox>
+                        <CheckBox x:Name="checkBoxIgnorujKropkeIPrzecinej" Unchecked="CheckBoxIgnorujKropkeIPrzecinej_Unchecked" Checked="CheckBoxIgnorujKropkeIPrzecinej_Checked">Zamień przecinek "," z kropką "." przy porównianiu DZIAŁEK z pliku .EDZ i bazy .FDB dla Exportu plików tekstowych</CheckBox>
                         <GroupBox Width="500" HorizontalAlignment="Left">
                             <GroupBox.Header>Eksport KW</GroupBox.Header>
                             <StackPanel>

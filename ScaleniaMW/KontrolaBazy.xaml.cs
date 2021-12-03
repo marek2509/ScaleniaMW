@@ -84,6 +84,7 @@ namespace ScaleniaMW
             bool ZmienKolorKarciePo = false;
 
             // tab item przed
+            // sprawdzenie poprawności KW w działkach przed scaleniem
             dgStanPrzedBledyKW.ItemsSource = KontroleDanychZFDB.sprawdzKwPrzedScaleniem();
             int ileElemKwPrzed = KontroleDanychZFDB.sprawdzKwPrzedScaleniem().Count;
             if (ileElemKwPrzed > 0)
@@ -91,7 +92,23 @@ namespace ScaleniaMW
                 ZmienKolorKarciePrzed = true;
                 tabItemKWPRzed.Foreground = Brushes.Red;
             }
-            else tabItemKWPRzed.Foreground = Brushes.Black;
+            else
+            {
+                tabItemKWPRzed.Foreground = Brushes.Black;
+            }
+
+            //suma udzialow przed scaleniem
+            dgUdzialyWJednostkachPRZED.ItemsSource = KontroleDanychZFDB.udzialyRozneOd1Przed().AsDataView();
+            int ileElemUdzPrzed = KontroleDanychZFDB.udzialyRozneOd1Przed().Rows.Count;
+            if (ileElemUdzPrzed > 0)
+            {
+                ZmienKolorKarciePrzed = true;
+                tabItemUdzialyWJednostkach.Foreground = Brushes.Red;
+            }
+            else
+            {
+                tabItemUdzialyWJednostkach.Foreground = Brushes.Black;
+            }
 
 
             dgBrakJednRejPrzed.ItemsSource = KontroleDanychZFDB.jednostkiBezGrupRejestrowychPrzed().AsDataView();
@@ -105,6 +122,8 @@ namespace ScaleniaMW
                 tabItemGrRejPrzed.Foreground = Brushes.Black;
             }
 
+
+            // ustawienie koloru czerwonego karcie stanu przed scaleniem
             if (ZmienKolorKarciePrzed)
             {
                 tabItemStanPRZED.Foreground = Brushes.Red;
@@ -114,7 +133,22 @@ namespace ScaleniaMW
                 tabItemStanPRZED.Foreground = Brushes.Black;
             }
 
+
             //tab Item Po
+            //suma udzialow przed scaleniem
+            dgUdzialyWJednostkachPo.ItemsSource = KontroleDanychZFDB.udzialyRozneOd1Po().AsDataView();
+            int ileElemUdzPo = KontroleDanychZFDB.udzialyRozneOd1Po().Rows.Count;
+            if (ileElemUdzPo > 0)
+            {
+                ZmienKolorKarciePrzed = true;
+                tabItemUdzialyWJednostkachPo.Foreground = Brushes.Red;
+            }
+            else
+            {
+                tabItemUdzialyWJednostkachPo.Foreground = Brushes.Black;
+            }
+
+
             //KW PO czy błędne
             dgStanPoBledyKW.ItemsSource = KontroleDanychZFDB.sprawdzKwPoScaleniu();
             int ileElemKwPo = KontroleDanychZFDB.sprawdzKwPoScaleniu().Count;

@@ -307,6 +307,10 @@ namespace ScaleniaMW
                     }
 
 
+                    foreach (var item in listaZEDZ)
+                    {
+                        Console.WriteLine("{0} {1} {2}", item.Nr_Dz.ToString(), item.DzX1.ToString(), item.DzY1.ToString());
+                    }
 
                     //foreach (var item in listaPunktów)
                     //{
