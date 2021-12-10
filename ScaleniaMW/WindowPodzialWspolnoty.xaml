@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="WindowPodzialWspolnoty" MinHeight="555" Height="500" MinWidth="810" Width="810" x:Name="windowPodzialWspolnoty">
+        Title="WindowPodzialWspolnoty" MinHeight="555" Height="700" MinWidth="810" Width="810" x:Name="windowPodzialWspolnoty">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
@@ -30,12 +30,51 @@
         <StackPanel Grid.Row="2" x:Name="stackPobierzInfo">
 
 
-            <DataGrid Height="200" x:Name="dgJednostkiNowe" IsReadOnly="True" SelectionMode="Single" CanUserSortColumns="False">
-
-            </DataGrid>
+            <DataGrid Height="180" x:Name="dgJednostkiNowe" IsReadOnly="True" SelectionMode="Single" CanUserSortColumns="False"></DataGrid>
             <Button Content="Wybierz zaznaczoną jednostkę do podziału" Click="ButtonWybierzZaznJednostke_Click" ></Button>
-            <TextBox x:Name="labelWybraneJednostki"  Height="80" VerticalScrollBarVisibility="Auto" ></TextBox>
+            <TextBox x:Name="labelWybraneJednostki"  Height="70" VerticalScrollBarVisibility="Auto" ></TextBox>
 
+            <DockPanel Margin="3" Grid.Column="0" Height="190">
+                <StackPanel>
+                    <Label>Właściciel</Label>
+                    <ListBox x:Name="listBoxOwner" MinWidth="100" Height="120" SelectedIndex="0" Margin="5,0,0,5" HorizontalAlignment="Left" 
+                             SelectionChanged="ListBoxOwner_SelectionChanged"/>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label>Dostępne jednoski</Label>
+                    <ListBox x:Name="listBoxNkr" MinWidth="100"  Height="{Binding ElementName=listBoxOwner, Path=Height}"  SelectedIndex="0" Margin="{Binding ElementName=listBoxOwner, Path=Margin}" HorizontalAlignment="Left" />
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label>Wybrana jednostka</Label>
+                    <Label Foreground="Black" x:Name="labelWybranaJesnostka" BorderBrush="Gray" Height="40" Width="80" 
+                           BorderThickness="1" Margin="0,0,5,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="18"></Label>
+                    <StackPanel Height="1" Background="Gray" Margin="10"></StackPanel>
+                    <Label>Nieprzypisanych</Label>
+                    <Label>pozostało:</Label>
+                    <Label x:Name="LabelIlePozostaloJednostek"></Label>
+                </StackPanel>
+                <StackPanel>
+                    <Button Width="200" Height="50" HorizontalAlignment="Left" x:Name="setNkrMinimum" Click="SetNkrMinimum_Click">
+                        <StackPanel>
+                            <Label HorizontalAlignment="Center">Ustaw wszystkim najmniejszy NKR</Label>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Width="200" Height="50" Margin="0,10" HorizontalAlignment="Left" x:Name="setNkrSelected" Click="SetNkrSelected_Click" >
+                        <StackPanel>
+                            <Label  HorizontalAlignment="Center">Przypisz wybrany NKR</Label>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Width="200" Height="50" HorizontalAlignment="Left" x:Name="setNkrZero" Click="SetNkrZero_Click">
+                        <StackPanel>
+                            <Label  HorizontalAlignment="Center">Usuń przypisany</Label>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
             <GroupBox Header="Dane tworzonych jednostek:" BorderThickness="2" BorderBrush="DarkGray" Margin="0,7">
                 <StackPanel>
                     <DockPanel>
@@ -44,7 +83,7 @@
                         <Label>Gmina:</Label>
                         <ComboBox x:Name="listBoxGm" Width="250"></ComboBox>
                         <Label>Gr. rej.:</Label>
-                        <ComboBox x:Name="comboGrupa"  Width="50" SelectedIndex="24">
+                        <ComboBox x:Name="comboGrupa"  Width="50" SelectedIndex="23">
                             <ComboBoxItem>1.1</ComboBoxItem>
                             <ComboBoxItem>1.2</ComboBoxItem>
                             <ComboBoxItem>1.3</ComboBoxItem>
@@ -95,7 +134,7 @@
 
                         </ComboBox>
                         <Label>RWD:</Label>
-                        <ComboBox x:Name="comboRWD" Width="50" SelectedIndex="24">
+                        <ComboBox x:Name="comboRWD" Width="50" SelectedIndex="11" HorizontalAlignment="Left">
 
                         </ComboBox>
                     </DockPanel>

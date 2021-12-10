@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -71,28 +72,9 @@ namespace ScaleniaMW
             windowLogowanie.Show();
         }
 
-
-
         List<TextBox> listTextbox = new List<TextBox>();
         int ileIjrBox = 0;
         int ileObrBox = 0;
-
-        private void ButtonWybierzZaznJednostke_Click(object sender, RoutedEventArgs e)
-        {
-      
-            if (dgJednostkiNowe.SelectedIndex < Wspolnota.listaJednostki_s.Count && dgJednostkiNowe.SelectedIndex >=0)
-            {
-                if (!Wspolnota.listaWybranychJednstek_s.Exists(x => x == Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex]))
-                {
-                    Wspolnota.listaWybranychJednstek_s.Add(Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex]);
-                    labelWybraneJednostki.Text += Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].IJR + " " + Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].NazwaObrebu + "\n";
-                }
-                else
-                {
-                    labelWybraneJednostki.Text += "Ta jednostka jest już wybrana\n";
-                }
-            }
-        }
 
         private void MenuItemPolaczZbaza_Click(object sender, RoutedEventArgs e)
         {
@@ -110,6 +92,123 @@ namespace ScaleniaMW
             comboRWD.SelectedIndex = Wspolnota.listaRWD.FindIndex(x => x.Symbol.ToUpper() == "WŁ");
         }
 
+        private void ButtonWybierzZaznJednostke_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgJednostkiNowe.SelectedIndex < Wspolnota.listaJednostki_s.Count && dgJednostkiNowe.SelectedIndex >=0)
+            {
+                if (!Wspolnota.listaWybranychJednstek_s.Exists(x => x == Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex]))
+                {
+
+                    if (Wspolnota.sprawdzSpojnoscWybranychJednostek() != null)
+                    {
+                        dgJednostkiNowe.ItemsSource = Wspolnota.sprawdzSpojnoscWybranychJednostek();
+                        MessageBox.Show("BRAK SPOJNOŚCI W WYBRANYCH JEDNOSTKACH!");
+                    }
+                    else
+                    {
+
+                  
+                    Wspolnota.listaWybranychJednstek_s.Add(Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex]);
+                    labelWybraneJednostki.Text += Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].IJR + " " + Wspolnota.listaJednostki_s[dgJednostkiNowe.SelectedIndex].NazwaObrebu + "\n";
+                    Wspolnota.zaladujDaneDoTworzeniaJednostek(); // pobranie danych do utworzenia nowych jednostek
+                                                            //dgDopasujDoIstniejacych.ItemsSource = Wspolnota.podmiotyOrazIchIstniejaceJednostki;
+                    }
+                }
+                else
+                {
+                    labelWybraneJednostki.Text += "Ta jednostka jest już wybrana\n";
+                }
+            }
+
+          
+           
+
+            //foreach (var item in Wspolnota.podmiotyOrazIchIstniejaceJednostki)
+            //{
+            //    TmpCl tmp = new TmpCl();
+            //    tmp.Id_podmiotu = item.IdPodm;
+
+            //    foreach (var nkr in item.IdJedn_Nkr)
+            //    {
+            //        tmp.NKR.Add(nkr.NKR);
+            //    }
+            //    Console.WriteLine(">?oo: " + item);
+            //    ListTmpCls.Add(tmp);
+            //}
+
+            listBoxOwner.ItemsSource = Wspolnota.podmiotyOrazIchIstniejaceJednostki.Select(x => x.IdPodm);
+            listBoxOwner.Items.Refresh();
+        }
+      
+
+        private void ListBoxOwner_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            listBoxOwner.SelectedIndex = listBoxOwner.SelectedIndex >= 0 && listBoxOwner.SelectedIndex < listBoxOwner.Items.Count ? listBoxOwner.SelectedIndex : 0;
+            refreshList();
+
+
+        }
+
+        private void SetNkrMinimum_Click(object sender, RoutedEventArgs e)
+        {
+            Wspolnota.podmiotyOrazIchIstniejaceJednostki.ForEach(x => x.setNKRMinWybrane());
+            refreshList();
+        }
+
+        private void SetNkrSelected_Click(object sender, RoutedEventArgs e)
+        {
+
+            Wspolnota.podmiotyOrazIchIstniejaceJednostki[listBoxOwner.SelectedIndex].setSelectedNkrpoIndexie(listBoxNkr.SelectedIndex);
+            refreshList();
+
+              // wyswietlenie ile jednostek jest nieprzypisanych
+        }
+
+        private void SetNkrZero_Click(object sender, RoutedEventArgs e)
+        {
+            Wspolnota.podmiotyOrazIchIstniejaceJednostki[listBoxOwner.SelectedIndex].setNkrZero();
+            refreshList();
+        }
+
+        private void CheckBoxOlnyUnset_Checked(object sender, RoutedEventArgs e)
+        {
+            //  checkBoxOlnyUnset
+        }
+
+        private void CheckBoxOlnyUnset_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        public void refreshList()
+        {
+            if( Wspolnota.podmiotyOrazIchIstniejaceJednostki.Count > 0)
+            {
+                labelWybranaJesnostka.Content = Wspolnota.podmiotyOrazIchIstniejaceJednostki[listBoxOwner.SelectedIndex].WybranyNKR.ToString();
+                listBoxNkr.ItemsSource = Wspolnota.podmiotyOrazIchIstniejaceJednostki[listBoxOwner.SelectedIndex].IdJedn_Nkr.Select(n => n.NKR);
+                LabelIlePozostaloJednostek.Content = Wspolnota.podmiotyOrazIchIstniejaceJednostki.FindAll(x => x.WybraneId == 0).Count;
+                listBoxNkr.Items.Refresh();
+            }
+        }
+
+
+
+        //public class TmpCl
+        //{
+        //    public int Id_podmiotu { get; set; }
+        //    public List<int> NKR { get; set; }
+
+        //    public TmpCl()
+        //    {
+        //        initTmpCl();
+        //    }
+        //    void initTmpCl()
+        //    {
+        //        NKR = new List<int>();
+        //    }
+        //}
+
+        //List<TmpCl> ListTmpCls = new List<TmpCl>();
         private void TworzNoweJedn_Click(object sender, RoutedEventArgs e)
         {
             if (Wspolnota.sprawdzSpojnoscWybranychJednostek() != null)
@@ -126,13 +225,17 @@ namespace ScaleniaMW
                     int nrPierwszej = 1;
                     try
                     {
-                        Wspolnota.ileJednostekTrzebaUtworzyc(); // pobranie danych do utworzenia nowych jednostek
+                        Wspolnota.zaladujDaneDoTworzeniaJednostek();
+                        /////////////////
+                        ///
+                        //dgDopasujDoIstniejacych.DataContext = ListTmpCls;
+                 
+                        ////////////////
                         Console.WriteLine(">" + textBoxNrPierwszejJednostki.Text + "<");
-                        if(textBoxNrPierwszejJednostki.Text != "")
+                        if(textBoxNrPierwszejJednostki.Text.Trim() != "")
                         {
-                            nrPierwszej = Convert.ToInt32(textBoxNrPierwszejJednostki.Text);
+                            nrPierwszej = Convert.ToInt32(textBoxNrPierwszejJednostki.Text.Trim());
                         }
-
                     }
                     catch (Exception ec)
                     {
@@ -168,5 +271,7 @@ namespace ScaleniaMW
             mainWindow.Show();
             windowPodzialWspolnoty.Close();
         }
+
+
     }
 }

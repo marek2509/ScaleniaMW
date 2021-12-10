@@ -45,7 +45,51 @@ namespace ScaleniaMW
             public string Symbol { get; set; }
         }
 
+        public class PodmiotyOrazIchIstniejaceJednostki
+        {
+            public int IdPodm { get; set; }
+            public string Wlasciciel { get; set; }
+            public int WybranyNKR { get; set; }
+            public int WybraneId { get; set; }
+            public class jedn_nkr
+            {
+                public int id_jedn_n { get; set; }
+                public int NKR { get; set; }
+            }
+
+            public List<jedn_nkr> IdJedn_Nkr = new List<jedn_nkr>();
+
+           public void setNKRMinWybrane()
+            {
+                WybranyNKR = IdJedn_Nkr.Select(x => x.NKR).Min();
+                WybraneId = IdJedn_Nkr.Find(x => x.NKR == WybranyNKR).id_jedn_n;
+            }
+
+
+            public void setSelectedNkrpoIndexie(int index) // ustawia wybrane id_jednoski i nkr
+            {
+                if (index > 0 && index < IdJedn_Nkr.Count)
+                {
+                    WybranyNKR = IdJedn_Nkr[index].NKR;
+                    WybraneId = IdJedn_Nkr[index].id_jedn_n;
+                    Console.WriteLine("Udało się przypisać NKR");
+                }
+                else
+                {
+                    Console.WriteLine("Nie udało się przypisać NKR");
+                }
+            }
+
+            public void setNkrZero() // ustawia wybrane id_jednoski i nkr = 0
+            {
+                    WybranyNKR = 0;
+                WybraneId = 0;
+
+            }
+        }
+
         public static readonly string SQLIdpdmNazwaWlascAdres = "select distinct p.id_id, case when upper(p.typ) like 'F' then (select case when dim is null then nzw || ' ' || pim else nzw || ' ' ||  pim || ' ' || dim end from osoby o where p.id_os = o.id_id) when upper(p.typ) like 'P' then(select NPE from INSTYTUCJE i where p.id_os = i.id_id) when upper(p.typ) like 'I' then (select NPE from INNE_PODM inne where p.id_os = inne.id_id) when upper(p.typ) like 'M' then (select case when maz.dim is null and zona.dim is null then '' || maz.nzw  || ' '  ||  maz.pim || ' ' ||  zona.nzw || ' ' || zona.pim when maz.dim is null and zona is not null then '' || maz.nzw  || ' '  ||  maz.pim || ' ' ||  zona.nzw || ' ' || zona.pim || ' ' ||  zona.dim when maz.dim is not null and zona.dim is null then '' || maz.nzw  || ' '  ||  maz.pim || ' '  ||  maz.dim || ' ' ||  zona.nzw || ' ' || zona.pim else '' ||  maz.nzw  || ' '  ||  maz.pim || ' '  ||  maz.dim || ' ' ||  zona.nzw || ' ' || zona.pim || ' ' ||  zona.dim end from malzenstwa m join osoby maz on maz.id_id = m.maz join osoby zona on zona.id_id = m.zona where p.id_os = m.id_id) end Wlasciciele, case when upper(p.typ) like 'F' then(select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from osoby o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrl is not null then nra || '/' || nrl when nra is not null then nra else '' end from osoby o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from osoby o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from osoby o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from osoby o1 where o1.id_id = p.id_os) when upper(p.typ) like 'P' then( select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from instytucje o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrlok is not null then nra || '/' || nrlok when nra is not null then nra else '' end from instytucje o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from instytucje o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from instytucje o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from instytucje o1 where o1.id_id = p.id_os) when upper(p.typ) like 'I' then(select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from INNE_PODM o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrlok is not null then nra || '/' || nrlok when nra is not null then nra else '' end from INNE_PODM o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from INNE_PODM o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from INNE_PODM o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from INNE_PODM o1 where p.id_os = o1.id_id) when upper(p.typ) like 'M' then(select '' || (select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from osoby o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrl is not null then nra || '/' || nrl when nra is not null then nra else '' end from osoby o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from osoby o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from osoby o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from osoby o1 where o1.id_id = maz.id_id) || ' ' || (select replace(upper(replace((select case when msc is not null and pct is not null and msc <> pct and ulc is not null and msc <> '' and pct <> '' then msc || ' ul. ' || ulc when ulc is not null and ulc <> '' then 'ul. ' || ulc when msc is not null then msc when pct is not null then pct else '' end from osoby o2 where o1.id_id = o2.id_id)  || ' ' || (select  case when nra is not null and nrl is not null then nra || '/' || nrl when nra is not null then nra else '' end from osoby o2 where o1.id_id = o2.id_id)  || '; ' || (select case when kod is not null then kod else '' end  from osoby o2 where o1.id_id = o2.id_id) || ' ' || (select case when pct is not null then pct when msc is not null then msc else '' end from osoby o2 where o1.id_id = o2.id_id), ' ;', ';')),'UL.'  , 'ul.')  from osoby o1 where o1.id_id = zona.id_id) from malzenstwa m join osoby maz on maz.id_id = m.maz join osoby zona on zona.id_id = m.zona where p.id_os = m.id_id) end Adresy from udzialy u right join jedn_rej jn on jn.id_id = u.id_jedn join podmioty p on p.ID_ID = u.id_podm where jn.id_sti<> 1  or jn.id_sti is null order by Wlasciciele";
+
         public class Gmina
         {
             public int ID_ID { get; set; }
@@ -76,7 +120,6 @@ namespace ScaleniaMW
         private static void UpdateProgressJedn_SN()
         {
             progressBarJednSN.Value += 1;
-
         }
 
         private static void UpdateProgressUdzialy()
@@ -105,8 +148,10 @@ namespace ScaleniaMW
         public static List<Id_PodmId_Jedn_N> ListaId_PodmId_Jedn_N = new List<Id_PodmId_Jedn_N>(); // lista potrzebna do tego żeby rozpoznać przypisać podmioty do jednotek istniejących innych niż współnotowe
         //wstaw w tabele jedn_sn
         //insert into JEDN_SN(id_id,id_sti, id_gm, ud, ud_nr, dtu, osou, id_jedns, id_jednn, wwgsp, powwgsp) values((select first 1  id_id + 1 from JEDN_sn order by id_Id desc),0, @id_gm , @ud, @ud_nr(select cast('NOW' as timestamp) from rdb$database), 1, @id_jedns, @id_jednN, 0, 0)
+        public static List<PodmiotyOrazIchIstniejaceJednostki> podmiotyOrazIchIstniejaceJednostki = new List<PodmiotyOrazIchIstniejaceJednostki>();
 
-        public static int ileJednostekTrzebaUtworzyc()
+
+        public static int zaladujDaneDoTworzeniaJednostek() // zwraca ilość jednostek do utworzenia
         { //select id_podm, ud , ud_nr from udzialy_n u      join jedn_rej_n j on j.id_id = u.id_jedn  where  (j.id_obr = 1 and j.ijr = 11000) or(j.ijr = 20007 and j.id_obr = 2) or(j.ijr = 30002 and  j.id_obr = 3)   group by id_podm, ud , ud_nr
 
             List<int> id_Podm_kolejnosc = new List<int>();
@@ -176,8 +221,55 @@ namespace ScaleniaMW
             {
                 Console.WriteLine("jednostki istniejące " + x.NKR + " " + x.Id_Jedn_N + " " + x.Id_Podm);
             });
+
+            Console.WriteLine(jednTworzZeWspolnoty.Count + " COUNTEk");
+            try
+            {
+                int i = 0;
+           
+                foreach (var item in jednTworzZeWspolnoty)
+                {
+                    Console.WriteLine(i++);
+                    if (ListaId_PodmId_Jedn_N.Exists(x => x.Id_Podm == item.id_podm))
+                    {
+                        Console.WriteLine("wejscie1");
+
+
+                        // sprawdzenie czy istnieje jednostka z takim podmiotem jak udziałowiec z wspólnoty
+                        if (!podmiotyOrazIchIstniejaceJednostki.Exists(x => x.IdPodm == item.id_podm))
+                        {
+                             podmiotyOrazIchIstniejaceJednostki.Add(new PodmiotyOrazIchIstniejaceJednostki() { IdPodm = item.id_podm });
+                        }
+                        foreach (var podmiot in ListaId_PodmId_Jedn_N.FindAll(x => x.Id_Podm == item.id_podm))
+                        {
+                            podmiotyOrazIchIstniejaceJednostki.Find(x => x.IdPodm == item.id_podm).IdJedn_Nkr.Add(
+                                new PodmiotyOrazIchIstniejaceJednostki.jedn_nkr {
+                                    id_jedn_n = podmiot.Id_Jedn_N,
+                                    NKR = podmiot.NKR
+                                });
+                        } 
+                    }
+                }
+
+                // dogranie właścicieli do obiektu
+                for (int j = 0; j < sortowanie.Rows.Count; j++)
+                {
+                  if(podmiotyOrazIchIstniejaceJednostki.Exists(podmiot => podmiot.IdPodm == Convert.ToInt32(sortowanie.Rows[j][0])))
+                    {
+                        //podmiotyOrazIchIstniejaceJednostki.Find()
+
+                    }
+                }
+
+            }
+            catch(Exception excep)
+            {
+                Console.WriteLine(excep.Message);
+            }
             return BazaFB.Get_DataTable(s).Rows.Count;
         }
+
+
 
 
 
@@ -265,6 +357,8 @@ namespace ScaleniaMW
 
         public static void TworzenieJednostek(int pierwszyIjr, int id_gm, int id_obr, int RWD_id, string gr = "null")
         {
+
+
             dpTworzenie.Visibility = Visibility.Visible;
             int id_idJedn = Convert.ToInt32(BazaFB.Get_DataTable("select first 1 id_id+1 from JEDN_REJ_N order by id_Id desc").Rows[0][0]);
             using (var connection = new FbConnection(BazaFB.connectionString()))
@@ -290,15 +384,19 @@ namespace ScaleniaMW
 
                 foreach (var item in jednTworzZeWspolnoty)
                 {
-                    if (ListaId_PodmId_Jedn_N.Exists(x => x.Id_Podm == item.id_podm) && checkBoxCzyDopisywacDoIstniejaczych.IsChecked == true)
+                    //if (ListaId_PodmId_Jedn_N.Exists(x => x.Id_Podm == item.id_podm) && checkBoxCzyDopisywacDoIstniejaczych.IsChecked == true)
+                    //{
+                    //    item.id_jedn_n = ListaId_PodmId_Jedn_N.Find(x => x.Id_Podm == item.id_podm).Id_Jedn_N;
+                    //   continue;
+                    //}
+
+                    // sprawdź czy istnieje jednostka dla danego podmiotu oraz czy zaznaczone check box oraz czy w istniejącej jednostce jest chęć dopisania do istniejących jeśli wybrany nkr 0 to znaczy żeby nie przypisywać
+                    if (podmiotyOrazIchIstniejaceJednostki.Exists(x => x.IdPodm == item.id_podm) 
+                        && checkBoxCzyDopisywacDoIstniejaczych.IsChecked == true 
+                        && podmiotyOrazIchIstniejaceJednostki.Find(x => x.IdPodm == item.id_podm).WybranyNKR != 0)
                     {
-                      //  Console.WriteLine("jaka jednostke pominięto: " + item.id_podm);
-
-                        item.id_jedn_n = ListaId_PodmId_Jedn_N.Find(x => x.Id_Podm == item.id_podm).Id_Jedn_N;
-
-
-                        Console.WriteLine("sprawdzam czy można dopisać!" + item.id_jedn_n + " " );
-                       continue;
+                        item.id_jedn_n = podmiotyOrazIchIstniejaceJednostki.Find(x => x.IdPodm == item.id_podm).WybraneId;
+                        continue;
                     }
                     else
                     {
