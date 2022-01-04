@@ -25,24 +25,16 @@
         <Menu Grid.Row="1" Background="#2676d0" Foreground="White">
             <MenuItem Header="Plik" >
                 <MenuItem x:Name="Otworz_RTF" Foreground="Black" Header="Otwórz plik RTF/txt" Click="Otworz_RTF_Click"></MenuItem>
+                
                 <MenuItem x:Name="Generuj_Wykaz_wydz_ekw" Foreground="Black" Header="Generuj wykaz wydz. ekw." >
-                  
-                    <MenuItem x:Name="radioButtonWszytkieDoWWE" Click="Generuj_Wykaz_wydz_ekw_Click" Header="Dla wszystkich"></MenuItem>
-
-
-
-                    <MenuItem Header="Dla wybranego" Click="MenuItem_ClicGenerujWWEdlaWybranego">
-                        
-                    </MenuItem>
-
-
-
-
-
-
-
-
+                    <MenuItem x:Name="radioButtonWszytkieDoWWE" Click="Generuj_Wykaz_wydz_ekw_Click" Header="Dla wszystkich"/>
+                    <MenuItem Header="Dla wybranego" Click="MenuItem_ClicGenerujWWEdlaWybranego"/>
                 </MenuItem>
+                <MenuItem x:Name="Generuj_Uproszczony_Wykaz_wydz_ekw" Foreground="Black" Header="Generuj uproszczony wykaz wydz. ekw." >
+                    <MenuItem x:Name="buttonUproszczonyWszytkieDoWWE" Header="Dla wszystkich" Click="ButtonUproszczonyWszytkieDoWWE_Click"/>
+                    <MenuItem Header="Dla wybranego" />
+                </MenuItem>
+                
                 <Separator></Separator>
                 <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="otworzOknoPoczatkowe_Click"></MenuItem>
                 <Separator></Separator>

@@ -393,6 +393,7 @@ namespace ScaleniaMW
                     {
                         stringBuilder.AppendLine(BadanieKsiagWieczystych.SprawdzCyfreKontrolna(item.KW, item.ObrDzialka) + " przypisaną do działki nr: " + item.ObrDzialka);
                         logBledowKW.Visibility = Visibility.Visible;
+                        logBledowKW.Background = Brushes.Red;
                     }
                 }
                 stringBuilder.AppendLine("----------------------------------KONIEC----------------------------------");

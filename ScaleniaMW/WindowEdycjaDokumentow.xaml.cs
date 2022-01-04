@@ -567,14 +567,10 @@ namespace ScaleniaMW
             {
                 dokHTML.Append(HtmlDokumentWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
             }
-
-
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
             return dokHTML.ToString();
         }
-
-
 
 
         private void Generuj_Wykaz_wydz_ekw_Click(object sender, RoutedEventArgs e)
@@ -582,7 +578,7 @@ namespace ScaleniaMW
 
             JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
             JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
-            List<List<JR_Nowa>> jR_s = new List<List<JR_Nowa>>();
+            //List<List<JR_Nowa>> jR_s = new List<List<JR_Nowa>>();
 
 
             //int naIlePlikowDzielimy = (int)Math.Ceiling(JednostkiRejestroweNowe.Jedn_REJ_N.Count / 100d);
@@ -630,6 +626,30 @@ namespace ScaleniaMW
 
             WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR();
             windowPobierzNKR.Show();
+        }
+
+
+        public string GenerujUproszczonyWWE(List<JR_Nowa> jR_Nowa)
+        {
+            StringBuilder dokHTML = new StringBuilder();
+            dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow);
+            dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+
+            foreach (var JednoskaRejNowa in jR_Nowa)
+            {
+                dokHTML.Append(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
+            }
+            dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
+            //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
+            return dokHTML.ToString();
+        }
+
+
+        private void ButtonUproszczonyWszytkieDoWWE_Click(object sender, RoutedEventArgs e)
+        {
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
+            zapisDoPliku(GenerujUproszczonyWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
         }
     }
 }

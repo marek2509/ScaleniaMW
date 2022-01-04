@@ -186,7 +186,7 @@ namespace ScaleniaMW
             {
                 labelWybranaJesnostka.Content = Wspolnota.podmiotyOrazIchIstniejaceJednostki[listBoxOwner.SelectedIndex].WybranyNKR.ToString();
                 listBoxNkr.ItemsSource = Wspolnota.podmiotyOrazIchIstniejaceJednostki[listBoxOwner.SelectedIndex].IdJedn_Nkr.Select(n => n.NKR);
-                LabelIlePozostaloJednostek.Content = Wspolnota.podmiotyOrazIchIstniejaceJednostki.FindAll(x => x.WybraneId == 0).Count;
+                LabelIlePozostaloJednostek.Content = Wspolnota.podmiotyOrazIchIstniejaceJednostki.FindAll(x => x.WybraneId == 0).Count + "/" + Wspolnota.podmiotyOrazIchIstniejaceJednostki.Count;
                 listBoxNkr.Items.Refresh();
             }
         }

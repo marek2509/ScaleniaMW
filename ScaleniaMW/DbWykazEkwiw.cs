@@ -226,6 +226,15 @@ namespace ScaleniaMW
         public string KW { get; set; }
         public decimal Wartosc { get; set; }
 
+        public int NrObr
+        {
+            get => ListaObrebow.Obreby.Exists(x => x.IdObrebu == Id_obr) ? ListaObrebow.Obreby.Find(x => x.IdObrebu == Id_obr).NrObrebu : 0;
+
+            private set
+            {
+            }
+        }
+
         public Dzialka(int Id_dz, int Id_obr, string NrDz, double PowDz, int Rjdr, string KW, decimal Wartosc)
         {
             this.Id_dz = Id_dz;
@@ -235,6 +244,7 @@ namespace ScaleniaMW
             this.Rjdr = Rjdr;
             this.KW = KW;
             this.Wartosc = Wartosc;
+
         }
     }
 

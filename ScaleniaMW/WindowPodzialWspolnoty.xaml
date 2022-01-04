@@ -28,12 +28,10 @@
             </MenuItem>
         </Menu>
         <StackPanel Grid.Row="2" x:Name="stackPobierzInfo">
-
-
+            
             <DataGrid Height="180" x:Name="dgJednostkiNowe" IsReadOnly="True" SelectionMode="Single" CanUserSortColumns="False"></DataGrid>
             <Button Content="Wybierz zaznaczoną jednostkę do podziału" Click="ButtonWybierzZaznJednostke_Click" ></Button>
             <TextBox x:Name="labelWybraneJednostki"  Height="70" VerticalScrollBarVisibility="Auto" ></TextBox>
-
             <DockPanel Margin="3" Grid.Column="0" Height="190">
                 <StackPanel>
                     <Label>Właściciel</Label>
