@@ -50,6 +50,9 @@
                 <RadioButton GroupName="radio" x:Name="checkBoxUsunKontury">
                     Usuń kontury szacunkowe z raportu
                 </RadioButton>
+                <Separator HorizontalAlignment="Left" Height="2" Width="375"/>
+                <CheckBox x:Name="checkBoxPodzialSekcjiNaStronieNieparzystej" IsChecked="True">Podział sekcji na stronie nieparzystej dla WWE</CheckBox>
+
                 <!--<DockPanel VerticalAlignment="Center" Visibility="Collapsed">
                     <RadioButton GroupName="radio" VerticalContentAlignment="Center" x:Name="checkBoxPodzialSekcji" >
                         Wstaw podział sekcji na stronie nieparzystej zamiast tekstu:

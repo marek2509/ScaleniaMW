@@ -562,10 +562,14 @@ namespace ScaleniaMW
             StringBuilder dokHTML = new StringBuilder();
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow);
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
-
+            bool podzialSekcjiNaStronieNieparzystej = (bool)checkBoxPodzialSekcjiNaStronieNieparzystej.IsChecked;
             foreach (var JednoskaRejNowa in jR_Nowa)
             {
                 dokHTML.Append(HtmlDokumentWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
+                if (podzialSekcjiNaStronieNieparzystej)
+                {
+                    dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+                }
             }
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
@@ -635,9 +639,14 @@ namespace ScaleniaMW
             dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow);
             dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
 
+            bool podzialSekcjiNaStronieNieparzystej = (bool)checkBoxPodzialSekcjiNaStronieNieparzystej.IsChecked;
             foreach (var JednoskaRejNowa in jR_Nowa)
             {
                 dokHTML.Append(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
+                if (podzialSekcjiNaStronieNieparzystej)
+                {
+                    dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+                }
             }
             dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
@@ -648,7 +657,7 @@ namespace ScaleniaMW
         private void ButtonUproszczonyWszytkieDoWWE_Click(object sender, RoutedEventArgs e)
         {
             JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
-            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
+            //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
             zapisDoPliku(GenerujUproszczonyWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
         }
     }

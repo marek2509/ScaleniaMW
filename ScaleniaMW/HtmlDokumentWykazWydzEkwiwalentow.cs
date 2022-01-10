@@ -235,7 +235,7 @@ namespace ScaleniaMW
 
 
             dokHTML.AppendLine("</table>");
-            dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+            //dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
 
             return dokHTML.ToString();
         }
