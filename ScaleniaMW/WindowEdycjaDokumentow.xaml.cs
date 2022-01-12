@@ -24,7 +24,19 @@ namespace ScaleniaMW
         {
             InitializeComponent();
             textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
-            // odczytUstawien();            
+
+            Console.WriteLine(">>" + Properties.Settings.Default.czyWziacNrJednRejZNkrPo);
+
+            if (Properties.Settings.Default.czyWziacNrJednRejZNkrPo == true) {
+                checkBoxWezZNKR.IsChecked = true;
+                checkBoxWezZUwagi.IsChecked = false;
+            }
+            else
+            {
+                checkBoxWezZNKR.IsChecked = false;
+                checkBoxWezZUwagi.IsChecked = true;
+            }
+            // odczytUstawien();        
         }
 
         string usunOd = "kontury";
@@ -230,7 +242,6 @@ namespace ScaleniaMW
                         processedValue.Append(endString);
                     }
                 }
-
                 return processedValue.ToString();
             }
         }
@@ -570,6 +581,10 @@ namespace ScaleniaMW
                 {
                     dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
                 }
+                else
+                {
+                    dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialNowaStrona);
+                }
             }
             dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
@@ -628,7 +643,7 @@ namespace ScaleniaMW
         private void MenuItem_ClicGenerujWWEdlaWybranego(object sender, RoutedEventArgs e)
         {
 
-            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR();
+            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR(false);
             windowPobierzNKR.Show();
         }
 
@@ -647,6 +662,10 @@ namespace ScaleniaMW
                 {
                     dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
                 }
+                else
+                {
+                    dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialNowaStrona);
+                }
             }
             dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
@@ -659,6 +678,27 @@ namespace ScaleniaMW
             JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
             zapisDoPliku(GenerujUproszczonyWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
+        }
+
+        private void MenuItem_ClicGenerujUproszczonyWWEdlaWybranego(object sender, RoutedEventArgs e)
+        {
+            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR(true);
+            windowPobierzNKR.Show();
+        }
+
+
+        private void CheckBoxWezZNKR_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.czyWziacNrJednRejZNkrPo = true;
+            Properties.Settings.Default.Save();
+            Console.WriteLine(Properties.Settings.Default.czyWziacNrJednRejZNkrPo);
+        }
+
+        private void CheckBoxWezZUwagi_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.czyWziacNrJednRejZNkrPo = false;
+            Properties.Settings.Default.Save();
+            Console.WriteLine(Properties.Settings.Default.czyWziacNrJednRejZNkrPo);
         }
     }
 }

@@ -262,5 +262,17 @@ namespace ScaleniaMW.Properties {
                 this["EwopisSciezkaFDB"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool czyWziacNrJednRejZNkrPo {
+            get {
+                return ((bool)(this["czyWziacNrJednRejZNkrPo"]));
+            }
+            set {
+                this["czyWziacNrJednRejZNkrPo"] = value;
+            }
+        }
     }
 }

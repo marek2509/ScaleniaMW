@@ -32,7 +32,7 @@
                 </MenuItem>
                 <MenuItem x:Name="Generuj_Uproszczony_Wykaz_wydz_ekw" Foreground="Black" Header="Generuj uproszczony wykaz wydz. ekw." >
                     <MenuItem x:Name="buttonUproszczonyWszytkieDoWWE" Header="Dla wszystkich" Click="ButtonUproszczonyWszytkieDoWWE_Click"/>
-                    <MenuItem Header="Dla wybranego" />
+                    <MenuItem Header="Dla wybranego" Click="MenuItem_ClicGenerujUproszczonyWWEdlaWybranego" />
                 </MenuItem>
                 
                 <Separator></Separator>
@@ -52,7 +52,13 @@
                 </RadioButton>
                 <Separator HorizontalAlignment="Left" Height="2" Width="375"/>
                 <CheckBox x:Name="checkBoxPodzialSekcjiNaStronieNieparzystej" IsChecked="True">Podział sekcji na stronie nieparzystej dla WWE</CheckBox>
-
+                <Separator HorizontalAlignment="Left" Height="2" Width="375"/>
+                <RadioButton GroupName="radioUwagaCzyNKR" x:Name="checkBoxWezZNKR" Checked="CheckBoxWezZNKR_Checked">
+                    Jednostki rejestrowe pobierz z jedn__rej__n.NKR
+                </RadioButton>
+                <RadioButton GroupName="radioUwagaCzyNKR" x:Name="checkBoxWezZUwagi" Checked="CheckBoxWezZUwagi_Checked">
+                    Jednostki rejestrowe pobierz z jedn__rej__n.UWG
+                </RadioButton>
                 <!--<DockPanel VerticalAlignment="Center" Visibility="Collapsed">
                     <RadioButton GroupName="radio" VerticalContentAlignment="Center" x:Name="checkBoxPodzialSekcji" >
                         Wstaw podział sekcji na stronie nieparzystej zamiast tekstu:

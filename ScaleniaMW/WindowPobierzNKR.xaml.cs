@@ -19,8 +19,10 @@ namespace ScaleniaMW
     /// </summary>
     public partial class WindowPobierzNKR : Window
     {
-        public WindowPobierzNKR()
+        bool czyGenerowacUproszczonyWWE = false;
+        public WindowPobierzNKR(bool czyUproszczony)
         {
+            czyGenerowacUproszczonyWWE = czyUproszczony;
             InitializeComponent();
         }
 
@@ -29,9 +31,16 @@ namespace ScaleniaMW
             Console.WriteLine(textBoxNkrDoWWE.Text);
             WindowEdycjaDokumentow wED = new WindowEdycjaDokumentow();
             Console.WriteLine(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text.Trim()).Count);
-            if(JednostkiRejestroweNowe.Jedn_REJ_N.Exists(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text))
+            if (JednostkiRejestroweNowe.Jedn_REJ_N.Exists(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text))
             {
-                wED.zapisDoPliku(wED.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
+                if (czyGenerowacUproszczonyWWE)
+                {
+                    wED.zapisDoPliku(wED.GenerujUproszczonyWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
+                }
+                else
+                {
+                    wED.zapisDoPliku(wED.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
+                }
             }
             else
             {

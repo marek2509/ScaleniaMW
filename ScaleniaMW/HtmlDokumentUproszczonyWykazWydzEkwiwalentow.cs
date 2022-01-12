@@ -10,6 +10,7 @@ namespace ScaleniaMW
     static class HtmlDokumentUproszczonyWykazWydzEkwiwalentow
     {
         //public const string HTML_PodzialSekcjiNaStronieNieparzystej = "<span style='font-size:12.0pt;font-family:\"Times New Roman\",\"serif\";mso-fareast-font-family: \"Times New Roman\";mso-ansi-language:PL;mso-fareast-language:PL;mso-bidi-language: AR-SA'><br clear=all style='page-break-before:right;mso-break-type:section-break'></span>";
+        public const string HTML_PodzialNowaStrona = "<br clear=all style = 'mso-special-character:line-break;page-break-before:always'> ";
         public const string HTML_PodzialSekcjiNaStronieNieparzystej = "<br clear=all style='page-break-before:right;mso-break-type:section-break'>";
         public const string HTML_PoczatekWykazyWydzEkwiwalentow = "<!DOCTYPE html> <html lang=\"pl\"> <head>  " +
             "<meta charset=\"windows-1250\"> " +
@@ -52,11 +53,21 @@ namespace ScaleniaMW
             dokHTML.AppendLine("<div style=\"text-align: right;\"><b> <span style=\"color: red\">NUMER GOSPODARSTWA &nbsp;</span>  <span style = \"color: blue; text-decoration: underline; font-size: 14pt\">" + JednoskaRejNowa.IjrPo + "</span></b></div>");
             dokHTML.AppendLine("<div><span>Obręb:&nbsp;<b  style = \"color: blue; \">" + JednoskaRejNowa.NrObr + "&nbsp;" + JednoskaRejNowa.NazwaObrebu + "</b></span></div>");
 
-            // opcja z jednostką rejestrową dla nagłówka
-            //dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black;\"><span>Numer jednostki rejestrowej " + JednoskaRejNowa.Nkr +
-            //    "</span><br /><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
 
-            // opcja bez jednoski rejestrowej
+            //jednostka rejestrowa po lewej
+            string nrJednostkiRejestrowejPrzed;
+            if (Properties.Settings.Default.czyWziacNrJednRejZNkrPo == true)
+            {
+                nrJednostkiRejestrowejPrzed = JednoskaRejNowa.Nkr == 0 ? "" : JednoskaRejNowa.Nkr.ToString();
+            }
+            else
+            {
+                nrJednostkiRejestrowejPrzed = JednoskaRejNowa.Uwaga;
+            }
+            
+            dokHTML.AppendLine("<div><span>Numer jednostki rejestrowej: " + nrJednostkiRejestrowejPrzed + "<br /></div>");
+
+            //nagłówek właściciele i władający
             //dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black; width:90%;\"><br /><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
             dokHTML.AppendLine("<table width=" + szerTabeli + ">");
             dokHTML.AppendLine("<tr style=\"border: none;\"> <td style=\"border-bottom: 2px solid black; width:90%;\"><span style=\"margin-bottom: 0; padding: 0;\" >Właściciele i władający</span></td></tr>");
@@ -89,7 +100,7 @@ namespace ScaleniaMW
             dokHTML.AppendLine("</table>");
 
             // uwaga 
-            dokHTML.AppendLine("<div style=\"color: red\"><i>" + JednoskaRejNowa.Uwaga + "</i></div>");
+            //dokHTML.AppendLine("<div style=\"color: red\"><i>" + JednoskaRejNowa.Uwaga + "</i></div>");
 
             //nagłówek nad tabelą
             dokHTML.AppendLine("<br /> <div style=\"text-align: center; margin-bottom: 5px;\"> <span style=\"background-color:" + kolorZakreslacza + "\"><b><u><i>Ekwiwalent należny wg. udziału w pozycjach rejestrowych</i></u></b></span></div>");
@@ -192,51 +203,45 @@ namespace ScaleniaMW
 
 
 
-
-
-
-
-
-
-
-
-
-
-
             dokHTML.AppendLine("<br/>");
 
             // Tabelka czarna pod bilansem
             // (int)(szerTabeli * 0.36D)
-            dokHTML.AppendLine("<table width = " + (int)(szerTabeli * 0.36D) + " style =\"border: 1px solid black; border-collapse: collapse; font-size: 9pt; \">");
-            dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka dopuszczalna ±3%:</b></td><td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + Decimal.Round(SumaWartosciPrzed * 0.03M, 2).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
+
+           int szerTabPodBilansem = JednoskaRejNowa.Odcht == true ?   288 : (int)(szerTabeli * 0.36D);
+
+
+
+
+            dokHTML.AppendLine("<table width = " + szerTabPodBilansem + " style =\"border: 1px solid black; border-collapse: collapse; font-size: 9pt; \">");
+            dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b> Odchyłka dopuszczalna ±3%:</b></td><td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + Decimal.Round(SumaWartosciPrzed * 0.03M, 2).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
+
             decimal odchylkaFaktyczna = SumaWartosciPo - SumaWartosciPrzed;
-            dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka faktyczna:</b></td><td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
+            dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b> Odchyłka faktyczna:</b></td><td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
 
             if (JednoskaRejNowa.Odcht == false)
             {
                 if (odchylkaFaktyczna < 0)
                 {
-                    dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Winien otrzymać: </b></td><td style =\"border: 1px solid black; text-align: center; color: green;\" width=33.34%><b>" + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
+                    dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b> Winien otrzymać: </b></td><td style =\"border: 1px solid black; text-align: center; color: green;\" width=33.34%><b>" + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
                 }
                 else
                 {
-                    dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Winien zapłacić: </b></td><td style =\"border: 1px solid black; text-align: center; color: red;\" width=33.34%><b>" + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
+                    dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b> Winien zapłacić: </b></td><td style =\"border: 1px solid black; text-align: center; color: red;\" width=33.34%><b>" + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
                 }
             }
             else
             {
-                dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Dopłata za ekwiwalent</b></td><td style =\"border: 1px solid black; text-align: center; \" width=33.34%><b>0.00</b></td></tr>");
-                dokHTML.AppendLine("<tr><td  colspan=\"2\" style =\"border: 1px solid black; color: green; text-align: center; \" width=66.66%><b>Nie naliczono dopłaty do ekwiwalentu z przyczyn technicznych</b></td></tr>");
-
-
-                //Nie naliczono dopłaty do ekwiwalentu z przyczyn technicznych
+                dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b> Dopłata za ekwiwalent:</b></td><td style =\"border: 1px solid black; text-align: center; \" width=33.34%><b>0.00</b></td></tr>");
+                dokHTML.AppendLine("<tr><td  colspan=\"2\" style =\"border: 1px solid black; color: green; text-align: center; \" width=66.66%> Nie naliczono dopłaty do ekwiwalentu z przyczyn technicznych </td></tr>");
             }
+
             dokHTML.AppendLine("</table>");
 
             dokHTML.AppendLine("<br/>");
 
-            int wysWierszaTabeliPX = 20;
             // tabelka oświadczenia uczestnika i omówienie zastrzeżeń
+            int wysWierszaTabeliPX = 20;
             dokHTML.AppendLine("<table style=\"border: 1px solid black; border-collapse: collapse; font-size: 9pt; width: " + szerTabeli + ";\">");
             dokHTML.AppendLine("<tr>");
             dokHTML.AppendLine("<th style=\"border: 1px solid; width: 50%; font-size: 10px;\"><i>Oświadczenie uczestnika scalenia w sprawie projektu wstępnego, " +
@@ -306,12 +311,9 @@ namespace ScaleniaMW
 
             dokHTML.AppendLine("</table>");
 
-
             //dokHTML.AppendLine(HTML_PodzialSekcjiNaStronieNieparzystej);
-
             return dokHTML.ToString();
         }
-
 
         public static string GenerujTabeleWlascicieliPRZED(ZJednRejStarej WlascicielePrzed, int szerTabeli)
         {
@@ -347,8 +349,6 @@ namespace ScaleniaMW
 
             return dokHTML.ToString();
         }
-
-
 
         public static bool CzyGenerowacWlascicieliZStarychJEdnostek(JR_Nowa JednoskaRejNowa)
         {

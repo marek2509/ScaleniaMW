@@ -231,9 +231,6 @@ namespace ScaleniaMW
                 dokHTML.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka techniczna</b></td><td style =\"border: 1px solid black; text-align: center; \" width=33.34%><b>-.--</b></td></tr>");
             }
 
-
-
-
             dokHTML.AppendLine("</table>");
             //dokHTML.AppendLine(HtmlDokumentWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
 
