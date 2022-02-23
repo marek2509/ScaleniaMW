@@ -92,9 +92,13 @@
                     <Label>-Ustaw odchyłkę techniczną </Label>
                     <Label>-Ustaw zgodę na powiększenie gospodastwa </Label>
                 </StackPanel>
-                <Image x:Name="imgKWprzypisz" Grid.Column="2" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrKWPrzypisz.png"  Opacity="0.7" Margin="0,1"/>
+                <StackPanel x:Name="labelEdycjaDpkumentów" Grid.Column="2" Grid.Row="1" Visibility="Hidden" Panel.ZIndex="1000" VerticalAlignment="Top" Height="50">
+                    <Label Margin="0" Padding="0">-Wygeneruj plik "Popraw dane" wstiający działkę 0 dla jednostek bez stanu</Label>
+                    <Label Margin="6 0 0 0" Padding="0">po scaleniu w celu wygenerowania rejestru po scaleniu dla tych jednostek</Label>
+                </StackPanel>
+                <Image x:Name="imgKWprzypisz" Grid.Column="2" Grid.Row="1" Visibility="Hidden" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrKWPrzypisz.png"  Opacity="0.7" Margin="0,1"/>
                 <Image x:Name="imgKWpNaMape" Grid.Column="2" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/KWNaMape.png"  Opacity="0.7" Margin="0,1"/>
-                <Image x:Name="imgEdycDokum" Grid.Column="2" Grid.Row="1" Visibility="Hidden"  Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/poprawDokumenPrzedPo.png"  Opacity="0.7" Margin="0,1"/>
+                <Image x:Name="imgEdycDokum" Grid.Column="2" Grid.Row="1" Visibility="Hidden" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/poprawDokumenPrzedPo.png"  Opacity="0.7" Margin="0,1"/>
 
                 
                 

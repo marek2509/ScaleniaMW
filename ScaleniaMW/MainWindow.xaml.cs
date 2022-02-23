@@ -139,7 +139,7 @@ namespace ScaleniaMW
 
         List<DzialkaEDZ> listaZEDZ = new List<DzialkaEDZ>();
         List<DzialkaNkrZSQL> listaDzNkrzSQL = new List<DzialkaNkrZSQL>();
-        DataTable dt;
+        //DataTable dt;
         public static string connectionString;
 
         public static void aktualizujSciezkeZPropertis()
@@ -408,6 +408,7 @@ namespace ScaleniaMW
 
         private void ModyfDokum_MouseLeave(object sender, MouseEventArgs e)
         {
+            labelEdycjaDpkumentów.Visibility = Visibility.Hidden;
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
             bi3.UriSource = new Uri("Resources/writingWhite.png", UriKind.Relative);
@@ -424,6 +425,7 @@ namespace ScaleniaMW
 
         private void ModyfDokum_MouseEnter(object sender, MouseEventArgs e)
         {
+            labelEdycjaDpkumentów.Visibility = Visibility.Visible;
             imgEdycDokum.Visibility = Visibility.Visible;
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();

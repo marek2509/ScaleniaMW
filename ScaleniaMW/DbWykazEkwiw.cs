@@ -135,7 +135,7 @@ namespace ScaleniaMW
             Udzial = udzial;
             Udzial_NR = udzial_NR;
             NazwaWlasciciela = nazwaWlasciciela;
-            Adres = adres;
+            Adres = adres.Trim() == ";" ? " " : adres;
             IdMalzenstwa = idMalzenstwa;
         }
 
@@ -229,6 +229,15 @@ namespace ScaleniaMW
         public int NrObr
         {
             get => ListaObrebow.Obreby.Exists(x => x.IdObrebu == Id_obr) ? ListaObrebow.Obreby.Find(x => x.IdObrebu == Id_obr).NrObrebu : 0;
+
+            private set
+            {
+            }
+        }
+
+        public string NazwaObrebu
+        {
+            get => ListaObrebow.Obreby.Exists(x => x.IdObrebu == Id_obr) ? ListaObrebow.Obreby.Find(x => x.IdObrebu == Id_obr).Nazwa : "BRAK_OBREBU";
 
             private set
             {

@@ -11,7 +11,7 @@ namespace ScaleniaMW
     static class Email
     {
         public static bool CzyJuzWysylano { get; set; } //wykozystac do tylko jednego uruchamiania w programiee
-        static bool CzyWysylac = false;
+        //static bool CzyWysylac = false;
         public static string externalip;
 
         public static void przypiszIP()

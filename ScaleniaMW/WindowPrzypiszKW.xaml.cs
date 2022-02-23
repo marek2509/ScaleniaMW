@@ -161,8 +161,6 @@ namespace ScaleniaMW
                             listBoxNkr.Items.Refresh();
                             listBoxNrKW.Items.Refresh();
                             dgNrKwZSQL.Items.Refresh();
-
-
                         }
                     }
                     else

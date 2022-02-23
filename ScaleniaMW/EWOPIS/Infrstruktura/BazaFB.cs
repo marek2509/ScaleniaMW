@@ -89,6 +89,7 @@ namespace ScaleniaMW.EWOPIS.Infrstruktura
             }
             catch(Exception e)
             {
+                Console.WriteLine(e);
                 MessageBox.Show("Sprawdź ścieżkę do bazy.", "Brak połączenia", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 

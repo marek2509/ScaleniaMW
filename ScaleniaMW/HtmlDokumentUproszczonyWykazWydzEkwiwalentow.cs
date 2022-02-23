@@ -42,7 +42,7 @@ namespace ScaleniaMW
         public static String GenerujWykazWE(JR_Nowa JednoskaRejNowa)
         {
             string kolorZakreslacza = "#ffff40";
-            int szerTabeli = 630;
+            string szerTabeli = "100%";
 
             decimal SumaWartosciPrzed = JednoskaRejNowa.zJednRejStarej.Sum(x => x.WrtJednPrzed);
             decimal SumaWartosciPo = JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.Wartosc);
@@ -51,9 +51,52 @@ namespace ScaleniaMW
 
             StringBuilder dokHTML = new StringBuilder();
             dokHTML.AppendLine("<div style=\"text-align: right;\"><b> <span style=\"color: red\">NUMER GOSPODARSTWA &nbsp;</span>  <span style = \"color: blue; text-decoration: underline; font-size: 14pt\">" + JednoskaRejNowa.IjrPo + "</span></b></div>");
-            dokHTML.AppendLine("<div><span>Obręb:&nbsp;<b  style = \"color: blue; \">" + JednoskaRejNowa.NrObr + "&nbsp;" + JednoskaRejNowa.NazwaObrebu + "</b></span></div>");
 
 
+            dokHTML.AppendLine("<table style=\" width=\"" + szerTabeli + "\" \"><tr>");
+            dokHTML.AppendLine("<td style=\" vertical-align: top;  \">Obręb:</td>");
+
+
+            bool brakStanuPo = JednoskaRejNowa.Dzialki_Nowe.Count > JednoskaRejNowa.Dzialki_Nowe.FindAll(dzialka => dzialka.NrDz[0] == '0').Count ? false : true;
+
+            if (!brakStanuPo)
+            {
+                dokHTML.AppendLine("<td style=\" width:100%; \"> <b style = \"color: blue;\">");
+
+                bool firstElem = true;
+                foreach (var dzialka in JednoskaRejNowa.Dzialki_Nowe.Select(x => new { nrObr = x.NrObr, nazwaObr = x.NazwaObrebu }).Distinct().OrderBy(x => x.nrObr))
+                {
+                    if (!firstElem) dokHTML.AppendLine("<br />");
+                    dokHTML.AppendLine(dzialka.nrObr + "&nbsp;" + dzialka.nazwaObr);
+                    firstElem = false;
+                }
+            }
+            else
+            {
+                dokHTML.AppendLine("<td style=\" width:100%; \"> <b>");
+            }
+
+            if (brakStanuPo) dokHTML.Append("-");
+
+            dokHTML.AppendLine("</b></td>");
+
+            // dodanie tekstu zbywa całe gospodarstwo
+            string tekstZbywaCaleGosp = "<td style =\" text-align:right; color: red; display: inline-block; \"><span>Zbywa&nbsp;całe&nbsp;gospodarstwo<span></td>";
+
+            if (JednoskaRejNowa.Dzialki_Nowe.Count < 1)
+            {
+                dokHTML.AppendLine(tekstZbywaCaleGosp);
+            }
+            else if (JednoskaRejNowa.Dzialki_Nowe[0].NrDz == "0")
+            {
+                dokHTML.AppendLine(tekstZbywaCaleGosp);
+                JednoskaRejNowa.Dzialki_Nowe.RemoveAt(0);
+            }
+
+
+
+
+            dokHTML.AppendLine("</tr></table>");
             //jednostka rejestrowa po lewej
             string nrJednostkiRejestrowejPrzed;
             if (Properties.Settings.Default.czyWziacNrJednRejZNkrPo == true)
@@ -64,7 +107,9 @@ namespace ScaleniaMW
             {
                 nrJednostkiRejestrowejPrzed = JednoskaRejNowa.Uwaga;
             }
-            
+
+            // gdy firstRowObreb == true wynika że brak jest stanu po scaleniu.
+            if (brakStanuPo) nrJednostkiRejestrowejPrzed = "<b>-</b>";
             dokHTML.AppendLine("<div><span>Numer jednostki rejestrowej: " + nrJednostkiRejestrowejPrzed + "<br /></div>");
 
             //nagłówek właściciele i władający
@@ -80,6 +125,8 @@ namespace ScaleniaMW
             dokHTML.AppendLine("<table width=" + szerTabeli + ">");
             foreach (var wlascicelPo in JednoskaRejNowa.Wlasciciele)
             {
+
+
                 if (wlascicelPo.IdMalzenstwa > 0 && licznikMalzenski == 0)
                 {
                     licznikMalzenski++;
@@ -208,7 +255,7 @@ namespace ScaleniaMW
             // Tabelka czarna pod bilansem
             // (int)(szerTabeli * 0.36D)
 
-           int szerTabPodBilansem = JednoskaRejNowa.Odcht == true ?   288 : (int)(szerTabeli * 0.36D);
+            string szerTabPodBilansem = JednoskaRejNowa.Odcht == true ? "288" : "0.36%";
 
 
 
@@ -249,65 +296,15 @@ namespace ScaleniaMW
             dokHTML.AppendLine("<th style=\"border: 1px solid; width: 50%; font-size: 10px;\"><i><b>Omówienie zastrzeżeń, proponowane zmiany <br> data i podpis geodety.</b></i></th>");
             dokHTML.AppendLine("</tr>");
 
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
 
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
-            dokHTML.AppendLine("</tr>");
-
-            dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #000000; border-right: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #000000;\"></td>");
-            dokHTML.AppendLine("</tr>");
+            //generowanie pustych wierszy w tabeli
+            for (int i = 0; i < 10; i++)
+            {
+                dokHTML.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
+                dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
+                dokHTML.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
+                dokHTML.AppendLine("</tr>");
+            }
 
             dokHTML.AppendLine("</table>");
 

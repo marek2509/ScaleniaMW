@@ -73,8 +73,8 @@ namespace ScaleniaMW
         }
 
         List<TextBox> listTextbox = new List<TextBox>();
-        int ileIjrBox = 0;
-        int ileObrBox = 0;
+        //int ileIjrBox = 0;
+        //int ileObrBox = 0;
 
         private void MenuItemPolaczZbaza_Click(object sender, RoutedEventArgs e)
         {

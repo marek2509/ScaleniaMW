@@ -114,13 +114,13 @@ namespace ScaleniaMW
                                 sbPuste.AppendLine("Błędny format linii:" + calyOdczzytanyTextLinie[i]);
                             }
                         }
-                        textBoxPuste.Text = sbPuste.ToString();
+                        richTextBox.Text = sbPuste.ToString();
                     }
                     var resultat = MessageBox.Show("Wczytano.\nZapisz plik.", "Wczytano", MessageBoxButton.OK);
                 }
                 catch (Exception esa)
                 {
-                    Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz ");
+                    Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz "+ esa);
                 }
 
                 if (checkBoxUsunKontury.IsChecked == true)
@@ -675,7 +675,7 @@ namespace ScaleniaMW
 
         private void ButtonUproszczonyWszytkieDoWWE_Click(object sender, RoutedEventArgs e)
         {
-            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
+            //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
             zapisDoPliku(GenerujUproszczonyWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
         }
@@ -699,6 +699,100 @@ namespace ScaleniaMW
             Properties.Settings.Default.czyWziacNrJednRejZNkrPo = false;
             Properties.Settings.Default.Save();
             Console.WriteLine(Properties.Settings.Default.czyWziacNrJednRejZNkrPo);
+        }
+
+
+        class ModelNKR
+        {
+            public ModelNKR(int nkr)
+            {
+                NKR = nkr;
+            }
+            public int NKR { get; set; }
+        }
+        List<ModelNKR> listNKR;
+
+        private void ItemGenerujPlikPoprawDane_DodajDzialki_0_Click(object sender, RoutedEventArgs e)
+        {
+
+            DataTable jednostkiBezDzialekPoScaleniu = odczytajZSql(Constants.SQLIJRGdzieBrakStanuPoScaleniu);
+            listNKR = new List<ModelNKR>();
+            // powinna być jedna kolumna z nr NKR(jedn_rej_n.ijr) dla których brak stanu po scaleniu
+            StringBuilder plikPoprawDane = new StringBuilder();
+         
+            for (int i = 0; i < jednostkiBezDzialekPoScaleniu.Rows.Count; i++)
+            {
+                for (int j = 0; j < jednostkiBezDzialekPoScaleniu.Columns.Count; j++)
+                {
+                    int nkr = Convert.ToInt32(jednostkiBezDzialekPoScaleniu.Rows[i][j]);
+                    listNKR.Add(new ModelNKR(nkr));
+                }
+            }
+            dataGridNkrBezDzialekPo.ItemsSource = listNKR;
+            pokazPanelLadowaniaDzialek_0();
+        }
+
+        void pokazPanelLadowaniaDzialek_0(bool pokaz = true)
+        {
+            if (pokaz)
+            {
+                dataGridNkrBezDzialekPo.Visibility = Visibility.Visible;
+                gridBtnsZatwierdzAnuluj.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                dataGridNkrBezDzialekPo.Visibility = Visibility.Hidden;
+                gridBtnsZatwierdzAnuluj.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void BtnZaladujDzialkiZero_Click(object sender, RoutedEventArgs e)
+        {
+            using (var connection = new FbConnection(BazaFB.connectionString()))
+            {
+                connection.Open();
+                FbCommand wstawDzialkeZero = new FbCommand(Constants.SQLInsertDzialka0, connection);
+               
+                foreach (var nkr in listNKR)
+                {
+                    wstawDzialkeZero.Parameters.Add("@NKR", nkr.NKR);
+                    wstawDzialkeZero.ExecuteNonQuery();
+                    wstawDzialkeZero.Parameters.Clear();
+                }
+                connection.Close();
+            }
+
+            messageThumbUp();
+            pokazPanelLadowaniaDzialek_0(false);
+        }
+
+        public void messageThumbUp()
+        {
+            MessageBox.Show("OK! 👍");
+        }
+
+        private void BtnAnulujDzialkiZero_Click(object sender, RoutedEventArgs e)
+        {
+            pokazPanelLadowaniaDzialek_0(false);
+        }
+
+        private void BtnGenerujPLikPoprawDane_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder poprawDane = new StringBuilder();
+            poprawDane.AppendLine("****");
+            poprawDane.AppendLine("insert into DZIALKI_N(id_id, idobr, idd, rjdr, id_rd, sidd, pew, v) values((select gen_id(ID_DZIALKI_N, 1)from rdb$database), 1, 0, (select id_id from jedn_rej_n where ijr =:NKR), 1, (select gen_id(ID_DZIALKI_N, 0)from rdb$database), 0, 0)");
+            poprawDane.AppendLine("****");
+            poprawDane.AppendLine("NKR");
+            listNKR.ForEach(x => poprawDane.AppendLine(x.NKR.ToString()));
+
+            zapisDoPliku(poprawDane.ToString(), ".txt");
+            messageThumbUp();
+            pokazPanelLadowaniaDzialek_0(false);
+        }
+
+        private void ItemUsunDzialki_0_Click(object sender, RoutedEventArgs e)
+        {
+            BazaFB.Execute_SQL(Constants.SQLDeleteAllDzialki0);
         }
     }
 }

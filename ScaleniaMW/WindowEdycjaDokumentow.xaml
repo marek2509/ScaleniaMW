@@ -25,7 +25,7 @@
         <Menu Grid.Row="1" Background="#2676d0" Foreground="White">
             <MenuItem Header="Plik" >
                 <MenuItem x:Name="Otworz_RTF" Foreground="Black" Header="Otwórz plik RTF/txt" Click="Otworz_RTF_Click"></MenuItem>
-                
+
                 <MenuItem x:Name="Generuj_Wykaz_wydz_ekw" Foreground="Black" Header="Generuj wykaz wydz. ekw." >
                     <MenuItem x:Name="radioButtonWszytkieDoWWE" Click="Generuj_Wykaz_wydz_ekw_Click" Header="Dla wszystkich"/>
                     <MenuItem Header="Dla wybranego" Click="MenuItem_ClicGenerujWWEdlaWybranego"/>
@@ -34,7 +34,7 @@
                     <MenuItem x:Name="buttonUproszczonyWszytkieDoWWE" Header="Dla wszystkich" Click="ButtonUproszczonyWszytkieDoWWE_Click"/>
                     <MenuItem Header="Dla wybranego" Click="MenuItem_ClicGenerujUproszczonyWWEdlaWybranego" />
                 </MenuItem>
-                
+
                 <Separator></Separator>
                 <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="otworzOknoPoczatkowe_Click"></MenuItem>
                 <Separator></Separator>
@@ -78,29 +78,45 @@
             </MenuItem>
             <MenuItem Background="{Binding ElementName=itemPolaczZBaza, Path=Background}"  Header="Baza FDB"  Foreground="White">
                 <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza" Foreground="Black"/>
+                <Separator  Height="2"></Separator>
+                <MenuItem x:Name="itemGenerujPlikPoprawDane_DodajDzialki_0"  Header="Dodaj dzialki 0 w przypadku braku stanu po scaleniu" Click="ItemGenerujPlikPoprawDane_DodajDzialki_0_Click" Foreground="Green"/>
+                <MenuItem x:Name="itemUsunDzialki_0"  Header="Usuń wszystkie dodane wcześniej działki 0" Click="ItemUsunDzialki_0_Click" Foreground="Red"/>
             </MenuItem>
         </Menu>
-        <TextBox Grid.Row="2"  Text="" x:Name="textBoxPuste"></TextBox>
+        
+        
         <TextBox Grid.Row="2" x:Name="richTextBox" VerticalScrollBarVisibility="Auto"></TextBox>
+        <DataGrid Grid.Row="2" x:Name="dataGridNkrBezDzialekPo" Panel.ZIndex="1000" Visibility="Hidden" IsReadOnly="True"></DataGrid>
+        <Grid Grid.Row="3"  Panel.ZIndex="1000" x:Name="gridBtnsZatwierdzAnuluj" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="35"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" x:Name="btnZaladujDzialkiZero" Background="RoyalBlue" Foreground="White" Click="BtnZaladujDzialkiZero_Click">Dodaj działkę 0 do bazy powyższym jednostkom</Button>
+            <Label  Grid.Column="1" Margin="0" Padding="8 2">lub</Label>
+            <Button Grid.Column="2" x:Name="btnGenerujPLikPoprawDane" Background="RoyalBlue" Foreground="White" Click="BtnGenerujPLikPoprawDane_Click" >Generuj plik do wgrania popraw dane</Button>
+            <Button Grid.Column="3" x:Name="btnAnulujDzialkiZero" Click="BtnAnulujDzialkiZero_Click">Anuluj</Button>
+            
+        </Grid>
+        
+        
         <StackPanel Grid.Row="2" x:Name="panelLogowania" Visibility="Hidden">
             <DockPanel>
-
-
-               
                 <StackPanel>
                     <Label>Login:</Label>
                     <TextBox x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
                     <Label>Hasło:</Label>
                     <PasswordBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
                 </StackPanel>
-
             </DockPanel>
-
             <WrapPanel>
                 <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo">Zapisz</Button>
                 <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj">Anuluj</Button>
             </WrapPanel>
         </StackPanel>
+
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
     </Grid>
 </Window>

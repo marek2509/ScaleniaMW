@@ -343,7 +343,7 @@ namespace ScaleniaMW
                         Application.Current.Shutdown();
                     }
 
-                    Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz ");
+                    Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz " + esa);
 
                 }
             }

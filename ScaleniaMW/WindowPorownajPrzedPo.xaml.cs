@@ -368,7 +368,7 @@ namespace ScaleniaMW
                     if(zsumwaneWartosciStanPO.Exists(x => x.IdPo == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])))
                     {
                         var tmp = zsumwaneWartosciStanPO.Find(x => x.IdPo == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]));
-                        tmp.NazwaWlascosi = dt.Rows[i][1].ToString();
+                        tmp.NazwaWlasnosci = dt.Rows[i][1].ToString();
                     }         
                 }
 
