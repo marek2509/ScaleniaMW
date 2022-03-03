@@ -16,7 +16,7 @@ namespace ScaleniaMW
         static readonly string SQLNKRzNieprzypisanymIjr = "select distinct jn.id_id ID,  jn.ijr nowy__nkr, dn.idd nr__dz from  JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id where dn.rjdrprzed is null or dn.rjdrprzed like '' order by id_jednn";
         static readonly string SQLNKRzPodejrzanymNrIjr = "select  js.ijr stara_jedn_ewop, js.id_id staraId, jn.ijr nowy_nkr, id_jednn, dn.idd, dn.rjdrprzed , (select ijr from jedn_rej where dn.rjdrprzed = id_id ) Przypisany_IJR from  JEDN_SN sn  join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";
         static readonly string SQLUdzialyJednPrzedWStaniePo = @"select sum(ud_nr) SUMA__UDZIALU , js.ijr, o.naz obreb from jedn_sn jsn join jedn_rej js on js.Id_id = jsn.id_jedns join obreby o on o.id_id = js.id_obr group by id_jedns, js.ijr, o.naz HAVING sum(ud_nr)  <> 1 order by SUMA__UDZIALU";
-        static readonly string SQLsprawdzenieSumWartosciZDzialekIZJednRej = @"select ijr, (select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) sumA_z_GOSPODARSTW ,(select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) suma_Z_DZIALEK, round((select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) - (select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) ,2) roznica from jedn_rej_n j2 where id_sti <> 1 or id_sti is null order by roznica, ijr";
+        static readonly string SQLsprawdzenieSumWartosciZDzialekIZJednRej = @"select ijr, (select sum(round(wwgsp,2)) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) sumA_z_GOSPODARSTW ,(select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) suma_Z_DZIALEK, round((select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) - (select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) ,2) roznica from jedn_rej_n j2 where id_sti <> 1 or id_sti is null order by roznica, ijr";
         static readonly string SQLbrakGrupyRejestrowejDlaJednostkiIWlascPrzed = @"select ijr, nkr, grj GRUPA_WLASC, gr grupa_JEDNOSTKI from udzialy  u join jedn_rej j on j.id_id = u.id_jedn where grj is null or grj like '' or gr is null or gr like '' group by ijr, nkr, grj, gr order by NKR";
         static readonly string SQLbrakGrupyRejestrowejDlaJednostkiIWLASCPo = @"select ijr, nkr, grj GRUPA_WLASC, gr grupa_JEDNOSTKI from udzialy_n  u join jedn_rej_n j on j.id_id = u.id_jedn where grj is null or grj like '' or gr is null or gr like '' group by ijr, nkr, grj, gr order by NKR";
         static readonly string SQLPrzedJednoskiZUdzialamiRoznymiOd1 = @"select o.id obreb, j.ijr, sum( u.ud_nr) from jedn_rej j join udzialy u on u.id_jedn = j.id_id left join obreby o on o.id_id = j.id_obr group by j.id_id, ijr, o.id having sum(u.ud_nr) <> 1";
@@ -31,7 +31,6 @@ namespace ScaleniaMW
         public static DataTable udzialyRozneOd1Po() //zwraca listę złych numerów KW
         {
             return BazaFB.Get_DataTable(SQLPoJednoskiZUdzialamiRoznymiOd1);
-
         }
 
         public class ModelJednostekPodejrzanych
@@ -273,6 +272,7 @@ namespace ScaleniaMW
                     int Idobr = Jedn_SN.Rows[i][3].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Jedn_SN.Rows[i][3]);
                     string Ud_z_Jedn = Jedn_SN.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : Jedn_SN.Rows[i][4].ToString();
                     decimal WrtPrzed = Jedn_SN.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToDecimal(Jedn_SN.Rows[i][5]);
+
                     double PowPrzed = Jedn_SN.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToDouble(Jedn_SN.Rows[i][6]);
 
                     ZJednRejStarej zJednRej = new ZJednRejStarej(idJednS, IJR, Ud_z_Jedn, WrtPrzed, PowPrzed, Idobr);

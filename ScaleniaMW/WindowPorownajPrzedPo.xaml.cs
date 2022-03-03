@@ -276,7 +276,6 @@ namespace ScaleniaMW
                         Convert.ToDouble(dt.Rows[i][5].Equals(System.DBNull.Value) ? null : dt.Rows[i][5])
                         ));
                 }
-                Console.WriteLine("LINE---279");
 
                 resultPorownanie = stanPrzedWartoscis.GroupBy(l => l.id_id).Select(cl =>
              new ZsumwaneWartosciZPorownania
@@ -342,7 +341,7 @@ namespace ScaleniaMW
                 }
 
                 //dołączenie wartosci gospodarstwa z tabeli jedn_sn, Należy porównać to z moją wartością przed scaleniem bo są babole 
-                command.CommandText = "select jn.ijr, sum(jsn.wwgsp) from jedn_sn jsn join jedn_rej_n jn on jn.id_id = jsn.id_jednn group by ijr order by ijr";
+                command.CommandText = "select jn.ijr, sum(round(jsn.wwgsp,2)) from jedn_sn jsn join jedn_rej_n jn on jn.id_id = jsn.id_jednn group by ijr order by ijr";
                 adapter = new FbDataAdapter(command);
                 dt = new DataTable();
                 adapter.Fill(dt);

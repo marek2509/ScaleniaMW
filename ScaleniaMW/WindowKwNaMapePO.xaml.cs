@@ -164,7 +164,6 @@ namespace ScaleniaMW
                 adapter.Fill(dt);
                 foreach (var item in dt.Columns)
                 {
-
                     Console.Write(item + " << ");
                 }
                 Console.WriteLine("row count:" + dt.Rows.Count);
@@ -172,7 +171,11 @@ namespace ScaleniaMW
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), Convert.ToInt32(dt.Rows[i][1]), Convert.ToDecimal(dt.Rows[i][3].ToString()), dt.Rows[i][2].ToString()));
+                    string tmpWartosc = dt.Rows[i][3].ToString();
+                    tmpWartosc = (tmpWartosc.Equals(null) || tmpWartosc == "") ? "0" : tmpWartosc;
+                    decimal wartosc = Convert.ToDecimal(tmpWartosc);
+
+                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), Convert.ToInt32(dt.Rows[i][1]), wartosc, dt.Rows[i][2].ToString()));
                 }
                 try
                 {

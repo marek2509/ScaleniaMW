@@ -73,7 +73,7 @@ namespace ScaleniaMW
             Roznice = WartPo - WartPrzed;
             ZgodawProgramie = zgoda;
             OdchWProgramie = odchWPrgor;
-            WGSPzJednSN = _WGSPzJednSN;
+            WGSPzJednSN = Math.Round(_WGSPzJednSN,2);
             RozniceWGSPZJednIWartPrzed = _RozniceWGSPZJEDNiWartPrzed;
         }
         

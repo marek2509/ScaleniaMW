@@ -45,7 +45,23 @@ namespace ScaleniaMW
             string szerTabeli = "100%";
 
             decimal SumaWartosciPrzed = JednoskaRejNowa.zJednRejStarej.Sum(x => x.WrtJednPrzed);
+
+            double XCV = 0; 
+            JednoskaRejNowa.zJednRejStarej.ForEach(x => XCV += (double)Math.Round(x.WrtJednPrzed,2));
+
+            if((double)Math.Round(XCV,2) != (double)Math.Round(SumaWartosciPrzed, 2))
+            {
+
+            Console.WriteLine("sum1: "+ JednoskaRejNowa.IjrPo+ " " + Math.Round(SumaWartosciPrzed, 2));
+            Console.WriteLine("sum2: " + JednoskaRejNowa.IjrPo + " " + +XCV);
+
+            }
+
+
             decimal SumaWartosciPo = JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.Wartosc);
+
+
+
             string sumaPowierzchniDzialekNowych = JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture);
             string sumaPowierzchniDzialekPrzedScaleniem = JednoskaRejNowa.zJednRejStarej.Sum(x => x.Pow_Przed).ToString("F4", CultureInfo.InvariantCulture);
 
