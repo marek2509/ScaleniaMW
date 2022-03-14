@@ -134,7 +134,7 @@ namespace ScaleniaMW
             }
         }
 
-        string UsunWartZSzacunkuIZamienNaUkosniki(string liniaZTektowki, ref StringBuilder sbPuste, bool usunWartosc = true)
+        string UsunWartZSzacunkuIZamienNaUkosniki(string liniaZTektowki, ref StringBuilder sbPuste, bool usunWartosc = false)
         {
             if (liniaZTektowki.Contains("pusty") || liniaZTektowki.Trim() == "")
             {
@@ -229,7 +229,6 @@ namespace ScaleniaMW
 
                 if (regex.IsMatch(wartoscKontury))
                 {
-                    sbPuste.AppendLine("Brak wartości dla konturu: " + liniaZTektowki);
                 
                     if (!usunWartosc)
                     {

@@ -146,6 +146,13 @@ namespace ScaleniaMW
             listBoxOwner.SelectedIndex = listBoxOwner.SelectedIndex >= 0 && listBoxOwner.SelectedIndex < listBoxOwner.Items.Count ? listBoxOwner.SelectedIndex : 0;
             refreshList();
 
+            if (listBoxNkr.Items.Count > 0)
+            {
+                Console.WriteLine(listBoxNkr.Items.Count);
+                listBoxNkr.SelectedIndex = 0;
+            }
+
+
 
         }
 
@@ -159,6 +166,8 @@ namespace ScaleniaMW
         {
 
             Wspolnota.podmiotyOrazIchIstniejaceJednostki[listBoxOwner.SelectedIndex].setSelectedNkrpoIndexie(listBoxNkr.SelectedIndex);
+
+            Console.WriteLine(listBoxNkr.SelectedIndex);
             refreshList();
 
               // wyswietlenie ile jednostek jest nieprzypisanych

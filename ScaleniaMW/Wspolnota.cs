@@ -68,11 +68,13 @@ namespace ScaleniaMW
 
             public void setSelectedNkrpoIndexie(int index) // ustawia wybrane id_jednoski i nkr
             {
-                if (index > 0 && index < IdJedn_Nkr.Count)
+                if (index >= 0 && index < IdJedn_Nkr.Count)
                 {
                     WybranyNKR = IdJedn_Nkr[index].NKR;
                     WybraneId = IdJedn_Nkr[index].id_jedn_n;
                     Console.WriteLine("Udało się przypisać NKR");
+
+
                 }
                 else
                 {

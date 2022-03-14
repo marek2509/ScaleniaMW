@@ -41,10 +41,10 @@
                 <MenuItem Header="Zamknij" Foreground="Black" Click="zamknijProgram_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Opcje">
-                <RadioButton GroupName="radio" x:Name="checkBoxZrobNowaKlasyfZSzac"  IsChecked="True" >
+                <RadioButton GroupName="radio" x:Name="checkBoxZrobNowaKlasyfZSzac" >
                     Zamień myślnik na ukośnik i usuń wartość
                 </RadioButton>
-                <RadioButton GroupName="radio" x:Name="checkBoxZamienNaUkosnik">
+                <RadioButton GroupName="radio" x:Name="checkBoxZamienNaUkosnik"  IsChecked="True">
                     Zamień myślnik na ukośnik (bez usówania wartości)
                 </RadioButton>
                 <RadioButton GroupName="radio" x:Name="checkBoxUsunKontury">
