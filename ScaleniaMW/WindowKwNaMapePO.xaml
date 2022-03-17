@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-         Title="SCALENIAMW inż. Marek Wojciechowicz - KW/WARTOŚĆ na mapę w stanie 'po scaleniu'" Height="450" Width="800" x:Name="windowKwNaMapePO">
+         Title="SCALENIAMW inż. Marek Wojciechowicz - KW/WARTOŚĆ na mapę w stanie 'po scaleniu'" Height="450" Width="850" x:Name="windowKwNaMapePO">
     <Grid>
         <Grid x:Name="gridNKRKW" Visibility="Visible">
             <Grid.RowDefinitions>
@@ -15,8 +15,8 @@
                 <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="230"></ColumnDefinition>
-                <ColumnDefinition Width="180"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="130"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
@@ -36,6 +36,8 @@
                     <!--<MenuItem  Foreground="Black"  Header="_Generuj plik z obróconym nr KW (proponowanym)" Click="ZapiszDoPlikuProponow"/>-->
                     <MenuItem Foreground="Black" x:Name="ZapiszDoPlikuNKR" Header="Generuj plik z NKR" Click="ZapiszDoPliku"></MenuItem>
                     <MenuItem Foreground="Black" x:Name="ZapiszDoPlikuWartosci" Header="_Generuj plik z WARTOŚCIAMI" ToolTip="EXPORT TEKSTOWY 2 EWMAPA Z WARTOŚCIĄ DZIAŁEK" Click="ZapiszDoPlikuWartosci_Click" ></MenuItem>
+                    <MenuItem Foreground="Black" Header="Generuj plik z ±Odch.fakt./dop." Click="ZapiszDoPliku_FKT_Dop_Click" />
+
                     <Separator></Separator>
                     <MenuItem  Foreground="Black"  Header="Otwórz okno startowe" Click="otworzOknoPoczatkowe_Click"/>
                     <Separator></Separator>
@@ -180,7 +182,7 @@
             </DataGrid>
             <Grid Grid.Row="2"  Grid.Column="1">
                 <StackPanel x:Name="tekstyTytuly">
-                    <Label FontFamily="TIMES NEW ROMAN" x:Name="labelKWPOSCALENIU" FontWeight="Bold" FontSize="35" Foreground="#244677" HorizontalAlignment="Center">KW ORAZ</Label>
+                    <Label FontFamily="TIMES NEW ROMAN" x:Name="labelKWPOSCALENIU" FontWeight="Bold" FontSize="20" Foreground="#244677" HorizontalAlignment="Center">KW ORAZ</Label>
                     <Label FontFamily="TIMES NEW ROMAN" FontWeight="Black" FontSize="{Binding ElementName=labelKWPOSCALENIU, Path=FontSize}" Foreground="{Binding ElementName=labelKWPOSCALENIU, Path=Foreground}" HorizontalAlignment="Center">WARTOŚĆ</Label>
                     <Label FontFamily="TIMES NEW ROMAN" FontWeight="Black" FontSize="{Binding ElementName=labelKWPOSCALENIU, Path=FontSize}" Foreground="{Binding ElementName=labelKWPOSCALENIU, Path=Foreground}" HorizontalAlignment="Center">NA</Label>
                     <Label FontFamily="TIMES NEW ROMAN" FontWeight="Bold" FontSize="{Binding ElementName=labelKWPOSCALENIU, Path=FontSize}"  Foreground="{Binding ElementName=labelKWPOSCALENIU, Path=Foreground}"  HorizontalAlignment="Center">MAPĘ</Label>
@@ -194,6 +196,7 @@
                     <DataGridTextColumn Header="NKR" Binding="{Binding NKR}" />
                     <DataGridTextColumn x:Name="columnKW" Header="PRZYPISANY NR KW" Binding="{Binding KW}" />
                     <DataGridTextColumn x:Name="wartosc" Header="WARTOŚĆ" Binding="{Binding WartoscDz}" />
+                    <DataGridTextColumn x:Name="fktodchDop" Header="Odchyłka faktyczna/dopuszczalna" Binding="{Binding Fkt_dop}" />
                 </DataGrid.Columns>
             </DataGrid>
 

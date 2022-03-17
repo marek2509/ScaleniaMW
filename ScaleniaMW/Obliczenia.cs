@@ -735,9 +735,8 @@ namespace ScaleniaMW
 
 
 
-        public static string DopasujWartosciDlaNowychDzialek(List<DzialkaEDZ> punkt, List<DzialkaNkrZSQL> dzialkaNkrZSQL, ref string logInfo, bool czyIgnorowacPrzecinkiIKropki, bool czyDopisacBrakKw, double przyrostXdoPrzesuniaeciaNr = 8, int justyfikacja = 8)
+        public static string DopasujWartosciDlaNowychDzialek(List<DzialkaEDZ> punkt, List<DzialkaNkrZSQL> dzialkaNkrZSQL, ref string logInfo, bool czyIgnorowacPrzecinkiIKropki, bool czyDopisacBrakKw, double przyrostXdoPrzesuniaeciaNr = 8, int justyfikacja = 8, bool Fkt_Dop = false)
         {
-
 
             StringBuilder sb = new StringBuilder();
             List<string[][]> ls = new List<string[][]>();
@@ -774,10 +773,22 @@ namespace ScaleniaMW
                     if (dzialkaNkrZSQL.Exists(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", ""))))
                     {
                         nkrZSQL = dzialkaNkrZSQL.Find(x => x.ObrDzialka.Trim().Replace("-", "").Replace(".", "").Equals(item.Nr_Dz.Trim().Replace("-", "").Replace(".", "")));
-                        string wartosc = nkrZSQL.WartoscDz;
+
+
+                         string wartosc = "";
+                        if (Fkt_Dop)
+                        {
+                            wartosc = nkrZSQL.Fkt_dop;
+                        }
+                        else
+                        {
+                            wartosc = nkrZSQL.WartoscDz;
+                        }
+
+
                         ileDopasowano++;
 
-                        if (nkrZSQL.WartoscDz.Equals(""))
+                        if (wartosc.Equals(""))
                         {
                             if (czyDopisacBrakKw)
                             {
@@ -812,9 +823,18 @@ namespace ScaleniaMW
                     {
                         nkrZSQL = dzialkaNkrZSQL.Find(x => x.ObrDzialka.Trim().Equals(item.Nr_Dz.Trim()));
                         ileDopasowano++;
-                        string wartosc = nkrZSQL.WartoscDz;
 
-                        if (nkrZSQL.WartoscDz.Equals(""))
+                        string wartosc = "";
+                        if (Fkt_Dop)
+                        {
+                            wartosc = nkrZSQL.Fkt_dop;
+                        }
+                        else
+                        {
+                            wartosc = nkrZSQL.WartoscDz;
+                        }
+
+                        if (wartosc.Equals(""))
                         {
                             if (czyDopisacBrakKw)
                             {

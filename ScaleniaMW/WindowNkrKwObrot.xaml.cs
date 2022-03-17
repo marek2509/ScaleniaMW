@@ -67,18 +67,13 @@ namespace ScaleniaMW
 
                 command.Connection = connection;
                 command.Transaction = transaction;
+
                 // działające zapytanie na nrobr-nrdz NKR 
-                //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-               // command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI, kw from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, JEDN_REJ.nkr NKR_Z_GRUPAMI, kw, JEDN_REJ.idgrp from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                
+                //command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, JEDN_REJ.nkr NKR_Z_GRUPAMI, kw, JEDN_REJ.idgrp from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
+                command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case when (select first 1 nkr from jedn_rej where idgrp = j1.idgrp and idgrp>0  and nkr > 0 order by nkr asc) > 0 then (select first 1 nkr from jedn_rej where idgrp = j1.idgrp and idgrp>0  and nkr > 0 order by nkr asc) else j1.nkr end NKR_Zgupowany, kw, j1.idgrp from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ j1 on dzialka.rjdr = j1.id_id order by NKR_Zgupowany";
 
-
-                FbDataAdapter adapter = new FbDataAdapter(command);
+              FbDataAdapter adapter = new FbDataAdapter(command);
                 dt = new DataTable();
-
-
-
 
 
                 adapter.Fill(dt);
@@ -101,29 +96,24 @@ namespace ScaleniaMW
                 }
 
 
-                while (listaDzNkrzSQL.Exists(x => x.NKR == 0))
-                {
-                    DzialkaNkrZSQL tmp = new DzialkaNkrZSQL();
-                    tmp = listaDzNkrzSQL.Find(x => x.NKR == 0);
-                    DzialkaNkrZSQL tmp2 = new DzialkaNkrZSQL();
+                //while (listaDzNkrzSQL.Exists(x => x.NKR == 0))
+                //{
+                //    DzialkaNkrZSQL tmp = new DzialkaNkrZSQL();
+                //    tmp = listaDzNkrzSQL.Find(x => x.NKR == 0);
+                //    DzialkaNkrZSQL tmp2 = new DzialkaNkrZSQL();
 
-                    tmp2 = listaDzNkrzSQL.Find(x => x._grp == tmp._grp && x.NKR != 0);
-                    Console.WriteLine();
-                    //stanPrzedZnalezionyZNKREM.wypiszwConsoli();
-                    Console.WriteLine("tmp: " + tmp._grp + " " +tmp.NKR + tmp.ObrDzialka );
-                    Console.WriteLine("tmp2: " + tmp2._grp + " " +tmp2.NKR + tmp2.ObrDzialka );
-                    tmp.NKR = tmp2.NKR;
-                    //  stanPrzedWartoscis.Find(x => x.Equals(stanPrzed)).wypiszwConsoli();
-                    // break;
-                }
+                //    tmp2 = listaDzNkrzSQL.Find(x => x._grp == tmp._grp && x.NKR != 0);
+                //    Console.WriteLine();
+                //    Console.WriteLine("tmp: " + tmp._grp + " " +tmp.NKR + tmp.ObrDzialka );
+                //    Console.WriteLine("tmp2: " + tmp2._grp + " " +tmp2.NKR + tmp2.ObrDzialka );
+                //    tmp.NKR = tmp2.NKR;
+                //}
                 
 
 
                 try
                 {
-                    //dataGrid.ItemsSource = dt.AsDataView();
-                    //dataGrid.Visibility = Visibility.Visible;
-                    //dataGrid.Items.Refresh();
+
                     dgNkrFDB.ItemsSource = listaDzNkrzSQL;
                     dgNkrFDB.Visibility = Visibility.Visible;
                     dgNkrFDB.Items.Refresh();
@@ -134,8 +124,6 @@ namespace ScaleniaMW
                 {
                     Console.WriteLine(excp);
                 }
-
-                //Console.WriteLine(i+ " " + dt.Rows[i][0]); // "" + dt.Rows[i][1] + " " );
 
 
                 connection.Close();

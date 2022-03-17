@@ -308,7 +308,7 @@ namespace ScaleniaMW
             dokHTML.AppendLine("<table style=\"border: 1px solid black; border-collapse: collapse; font-size: 9pt; width: " + szerTabeli + ";\">");
             dokHTML.AppendLine("<tr>");
             dokHTML.AppendLine("<th style=\"border: 1px solid; width: 50%; font-size: 10px;\"><i>Oświadczenie uczestnika scalenia w sprawie projektu wstępnego, " +
-                "treść ewentualnych zastrzeżeń, data i odpis uczestnika scalenia.</i></th>");
+                "treść ewentualnych zastrzeżeń, data i podpis uczestnika scalenia.</i></th>");
             dokHTML.AppendLine("<th style=\"border: 1px solid; width: 50%; font-size: 10px;\"><i><b>Omówienie zastrzeżeń, proponowane zmiany <br> data i podpis geodety.</b></i></th>");
             dokHTML.AppendLine("</tr>");
 

@@ -156,7 +156,9 @@ namespace ScaleniaMW
                 command.Transaction = transaction;
                 // działające zapytanie na nrobr-nrdz NKR 
                 //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                command.CommandText = "select obreby.id || '-' || dzialki_N.idd as NR_DZ, JEDN_REJ_N.ijr NKR, kw, dzialki_n.ww WARTOSC from DZIALKi_N left outer join OBREBY on dzialki_N.idobr = OBREBY.id_id left outer join JEDN_REJ_N on dzialki_N.rjdr = JEDN_REJ_N.id_id order by NKR";
+                //command.CommandText = "select obreby.id || '-' || dzialki_N.idd as NR_DZ, JEDN_REJ_N.ijr NKR, kw, dzialki_n.ww WARTOSC from DZIALKi_N left outer join OBREBY on dzialki_N.idobr = OBREBY.id_id left outer join JEDN_REJ_N on dzialki_N.rjdr = JEDN_REJ_N.id_id order by NKR";
+
+                command.CommandText = "select obreby.id || '-' || dn.idd as NR_DZ, j1.ijr NKR, dn.kw, dn.ww WARTOSC, case when round((select round(sum(d.ww),2) from dzialki_n d where rjdr = j1.id_id) - (select sum(round(wwgsp,2)) from jedn_sn jsn join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_id =j1.id_id) ,2) > 0 then '+' else '' end || round((select round(sum(d.ww),2) from dzialki_n d where rjdr = j1.id_id ) - (select sum(round(wwgsp,2)) from jedn_sn jsn join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_id =j1.id_id) ,0) || '/' || round( ((select sum(round(wwgsp,2)) from jedn_sn jsn join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_id =j1.id_id)*0.03),0) odchFkt_na_dopuszczalna from dzialki_n dn left outer join OBREBY on dn.idobr = OBREBY.id_id left outer join jedn_rej_n j1 on dn.rjdr = j1.id_id order by NKR";
 
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 dt = new DataTable();
@@ -175,7 +177,7 @@ namespace ScaleniaMW
                     tmpWartosc = (tmpWartosc.Equals(null) || tmpWartosc == "") ? "0" : tmpWartosc;
                     decimal wartosc = Convert.ToDecimal(tmpWartosc);
 
-                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(dt.Rows[i][0].ToString(), Convert.ToInt32(dt.Rows[i][1]), wartosc, dt.Rows[i][2].ToString()));
+                    listaDzNkrzSQL.Add(new DzialkaNkrZSQL(obrDz: dt.Rows[i][0].ToString(), nkr: Convert.ToInt32(dt.Rows[i][1]), wartosc: wartosc,kw: dt.Rows[i][2].ToString(), fkt_dop: dt.Rows[i][4].ToString()));
                 }
                 try
                 {
@@ -443,45 +445,80 @@ namespace ScaleniaMW
         }
         bool CzyKwPrzypisane = false;
         bool CzyKwProponowane = false;
+        
+        private void ZapiszDoPlikuWartosci_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog svd = new SaveFileDialog();
+            svd.DefaultExt = ".txt";
+            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (svd.ShowDialog() == true)
+            {
+                using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                    try
+                    {
+                        try
+                        {
+                            string loginfo = "";
 
-        //private void ZapiszDoPlikuProponow(object sender, RoutedEventArgs e)
-        //{
-        //    SaveFileDialog svd = new SaveFileDialog();
-        //    svd.DefaultExt = ".txt";
-        //    svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-        //    if (svd.ShowDialog() == true)
-        //    {
-        //        using (Stream s = File.Open(svd.FileName, FileMode.Create))
-        //        //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-        //        using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-        //            try
-        //            {
-        //                try
-        //                {
-        //                    string loginfo = "";
-        //                    int kodRodzajuNKRczyKW = 1;
+                            sw.Write(Obliczenia.DopasujWartosciDlaNowychDzialek(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, Properties.Settings.Default.checkBoxBrakKW, listBoxOdsuniecieTekstu.SelectedIndex / 2, checkBoxPodkreslenieWARTOSCI.IsChecked == true ? comboBoxWartoscJustyfikacja.SelectedIndex + 16 : comboBoxWartoscJustyfikacja.SelectedIndex));
+                            textBlockLogInfo.Text = loginfo;
+                            sw.Close();
+                        }
+                        catch (Exception exc)
+                        {
+                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
 
+                        if (resultat == MessageBoxResult.Yes)
+                        {
+                            Application.Current.Shutdown();
+                        }
+                    }
+            }
+        }
 
-        //                    sw.Write(Obliczenia.DopasujNkrDoDziałkiGenerujtxtDoEWM(listaZEDZ, listDzNkrKWzSQLProponows, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, kodRodzajuNKRczyKW, Properties.Settings.Default.checkBoxBrakKW, Properties.Settings.Default.checkBoxDopiszBlad));
-        //                    textBlockLogInfo.Text = loginfo;
-        //                    sw.Close();
-        //                }
-        //                catch (Exception exc)
-        //                {
-        //                    MessageBox.Show(exc.ToString() + "  problem z plikiem");
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+        private void ZapiszDoPliku_FKT_Dop_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog svd = new SaveFileDialog();
+            svd.DefaultExt = ".txt";
+            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (svd.ShowDialog() == true)
+            {
+                using (Stream s = File.Open(svd.FileName, FileMode.Create))
+                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                    try
+                    {
+                        try
+                        {
+                            string loginfo = "";
 
-        //                if (resultat == MessageBoxResult.Yes)
-        //                {
-        //                    Application.Current.Shutdown();
-        //                }
-        //            }
-        //    }
-        //}
+                            sw.Write(Obliczenia.DopasujWartosciDlaNowychDzialek(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, Properties.Settings.Default.checkBoxBrakKW, listBoxOdsuniecieTekstu.SelectedIndex / 2, checkBoxPodkreslenieWARTOSCI.IsChecked == true ? comboBoxWartoscJustyfikacja.SelectedIndex + 16 : comboBoxWartoscJustyfikacja.SelectedIndex,true));
+                            textBlockLogInfo.Text = loginfo;
+                            sw.Close();
+                        }
+                        catch (Exception exc)
+                        {
+                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+
+                        if (resultat == MessageBoxResult.Yes)
+                        {
+                            Application.Current.Shutdown();
+                        }
+                    }
+            }
+        }
 
         public void ustawProperties(string FileName)
         {
@@ -753,49 +790,17 @@ namespace ScaleniaMW
             windowKwNaMapePO.Topmost = false;
         }
 
-        private void ZapiszDoPlikuWartosci_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog svd = new SaveFileDialog();
-            svd.DefaultExt = ".txt";
-            svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            if (svd.ShowDialog() == true)
-            {
-                using (Stream s = File.Open(svd.FileName, FileMode.Create))
-                //  using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
-                    try
-                    {
-                        try
-                        {
-                            string loginfo = "";
 
-                            sw.Write(Obliczenia.DopasujWartosciDlaNowychDzialek(listaZEDZ, listaDzNkrzSQL, ref loginfo, Properties.Settings.Default.checkBoxignorujKropkeIPrzecinek, Properties.Settings.Default.checkBoxBrakKW, listBoxOdsuniecieTekstu.SelectedIndex / 2, checkBoxPodkreslenieWARTOSCI.IsChecked == true ? comboBoxWartoscJustyfikacja.SelectedIndex + 16 : comboBoxWartoscJustyfikacja.SelectedIndex));
-                            textBlockLogInfo.Text = loginfo;
-                            sw.Close();
-                        }
-                        catch (Exception exc)
-                        {
-                            MessageBox.Show(exc.ToString() + "  problem z plikiem");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
-
-                        if (resultat == MessageBoxResult.Yes)
-                        {
-                            Application.Current.Shutdown();
-                        }
-                    }
-            }
-        }
         private delegate void TextLogInfoDelegate();
+
         public void SetLogInfoCopy()
         {
             Thread.Sleep(1000);
             textBlockLogInfo.Text = tmpString;
         }
+
         string tmpString;
+
         private void KopiujDoSchowka_MouseDown(object sender, MouseEventArgs e)
         {
             Clipboard.SetText(textBlockLogInfo.Text);
