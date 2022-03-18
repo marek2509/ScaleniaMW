@@ -89,7 +89,7 @@
 
                 </DockPanel>
                 <StackPanel x:Name="labelNkrKwOdch" Grid.Column="2" Grid.Row="1" Visibility="Hidden" Panel.ZIndex="1000" VerticalAlignment="Top" Height="50" Background="white" Opacity=".9">
-                    <Label Margin="0" Padding="0">Ustaw liczbę porządkową w polu [jedn_rej.UWAGA] dla NKR w stanie przed scaleniem.</Label>
+                    <Label Margin="0" Padding="0">Ustaw liczbę porządkową w polu [jedn_rej.UWAGA] dla NKR w stanie przed.</Label>
                 </StackPanel>
                 <StackPanel x:Name="labelPorownanieWartPrzedPo" Grid.Column="2" Grid.Row="1" Visibility="Hidden">
                     <Label>-Ustaw odchyłkę techniczną </Label>

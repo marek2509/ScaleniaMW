@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Marek Wojciechowicz")]
 [assembly: AssemblyProduct("ScaleniaMW2")]
-[assembly: AssemblyCopyright("Copyright ©  2021 Marek Wojciechowicz")]
+[assembly: AssemblyCopyright("Copyright © 2022 Marek Wojciechowicz")]
 [assembly: AssemblyTrademark("Marek Wojciechowicz")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // Możesz określić wszystkie wartości lub użyć domyślnych numerów kompilacji i poprawki
 // przy użyciu symbolu „*”, tak jak pokazano poniżej:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.0.38")]
-[assembly: AssemblyFileVersion("2.0.0.38")]
+[assembly: AssemblyVersion("2.0.0.39")]
+[assembly: AssemblyFileVersion("2.0.0.39")]
