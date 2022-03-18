@@ -57,7 +57,12 @@
                         <RadioButton VerticalContentAlignment="Center"  IsEnabled="False">Po scaleniu</RadioButton>
                     </WrapPanel>-->
                 </MenuItem>
-                <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza" Foreground="White"/>
+                <MenuItem  Header="Baza" Foreground="White">
+                    <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
+                    <Separator></Separator>
+                    <MenuItem x:Name="itemPrzypiszLpWUwg"  Header="Wpisz Lp do UWG stan przed" Click="ItemPrzypiszLpWUwg_Click"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
+              
+                </MenuItem>
                 <MenuItem x:Name="logBledowKW" HorizontalAlignment="Right" Header="Błędy KW" Foreground="White" Background="Red" Visibility="Hidden" Click="LogBledowKW_Click"></MenuItem>
 
             </Menu>

@@ -191,15 +191,7 @@ namespace ScaleniaMW
             }
         }
 
-        private void ButtonRodzajPracyNKR_KW_MouseLeave(object sender, MouseEventArgs e)
-        {
-            imgNKR.Visibility = Visibility.Hidden;
-            label1RodzajPracyNKR_KW.Foreground = Brushes.White;
-            for (int i = 0; i < 25; i++)
-            {
-                btNKR_KW.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonRodzajPracyNKR_KW), DispatcherPriority.Background);
-            }
-        }
+ 
 
         private void ButtonPrzypiszKwDlaNowychDzialek_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -251,9 +243,21 @@ namespace ScaleniaMW
             }
         }
 
+
+
+        private void ButtonRodzajPracyNKR_KW_MouseLeave(object sender, MouseEventArgs e)
+        {
+            labelNkrKwOdch.Visibility = Visibility.Hidden;
+            imgNKR.Visibility = Visibility.Hidden;
+            label1RodzajPracyNKR_KW.Foreground = Brushes.White;
+            for (int i = 0; i < 25; i++)
+            {
+                btNKR_KW.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonRodzajPracyNKR_KW), DispatcherPriority.Background);
+            }
+        }
         private void ButtonRodzajPracyNKR_KW_MouseEnter(object sender, MouseEventArgs e)
         {
-
+            labelNkrKwOdch.Visibility = Visibility.Visible;
             imgNKR.Visibility = Visibility.Visible;
             label1RodzajPracyNKR_KW.Foreground = Brushes.Black;
             for (int i = 0; i < 25; i++)

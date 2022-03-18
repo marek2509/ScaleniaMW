@@ -45,7 +45,7 @@
                     <Button HorizontalAlignment="Left"  Margin="1,1,0,0" MouseEnter="ButtonRodzajPracyNKR_KW_MouseEnter" MouseLeave="ButtonRodzajPracyNKR_KW_MouseLeave" 
                             Background="#1e90ff"  Width="250" Height="100" x:Name="buttonRodzajPracyNKR_KW" FontSize="13" Click="ButtonRodzajPracyNKR_KW_Click" >
                         <StackPanel>
-                            <Label HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"   x:Name="label1RodzajPracyNKR_KW">NKR/KW NA MAPĘ</Label>
+                            <Label HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"   x:Name="label1RodzajPracyNKR_KW">NKR/KW/ODCHYŁKA NA MAPĘ</Label>
                             <Label HorizontalAlignment="Center" FontWeight="Bold" Foreground="{Binding ElementName=label1RodzajPracyNKR_KW, Path=Foreground}">STAN "PRZED"</Label>
                         </StackPanel>
                     </Button>
@@ -88,12 +88,15 @@
                     </StackPanel>
 
                 </DockPanel>
+                <StackPanel x:Name="labelNkrKwOdch" Grid.Column="2" Grid.Row="1" Visibility="Hidden" Panel.ZIndex="1000" VerticalAlignment="Top" Height="50" Background="white" Opacity=".9">
+                    <Label Margin="0" Padding="0">Ustaw liczbę porządkową w polu [jedn_rej.UWAGA] dla NKR w stanie przed scaleniem.</Label>
+                </StackPanel>
                 <StackPanel x:Name="labelPorownanieWartPrzedPo" Grid.Column="2" Grid.Row="1" Visibility="Hidden">
                     <Label>-Ustaw odchyłkę techniczną </Label>
                     <Label>-Ustaw zgodę na powiększenie gospodastwa </Label>
                 </StackPanel>
                 <StackPanel x:Name="labelEdycjaDpkumentów" Grid.Column="2" Grid.Row="1" Visibility="Hidden" Panel.ZIndex="1000" VerticalAlignment="Top" Height="50">
-                    <Label Margin="0" Padding="0">-Wygeneruj plik "Popraw dane" wstiający działkę 0 dla jednostek bez stanu</Label>
+                    <Label Margin="0" Padding="0">-Wygeneruj plik "Popraw dane" wstawiający działkę 0 dla jednostek bez stanu</Label>
                     <Label Margin="6 0 0 0" Padding="0">po scaleniu w celu wygenerowania rejestru po scaleniu dla tych jednostek</Label>
                 </StackPanel>
                 <Image x:Name="imgKWprzypisz" Grid.Column="2" Grid.Row="1" Visibility="Hidden" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/NrKWPrzypisz.png"  Opacity="0.7" Margin="0,1"/>
