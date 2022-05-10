@@ -566,5 +566,12 @@ namespace ScaleniaMW
             windowScaleniaMW.Close();
 
         }
+
+        private void Gml_repair_Click(object sender, RoutedEventArgs e)
+        {
+            WindowRepairGML windowRepairGML = new WindowRepairGML();
+            windowRepairGML.Show();
+            windowScaleniaMW.Close();
+        }
     }
 }

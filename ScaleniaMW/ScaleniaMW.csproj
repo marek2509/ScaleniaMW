@@ -28,7 +28,7 @@
     <ProductName>SCALENIAMW2</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>40</ApplicationRevision>
+    <ApplicationRevision>41</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -135,6 +135,7 @@
     <Compile Include="EWOPIS\Widoki\WindowLogowanieDoFDB.xaml.cs">
       <DependentUpon>WindowLogowanieDoFDB.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GMLRepair.cs" />
     <Compile Include="HtmlDokumentUproszczonyWykazWydzEkwiwalentow.cs" />
     <Compile Include="HtmlDokumentWykazWydzEkwiwalentow.cs" />
     <Compile Include="KontrolaBazy.xaml.cs">
@@ -174,6 +175,9 @@
     </Compile>
     <Compile Include="WindowPrzypiszRejGr.xaml.cs">
       <DependentUpon>WindowPrzypiszRejGr.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowRepairGML.xaml.cs">
+      <DependentUpon>WindowRepairGML.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wspolnota.cs" />
     <Compile Include="ZsumwaneWartosciZPorownania.cs" />
@@ -238,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowPrzypiszRejGr.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowRepairGML.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

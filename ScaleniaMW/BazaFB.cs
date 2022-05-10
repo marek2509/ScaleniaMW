@@ -39,8 +39,6 @@ namespace ScaleniaMW
             {
                 FbConnection cn_connection = Get_DB_Connection();
                 DataTable table = new DataTable();
-                //FbTransaction transaction = cn_connection.BeginTransaction();
-
                 FbDataAdapter adapter = new FbDataAdapter(SQL_Text, cn_connection);
                 adapter.Fill(table);
                 return table;
@@ -70,7 +68,7 @@ namespace ScaleniaMW
             if (cn_connection.State != ConnectionState.Closed) cn_connection.Close();
         }
 
-       static WindowLogowanie windowLogowanie = new WindowLogowanie();
+        static WindowLogowanie windowLogowanie = new WindowLogowanie();
         static void przejdzDoUstawLoginIHaslo()
         {
 
