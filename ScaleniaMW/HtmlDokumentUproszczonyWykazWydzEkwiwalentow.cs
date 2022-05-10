@@ -45,25 +45,44 @@ namespace ScaleniaMW
             string szerTabeli = "100%";
 
             decimal SumaWartosciPrzed = JednoskaRejNowa.zJednRejStarej.Sum(x => x.WrtJednPrzed);
+            decimal SumaWartosciPrzedKontrola = JednoskaRejNowa.zJednRejStarej.Sum(x => Math.Round(x.WrtJednPrzed,2));
 
-            double XCV = 0; 
-            JednoskaRejNowa.zJednRejStarej.ForEach(x => XCV += (double)Math.Round(x.WrtJednPrzed,2));
 
-            if((double)Math.Round(XCV,2) != (double)Math.Round(SumaWartosciPrzed, 2))
+
+            if (SumaWartosciPrzed != SumaWartosciPrzedKontrola)
             {
-
-            Console.WriteLine("sum1: "+ JednoskaRejNowa.IjrPo+ " " + Math.Round(SumaWartosciPrzed, 2));
-            Console.WriteLine("sum2: " + JednoskaRejNowa.IjrPo + " " + +XCV);
-
+                Console.WriteLine("WRT: " + JednoskaRejNowa.Nkr);
             }
+            //double XCV = 0; 
+            //JednoskaRejNowa.zJednRejStarej.ForEach(x => XCV += (double)Math.Round(x.WrtJednPrzed,2));
+
+            //if((double)Math.Round(XCV,2) != (double)Math.Round(SumaWartosciPrzed, 2))
+            //{
+
+            //Console.WriteLine("sum1: "+ JednoskaRejNowa.IjrPo+ " " + Math.Round(SumaWartosciPrzed, 2));
+            //Console.WriteLine("sum2: " + JednoskaRejNowa.IjrPo + " " + +XCV);
+
+            //}
 
 
             decimal SumaWartosciPo = JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.Wartosc);
-
+            decimal SumaWartPoKontrola = JednoskaRejNowa.Dzialki_Nowe.Sum(x => Math.Round(x.Wartosc, 2));
+            if (SumaWartosciPo != SumaWartPoKontrola)
+            {
+                Console.WriteLine(SumaWartosciPo + " " + SumaWartPoKontrola);
+            }
 
 
             string sumaPowierzchniDzialekNowych = JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture);
-            string sumaPowierzchniDzialekPrzedScaleniem = JednoskaRejNowa.zJednRejStarej.Sum(x => x.Pow_Przed).ToString("F4", CultureInfo.InvariantCulture);
+            string sumaPowierzchniDzialekPrzedScaleniem = JednoskaRejNowa.zJednRejStarej.Sum(x => Math.Round(x.Pow_Przed, 4)).ToString("F4", CultureInfo.InvariantCulture);
+
+            string sumaPowierzchniDzialekPrzedScaleniemKontrola = JednoskaRejNowa.zJednRejStarej.Sum(x => x.Pow_Przed).ToString("F4", CultureInfo.InvariantCulture);
+
+            if (sumaPowierzchniDzialekPrzedScaleniem != sumaPowierzchniDzialekPrzedScaleniemKontrola)
+            {
+                Console.WriteLine(JednoskaRejNowa.Nkr);
+            }
+
 
             StringBuilder dokHTML = new StringBuilder();
             dokHTML.AppendLine("<div style=\"text-align: right;\"><b> <span style=\"color: red\">NUMER GOSPODARSTWA &nbsp;</span>  <span style = \"color: blue; text-decoration: underline; font-size: 14pt\">" + JednoskaRejNowa.IjrPo + "</span></b></div>");

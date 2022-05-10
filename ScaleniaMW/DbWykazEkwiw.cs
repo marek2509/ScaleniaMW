@@ -193,7 +193,7 @@ namespace ScaleniaMW
             Ijr_Przed = ijr_Przed;
             Ud_Z_Jrs = ud_Z_Jrs;
             WrtJednPrzed = Math.Round(wrtJednPrzed,2);
-            Pow_Przed = pow_Przed;
+            Pow_Przed = Math.Round(pow_Przed, 4);
             _id_obr = idObrebu;
         }
 

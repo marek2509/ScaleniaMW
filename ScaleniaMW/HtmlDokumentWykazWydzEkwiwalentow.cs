@@ -41,7 +41,7 @@ namespace ScaleniaMW
         {
             string kolorZakreslacza = "#ffff40";
             int szerTabeli = 630;
-            decimal SumaWartosciPrzed = JednoskaRejNowa.zJednRejStarej.Sum(x => x.WrtJednPrzed);
+            decimal SumaWartosciPrzed = JednoskaRejNowa.zJednRejStarej.Sum(x => Math.Round(x.WrtJednPrzed, 2));
             decimal SumaWartosciPo = JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.Wartosc);
             StringBuilder dokHTML = new StringBuilder();
             dokHTML.AppendLine("<div style=\"text-align: right;\"><b> <span style=\"color: red\">NUMER GOSPODARSTWA &nbsp;</span>  <span style = \"color: blue; text-decoration: underline; font-size: 14pt\">" + JednoskaRejNowa.IjrPo + "</span></b></div>");
