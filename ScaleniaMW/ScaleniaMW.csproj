@@ -138,6 +138,7 @@
     <Compile Include="GMLRepair.cs" />
     <Compile Include="HtmlDokumentUproszczonyWykazWydzEkwiwalentow.cs" />
     <Compile Include="HtmlDokumentWykazWydzEkwiwalentow.cs" />
+    <Compile Include="HtmlDokumentWykazWydzEkwWroblewski.cs" />
     <Compile Include="KontrolaBazy.xaml.cs">
       <DependentUpon>KontrolaBazy.xaml</DependentUpon>
     </Compile>
@@ -146,7 +147,6 @@
     <Compile Include="WindowEdycjaDokumentow.xaml.cs">
       <DependentUpon>WindowEdycjaDokumentow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Email.cs" />
     <Compile Include="IdJrStNKRJeNowej.cs" />
     <Compile Include="Obliczenia.cs" />
     <Compile Include="DzialkaEDZ.cs" />

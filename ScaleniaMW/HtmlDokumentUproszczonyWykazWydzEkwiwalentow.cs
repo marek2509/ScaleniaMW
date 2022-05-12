@@ -7,37 +7,20 @@ using System.Threading.Tasks;
 
 namespace ScaleniaMW
 {
-    static class HtmlDokumentUproszczonyWykazWydzEkwiwalentow
+    class HtmlDokumentUproszczonyWykazWydzEkwiwalentow : HtmlDokument
     {
         //public const string HTML_PodzialSekcjiNaStronieNieparzystej = "<span style='font-size:12.0pt;font-family:\"Times New Roman\",\"serif\";mso-fareast-font-family: \"Times New Roman\";mso-ansi-language:PL;mso-fareast-language:PL;mso-bidi-language: AR-SA'><br clear=all style='page-break-before:right;mso-break-type:section-break'></span>";
-        public const string HTML_PodzialNowaStrona = "<br clear=all style = 'mso-special-character:line-break;page-break-before:always'> ";
-        public const string HTML_PodzialSekcjiNaStronieNieparzystej = "<br clear=all style='page-break-before:right;mso-break-type:section-break'>";
-        public const string HTML_PoczatekWykazyWydzEkwiwalentow = "<!DOCTYPE html> <html lang=\"pl\"> <head>  " +
-            "<meta charset=\"windows-1250\"> " +
-            "<meta name=Generator content=\"Microsoft Word 12 (filtered)\"> " +
-            "<style> body { font-family: \"Arial Narrow\", Arial, sans-serif; font-style: italic; font-size: 11pt; }" +
-            "</style> " +
-            "</head> " +
-            "<body>";
+        //public const string HTML_PodzialNowaStrona = "<br clear=all style = 'mso-special-character:line-break;page-break-before:always'> ";
+        //public const string HTML_PodzialSekcjiNaStronieNieparzystej = "<br clear=all style='page-break-before:right;mso-break-type:section-break'>";
+        //public const string HTML_PoczatekWykazyWydzEkwiwalentow = "<!DOCTYPE html> <html lang=\"pl\"> <head>  " +
+        //    "<meta charset=\"windows-1250\"> " +
+        //    "<meta name=Generator content=\"Microsoft Word 12 (filtered)\"> " +
+        //    "<style> body { font-family: \"Arial Narrow\", Arial, sans-serif; font-style: italic; font-size: 11pt; }" +
+        //    "</style> " +
+        //    "</head> " +
+        //    "<body>";
 
-        public const string HTML_ZakonczenieWykazuWydzEkwiw = "</body></html>";
-
-        public static string WierszWlasciciel(string NazwaWlasciciela = "", string AdresWlasciciela = "", string Udzial = "", int gruboscPodkreslenia = 1, bool czyWyrzucicOstatniePodkreslenie = false)
-        {
-            if (czyWyrzucicOstatniePodkreslenie)
-            {
-                return "<tr style=\"border: none;\">" +
-                "<td style=\"border: none; width:90%;\"><span>" + NazwaWlasciciela + "</span><br /><span>" + AdresWlasciciela +
-                " </span></td>" +
-                "<td style=\" border: none; text-align: center; width:10%;\"><span>" + Udzial + "</span> </td></tr>";
-            }
-
-            return "<tr style=\"border: none;\">" +
-                 "<td style=\"border-bottom: " + gruboscPodkreslenia + "px solid black; width:90%;\"><span>" + NazwaWlasciciela + "</span><br /><span>" + AdresWlasciciela +
-                 " </span></td>" +
-                 "<td style=\"border-bottom: " + gruboscPodkreslenia + "px solid black; text-align: center; width:10%;\"><span>" + Udzial + "</span> </td></tr>";
-        }
-
+        //public const string HTML_ZakonczenieWykazuWydzEkwiw = "</body></html>";
 
         public static String GenerujWykazWE(JR_Nowa JednoskaRejNowa)
         {
@@ -48,22 +31,12 @@ namespace ScaleniaMW
             decimal SumaWartosciPrzedKontrola = JednoskaRejNowa.zJednRejStarej.Sum(x => Math.Round(x.WrtJednPrzed,2));
 
 
+            Console.WriteLine("WRT: " + JednoskaRejNowa.SumaWartJednostekPrzed()  );
 
             if (SumaWartosciPrzed != SumaWartosciPrzedKontrola)
             {
                 Console.WriteLine("WRT: " + JednoskaRejNowa.Nkr);
             }
-            //double XCV = 0; 
-            //JednoskaRejNowa.zJednRejStarej.ForEach(x => XCV += (double)Math.Round(x.WrtJednPrzed,2));
-
-            //if((double)Math.Round(XCV,2) != (double)Math.Round(SumaWartosciPrzed, 2))
-            //{
-
-            //Console.WriteLine("sum1: "+ JednoskaRejNowa.IjrPo+ " " + Math.Round(SumaWartosciPrzed, 2));
-            //Console.WriteLine("sum2: " + JednoskaRejNowa.IjrPo + " " + +XCV);
-
-            //}
-
 
             decimal SumaWartosciPo = JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.Wartosc);
             decimal SumaWartPoKontrola = JednoskaRejNowa.Dzialki_Nowe.Sum(x => Math.Round(x.Wartosc, 2));
@@ -75,13 +48,6 @@ namespace ScaleniaMW
 
             string sumaPowierzchniDzialekNowych = JednoskaRejNowa.Dzialki_Nowe.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture);
             string sumaPowierzchniDzialekPrzedScaleniem = JednoskaRejNowa.zJednRejStarej.Sum(x => Math.Round(x.Pow_Przed, 4)).ToString("F4", CultureInfo.InvariantCulture);
-
-            string sumaPowierzchniDzialekPrzedScaleniemKontrola = JednoskaRejNowa.zJednRejStarej.Sum(x => x.Pow_Przed).ToString("F4", CultureInfo.InvariantCulture);
-
-            if (sumaPowierzchniDzialekPrzedScaleniem != sumaPowierzchniDzialekPrzedScaleniemKontrola)
-            {
-                Console.WriteLine(JednoskaRejNowa.Nkr);
-            }
 
 
             StringBuilder dokHTML = new StringBuilder();
@@ -149,34 +115,34 @@ namespace ScaleniaMW
 
             //nagłówek właściciele i władający
             //dokHTML.AppendLine("<div style=\"border-bottom: 2px solid black; width:90%;\"><br /><span style=\"margin-bottom: 0; padding: 0; \" >Właściciele i władający</span></div>");
+
+
             dokHTML.AppendLine("<table width=" + szerTabeli + ">");
+
             dokHTML.AppendLine("<tr style=\"border: none;\"> <td style=\"border-bottom: 2px solid black; width:90%;\"><span style=\"margin-bottom: 0; padding: 0;\" >Właściciele i władający</span></td></tr>");
             dokHTML.AppendLine("</table>");
 
-
-
             // tabela z obecnymi właścicielami
             int licznikMalzenski = 0;
+            int grubPodkesl = 2;
             dokHTML.AppendLine("<table width=" + szerTabeli + ">");
             foreach (var wlascicelPo in JednoskaRejNowa.Wlasciciele)
             {
-
-
                 if (wlascicelPo.IdMalzenstwa > 0 && licznikMalzenski == 0)
                 {
                     licznikMalzenski++;
-                    dokHTML.AppendLine(WierszWlasciciel("małżeństwo", Udzial: wlascicelPo.Udzial));
-                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPo.NazwaWlasciciela, wlascicelPo.Adres));
+                    dokHTML.AppendLine(WierszMalzenstwo(wlascicelPo.Udzial));
+                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPo));
                 }
                 else
                 if (wlascicelPo.IdMalzenstwa > 0 && licznikMalzenski > 0)
                 {
-                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPo.NazwaWlasciciela, wlascicelPo.Adres, gruboscPodkreslenia: 2));
+                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPo, gruboscPodkreslenia: grubPodkesl));
                     licznikMalzenski = 0;
                 }
                 else
                 {
-                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPo.NazwaWlasciciela, wlascicelPo.Adres, wlascicelPo.Udzial, 2));
+                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPo, grubPodkesl));
                 }
             }
             dokHTML.AppendLine("</table>");
@@ -347,73 +313,5 @@ namespace ScaleniaMW
             return dokHTML.ToString();
         }
 
-        public static string GenerujTabeleWlascicieliPRZED(ZJednRejStarej WlascicielePrzed, int szerTabeli)
-        {
-            bool czyWyrzucicOstatniePodkreslenie = false;
-            StringBuilder dokHTML = new StringBuilder();
-            int licznikMalzenskiPrzed = 0;
-            dokHTML.AppendLine("<table width=" + szerTabeli + ">");
-            foreach (var wlascicelPrzed in WlascicielePrzed.Wlasciciele)
-            {
-                if (wlascicelPrzed.Equals(WlascicielePrzed.Wlasciciele.Last()))
-                {
-                    czyWyrzucicOstatniePodkreslenie = true;
-                }
-                if (wlascicelPrzed.IdMalzenstwa > 0 && licznikMalzenskiPrzed == 0)
-                {
-                    licznikMalzenskiPrzed++;
-                    dokHTML.AppendLine(WierszWlasciciel("małżeństwo", Udzial: wlascicelPrzed.Udzial));
-                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPrzed.NazwaWlasciciela, wlascicelPrzed.Adres));
-                }
-                else
-                if (wlascicelPrzed.IdMalzenstwa > 0 && licznikMalzenskiPrzed > 0)
-                {
-                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPrzed.NazwaWlasciciela, wlascicelPrzed.Adres, gruboscPodkreslenia: 2, czyWyrzucicOstatniePodkreslenie: czyWyrzucicOstatniePodkreslenie));
-                    licznikMalzenskiPrzed = 0;
-                }
-                else
-                {
-                    dokHTML.AppendLine(WierszWlasciciel(wlascicelPrzed.NazwaWlasciciela, wlascicelPrzed.Adres, wlascicelPrzed.Udzial, 2, czyWyrzucicOstatniePodkreslenie: czyWyrzucicOstatniePodkreslenie));
-                }
-            }
-
-            dokHTML.AppendLine("</table>");
-
-            return dokHTML.ToString();
-        }
-
-        public static bool CzyGenerowacWlascicieliZStarychJEdnostek(JR_Nowa JednoskaRejNowa)
-        {
-
-            int ilczbWlasNowych = JednoskaRejNowa.Wlasciciele.Count;
-            List<int> liczbaWlascicieliDlaJednostek = new List<int>();
-            JednoskaRejNowa.zJednRejStarej.ForEach(x => liczbaWlascicieliDlaJednostek.Add(x.Wlasciciele.Count));
-            //  bool czyLiczbaWlascicieliTakaSama = true;
-            // int WIluJednJestTyleSamoWlascicieli
-            foreach (var lplWlasc in liczbaWlascicieliDlaJednostek)
-            {
-                if (lplWlasc != ilczbWlasNowych)
-                {
-                    // Console.WriteLine("LP WLAS: " + lplWlasc + "lP PO:" + ilczbWlasNowych);
-                    return true;
-
-                }
-            }
-
-
-            foreach (var NowiWlasciciele in JednoskaRejNowa.Wlasciciele)
-            {
-                foreach (var zJednStarej in JednoskaRejNowa.zJednRejStarej)
-                {
-                    if (!zJednStarej.Wlasciciele.Exists(x => x.NazwaWlasciciela == NowiWlasciciele.NazwaWlasciciela))
-                    {
-                        return true;
-                    }
-
-                }
-
-            }
-            return false;
-        }
     }
 }

@@ -24,9 +24,6 @@ using System.Threading;
 
 namespace ScaleniaMW
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
 
     public partial class MainWindow : Window
     {
@@ -40,7 +37,6 @@ namespace ScaleniaMW
         public MainWindow()
         {
             InitializeComponent();
-            // Console.WriteLine("Assembly.GetExecutingAssembly().GetName().Version.ToString():" +Assembly.GetExecutingAssembly().GetName().Version.ToString());
             try
             {
                 Console.WriteLine("ASSMBLY VERSJA: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -67,73 +63,6 @@ namespace ScaleniaMW
             catch (Exception e)
             {
                 Console.WriteLine(e + " problem z oknem");
-            }
-
-            if (Environment.MachineName.ToString().Trim().Contains("WBG-II-151")) Email.CzyJuzWysylano = true;
-
-            Console.WriteLine("Czy juz wyslano: " + Email.CzyJuzWysylano);
-            if (!Email.CzyJuzWysylano) // okodowac
-            {
-
-                Email.CzyJuzWysylano = true;
-                try
-                {
-
-                    Email.przypiszIP();
-                    Console.WriteLine("przypisz ip");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("error przypisz ip");
-                }
-
-                try
-                {
-                    Console.WriteLine("czy wyslano: " + Email.SendEmail("SCALENAMW", "Właśnie użyto programu SCALENIAMW\n\nWersja programu: " + Assembly.GetExecutingAssembly().GetName().Version.ToString(), "SCALENIA_MW"));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-
-                try
-                {
-                    AktualizacjaOprogramowania.aktualizuj();
-                }
-                catch
-                {
-
-                }
-            }
-
-            try
-            {
-                if (AktualizacjaOprogramowania.CzyBlokowacProgram() == true)
-                {
-                    Properties.Settings.Default.CzyBlokowacProgram = true;
-                    Properties.Settings.Default.Save();
-                    windowScaleniaMW.IsEnabled = false;
-                    MessageBox.Show("Aby rozwiązać problem z działaniem programu skontaktuj się z autorem pod adresem email:\nmarek.wojciechowicz25@gmail.com", "Brak dostępu", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else if (AktualizacjaOprogramowania.CzyBlokowacProgram() == false)
-                {
-                    Properties.Settings.Default.CzyBlokowacProgram = false;
-                    Properties.Settings.Default.Save();
-                    windowScaleniaMW.IsEnabled = true;
-                }
-                else
-                {
-                    if (Properties.Settings.Default.CzyBlokowacProgram == true)
-                    {
-                        MessageBox.Show("Aby rozwiązać problem z działaniem programu skontaktuj się z autorem pod adresem email:\nmarek.wojciechowicz25@gmail.com", "Brak dostępu", MessageBoxButton.OK, MessageBoxImage.Information);
-                        windowScaleniaMW.IsEnabled = false;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("excep : " + e.Message);
             }
         }
 
@@ -190,9 +119,7 @@ namespace ScaleniaMW
                 btRejGR.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonRodzajPracyPrzypisanieRejGr), DispatcherPriority.Background);
             }
         }
-
  
-
         private void ButtonPrzypiszKwDlaNowychDzialek_MouseLeave(object sender, MouseEventArgs e)
         {
             imgKWprzypisz.Visibility = Visibility.Hidden;
@@ -255,6 +182,7 @@ namespace ScaleniaMW
                 btNKR_KW.Dispatcher.BeginInvoke(new ProgressBarDelegate(UpdateRegresbuttonRodzajPracyNKR_KW), DispatcherPriority.Background);
             }
         }
+
         private void ButtonRodzajPracyNKR_KW_MouseEnter(object sender, MouseEventArgs e)
         {
             labelNkrKwOdch.Visibility = Visibility.Visible;

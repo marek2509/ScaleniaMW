@@ -102,6 +102,16 @@ namespace ScaleniaMW
         {
             Console.WriteLine(IdJednRejN + " " + IjrPo + " " + Nkr + " " + Odcht + " " + Zgoda + " " + Uwaga + " OBR:" + NazwaObrebu);
         }
+
+        public decimal SumaWartJednostekPrzed()
+        {
+          return zJednRejStarej.Sum(x => x.WrtJednPrzed);
+        }
+
+        public double SumaPowJednostekPrzed()
+        {
+            return zJednRejStarej.Sum(x => x.Pow_Przed);
+        }
     }
 
 
