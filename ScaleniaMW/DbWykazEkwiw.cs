@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -112,6 +113,17 @@ namespace ScaleniaMW
         {
             return zJednRejStarej.Sum(x => x.Pow_Przed);
         }
+
+        public string SumaPowierzchniDzialekNowych()
+        {
+            return Dzialki_Nowe.Sum(x => x.PowDz).ToString("F4", CultureInfo.InvariantCulture);
+        }
+
+        public string SumaWartosciDzialekNowych()
+        {
+            return Dzialki_Nowe.Sum(x => x.Wartosc).ToString("F2", CultureInfo.InvariantCulture);
+        }
+
     }
 
 
@@ -223,6 +235,16 @@ namespace ScaleniaMW
         public void DodajDzialkePrzed(Dzialka dzialka)
         {
             Dzialki.Add(dzialka);
+        }
+
+        public string SumaPowierzchniDzialek()
+        {
+         return Dzialki.Sum(x => Math.Round(x.PowDz, 4)).ToString("F4", CultureInfo.InvariantCulture);
+        }
+
+        public string SumaWartosciDzialek()
+        {
+            return Dzialki.Sum(x => Math.Round(x.Wartosc, 2)).ToString("F2", CultureInfo.InvariantCulture);
         }
     }
 

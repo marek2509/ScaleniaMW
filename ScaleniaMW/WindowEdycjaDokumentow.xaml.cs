@@ -541,7 +541,7 @@ namespace ScaleniaMW
         public string GenerujWWE(List<JR_Nowa> jR_Nowa)
         {
             StringBuilder dokHTML = new StringBuilder();
-            dokHTML.AppendLine(HtmlDokument.HTML_PoczatekWykazyWydzEkwiwalentow);
+            dokHTML.AppendLine(HtmlDokument.HTML_PoczatekWykazyWydzEkwiwalentow());
             dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
             bool podzialSekcjiNaStronieNieparzystej = (bool)checkBoxPodzialSekcjiNaStronieNieparzystej.IsChecked;
             foreach (var JednoskaRejNowa in jR_Nowa)
@@ -580,7 +580,7 @@ namespace ScaleniaMW
         public string GenerujUproszczonyWWE(List<JR_Nowa> jR_Nowa)
         {
             StringBuilder dokHTML = new StringBuilder();
-            dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow);
+            dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow());
             dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
 
             bool podzialSekcjiNaStronieNieparzystej = (bool)checkBoxPodzialSekcjiNaStronieNieparzystej.IsChecked;
