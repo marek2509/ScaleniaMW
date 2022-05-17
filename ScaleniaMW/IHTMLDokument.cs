@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ScaleniaMW
 {
-    class HtmlDokumentWykazWydzEkwWroblewski
+    public interface IHTMLDokument
     {
-
+        string GenerujWWE(List<JR_Nowa> JRN);
     }
 }

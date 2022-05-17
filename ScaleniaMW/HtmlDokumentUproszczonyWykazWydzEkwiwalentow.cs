@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScaleniaMW
 {
-    class HtmlDokumentUproszczonyWykazWydzEkwiwalentow : HtmlDokument
+    class HtmlDokumentUproszczonyWykazWydzEkwiwalentow : HtmlDokument, IHTMLDokument
     {
         //public const string HTML_PodzialSekcjiNaStronieNieparzystej = "<span style='font-size:12.0pt;font-family:\"Times New Roman\",\"serif\";mso-fareast-font-family: \"Times New Roman\";mso-ansi-language:PL;mso-fareast-language:PL;mso-bidi-language: AR-SA'><br clear=all style='page-break-before:right;mso-break-type:section-break'></span>";
         //public const string HTML_PodzialNowaStrona = "<br clear=all style = 'mso-special-character:line-break;page-break-before:always'> ";
@@ -78,8 +78,8 @@ namespace ScaleniaMW
             }
 
             if (brakStanuPo) dokHTML.Append("-");
-
             dokHTML.AppendLine("</b></td>");
+
 
             // dodanie tekstu zbywa całe gospodarstwo
             string tekstZbywaCaleGosp = "<td style =\" text-align:right; color: red; display: inline-block; \"><span>Zbywa&nbsp;całe&nbsp;gospodarstwo<span></td>";
@@ -313,5 +313,28 @@ namespace ScaleniaMW
             return dokHTML.ToString();
         }
 
+        public string GenerujWWE(List<JR_Nowa> jR_Nowa)
+        {
+                StringBuilder dokHTML = new StringBuilder();
+                dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow());
+                dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+
+                bool podzialSekcjiNaStronieNieparzystej = true;
+                foreach (var JednoskaRejNowa in jR_Nowa)
+                {
+                    dokHTML.Append(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
+                    if (podzialSekcjiNaStronieNieparzystej)
+                    {
+                        dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
+                    }
+                    else
+                    {
+                        dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialNowaStrona);
+                    }
+                }
+                dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
+                //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
+                return dokHTML.ToString();
+        }
     }
 }

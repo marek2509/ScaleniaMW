@@ -370,6 +370,7 @@ namespace ScaleniaMW
             richTextBox.Text = "";
             try
             {
+                Potracenie potracenie = new Potracenie();
                 ListaObrebow.ClearData();
                 JednostkiRejestroweNowe.ClearData();
 
@@ -420,7 +421,9 @@ namespace ScaleniaMW
                     decimal WrtPrzed = Jedn_SN.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToDecimal(Jedn_SN.Rows[i][5]);
                     double PowPrzed = Jedn_SN.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToDouble(Jedn_SN.Rows[i][6]);
 
-                    ZJednRejStarej zJednRej = new ZJednRejStarej(idJednS, IJR, Ud_z_Jedn, WrtPrzed, PowPrzed, Idobr);
+                    bool czyJestPotracenie = Jedn_SN.Rows[i][7].Equals(DBNull.Value) ? false : Convert.ToBoolean(Jedn_SN.Rows[i][7]);
+
+                    ZJednRejStarej zJednRej = new ZJednRejStarej(idJednS, IJR, Ud_z_Jedn, WrtPrzed, PowPrzed, Idobr, potracenie.WartoscPotracenia, czyJestPotracenie);
                     JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN).DodajZJrStarej(zJednRej);
                 }
 
@@ -538,79 +541,25 @@ namespace ScaleniaMW
             panelLogowania.Visibility = Visibility.Hidden;
         }
 
-        public string GenerujWWE(List<JR_Nowa> jR_Nowa)
-        {
-            StringBuilder dokHTML = new StringBuilder();
-            dokHTML.AppendLine(HtmlDokument.HTML_PoczatekWykazyWydzEkwiwalentow());
-            dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
-            bool podzialSekcjiNaStronieNieparzystej = (bool)checkBoxPodzialSekcjiNaStronieNieparzystej.IsChecked;
-            foreach (var JednoskaRejNowa in jR_Nowa)
-            {
-                dokHTML.Append(HtmlDokumentWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
-                if (podzialSekcjiNaStronieNieparzystej)
-                {
-                    dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
-                }
-                else
-                {
-                    dokHTML.AppendLine(HtmlDokument.HTML_PodzialNowaStrona);
-                }
-            }
-            dokHTML.AppendLine(HtmlDokument.HTML_ZakonczenieWykazuWydzEkwiw);
-            //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
-            return dokHTML.ToString();
-        }
+  
 
 
-        private void Generuj_Wykaz_wydz_ekw_Click(object sender, RoutedEventArgs e)
-        {
-            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
-            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
-            zapisDoPliku(GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
-        }
-
-        private void MenuItem_ClicGenerujWWEdlaWybranego(object sender, RoutedEventArgs e)
-        {
-
-            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR(false);
-            windowPobierzNKR.Show();
-        }
 
 
-        public string GenerujUproszczonyWWE(List<JR_Nowa> jR_Nowa)
-        {
-            StringBuilder dokHTML = new StringBuilder();
-            dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PoczatekWykazyWydzEkwiwalentow());
-            dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
-
-            bool podzialSekcjiNaStronieNieparzystej = (bool)checkBoxPodzialSekcjiNaStronieNieparzystej.IsChecked;
-            foreach (var JednoskaRejNowa in jR_Nowa)
-            {
-                dokHTML.Append(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.GenerujWykazWE(JednoskaRejNowa));
-                if (podzialSekcjiNaStronieNieparzystej)
-                {
-                    dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialSekcjiNaStronieNieparzystej);
-                }
-                else
-                {
-                    dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_PodzialNowaStrona);
-                }
-            }
-            dokHTML.AppendLine(HtmlDokumentUproszczonyWykazWydzEkwiwalentow.HTML_ZakonczenieWykazuWydzEkwiw);
-            //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
-            return dokHTML.ToString();
-        }
+      
 
         private void ButtonUproszczonyWszytkieDoWWE_Click(object sender, RoutedEventArgs e)
         {
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
             //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
-            zapisDoPliku(GenerujUproszczonyWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
+            IHTMLDokument dokumentWWE = new HtmlDokumentUproszczonyWykazWydzEkwiwalentow();
+            zapisDoPliku(dokumentWWE.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
         }
 
         private void MenuItem_ClicGenerujUproszczonyWWEdlaWybranego(object sender, RoutedEventArgs e)
         {
-            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR(true);
+            IHTMLDokument dokumentWWE = new HtmlDokumentUproszczonyWykazWydzEkwiwalentow();
+            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR(dokumentWWE);
             windowPobierzNKR.Show();
         }
 
@@ -720,6 +669,41 @@ namespace ScaleniaMW
         private void ItemUsunDzialki_0_Click(object sender, RoutedEventArgs e)
         {
             BazaFB.Execute_SQL(Constants.SQLDeleteAllDzialki0);
+        }
+
+
+        private void Generuj_Wykaz_wydz_ekw_Click(object sender, RoutedEventArgs e)
+        {
+            IHTMLDokument dokumentWWE = new HtmlDokumentWykazWydzEkwiwalentow();
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
+            zapisDoPliku(dokumentWWE.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
+
+            richTextBox.Text += JednostkiRejestroweNowe.KontrolaPrzypisaniaDoRjdr();
+        }
+
+        private void MenuItem_ClicGenerujWWEdlaWybranego(object sender, RoutedEventArgs e)
+        {
+            IHTMLDokument dokumentWWE = new HtmlDokumentWykazWydzEkwiwalentow();
+            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR(dokumentWWE);
+            windowPobierzNKR.Show();
+        }
+
+        private void ButtonPotraceniaWszytkieDoWWE_Click(object sender, RoutedEventArgs e)
+        {
+            IHTMLDokument dokumentWWE = new HTMLDokWykazEkwPotracenia();
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR OBREBU\n");
+            JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.Nkr == 0).ForEach(x => richTextBox.Text += "W jednostce:\t" + x.IjrPo.ToString() + " BRAK NR JEDNOSTKI REJESTROWEJ\n");
+            zapisDoPliku(dokumentWWE.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N), ".doc");
+
+            richTextBox.Text += JednostkiRejestroweNowe.KontrolaPrzypisaniaDoRjdr();
+        }
+
+        private void ButtonPotraceniaWWEDlaWybranego_Click(object sender, RoutedEventArgs e)
+        {
+            IHTMLDokument dokumentWWE = new HTMLDokWykazEkwPotracenia();
+            WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR(dokumentWWE);
+            windowPobierzNKR.Show();
         }
     }
 }

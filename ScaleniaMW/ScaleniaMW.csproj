@@ -136,9 +136,11 @@
       <DependentUpon>WindowLogowanieDoFDB.xaml</DependentUpon>
     </Compile>
     <Compile Include="GMLRepair.cs" />
+    <Compile Include="HTMLDokument.cs" />
     <Compile Include="HtmlDokumentUproszczonyWykazWydzEkwiwalentow.cs" />
     <Compile Include="HtmlDokumentWykazWydzEkwiwalentow.cs" />
-    <Compile Include="HtmlDokumentWykazWydzEkwWroblewski.cs" />
+    <Compile Include="HTMLDokWykazEkwPotracenia.cs" />
+    <Compile Include="IHTMLDokument.cs" />
     <Compile Include="KontrolaBazy.xaml.cs">
       <DependentUpon>KontrolaBazy.xaml</DependentUpon>
     </Compile>

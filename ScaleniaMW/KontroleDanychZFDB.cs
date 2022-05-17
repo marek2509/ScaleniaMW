@@ -230,6 +230,7 @@ namespace ScaleniaMW
             {
                 ListaObrebow.ClearData();
                 JednostkiRejestroweNowe.ClearData();
+                Potracenie potracenie = new Potracenie();
 
                 DataTable obreby = BazaFB.Get_DataTable(Constants.SQL_Obreby);
                 for (int i = 0; i < obreby.Rows.Count; i++)
@@ -276,7 +277,9 @@ namespace ScaleniaMW
 
                     double PowPrzed = Jedn_SN.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToDouble(Jedn_SN.Rows[i][6]);
 
-                    ZJednRejStarej zJednRej = new ZJednRejStarej(idJednS, IJR, Ud_z_Jedn, WrtPrzed, PowPrzed, Idobr);
+                    bool czyJestPotracenie = Jedn_SN.Rows[i][7].Equals(DBNull.Value) ? false : Convert.ToBoolean(Jedn_SN.Rows[i][7]);
+
+                    ZJednRejStarej zJednRej = new ZJednRejStarej(idJednS, IJR, Ud_z_Jedn, WrtPrzed, PowPrzed, Idobr, potracenie.WartoscPotracenia, czyJestPotracenie);
                     JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN).DodajZJrStarej(zJednRej);
                 }
 

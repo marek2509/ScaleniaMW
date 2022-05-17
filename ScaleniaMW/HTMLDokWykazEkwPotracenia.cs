@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,15 +7,15 @@ using System.Windows;
 
 namespace ScaleniaMW
 {
-    class HtmlDokumentWykazWydzEkwiwalentow : HtmlDokument, IHTMLDokument
+    internal class HTMLDokWykazEkwPotracenia : HtmlDokument, IHTMLDokument
     {
-        public static String GenerujKarteWykazuWE(JR_Nowa jednoskaRejNowa)
+        public static String GenerujKarteWykazuWEPotracenia(JR_Nowa jednoskaRejNowa)
         {
-            decimal SumaWartosciPrzed = jednoskaRejNowa.SumaWartJednostekPrzed();
-            decimal SumaWartosciPo = jednoskaRejNowa.Dzialki_Nowe.Sum(x => x.Wartosc);
+            //decimal SumaWartosciPrzed = jednoskaRejNowa.SumaWartJednostekPrzed();
+            //decimal SumaWartosciPo = jednoskaRejNowa.Dzialki_Nowe.Sum(x => x.Wartosc);
 
             StringBuilder dokHTML = new StringBuilder();
-
+            dokHTML.AppendLine(HTML_TytulZakreslony("Potracenia"));
             // Numer gospodarstwa <4001>
             dokHTML.AppendLine(HTML_NaglowekNrGosp(jednoskaRejNowa.IjrPo));
 
@@ -25,23 +23,20 @@ namespace ScaleniaMW
             dokHTML.AppendLine(HTML_NaglowekObreb(jednoskaRejNowa.NrObr, jednoskaRejNowa.NazwaObrebu));
 
             // Numer jednostki rejestrowej <1>
-            dokHTML.AppendLine(HTML_NaglowekJednostkaRejestrowaPrzed(jednoskaRejNowa.Nkr));
+            //dokHTML.AppendLine(HTML_NaglowekJednostkaRejestrowaPrzed(jednoskaRejNowa.Nkr));
 
             // Jan Kowalski 
             // Eliaszuki 5, 10-100 Narewka
             dokHTML.AppendLine(HTML_TabelaWlascicieleIWladajacy(jednoskaRejNowa.Wlasciciele));
 
-            // Uwaga pisana na czarwono
+            // Uwaga pisana na czerwono
             dokHTML.AppendLine(HTML_Uwaga(jednoskaRejNowa.Uwaga));
 
-            dokHTML.AppendLine(HTML_TytulZakreslony("Ekwiwalent należny wg. udziału w pozycjach rejestrowych"));
-
+            dokHTML.AppendLine(HTML_TytulZakreslony("Ekwiwalent należny"));
             // [Obreb] [Nazwa obrębu] [Nr jedn.] [Udzial] [Powierzchnia] [Należność]
             //        Powierzchnia/Warość przed scaleniem [Suma pow.]    [Suma należn.]
-            dokHTML.AppendLine(HTML_TabelaEkwiwalentuNaleznego(jednoskaRejNowa));
-
+            dokHTML.AppendLine(HTML_TabelaEkwiwalentuNaleznegoBezPEW(jednoskaRejNowa));
             dokHTML.AppendLine(HTML_TytulZakreslony("Ekwiwalent należny/zaprojektowany"));
-
 
             // Tabela należny / zaprojektowany
             // [                      Ekwiwalent                     ]
@@ -82,6 +77,7 @@ namespace ScaleniaMW
                     {
                         dokHTML.AppendLine(HTML_TabelaZDzialkami(null, jednostkaStara));
                     }
+                    dokHTML.AppendLine(HTML_TabelkaPotraceniePodDzialkami(jednostkaStara));
                 }
 
 
@@ -134,25 +130,26 @@ namespace ScaleniaMW
 
         public string GenerujWWE(List<JR_Nowa> jR_Nowa)
         {
-            StringBuilder dokHTML = new StringBuilder();
-            dokHTML.AppendLine(HtmlDokument.HTML_PoczatekWykazyWydzEkwiwalentow());
-            dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
-            bool podzialSekcjiNaStronieNieparzystej = true;
-            foreach (var JednoskaRejNowa in jR_Nowa)
-            {
-                dokHTML.Append(HtmlDokumentWykazWydzEkwiwalentow.GenerujKarteWykazuWE(JednoskaRejNowa));
-                if (podzialSekcjiNaStronieNieparzystej)
+                StringBuilder dokHTML = new StringBuilder();
+                dokHTML.AppendLine(HtmlDokument.HTML_PoczatekWykazyWydzEkwiwalentow());
+                dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
+                bool podzialSekcjiNaStronieNieparzystej = true;
+                foreach (var JednoskaRejNowa in jR_Nowa)
                 {
-                    dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
+                    dokHTML.Append(HTMLDokWykazEkwPotracenia.GenerujKarteWykazuWEPotracenia(JednoskaRejNowa));
+                    if (podzialSekcjiNaStronieNieparzystej)
+                    {
+                        dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
+                    }
+                    else
+                    {
+                        dokHTML.AppendLine(HtmlDokument.HTML_PodzialNowaStrona);
+                    }
                 }
-                else
-                {
-                    dokHTML.AppendLine(HtmlDokument.HTML_PodzialNowaStrona);
-                }
-            }
-            dokHTML.AppendLine(HtmlDokument.HTML_ZakonczenieWykazuWydzEkwiw);
-            //JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x._id_obr == 0).ForEach(x => richTextBox.AppendText("W jednostce: " + x.IjrPo.ToString() + " brakuje numeru obrębu"));
-            return dokHTML.ToString();
+                dokHTML.AppendLine(HtmlDokument.HTML_ZakonczenieWykazuWydzEkwiw);
+                return dokHTML.ToString();
         }
+
+
     }
 }

@@ -34,6 +34,10 @@
                     <MenuItem x:Name="buttonUproszczonyWszytkieDoWWE" Header="Dla wszystkich" Click="ButtonUproszczonyWszytkieDoWWE_Click"/>
                     <MenuItem Header="Dla wybranego" Click="MenuItem_ClicGenerujUproszczonyWWEdlaWybranego" />
                 </MenuItem>
+                <MenuItem Foreground="Black" Header="Generuj wykaz wydz. ekw. (Potrącenia)" >
+                    <MenuItem Header="Dla wszystkich" Click="ButtonPotraceniaWszytkieDoWWE_Click"/>
+                    <MenuItem  x:Name="buttonPotraceniaWWEDlaWybranego" Header="Dla wybranego" Click="ButtonPotraceniaWWEDlaWybranego_Click" />
+                </MenuItem>
 
                 <Separator></Separator>
                 <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="otworzOknoPoczatkowe_Click"></MenuItem>
@@ -51,7 +55,7 @@
                     Usuń kontury szacunkowe z raportu
                 </RadioButton>
                 <Separator HorizontalAlignment="Left" Height="2" Width="375"/>
-                <CheckBox x:Name="checkBoxPodzialSekcjiNaStronieNieparzystej" IsChecked="True">Podział sekcji na stronie nieparzystej dla WWE</CheckBox>
+                <!--<CheckBox x:Name="checkBoxPodzialSekcjiNaStronieNieparzystej" IsChecked="True">Podział sekcji na stronie nieparzystej dla WWE</CheckBox>-->
                 <Separator HorizontalAlignment="Left" Height="2" Width="375"/>
                 <RadioButton GroupName="radioUwagaCzyNKR" x:Name="checkBoxWezZNKR" Checked="CheckBoxWezZNKR_Checked">
                     Jednostki rejestrowe pobierz z jedn__rej__n.NKR

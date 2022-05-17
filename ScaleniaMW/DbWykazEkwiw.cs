@@ -1,12 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ScaleniaMW
 {
+    public class Potracenie
+    {
+        public double WartoscPotracenia { get; set; }
+        public Potracenie()
+        {
+            DataTable dataTable = BazaFB.Get_DataTable("select replace( substring(konfig from POSITION('PROCENT=' in upper( konfig))+8 for (POSITION('GRCENNE' in upper(konfig)) - 10 - POSITION('PROCENT=' in upper(konfig)))), '.', ',') from SYSTEM ");
+            double _wartoscPotracenia;
+            Console.WriteLine("potracenie: " + dataTable.Rows[0][0].ToString());
+            bool convertSucces = double.TryParse(dataTable.Rows[0][0].ToString(), out _wartoscPotracenia);
+            Console.WriteLine(_wartoscPotracenia);
+            if (convertSucces)
+            {
+                WartoscPotracenia = _wartoscPotracenia / 100;
+            }
+            else
+            {
+                WartoscPotracenia = 0;
+            }
+        }
+    }
+
     public class Obreb
     {
         public int IdObrebu { get; set; }
@@ -46,7 +69,7 @@ namespace ScaleniaMW
         public string NazwaObrebu
         {
             get => ListaObrebow.Obreby.Exists(x => x.IdObrebu == _id_obr) ? ListaObrebow.Obreby.Find(x => x.IdObrebu == _id_obr).Nazwa : "BRAK_OBREBU";
-                
+
             private set
             {
             }
@@ -65,6 +88,10 @@ namespace ScaleniaMW
         public List<Dzialka_N> Dzialki_Nowe = new List<Dzialka_N>();
         public int _id_obr;
 
+        public JR_Nowa()
+        {
+        }
+
         public JR_Nowa(int idJednRejN, int ijr, int nkr, bool odcht, bool zgoda, string uwaga, int id_obr)
         {
             IdJednRejN = idJednRejN;
@@ -74,6 +101,42 @@ namespace ScaleniaMW
             Zgoda = zgoda;
             Uwaga = uwaga;
             _id_obr = id_obr;
+        }
+
+        public JR_Nowa(JR_Nowa nr_N, List<Dzialka_N> dzialki_n)
+        {
+            IdJednRejN = nr_N.IdJednRejN;
+            IjrPo = nr_N.IjrPo;
+            Nkr = nr_N.Nkr;
+            Odcht = nr_N.Odcht;
+            Zgoda = nr_N.Zgoda;
+            Uwaga = nr_N.Uwaga;
+            _id_obr = nr_N._id_obr;
+            Dzialki_Nowe = dzialki_n;
+        }
+
+        public JR_Nowa JednostkaZDzialkamiZObrebu(int id_Obrebu)
+        {
+          return new JR_Nowa(this, Dzialki_Nowe.FindAll(x => x.Id_obr == id_Obrebu));
+        }
+        public JR_Nowa JednostkaZDzialkamiZRJDRPrzed(int rjdrPrzed)
+        {
+            return new JR_Nowa(this, Dzialki_Nowe.FindAll(x => x.RjdrPrzed == rjdrPrzed));
+        }
+
+        public string KontrolaPrzypisaniaDoRjdr()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var dzialka in Dzialki_Nowe)
+            {
+                if(!(zJednRejStarej.FindAll(x => x.Id_Jedns == dzialka.RjdrPrzed).Count > 0))
+                {
+                    sb.AppendLine($"Nieprawidłowe przypisanie do RJDR: {dzialka.NrObr}-{dzialka.NrDz} ");
+                }
+            }
+
+            return sb.ToString();
         }
 
         public void DodajWlasciciela(Wlasciciel wlasciciel)
@@ -106,7 +169,7 @@ namespace ScaleniaMW
 
         public decimal SumaWartJednostekPrzed()
         {
-          return zJednRejStarej.Sum(x => x.WrtJednPrzed);
+            return zJednRejStarej.Sum(x => x.WrtJednPrzed);
         }
 
         public double SumaPowJednostekPrzed()
@@ -122,6 +185,19 @@ namespace ScaleniaMW
         public string SumaWartosciDzialekNowych()
         {
             return Dzialki_Nowe.Sum(x => x.Wartosc).ToString("F2", CultureInfo.InvariantCulture);
+        }
+        public decimal SumaWartosciDzialekNowychDecimal()
+        {
+            return Dzialki_Nowe.Sum(x => x.Wartosc);
+        }
+
+        public string OdchylkaFaktyczna()
+        {
+            decimal wrtPo = Dzialki_Nowe.Sum(x => x.Wartosc);
+            decimal wrtPrzed = SumaWartJednostekPrzed();
+            decimal odchFaktyczna = wrtPo - wrtPrzed;
+
+            return odchFaktyczna.ToString("F2", CultureInfo.InvariantCulture);
         }
 
     }
@@ -147,6 +223,17 @@ namespace ScaleniaMW
             {
                 item.Wypisz();
             }
+        }
+
+        public static string KontrolaPrzypisaniaDoRjdr()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var jednoskaN in Jedn_REJ_N)
+            {
+                sb.Append(jednoskaN.KontrolaPrzypisaniaDoRjdr());
+            }
+
+           return sb.ToString();
         }
     }
 
@@ -176,7 +263,7 @@ namespace ScaleniaMW
     public class WlascicielStanPrzed : Wlasciciel
     {
         public int IdJednPrzed { get; set; }
-        public WlascicielStanPrzed(int idJednPrzed, string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa) : base(udzial,  udzial_NR,  nazwaWlasciciela,  adres,  idMalzenstwa)
+        public WlascicielStanPrzed(int idJednPrzed, string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa) : base(udzial, udzial_NR, nazwaWlasciciela, adres, idMalzenstwa)
         {
             IdJednPrzed = idJednPrzed;
         }
@@ -189,6 +276,10 @@ namespace ScaleniaMW
         public string Ud_Z_Jrs { get; set; }
         public decimal WrtJednPrzed { get; set; }
         public double Pow_Przed { get; set; }
+        public decimal PotrWart { get; set; }
+        public double PotrPow { get; set; }
+        public bool PotracenieCzyStosowac { get; set; }
+
         public List<Dzialka> Dzialki = new List<Dzialka>();
         public List<WlascicielStanPrzed> Wlasciciele = new List<WlascicielStanPrzed>();
         public string NazwaObrebu
@@ -209,14 +300,26 @@ namespace ScaleniaMW
         }
         public int _id_obr;
 
-        public ZJednRejStarej(int id_Jedns, int ijr_Przed, string ud_Z_Jrs, decimal wrtJednPrzed, double pow_Przed, int idObrebu)
+        public ZJednRejStarej(int id_Jedns, int ijr_Przed, string ud_Z_Jrs, decimal wrtJednPrzed, double pow_Przed, int idObrebu, double portacenie, bool czyJestPotracenie)
         {
             Id_Jedns = id_Jedns;
             Ijr_Przed = ijr_Przed;
             Ud_Z_Jrs = ud_Z_Jrs;
-            WrtJednPrzed = Math.Round(wrtJednPrzed,2);
+            WrtJednPrzed = Math.Round(wrtJednPrzed, 2);
             Pow_Przed = Math.Round(pow_Przed, 4);
             _id_obr = idObrebu;
+            PotracenieCzyStosowac = czyJestPotracenie;
+            if (PotracenieCzyStosowac)
+            {
+                PotrWart = Math.Round((decimal)portacenie * WrtJednPrzed, 2);
+                PotrPow = Math.Round(portacenie * Pow_Przed, 4);
+            }
+            else
+            {
+                PotrWart = 0;
+                PotrPow = 0;
+            }
+
         }
 
         public void DodajWlascicielaWStaniePrzed(WlascicielStanPrzed wlasciciel)
@@ -239,7 +342,7 @@ namespace ScaleniaMW
 
         public string SumaPowierzchniDzialek()
         {
-         return Dzialki.Sum(x => Math.Round(x.PowDz, 4)).ToString("F4", CultureInfo.InvariantCulture);
+            return Dzialki.Sum(x => Math.Round(x.PowDz, 4)).ToString("F4", CultureInfo.InvariantCulture);
         }
 
         public string SumaWartosciDzialek()
@@ -298,6 +401,12 @@ namespace ScaleniaMW
         public Dzialka_N(int Id_dz, int Id_obr, string NrDz, double PowDz, int Rjdr, int RjdrPrzed, string KW, decimal Wartosc) : base(Id_dz, Id_obr, NrDz, PowDz, Rjdr, KW, Wartosc)
         {
             this.RjdrPrzed = RjdrPrzed;
+        }
+
+        public Dzialka_N(Dzialka_N dzialka_N) : base(dzialka_N.Id_dz, dzialka_N.Id_obr, dzialka_N.NrDz, dzialka_N.PowDz, dzialka_N.Rjdr, dzialka_N.KW, dzialka_N.Wartosc)
+        {
+
+            this.RjdrPrzed = dzialka_N.RjdrPrzed;
         }
     }
 

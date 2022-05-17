@@ -17,12 +17,13 @@ namespace ScaleniaMW
     /// <summary>
     /// Logika interakcji dla klasy WindowPobierzNKR.xaml
     /// </summary>
+
     public partial class WindowPobierzNKR : Window
     {
-        bool czyGenerowacUproszczonyWWE = false;
-        public WindowPobierzNKR(bool czyUproszczony)
+        IHTMLDokument HtmlDokument;
+        public WindowPobierzNKR(IHTMLDokument htmlDokument)
         {
-            czyGenerowacUproszczonyWWE = czyUproszczony;
+            HtmlDokument = htmlDokument;
             InitializeComponent();
         }
 
@@ -31,16 +32,10 @@ namespace ScaleniaMW
             Console.WriteLine(textBoxNkrDoWWE.Text);
             WindowEdycjaDokumentow wED = new WindowEdycjaDokumentow();
             Console.WriteLine(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text.Trim()).Count);
+
             if (JednostkiRejestroweNowe.Jedn_REJ_N.Exists(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text))
             {
-                if (czyGenerowacUproszczonyWWE)
-                {
-                    wED.zapisDoPliku(wED.GenerujUproszczonyWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
-                }
-                else
-                {
-                    wED.zapisDoPliku(wED.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
-                }
+                    wED.zapisDoPliku(HtmlDokument.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
             }
             else
             {
@@ -50,4 +45,53 @@ namespace ScaleniaMW
             windowPobierzNKR.Close();
         }
     }
+
+
+
+
+
+
+
+
+
+    //public partial class WindowPobierzNKR : Window
+    //{
+    //    bool czyGenerowacUproszczonyWWE = false;
+    //    public WindowPobierzNKR(bool czyUproszczony)
+    //    {
+    //        czyGenerowacUproszczonyWWE = czyUproszczony;
+    //        InitializeComponent();
+    //    }
+
+    //    private void Button_ClickPotwierdzWpisanyNKR(object sender, RoutedEventArgs e)
+    //    {
+    //        Console.WriteLine(textBoxNkrDoWWE.Text);
+    //        WindowEdycjaDokumentow wED = new WindowEdycjaDokumentow();
+    //        Console.WriteLine(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text.Trim()).Count);
+    //        if (JednostkiRejestroweNowe.Jedn_REJ_N.Exists(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text))
+    //        {
+    //            if (czyGenerowacUproszczonyWWE)
+    //            {
+    //                wED.zapisDoPliku(wED.GenerujUproszczonyWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
+    //            }
+    //            else
+    //            {
+    //                wED.zapisDoPliku(wED.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
+    //            }
+    //        }
+    //        else
+    //        {
+    //            MessageBox.Show("Nie odnaleziono jednostki nr " + textBoxNkrDoWWE.Text + "!");
+    //        }
+
+    //        windowPobierzNKR.Close();
+    //    }
+    //}
+
+
+
+
+
+
+
 }
