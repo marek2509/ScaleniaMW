@@ -42,7 +42,6 @@ namespace ScaleniaMW
             NrObrebu = nr;
             Nazwa = nazwa;
         }
-
     }
 
     public static class ListaObrebow
@@ -65,6 +64,8 @@ namespace ScaleniaMW
         public int Nkr { get; set; }
         public bool Odcht { get; set; }
         public bool Zgoda { get; set; }
+        public bool DoplZaDrNieNaliczaj { get; set; }
+        public bool ZerujDoplaty { get; set; }
         public string Uwaga { get; set; }
         public string NazwaObrebu
         {
@@ -92,7 +93,7 @@ namespace ScaleniaMW
         {
         }
 
-        public JR_Nowa(int idJednRejN, int ijr, int nkr, bool odcht, bool zgoda, string uwaga, int id_obr)
+        public JR_Nowa(int idJednRejN, int ijr, int nkr, bool odcht, bool zgoda, string uwaga, int id_obr, bool doplataZaDrogi, bool zerujDoplaty)
         {
             IdJednRejN = idJednRejN;
             IjrPo = ijr;
@@ -101,6 +102,8 @@ namespace ScaleniaMW
             Zgoda = zgoda;
             Uwaga = uwaga;
             _id_obr = id_obr;
+            DoplZaDrNieNaliczaj = doplataZaDrogi;
+            ZerujDoplaty = zerujDoplaty;
         }
 
         public JR_Nowa(JR_Nowa nr_N, List<Dzialka_N> dzialki_n)
@@ -112,12 +115,14 @@ namespace ScaleniaMW
             Zgoda = nr_N.Zgoda;
             Uwaga = nr_N.Uwaga;
             _id_obr = nr_N._id_obr;
+            DoplZaDrNieNaliczaj = nr_N.DoplZaDrNieNaliczaj;
+            ZerujDoplaty = nr_N.ZerujDoplaty;
             Dzialki_Nowe = dzialki_n;
         }
 
         public JR_Nowa JednostkaZDzialkamiZObrebu(int id_Obrebu)
         {
-          return new JR_Nowa(this, Dzialki_Nowe.FindAll(x => x.Id_obr == id_Obrebu));
+            return new JR_Nowa(this, Dzialki_Nowe.FindAll(x => x.Id_obr == id_Obrebu));
         }
         public JR_Nowa JednostkaZDzialkamiZRJDRPrzed(int rjdrPrzed)
         {
@@ -130,7 +135,7 @@ namespace ScaleniaMW
 
             foreach (var dzialka in Dzialki_Nowe)
             {
-                if(!(zJednRejStarej.FindAll(x => x.Id_Jedns == dzialka.RjdrPrzed).Count > 0))
+                if (!(zJednRejStarej.FindAll(x => x.Id_Jedns == dzialka.RjdrPrzed).Count > 0))
                 {
                     sb.AppendLine($"Nieprawidłowe przypisanie do RJDR: {dzialka.NrObr}-{dzialka.NrDz} ");
                 }
@@ -143,8 +148,8 @@ namespace ScaleniaMW
         {
             if (wlasciciel.IdMalzenstwa > 0)
             {
-                Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa));
-                Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa));
+                Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania));
+                Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania));
             }
             else
             {
@@ -172,6 +177,11 @@ namespace ScaleniaMW
             return zJednRejStarej.Sum(x => x.WrtJednPrzed);
         }
 
+        public decimal SumaWartoJednPrzedPoPotraceinu()
+        {
+            return SumaWartJednostekPrzed() - SumaWartosciPotracen();
+        }
+
         public double SumaPowJednostekPrzed()
         {
             return zJednRejStarej.Sum(x => x.Pow_Przed);
@@ -191,13 +201,75 @@ namespace ScaleniaMW
             return Dzialki_Nowe.Sum(x => x.Wartosc);
         }
 
+        public decimal SumaWartosciPotracen()
+        {
+            return zJednRejStarej.Sum(x => x.PotrWart);
+        }
+
         public string OdchylkaFaktyczna()
         {
             decimal wrtPo = Dzialki_Nowe.Sum(x => x.Wartosc);
             decimal wrtPrzed = SumaWartJednostekPrzed();
             decimal odchFaktyczna = wrtPo - wrtPrzed;
-
             return odchFaktyczna.ToString("F2", CultureInfo.InvariantCulture);
+        }
+
+        public static int CompareStringRodzWlada(Wlasciciel a, Wlasciciel b)
+        {
+            string x = a.Symbol_Wladania;
+            string y = b.Symbol_Wladania;
+
+            if (x == null)
+            {
+                if (y == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                if (y == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    int retval = x.CompareTo(y);
+                    if (retval != 0)
+                    {
+                        //if (x.ToUpper() == "WŁ")
+                        //{
+                        //    retval = -1;
+                        //}
+                        //else if (y.ToUpper() == "WŁ")
+                        //{
+                        //    retval = 1;
+                        //}
+                        //else 
+                        if (x.ToUpper() == "DZ")
+                        {
+                            retval = 1;
+                        }
+                        else if (y.ToUpper() == "DZ")
+                        {
+                            retval = -1;
+                        }
+                        else
+                        {
+                            return a.NazwaWlasciciela.CompareTo(b.NazwaWlasciciela);
+                        }
+                        return retval;
+                    }
+                    else
+                    {
+                        return a.NazwaWlasciciela.CompareTo(b.NazwaWlasciciela);
+                    }
+                }
+            }
         }
 
     }
@@ -207,9 +279,9 @@ namespace ScaleniaMW
     public static class JednostkiRejestroweNowe
     {
         public static List<JR_Nowa> Jedn_REJ_N = new List<JR_Nowa>();
-        public static void DodajJrNowa(int idJednRejN, int ijr, int nkr, bool odcht, bool zgoda, string uwaga, int id_obr)
+        public static void DodajJrNowa(int idJednRejN, int ijr, int nkr, bool odcht, bool zgoda, string uwaga, int id_obr, bool doplDr, bool zerujDoplaty)
         {
-            Jedn_REJ_N.Add(new JR_Nowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, id_obr));
+            Jedn_REJ_N.Add(new JR_Nowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, id_obr, doplDr, zerujDoplaty));
         }
 
         public static void ClearData()
@@ -233,19 +305,20 @@ namespace ScaleniaMW
                 sb.Append(jednoskaN.KontrolaPrzypisaniaDoRjdr());
             }
 
-           return sb.ToString();
+            return sb.ToString();
         }
     }
 
     public class Wlasciciel
     {
-        public Wlasciciel(string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa)
+        public Wlasciciel(string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa, string symbolWladania)
         {
             Udzial = udzial;
             Udzial_NR = udzial_NR;
             NazwaWlasciciela = nazwaWlasciciela;
             Adres = adres.Trim() == ";" ? " " : adres;
             IdMalzenstwa = idMalzenstwa;
+            Symbol_Wladania = symbolWladania;
         }
 
         public string Udzial { get; set; }
@@ -253,6 +326,7 @@ namespace ScaleniaMW
         public string NazwaWlasciciela { get; set; }
         public string Adres { get; set; }
         public int IdMalzenstwa { get; set; }
+        public string Symbol_Wladania { get; set; }
 
         public void WypiszWKoncoli()
         {
@@ -263,7 +337,7 @@ namespace ScaleniaMW
     public class WlascicielStanPrzed : Wlasciciel
     {
         public int IdJednPrzed { get; set; }
-        public WlascicielStanPrzed(int idJednPrzed, string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa) : base(udzial, udzial_NR, nazwaWlasciciela, adres, idMalzenstwa)
+        public WlascicielStanPrzed(int idJednPrzed, string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa, string symbolWladania) : base(udzial, udzial_NR, nazwaWlasciciela, adres, idMalzenstwa, symbolWladania)
         {
             IdJednPrzed = idJednPrzed;
         }
@@ -326,8 +400,8 @@ namespace ScaleniaMW
         {
             if (wlasciciel.IdMalzenstwa > 0)
             {
-                Wlasciciele.Add(new WlascicielStanPrzed(wlasciciel.IdJednPrzed, wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa));
-                Wlasciciele.Add(new WlascicielStanPrzed(wlasciciel.IdJednPrzed, wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa));
+                Wlasciciele.Add(new WlascicielStanPrzed(wlasciciel.IdJednPrzed, wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania));
+                Wlasciciele.Add(new WlascicielStanPrzed(wlasciciel.IdJednPrzed, wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania));
             }
             else
             {
@@ -348,6 +422,11 @@ namespace ScaleniaMW
         public string SumaWartosciDzialek()
         {
             return Dzialki.Sum(x => Math.Round(x.Wartosc, 2)).ToString("F2", CultureInfo.InvariantCulture);
+        }
+
+        public decimal WartJednPrzedPoPotraceniu()
+        {
+            return WrtJednPrzed - PotrWart;
         }
     }
 

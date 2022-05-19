@@ -20,11 +20,13 @@ namespace ScaleniaMW
 
     public partial class WindowPobierzNKR : Window
     {
+
         IHTMLDokument HtmlDokument;
         public WindowPobierzNKR(IHTMLDokument htmlDokument)
         {
             HtmlDokument = htmlDokument;
             InitializeComponent();
+            textBoxNkrDoWWE.Focus();
         }
 
         private void Button_ClickPotwierdzWpisanyNKR(object sender, RoutedEventArgs e)
@@ -35,14 +37,22 @@ namespace ScaleniaMW
 
             if (JednostkiRejestroweNowe.Jedn_REJ_N.Exists(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text))
             {
-                    wED.zapisDoPliku(HtmlDokument.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)));
+                    wED.zapisDoPliku(HtmlDokument.GenerujWWE(JednostkiRejestroweNowe.Jedn_REJ_N.FindAll(x => x.IjrPo.ToString() == textBoxNkrDoWWE.Text)), nazwaPliku: textBoxNkrDoWWE.Text);
             }
             else
             {
                 MessageBox.Show("Nie odnaleziono jednostki nr " + textBoxNkrDoWWE.Text + "!");
             }
 
-            windowPobierzNKR.Close();
+            textBoxNkrDoWWE.Text = "";
+        }
+
+        private void TextBoxNkrDoWWE_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                Button_ClickPotwierdzWpisanyNKR(sender, e);
+            }
         }
     }
 

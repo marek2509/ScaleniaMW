@@ -247,9 +247,10 @@ namespace ScaleniaMW
         }
 
       
-        public void zapisDoPliku(string tekstDoZapisu, string format = ".rtf")
+        public void zapisDoPliku(string tekstDoZapisu, string format = ".rtf", string nazwaPliku = "")
         {
             SaveFileDialog svd = new SaveFileDialog();
+            svd.FileName = nazwaPliku;
             svd.DefaultExt = format;
             svd.Filter = "All files (*.*)|*.*";
             if (svd.ShowDialog() == true)
@@ -271,7 +272,9 @@ namespace ScaleniaMW
                                 }
                                 catch (Exception exc)
                                 {
+
                                     MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                                    throw;
                                 }
                             }
                             catch (Exception ex)
@@ -393,7 +396,10 @@ namespace ScaleniaMW
                     bool zgoda = jednostkaRejestrowa.Rows[i][4].Equals(DBNull.Value) ? false : Convert.ToBoolean(jednostkaRejestrowa.Rows[i][4]);
                     string uwaga = jednostkaRejestrowa.Rows[i][5].ToString().Equals(DBNull.Value) ? "" : jednostkaRejestrowa.Rows[i][5].ToString();
                     int idobr = jednostkaRejestrowa.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToInt32(jednostkaRejestrowa.Rows[i][6]);
-                    JednostkiRejestroweNowe.DodajJrNowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, idobr);
+                    bool dopldr = jednostkaRejestrowa.Rows[i][7].Equals(DBNull.Value) ? false : Convert.ToBoolean(jednostkaRejestrowa.Rows[i][7]);
+                    bool zerujDoplaty = jednostkaRejestrowa.Rows[i][8].Equals(DBNull.Value) ? false : Convert.ToBoolean(jednostkaRejestrowa.Rows[i][8]);
+
+                    JednostkiRejestroweNowe.DodajJrNowa(idJednRejN, ijr, nkr, odcht, zgoda, uwaga, idobr, dopldr, zerujDoplaty);
                 }
 
                 DataTable WlascicielePO = odczytajZSql(Constants.SQLWlascicieleAdresyUdziayIdNKRNOWY);
@@ -405,8 +411,9 @@ namespace ScaleniaMW
                     string nazwaWlasciciela = WlascicielePO.Rows[i][3].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][3].ToString();
                     string adres = WlascicielePO.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][4].ToString();
                     int idMalzenstwa = WlascicielePO.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePO.Rows[i][5]);
+                    string symbolWl = WlascicielePO.Rows[i][6].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][6].ToString();
 
-                    Wlasciciel wlasciciel = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa);
+                    Wlasciciel wlasciciel = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWl);
                     JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN).DodajWlasciciela(wlasciciel);
                 }
 
@@ -482,9 +489,9 @@ namespace ScaleniaMW
                     string nazwaWlasciciela = WlascicielePrzed.Rows[i][3].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][3].ToString();
                     string adres = WlascicielePrzed.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][4].ToString();
                     int idMalzenstwa = WlascicielePrzed.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][5]);
-
+                    string symbolWlad = WlascicielePrzed.Rows[i][6].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][6].ToString();
                     // Wlasciciel wlascicielPrzed = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa);
-                    WlascicielePrzedTMP.Add(new WlascicielStanPrzed(idJednS, udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa));
+                    WlascicielePrzedTMP.Add(new WlascicielStanPrzed(idJednS, udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWlad));
                 }
 
                 foreach (var JN in JednostkiRejestroweNowe.Jedn_REJ_N)
@@ -497,6 +504,12 @@ namespace ScaleniaMW
                         }
                     }
                 }
+
+
+
+                // sortowanie właścicieli
+                JednostkiRejestroweNowe.Jedn_REJ_N.ForEach(x => x.Wlasciciele.Sort(JR_Nowa.CompareStringRodzWlada));
+
             }
             catch (Exception ex)
             {

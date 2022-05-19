@@ -8,7 +8,7 @@
         Title="NKR" Height="200" Width="300" x:Name="windowPobierzNKR">
     <StackPanel Margin="10">
         <Label HorizontalAlignment="Center">Wpisz nr nkr:</Label>
-        <TextBox HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="80" x:Name="textBoxNkrDoWWE" Margin="0,0,0,10"></TextBox>
+        <TextBox HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="80" x:Name="textBoxNkrDoWWE" Margin="0,0,0,10" KeyDown="TextBoxNkrDoWWE_KeyDown"></TextBox>
         <Button Click="Button_ClickPotwierdzWpisanyNKR">Zatwierdź</Button>
     </StackPanel>
 </Window>

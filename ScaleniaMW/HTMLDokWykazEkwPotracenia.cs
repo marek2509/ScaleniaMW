@@ -11,16 +11,14 @@ namespace ScaleniaMW
     {
         public static String GenerujKarteWykazuWEPotracenia(JR_Nowa jednoskaRejNowa)
         {
-            //decimal SumaWartosciPrzed = jednoskaRejNowa.SumaWartJednostekPrzed();
-            //decimal SumaWartosciPo = jednoskaRejNowa.Dzialki_Nowe.Sum(x => x.Wartosc);
 
             StringBuilder dokHTML = new StringBuilder();
-            dokHTML.AppendLine(HTML_TytulZakreslony("Potracenia"));
+
             // Numer gospodarstwa <4001>
             dokHTML.AppendLine(HTML_NaglowekNrGosp(jednoskaRejNowa.IjrPo));
 
             //Obręb: <4> <Eliaszuki>
-            dokHTML.AppendLine(HTML_NaglowekObreb(jednoskaRejNowa.NrObr, jednoskaRejNowa.NazwaObrebu));
+            //dokHTML.AppendLine(HTML_NaglowekObreb(jednoskaRejNowa.NrObr, jednoskaRejNowa.NazwaObrebu));
 
             // Numer jednostki rejestrowej <1>
             //dokHTML.AppendLine(HTML_NaglowekJednostkaRejestrowaPrzed(jednoskaRejNowa.Nkr));
@@ -35,7 +33,7 @@ namespace ScaleniaMW
             dokHTML.AppendLine(HTML_TytulZakreslony("Ekwiwalent należny"));
             // [Obreb] [Nazwa obrębu] [Nr jedn.] [Udzial] [Powierzchnia] [Należność]
             //        Powierzchnia/Warość przed scaleniem [Suma pow.]    [Suma należn.]
-            dokHTML.AppendLine(HTML_TabelaEkwiwalentuNaleznegoBezPEW(jednoskaRejNowa));
+            dokHTML.AppendLine(HTML_TabelaEkwiwalentuNaleznegoPotracenie(jednoskaRejNowa));
             dokHTML.AppendLine(HTML_TytulZakreslony("Ekwiwalent należny/zaprojektowany"));
 
             // Tabela należny / zaprojektowany
@@ -48,6 +46,7 @@ namespace ScaleniaMW
 
                 foreach (var jednostkaStara in jednoskaRejNowa.zJednRejStarej)
                 {
+                    dokHTML.AppendLine("<br>");
                     dokHTML.AppendLine(HTML_NaglowekObreb(jednostkaStara.NrObr, jednostkaStara.NazwaObrebu));
                     dokHTML.AppendLine(HTML_NaglowekJednostkaRejestrowaPrzed(jednostkaStara.Ijr_Przed));
 
@@ -77,7 +76,7 @@ namespace ScaleniaMW
                     {
                         dokHTML.AppendLine(HTML_TabelaZDzialkami(null, jednostkaStara));
                     }
-                    dokHTML.AppendLine(HTML_TabelkaPotraceniePodDzialkami(jednostkaStara));
+                    //dokHTML.AppendLine(HTML_TabelkaPotraceniePodDzialkami(jednostkaStara));
                 }
 
 
@@ -92,9 +91,10 @@ namespace ScaleniaMW
                     }
                 }
                 // wygenerowanie tych działek w kolejnych tabelach.
-                foreach (var obr in tmpDzPominiete.Select(x => new { idobr = x.Id_obr, nrOb = x.NrObr, nazwaObr = x.NazwaObrebu }).Distinct())
+                foreach (var obr in tmpDzPominiete.Select(x => new { idobr = x.Id_obr, nrOb = x.NrObr, nazwaObr = x.NazwaObrebu }).Distinct().OrderBy(x => x.nrOb))
                 {
                     JR_Nowa jR_Nowa = new JR_Nowa(jednoskaRejNowa, tmpDzPominiete.FindAll(x => x.Id_obr == obr.idobr));
+                    dokHTML.AppendLine("<br>");
                     dokHTML.AppendLine(HTML_NaglowekObreb(obr.nrOb, obr.nazwaObr));
                     dokHTML.AppendLine(HTML_TabelaZDzialkami(jR_Nowa, null));
                 }
@@ -118,11 +118,11 @@ namespace ScaleniaMW
             dokHTML.AppendLine(HTML_TytulCzerwonyPodkreslony("BILANS POWIERZCHNI I WARTOŚCI WYDZIELONYCH EKWIWALENTÓW"));
 
             // Tabelka czerwona BILANSU
-            dokHTML.AppendLine(HTML_CzerwonkaTabelka(jednoskaRejNowa));
+            dokHTML.AppendLine(HTML_CzerwonkaTabelkaPotracenia(jednoskaRejNowa));
 
             dokHTML.AppendLine("<br/>");
 
-            dokHTML.AppendLine(HTML_TabelaDoplata(jednoskaRejNowa));
+            dokHTML.AppendLine(HTML_TabelaDoplataPotracenia(jednoskaRejNowa));
 
 
             return dokHTML.ToString();
