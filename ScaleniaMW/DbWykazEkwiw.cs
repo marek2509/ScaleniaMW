@@ -137,9 +137,23 @@ namespace ScaleniaMW
             {
                 if (!(zJednRejStarej.FindAll(x => x.Id_Jedns == dzialka.RjdrPrzed).Count > 0))
                 {
-                    sb.AppendLine($"Nieprawidłowe przypisanie do RJDR: {dzialka.NrObr}-{dzialka.NrDz} ");
+                    if (dzialka.RjdrPrzed == 0)
+                    {
+                        sb.AppendLine($"Brak przypisana do JR przed: {dzialka.NrObr}-{dzialka.NrDz} ");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"Nieprawidłowe przypisanie do JR: {dzialka.NrObr}-{dzialka.NrDz} ");
+                    }
                 }
             }
+
+            //var dzialkiPrzypisane =  Dzialki_Nowe.FindAll(x => x.Rjdr != 0);
+            //foreach (var dzialka in dzialkiPrzypisane)
+            //{
+
+            //}
+
 
             return sb.ToString();
         }

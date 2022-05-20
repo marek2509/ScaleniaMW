@@ -573,7 +573,7 @@ namespace ScaleniaMW
 
         public static string HTML_TytulCzerwonyPodkreslony(string tytul)
         {
-            return "<br> <div style=\"text-align: center;\"> <span style=\"color: red\"><b><u>" + tytul + "</u></b></span></div><br>";
+            return "<div style=\"text-align: center; color: red; margin: 0; padding: 0;\"><b><u>" + tytul + "</u></b></div><br>";
         }
 
         public static string HTML_CzerwonkaTabelka(JR_Nowa jednoskaRejNowa)
@@ -710,23 +710,23 @@ namespace ScaleniaMW
 
             sb.AppendLine("<tr>");
             sb.Append(Tbl_th(""));
-            sb.Append(Tbl_th("Należność w PLN", style: "color: green;"));
+            sb.Append(Tbl_th("Należność w PLN"));
             sb.AppendLine("</tr>");
 
 
             sb.AppendLine("<tr>");
             sb.Append(Tbl_th("Dopłata za drogi"));
-            sb.Append(Tbl_th(doplataZaDrogi.ToString("F2", CultureInfo.InvariantCulture), style: "color: green;"));
+            sb.Append(Tbl_th(doplataZaDrogi.ToString("F2", CultureInfo.InvariantCulture), style: "color: blue;"));
             sb.AppendLine("</tr>");
 
             //sb.AppendLine("<tr>" +
             //    "<td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka dopuszczalna 3%:</b></td>" +
             //"<td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + Decimal.Round(sumaWartosciPrzed * 0.03M, 2).ToString("F2", CultureInfo.InvariantCulture) + "</b></td>" +
-            //    "</tr>");
+            //"</tr>");
 
             sb.AppendLine("<tr>");
             sb.Append(Tbl_th((odchylkaFaktyczna >= 0 ? "Dopłata" : "Spłata") + " za ekwiwalent"));
-            sb.Append(Tbl_th(odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture), style: "color: green;"));
+            sb.Append(Tbl_th(odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture), style: "color: " + (odchylkaFaktyczna >= 0  ?  "blue;" : "red;")));
             sb.AppendLine("</tr>");
 
 
@@ -759,6 +759,34 @@ namespace ScaleniaMW
 
 
             //sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka techniczna</b></td><td style =\"border: 1px solid black; text-align: center; \" width=33.34%><b>-.--</b></td></tr>");
+
+            sb.AppendLine("</table>");
+
+            return sb.ToString();
+        }
+
+        public static string HTML_TabelaOswiadczenia()
+        {
+            StringBuilder sb = new StringBuilder();
+            // tabelka oświadczenia uczestnika i omówienie zastrzeżeń
+            int wysWierszaTabeliPX = 18;
+  
+            sb.AppendLine("<table class=\""+ Css_tabelaCzarna.nameClass + " style=\"font-size: 10px;\">");
+            sb.AppendLine("<tr>");
+            sb.AppendLine("<th style=\"border: 1px solid; width: 50%;\"><i>Oświadczenie uczestnika scalenia w sprawie projektu wstępnego, " +
+                "treść ewentualnych zastrzeżeń, data i podpis uczestnika scalenia.</i></th>");
+            sb.AppendLine("<th style=\"border: 1px solid; width: 50%;\"><i><b>Omówienie zastrzeżeń, proponowane zmiany <br> data i podpis geodety.</b></i></th>");
+            sb.AppendLine("</tr>");
+
+
+            //generowanie pustych wierszy w tabeli
+            for (int i = 0; i < 9; i++)
+            {
+                sb.AppendLine("<tr style=\"border: 1px solid black; height: " + wysWierszaTabeliPX + "px;\">");
+                sb.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c; border-right: 1px solid #000000;\"></td>");
+                sb.AppendLine("<td style=\"border-bottom: 1px solid #8c8c8c;\"></td>");
+                sb.AppendLine("</tr>");
+            }
 
             sb.AppendLine("</table>");
 

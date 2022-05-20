@@ -9,6 +9,7 @@ namespace ScaleniaMW
 {
     internal class HTMLDokWykazEkwPotracenia : HtmlDokument, IHTMLDokument
     {
+        static bool pokazujOstrzezenie = true;
         public static String GenerujKarteWykazuWEPotracenia(JR_Nowa jednoskaRejNowa)
         {
 
@@ -40,13 +41,14 @@ namespace ScaleniaMW
             // [                      Ekwiwalent                     ]
             // [           Należny        ][      Zaprojektowany     ]
             // [Dzialka] [Pow] [Wart] [KW] [Dzialka] [Pow] [Wart] [KW]
+   
             if (jednoskaRejNowa.zJednRejStarej.Count > 0)
             {
                 List<Dzialka_N> tmpDzWypisaneWWykazie = new List<Dzialka_N>();
 
                 foreach (var jednostkaStara in jednoskaRejNowa.zJednRejStarej)
                 {
-                    dokHTML.AppendLine("<br>");
+                    //dokHTML.AppendLine("<br>");
                     dokHTML.AppendLine(HTML_NaglowekObreb(jednostkaStara.NrObr, jednostkaStara.NazwaObrebu));
                     dokHTML.AppendLine(HTML_NaglowekJednostkaRejestrowaPrzed(jednostkaStara.Ijr_Przed));
 
@@ -64,12 +66,20 @@ namespace ScaleniaMW
 
 
                         // kontrola
-                        if (jR_Nowa.Dzialki_Nowe.Exists(x => x.Id_obr != jednostkaStara._id_obr))
+
+                        if (pokazujOstrzezenie && jR_Nowa.Dzialki_Nowe.Exists(x => x.Id_obr != jednostkaStara._id_obr))
                         {
                             StringBuilder sb = new StringBuilder();
                             sb.AppendLine($"Poniższe działki przypisano do innego obrębu\nniż same pochodzą! ({jednostkaStara.NrObr} {jednostkaStara.NazwaObrebu})");
                             jR_Nowa.Dzialki_Nowe.FindAll(x => x.Id_obr != jednostkaStara._id_obr).ForEach(x => sb.AppendLine(x.NrObr + "-" + x.NrDz));
-                            MessageBox.Show(sb.ToString(), "Error");
+
+                            sb.AppendLine("Pokazywać kolejne uwagi?");
+                            var result = MessageBox.Show(sb.ToString(), "Error", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                            if (result == MessageBoxResult.No)
+                            {
+                                pokazujOstrzezenie = false;
+                            }
+
                         }
                     }
                     else
@@ -120,34 +130,35 @@ namespace ScaleniaMW
             // Tabelka czerwona BILANSU
             dokHTML.AppendLine(HTML_CzerwonkaTabelkaPotracenia(jednoskaRejNowa));
 
-            dokHTML.AppendLine("<br/>");
+            dokHTML.AppendLine("<br>");
 
             dokHTML.AppendLine(HTML_TabelaDoplataPotracenia(jednoskaRejNowa));
-
+            dokHTML.AppendLine("<br>");
+            dokHTML.AppendLine(HTML_TabelaOswiadczenia());
 
             return dokHTML.ToString();
         }
 
         public string GenerujWWE(List<JR_Nowa> jR_Nowa)
         {
-                StringBuilder dokHTML = new StringBuilder();
-                dokHTML.AppendLine(HtmlDokument.HTML_PoczatekWykazyWydzEkwiwalentow());
-                dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
-                bool podzialSekcjiNaStronieNieparzystej = true;
-                foreach (var JednoskaRejNowa in jR_Nowa)
+            StringBuilder dokHTML = new StringBuilder();
+            dokHTML.AppendLine(HtmlDokument.HTML_PoczatekWykazyWydzEkwiwalentow());
+            dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
+            bool podzialSekcjiNaStronieNieparzystej = true;
+            foreach (var JednoskaRejNowa in jR_Nowa)
+            {
+                dokHTML.Append(HTMLDokWykazEkwPotracenia.GenerujKarteWykazuWEPotracenia(JednoskaRejNowa));
+                if (podzialSekcjiNaStronieNieparzystej)
                 {
-                    dokHTML.Append(HTMLDokWykazEkwPotracenia.GenerujKarteWykazuWEPotracenia(JednoskaRejNowa));
-                    if (podzialSekcjiNaStronieNieparzystej)
-                    {
-                        dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
-                    }
-                    else
-                    {
-                        dokHTML.AppendLine(HtmlDokument.HTML_PodzialNowaStrona);
-                    }
+                    dokHTML.AppendLine(HtmlDokument.HTML_PodzialSekcjiNaStronieNieparzystej);
                 }
-                dokHTML.AppendLine(HtmlDokument.HTML_ZakonczenieWykazuWydzEkwiw);
-                return dokHTML.ToString();
+                else
+                {
+                    dokHTML.AppendLine(HtmlDokument.HTML_PodzialNowaStrona);
+                }
+            }
+            dokHTML.AppendLine(HtmlDokument.HTML_ZakonczenieWykazuWydzEkwiw);
+            return dokHTML.ToString();
         }
 
 
