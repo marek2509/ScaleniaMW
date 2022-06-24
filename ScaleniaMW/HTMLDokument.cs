@@ -246,7 +246,7 @@ namespace ScaleniaMW
             sb.AppendLine(Tbl_th("Nazwa obrębu"));
             sb.AppendLine(Tbl_th("Nr jednostki"));
             sb.AppendLine(Tbl_th("Udział"));
-            sb.AppendLine(Tbl_th("Należność w PLN", style: "color: green;"));
+            sb.AppendLine(Tbl_th("Ekwiwalent należny", style: "color: green;"));
             sb.AppendLine("</tr>");
 
 
@@ -277,11 +277,7 @@ namespace ScaleniaMW
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<table class=\"tabelaCzarna\">");
-            //"<th class=\"borderBl\"> Obręb </th>" +
-            //"<th class=\"borderBl\"> Nazwa obrębu </th>" +
-            //"<th class=\"borderBl\"> Nr jednostki </th>" +
-            //"<th class=\"borderBl\"> Udział </th>" +
-            //"<th class=\"greenText borderBl\"> Należność </th> " +
+
             sb.AppendLine("<tr>");
             sb.AppendLine(Tbl_th("Obręb"));
             sb.AppendLine(Tbl_th("Nazwa obrębu"));
@@ -289,17 +285,11 @@ namespace ScaleniaMW
             sb.AppendLine(Tbl_th("Udział"));
             sb.AppendLine(Tbl_th("Wartość<br>przed scaleniem", style: "color: green; width:14%;"));
             sb.AppendLine(Tbl_th("Potrącenie<br>pod drogi", style: "color: green; width:14%"));
-            sb.AppendLine(Tbl_th("Należność<br>w PLN", style: "color: green; width:14%"));
+            sb.AppendLine(Tbl_th("Ekwiwalent<br>należny", style: "color: green; width:14%"));
             sb.AppendLine("</tr>");
-
 
             foreach (var zeStarejJedn in JednoskaRejNowa.zJednRejStarej)
             {
-                //"<td class=\"borderBl_ml5\">" + zeStarejJedn.NrObr + "</td>" +
-                //"<td class=\"borderBl_ml5\">" + zeStarejJedn.NazwaObrebu + "</td>" +
-                //"<td class=\"borderBl_ml5\">" + zeStarejJedn.Ijr_Przed + "</td>" +
-                //"<td class=\"borderBl_ml5\">" + zeStarejJedn.Ud_Z_Jrs + "</td>" +
-                //"<td class=\"borderBl_mr5\">" + zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture) + "</td> " +
 
                 sb.AppendLine("<tr>");
                 sb.AppendLine(Tbl_td(zeStarejJedn.NrObr.ToString()));
@@ -619,7 +609,7 @@ namespace ScaleniaMW
             string sumaPowierzchniDzialekNowych = jednoskaRejNowa.SumaPowierzchniDzialekNowych();
             string sumaWartosciPo = jednoskaRejNowa.SumaWartosciDzialekNowych();
             string ekwiwalentNaleznyPopotraceniu = jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu().ToString("F2", CultureInfo.InvariantCulture);
-            string odchFkt = (jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu() - jednoskaRejNowa.SumaWartosciDzialekNowychDecimal()).ToString("F2", CultureInfo.InvariantCulture);
+            string odchFkt = (jednoskaRejNowa.SumaWartosciDzialekNowychDecimal() - jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu()).ToString("F2", CultureInfo.InvariantCulture);
             string odchDop = Math.Abs((jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu() * 0.03M)).ToString("F2", CultureInfo.InvariantCulture);
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<table class=\"" + Css_tabelaCzerwona.nameClass + "\">");

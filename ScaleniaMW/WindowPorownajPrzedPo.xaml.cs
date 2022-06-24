@@ -3,28 +3,38 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace ScaleniaMW
 {
-    /// <summary>
-    /// Logika interakcji dla klasy WindowPorownajPrzedPo.xaml
-    /// </summary>
     public partial class WindowPorownajPrzedPo : Window
     {
+        string[] arrayListEdit = {
+            nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed),
+            nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),
+            nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi),
+            nameof(ZsumwaneWartosciZPorownania.OdchWProgramie),
+            nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie) };
         public WindowPorownajPrzedPo()
         {
             InitializeComponent();
+            comboBoxEditColumn.ItemsSource = arrayListEdit;
+            comboBoxEditColumn.Items.Refresh();
+
+
             try
             {
                 textBlockSciezka.Text = Properties.Settings.Default.PathFDB;
-            }
-            catch
-            {
 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -98,24 +108,12 @@ namespace ScaleniaMW
         bool czyPolaczonoZBaza = false;
         private void PolaczZBaza(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-                odczytajZSql();
-                itemPolaczZBaza.Background = Brushes.SeaGreen;
-                StringBuilder stringBuilder = new StringBuilder();
-                textBlockLogInfo.Text = "Połączono z bazą FDB. Ilość wczytanych linii: " + dt.Rows.Count + ".";
-                itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
-
-                czyPolaczonoZBaza = true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    czyPolaczonoZBaza = false;
-            //    itemPolaczZBaza.Background = Brushes.Red;
-            //    itemPolaczZBaza.Header = "Połącz z bazą";
-            //    textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
-            //    przejdzDoOknaLogowania(ex.Message);
-            //}
+            odczytajZSql();
+            itemPolaczZBaza.Background = Brushes.SeaGreen;
+            StringBuilder stringBuilder = new StringBuilder();
+            textBlockLogInfo.Text = "Połączono z bazą FDB. Ilość wczytanych linii: " + dt.Rows.Count + ".";
+            itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
+            czyPolaczonoZBaza = true;
         }
 
         void przejdzDoOknaLogowania(string s)
@@ -137,14 +135,12 @@ namespace ScaleniaMW
             Properties.Settings.Default.Haslo = textBoxHaslo.Password;
             Properties.Settings.Default.Save();
             panelLogowania.Visibility = Visibility.Hidden;
-            //dataGrid.Visibility = Visibility.Visible;
             dgPorownanie.Visibility = Visibility.Visible;
         }
 
         private void Button_Anuluj(object sender, RoutedEventArgs e)
         {
             panelLogowania.Visibility = Visibility.Hidden;
-            //dataGrid.Visibility = Visibility.Visible;
             dgPorownanie.Visibility = Visibility.Visible;
         }
 
@@ -155,7 +151,6 @@ namespace ScaleniaMW
         }
 
         DataTable dt;
-
         public static string connectionString;
 
         List<StanPrzedWartosci> stanPrzedWartoscis;
@@ -172,6 +167,7 @@ namespace ScaleniaMW
             Console.WriteLine(connectionString);
             using (var connection = new FbConnection(connectionString))
             {
+                //connection.OpenAsync();
                 connection.Open();
 
                 FbCommand command = new FbCommand();
@@ -179,35 +175,15 @@ namespace ScaleniaMW
                 FbTransaction transaction = connection.BeginTransaction();
                 command.Connection = connection;
                 command.Transaction = transaction;
-                // działające zapytanie na nrobr-nrdz NKR 
-                //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                //  command.CommandText = "select  j.ijr NKR__PO__SCAL, sum(d.ww) WART__PO__SCAL from DZIALKI_N d join JEDN_REJ_N j on j.ID_ID = d.rjdr group by ijr";
                 command.CommandText = "select j.ID_ID ID__PO__SCAL, sum(d.ww) WART__PO__SCAL from DZIALKI_N d join JEDN_REJ_N j on j.ID_ID = d.rjdr where id_rd <> 0 and (j.id_sti <> 1 or j.id_sti is null) group by j.id_id";
-
-
-                //  
-
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 dt = new DataTable();
-
                 adapter.Fill(dt);
-                //foreach (var item in dt.Columns)
-                //{
-
-                //    Console.Write(item + " << ");
-                //}
-
 
                 zsumwaneWartosciStanPO = new List<ZsumwaneWartosciZPorownania>();
                 dgPorownanie.ItemsSource = zsumwaneWartosciStanPO;
 
                 dgPorownanie.Items.Refresh();
-                //for (int i = 0; i < dt.Rows.Count; i++)
-                //{
-                //    zsumwaneWartosciStanPO.Add(new ZsumwaneWartosciZPorownania(Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]),
-                //        0,
-                //        Convert.ToDecimal(dt.Rows[i][1].Equals(System.DBNull.Value) ? null : dt.Rows[i][1].ToString().Replace(".", ","))));
-                //}
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -218,11 +194,6 @@ namespace ScaleniaMW
                     });
                 }
 
-
-                // pobranie tabeli idStare i NKR NOWY
-
-                // command.CommandText = "select id_jedns, jr.ijr from JEDN_SN join jedn_rej_N jr on jr.id_id = jedn_sn.id_jednn order by jr.ijr";
-                //command.CommandText = "select ID_ID, ijr from jedn_rej_N order by ID_ID";
                 command.CommandText = "select ID_ID, ijr from jedn_rej_N where id_sti <> 1 or id_sti is null order by ID_ID";
 
                 adapter = new FbDataAdapter(command);
@@ -243,22 +214,8 @@ namespace ScaleniaMW
 
                 // stan przed 
 
-
-                // command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.grp, j.idgrp, j.ID_ID from dzialka d join jedn_rej j on j.ID_ID = d.rjdr order by idgrp";
-
-                // dodano do tabeli id jednN
-                //obecnie poprawne
                 command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
 
-                // command.CommandText = "select replace(d.ww,'.',','), j.ijr, case when idgrp is null then j.nkr else (select NKR from jedn_rej where id_id = j.idgrp) end NKR, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr, '.', ',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns = j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
-
-                //  command.CommandText = "select replace(d.ww,'.',','), j.ijr, case when j.idgrp is null then j.nkr when j.NKR = (select NKR from jedn_rej where id_id = j.idgrp) then j.NKR else null end NKR, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr, '.', ',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns = j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
-
-                /*
-                                for (int i = 0; i < dt.Rows.Count; i++)
-                                {
-                                    stanPrzedWartoscis.Add(new StanPrzedWartosci((double)dt.Rows[i][0], (int)dt.Rows[i][1], (int)dt.Rows[i][2], (int)dt.Rows[i][3], (int)dt.Rows[i][4]));
-                                }*/
 
                 adapter = new FbDataAdapter(command);
                 dt = new DataTable();
@@ -316,14 +273,11 @@ namespace ScaleniaMW
 
                 foreach (var item in zsumwaneWartosciStanPO.FindAll(x => x.NKR == 0))
                 {
-                    //  Console.WriteLine("zero idpo>" + item.IdPo + " nkr>" + item.NKR + " " + idJrNowejNKRJeNowej.Find(x => x.idJednNowej == item.IdPo).NKRJednNowej);
                     item.NKR = idJrNowejNKRJeNowej.Find(x => x.idJednNowej == item.IdPo).NKRJednNowej;
                 }
 
-
-                //dołączenie odchyłki i zgody z programu
-                //command.CommandText = "select ijr, zgoda, odcht from jedn_rej_N where id_sti <> 1 or id_sti is null order by ID_ID";
-                command.CommandText = "select ijr, case when zgoda is null then 0 else zgoda end zgoda, case when odcht is null then 0 else odcht end odcht from jedn_rej_N where id_sti <> 1 or id_sti is null order by ID_ID";
+                //command.CommandText = "select ijr, case when zgoda is null then 0 else zgoda end zgoda, case when odcht is null then 0 else odcht end odcht from jedn_rej_N where id_sti <> 1 or id_sti is null order by ID_ID";
+                command.CommandText = "select ijr, case when zgoda is null then 0 else zgoda end zgoda, case when odcht is null then 0 else odcht end odcht, DPLDR, PTR, case when (select first 1  (select ptr from jedn_rej js where js.id_id = sn.id_jedns) from jedn_sn sn where id_jednn = jn.id_id) = 1 then 1 else 0 end ptr_przed from jedn_rej_N jn where id_sti <> 1 or id_sti is null order by ID_ID";
                 adapter = new FbDataAdapter(command);
                 dt = new DataTable();
                 adapter.Fill(dt);
@@ -331,12 +285,14 @@ namespace ScaleniaMW
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    // dt.Rows[i][1]
-                    Console.WriteLine(dt.Rows[i][1]);
                     if (zsumwaneWartosciStanPO.Exists(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])))
                     {
                         zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).ZgodawProgramie = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][1]) == 1 ? true : false;
                         zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).OdchWProgramie = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][2]) == 1 ? true : false;
+                        zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).NieDoliczajDoplatyZaDrogi = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][3]) == 1 ? true : false;
+                        zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).ZerujDoplaty = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][4]) == 1 ? true : false;
+                        zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])).PotraceniaPrzed = Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? 0 : dt.Rows[i][5]) == 1 ? true : false;
+
                     }
                 }
 
@@ -361,16 +317,14 @@ namespace ScaleniaMW
                 adapter = new FbDataAdapter(command);
                 dt = new DataTable();
                 adapter.Fill(dt);
-                Console.WriteLine("PRZED WEJSCIEM DO PETLI");
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if(zsumwaneWartosciStanPO.Exists(x => x.IdPo == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])))
+                    if (zsumwaneWartosciStanPO.Exists(x => x.IdPo == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0])))
                     {
                         var tmp = zsumwaneWartosciStanPO.Find(x => x.IdPo == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]));
                         tmp.NazwaWlasnosci = dt.Rows[i][1].ToString();
-                    }         
+                    }
                 }
-
                 try
                 {
                     dgPorownanie.Visibility = Visibility.Visible;
@@ -382,14 +336,7 @@ namespace ScaleniaMW
                 }
                 connection.Close();
             }
-
         }
-
-
-
-
-
-
 
         private void CheckBoxZawszeNaWierzchu_Checked(object sender, RoutedEventArgs e)
         {
@@ -492,11 +439,9 @@ namespace ScaleniaMW
                     {
                         connection.Open();
                         FbCommand writeCommand = new FbCommand("UPDATE jedn_rej_N SET ODCHT = 0", connection);
-                        //writeCommand.ExecuteNonQuery();
                         writeCommand.ExecuteNonQueryAsync();
                         connection.Close();
                         MessageBox.Show("Usunięto zaznaczenie pomyślnie.", "SUKCES!", MessageBoxButton.OK);
-
                     }
                 }
             }
@@ -636,7 +581,6 @@ namespace ScaleniaMW
                     {
                         connection.Open();
                         FbCommand writeCommand = new FbCommand("UPDATE jedn_rej_N SET ZGODA = 1", connection);
-                        //writeCommand.ExecuteNonQuery();
                         writeCommand.ExecuteNonQueryAsync();
                         connection.Close();
                         MessageBox.Show("Zaznaczono pomyślnie.", "SUKCES!", MessageBoxButton.OK);
@@ -646,6 +590,42 @@ namespace ScaleniaMW
             catch
             {
 
+            }
+        }
+
+
+        private void DgPorownanie_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                var selectedValueComboBox = comboBoxEditColumn.SelectedValue.ToString();
+                //var oneZwzp = dgPorownanie.SelectedItem as ZsumwaneWartosciZPorownania;
+                var multiply = dgPorownanie.SelectedItems;
+
+
+                foreach (var oneZwzp in multiply)
+                {
+                    if (nameof(ZsumwaneWartosciZPorownania.OdchWProgramie) == selectedValueComboBox)
+                    {
+                        Console.WriteLine("Odchyłka");
+                    }
+                    else if (nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie) == selectedValueComboBox)
+                    {
+                        Console.WriteLine("Zgoda");
+                    }
+
+                    //    oneZwzp.OdchWProgramie = oneZwzp.OdchWProgramie == true ? false : true;
+                    //var a = multiply.Where(x => x == oneZwzp).Select(x => new { x.OdchWProgramie }).First();
+
+                    //Console.WriteLine($"{oneZwzp.IdPo.ToString()}, {oneZwzp.ZgodawProgramie.ToString()}, {oneZwzp.OdchWProgramie.ToString()}");
+                }
+
+
+
+
+
+
+                dgPorownanie.Items.Refresh();
             }
         }
     }

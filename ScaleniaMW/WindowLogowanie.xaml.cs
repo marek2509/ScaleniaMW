@@ -17,9 +17,10 @@ namespace ScaleniaMW
     /// <summary>
     /// Logika interakcji dla klasy WindowLogowanie.xaml
     /// </summary>
+
     public partial class WindowLogowanie : Window
     {
-        public WindowLogowanie()
+         public WindowLogowanie()
         {
             InitializeComponent();
 

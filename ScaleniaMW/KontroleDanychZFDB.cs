@@ -207,12 +207,7 @@ namespace ScaleniaMW
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                Console.WriteLine("--------");
-                Console.WriteLine(dt.Rows[i][0] + " " + dt.Rows[i][0]);
-                Console.WriteLine(dt.Rows[i][1] + " " + dt.Rows[i][1].GetType());
-                Console.WriteLine(dt.Rows[i][2] + " " + dt.Rows[i][2].GetType());
-                Console.WriteLine(dt.Rows[i][3] + " " + dt.Rows[i][3].GetType());
-
+               
                 listaWarosci.Add(new ModelSWartosciZDzialekIZjednRej
                 {
                     NKR = Convert.ToInt32(dt.Rows[i][0].Equals(DBNull.Value) ? 0 : dt.Rows[i][0]),
@@ -434,9 +429,7 @@ namespace ScaleniaMW
             {
                 sb.Insert(0, "Jednostki na które zwrócić szczególną uwagę, ponieważ były edytowane w stanie przed:\n");
             }
-            Console.WriteLine("length: " + sb.Length);
-          //  listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed // sb.Insert(0,)
-            Console.WriteLine("length: " + sb.Length);
+
             return sb.ToString();
         }
 

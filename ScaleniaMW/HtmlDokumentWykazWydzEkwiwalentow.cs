@@ -95,6 +95,7 @@ namespace ScaleniaMW
                         Console.WriteLine(item.NrDz);
                     }
                 }
+
                 // wygenerowanie tych działek w kolejnych tabelach.
                 foreach (var obr in tmpDzPominiete.Select(x => new { idobr = x.Id_obr, nrOb = x.NrObr, nazwaObr = x.NazwaObrebu }).Distinct())
                 {

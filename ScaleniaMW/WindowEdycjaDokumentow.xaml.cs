@@ -505,8 +505,6 @@ namespace ScaleniaMW
                     }
                 }
 
-
-
                 // sortowanie właścicieli
                 JednostkiRejestroweNowe.Jedn_REJ_N.ForEach(x => x.Wlasciciele.Sort(JR_Nowa.CompareStringRodzWlada));
                 JednostkiRejestroweNowe.Jedn_REJ_N.ForEach(x => x.zJednRejStarej.ForEach(y => y.Wlasciciele.Sort(JR_Nowa.CompareStringRodzWlada)));

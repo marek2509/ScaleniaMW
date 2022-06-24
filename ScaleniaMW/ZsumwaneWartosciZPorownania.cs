@@ -55,6 +55,9 @@ namespace ScaleniaMW
         public string CzyDopOdch__3__proc { get; set; }
         public bool OdchWProgramie { get; set; }
         public bool ZgodawProgramie { get; set; }
+        public bool NieDoliczajDoplatyZaDrogi { get; set; }
+        public bool ZerujDoplaty { get; set; }
+        public bool PotraceniaPrzed { get; set; }
 
         public decimal WGSPzJednSN { get; set; }
         public decimal RozniceWGSPZJednIWartPrzed { get; set; }
