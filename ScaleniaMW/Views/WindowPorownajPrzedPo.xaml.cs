@@ -15,17 +15,17 @@ namespace ScaleniaMW
     public partial class WindowPorownajPrzedPo : Window
     {
         string[] arrayListEdit = {
-            nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed),
-            nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),
-            nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi),
             nameof(ZsumwaneWartosciZPorownania.OdchWProgramie),
-            nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie) };
+            nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie),
+            nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi),
+            nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),
+            nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed)};
+
         public WindowPorownajPrzedPo()
         {
             InitializeComponent();
             comboBoxEditColumn.ItemsSource = arrayListEdit;
             comboBoxEditColumn.Items.Refresh();
-
 
             try
             {
@@ -603,7 +603,7 @@ namespace ScaleniaMW
                 var multiply = dgPorownanie.SelectedItems;
 
 
-                foreach (var oneZwzp in multiply)
+                foreach (ZsumwaneWartosciZPorownania oneZwzp in multiply)
                 {
                     if (nameof(ZsumwaneWartosciZPorownania.OdchWProgramie) == selectedValueComboBox)
                     {
@@ -613,17 +613,19 @@ namespace ScaleniaMW
                     {
                         Console.WriteLine("Zgoda");
                     }
-
-                    //    oneZwzp.OdchWProgramie = oneZwzp.OdchWProgramie == true ? false : true;
-                    //var a = multiply.Where(x => x == oneZwzp).Select(x => new { x.OdchWProgramie }).First();
-
-                    //Console.WriteLine($"{oneZwzp.IdPo.ToString()}, {oneZwzp.ZgodawProgramie.ToString()}, {oneZwzp.OdchWProgramie.ToString()}");
+                    else if (nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi) == selectedValueComboBox)
+                    {
+                        Console.WriteLine("nie doliczaj");
+                    }
+                    else if (nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed) == selectedValueComboBox)
+                    {
+                        Console.WriteLine("ptr przed");
+                    }
+                    else if (nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty) == selectedValueComboBox)
+                    {
+                        Console.WriteLine("Zeruj");
+                    }
                 }
-
-
-
-
-
 
                 dgPorownanie.Items.Refresh();
             }

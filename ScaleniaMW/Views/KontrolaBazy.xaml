@@ -1,4 +1,4 @@
-﻿<Window x:Class="ScaleniaMW.WindowKontrolaBazy"
+﻿<Window x:Class="ScaleniaMW.Views.WindowKontrolaBazy"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,7 +16,7 @@
 
         <DockPanel Grid.Row="0">
             <Button  HorizontalAlignment="Left" Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
-                <Image Width="20" Source="Resources/previous.png" ></Image>
+                <Image Width="20" Source="../Resources/previous.png" ></Image>
             </Button>
             <TextBlock Margin="5,0,10,0" x:Name="textBlockSciezka"></TextBlock>
         </DockPanel>

@@ -13,7 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace ScaleniaMW
+namespace ScaleniaMW.Views
 {
     /// <summary>
     /// Logika interakcji dla klasy EdycjaDokumentow.xaml

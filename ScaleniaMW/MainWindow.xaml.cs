@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Deployment;
 using System.Windows.Threading;
 using System.Threading;
+using ScaleniaMW.Views;
 
 namespace ScaleniaMW
 {

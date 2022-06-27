@@ -142,12 +142,12 @@
     <Compile Include="HtmlDokumentWykazWydzEkwiwalentow.cs" />
     <Compile Include="HTMLDokWykazEkwPotracenia.cs" />
     <Compile Include="IHTMLDokument.cs" />
-    <Compile Include="KontrolaBazy.xaml.cs">
+    <Compile Include="Views\KontrolaBazy.xaml.cs">
       <DependentUpon>KontrolaBazy.xaml</DependentUpon>
     </Compile>
     <Compile Include="KontroleDanychZFDB.cs" />
     <Compile Include="Plik.cs" />
-    <Compile Include="WindowEdycjaDokumentow.xaml.cs">
+    <Compile Include="Views\WindowEdycjaDokumentow.xaml.cs">
       <DependentUpon>WindowEdycjaDokumentow.xaml</DependentUpon>
     </Compile>
     <Compile Include="IdJrStNKRJeNowej.cs" />
@@ -155,31 +155,31 @@
     <Compile Include="DzialkaEDZ.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="StanPrzedWartosci.cs" />
-    <Compile Include="WindowKwNaMapePO.xaml.cs">
+    <Compile Include="Views\WindowKwNaMapePO.xaml.cs">
       <DependentUpon>WindowKwNaMapePO.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowLogowanie.xaml.cs">
+    <Compile Include="Views\WindowLogowanie.xaml.cs">
       <DependentUpon>WindowLogowanie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowNkrKwObrot.xaml.cs">
+    <Compile Include="Views\WindowNkrKwObrot.xaml.cs">
       <DependentUpon>WindowNkrKwObrot.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowPobierzNKR.xaml.cs">
+    <Compile Include="Views\WindowPobierzNKR.xaml.cs">
       <DependentUpon>WindowPobierzNKR.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowPodzialWspolnoty.xaml.cs">
+    <Compile Include="Views\WindowPodzialWspolnoty.xaml.cs">
       <DependentUpon>WindowPodzialWspolnoty.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowPorownajPrzedPo.xaml.cs">
+    <Compile Include="Views\WindowPorownajPrzedPo.xaml.cs">
       <DependentUpon>WindowPorownajPrzedPo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowPrzypiszKW.xaml.cs">
+    <Compile Include="Views\WindowPrzypiszKW.xaml.cs">
       <DependentUpon>WindowPrzypiszKW.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowPrzypiszRejGr.xaml.cs">
+    <Compile Include="Views\WindowPrzypiszRejGr.xaml.cs">
       <DependentUpon>WindowPrzypiszRejGr.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowRepairGML.xaml.cs">
+    <Compile Include="Views\WindowRepairGML.xaml.cs">
       <DependentUpon>WindowRepairGML.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wspolnota.cs" />
@@ -196,11 +196,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="KontrolaBazy.xaml">
+    <Page Include="Views\KontrolaBazy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowEdycjaDokumentow.xaml">
+    <Page Include="Views\WindowEdycjaDokumentow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -216,39 +216,39 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WindowKwNaMapePO.xaml">
+    <Page Include="Views\WindowKwNaMapePO.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowLogowanie.xaml">
+    <Page Include="Views\WindowLogowanie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowNkrKwObrot.xaml">
+    <Page Include="Views\WindowNkrKwObrot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowPobierzNKR.xaml">
+    <Page Include="Views\WindowPobierzNKR.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowPodzialWspolnoty.xaml">
+    <Page Include="Views\WindowPodzialWspolnoty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowPorownajPrzedPo.xaml">
+    <Page Include="Views\WindowPorownajPrzedPo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowPrzypiszKW.xaml">
+    <Page Include="Views\WindowPrzypiszKW.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowPrzypiszRejGr.xaml">
+    <Page Include="Views\WindowPrzypiszRejGr.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowRepairGML.xaml">
+    <Page Include="Views\WindowRepairGML.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -370,8 +370,6 @@
     <Resource Include="EWOPIS\img\LOGO_DUŻY8.png" />
     <Resource Include="EWOPIS\img\LOGO_DUŻY9.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
