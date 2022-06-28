@@ -15,7 +15,7 @@
         <DockPanel Grid.Row="0">
             
             <Button Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
-                <Image Width="20" Source="Resources/previous.png" ></Image>
+                <Image Width="20" Source="../Resources/previous.png" ></Image>
             </Button>
             <TextBlock x:Name="textBlockSciezka" Height="20" MinWidth="770"></TextBlock>
         </DockPanel>

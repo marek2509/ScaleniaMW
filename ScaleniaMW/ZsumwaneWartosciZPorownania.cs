@@ -12,6 +12,40 @@ namespace ScaleniaMW
         {
         }
 
+        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0, bool zgoda = false, bool odchWPrgor = false, decimal _WGSPzJednSN = 0, decimal _RozniceWGSPZJEDNiWartPrzed = 0)
+        {
+            NKR = nkr;
+            WartPrzed = wartPrzed;
+            WartPo = wartPo;
+            Roznice = WartPo - WartPrzed;
+            ZgodawProgramie = zgoda;
+            OdchWProgramie = odchWPrgor;
+            WGSPzJednSN = Math.Round(_WGSPzJednSN, 2);
+            RozniceWGSPZJednIWartPrzed = _RozniceWGSPZJEDNiWartPrzed;
+        }
+
+        public ZsumwaneWartosciZPorownania(ZsumwaneWartosciZPorownania zsumwane)
+        {
+            NKR = zsumwane.NKR;
+            WartPrzed = zsumwane.WartPrzed;
+            WartPo = zsumwane.WartPo;
+            Roznice = zsumwane.Roznice;
+            WGSPzJednSN = zsumwane.WGSPzJednSN;
+            RozniceWGSPZJednIWartPrzed = zsumwane.RozniceWGSPZJednIWartPrzed;
+            OdchWProgramie = zsumwane.OdchWProgramie;
+            ZgodawProgramie = zsumwane.ZgodawProgramie;
+            Nkr_Przed = zsumwane.Nkr_Przed;
+            Odch_3_Proc = zsumwane.Odch_3_Proc;
+            CzyDopOdch__3__proc = zsumwane.CzyDopOdch__3__proc;
+            NieDoliczajDoplatyZaDrogi = zsumwane.NieDoliczajDoplatyZaDrogi;
+            ZerujDoplaty = zsumwane.ZerujDoplaty;
+            PotraceniaPrzed = zsumwane.PotraceniaPrzed;
+            NazwaWlasnosci = zsumwane.NazwaWlasnosci;
+            _odch_3_proc = zsumwane._odch_3_proc;
+            _wartPo = zsumwane._wartPo;
+            _wartPrzed = zsumwane.WartPrzed;
+            IdPo = zsumwane.IdPo;
+        }
         public int NKR { get; set; }
         public int Nkr_Przed;
         public decimal WartPrzed
@@ -68,17 +102,8 @@ namespace ScaleniaMW
         decimal _wartPrzed;
         public int IdPo;
 
-        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0, bool zgoda = false, bool odchWPrgor = false, decimal _WGSPzJednSN = 0, decimal _RozniceWGSPZJEDNiWartPrzed = 0)
-        {
-            NKR = nkr;
-            WartPrzed = wartPrzed;
-            WartPo = wartPo;
-            Roznice = WartPo - WartPrzed;
-            ZgodawProgramie = zgoda;
-            OdchWProgramie = odchWPrgor;
-            WGSPzJednSN = Math.Round(_WGSPzJednSN,2);
-            RozniceWGSPZJednIWartPrzed = _RozniceWGSPZJEDNiWartPrzed;
-        }
+
+
         
         public void wypiszWConsoli()
         {

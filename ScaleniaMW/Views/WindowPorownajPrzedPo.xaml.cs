@@ -1,10 +1,13 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
+using ScaleniaMW.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -18,14 +21,21 @@ namespace ScaleniaMW
             nameof(ZsumwaneWartosciZPorownania.OdchWProgramie),
             nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie),
             nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi),
-            nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),
-            nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed)};
+            nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty)};
+
+        Dictionary<string, string> dicColumnDbHeader = new Dictionary<string, string>()
+        {
+            {nameof(ZsumwaneWartosciZPorownania.OdchWProgramie), "ODCHT" },
+            {nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie), "ZGODA" },
+            {nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi), "DPLDR" },
+            {nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),"PTR" }
+        };
 
         public WindowPorownajPrzedPo()
         {
             InitializeComponent();
-            comboBoxEditColumn.ItemsSource = arrayListEdit;
-            comboBoxEditColumn.Items.Refresh();
+            //comboBoxEditColumn.ItemsSource = columnDbHeader.ToList().Select(x => x.Key);
+            //comboBoxEditColumn.Items.Refresh();
 
             try
             {
@@ -108,12 +118,24 @@ namespace ScaleniaMW
         bool czyPolaczonoZBaza = false;
         private void PolaczZBaza(object sender, RoutedEventArgs e)
         {
-            odczytajZSql();
+            try
+            {
+                odczytajZSql();
+            }
+            catch (Exception ex)
+            {
+                textBlockLogInfo.Text = ex.Message;
+                return;
+            }
+
             itemPolaczZBaza.Background = Brushes.SeaGreen;
             StringBuilder stringBuilder = new StringBuilder();
             textBlockLogInfo.Text = "Połączono z bazą FDB. Ilość wczytanych linii: " + dt.Rows.Count + ".";
             itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
             czyPolaczonoZBaza = true;
+
+            valToDb.Clear();
+            dgWprowadzoneZmiany.Items.Refresh();
         }
 
         void przejdzDoOknaLogowania(string s)
@@ -169,7 +191,6 @@ namespace ScaleniaMW
             {
                 //connection.OpenAsync();
                 connection.Open();
-
                 FbCommand command = new FbCommand();
 
                 FbTransaction transaction = connection.BeginTransaction();
@@ -235,13 +256,13 @@ namespace ScaleniaMW
                 }
 
                 resultPorownanie = stanPrzedWartoscis.GroupBy(l => l.id_id).Select(cl =>
-             new ZsumwaneWartosciZPorownania
-             {
+                                         new ZsumwaneWartosciZPorownania
+                                         {
 
-                 NKR = (int)cl.First().NKR,
-                 IdPo = (int)cl.First().id_id,
-                 WartPrzed = cl.Sum(c => (c.Wartosc * (decimal)c.udzialPrzed))
-             }).ToList();
+                                             NKR = (int)cl.First().NKR,
+                                             IdPo = (int)cl.First().id_id,
+                                             WartPrzed = cl.Sum(c => (c.Wartosc * (decimal)c.udzialPrzed))
+                                         }).ToList();
 
                 Console.WriteLine("punkt kontrolny 2");
 
@@ -593,42 +614,135 @@ namespace ScaleniaMW
             }
         }
 
-
+        List<NkrColNameValueDto> valToDb = new List<NkrColNameValueDto>();
+        List<ZsumwaneWartosciZPorownania> cloneListOrginal = null;
         private void DgPorownanie_KeyDown(object sender, KeyEventArgs e)
         {
+
             if (e.Key == Key.Space)
             {
-                var selectedValueComboBox = comboBoxEditColumn.SelectedValue.ToString();
-                //var oneZwzp = dgPorownanie.SelectedItem as ZsumwaneWartosciZPorownania;
-                var multiply = dgPorownanie.SelectedItems;
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
 
+                if (cloneListOrginal is null)
+                {
+                    cloneListOrginal = zsumwaneWartosciStanPO.Select(x => new ZsumwaneWartosciZPorownania(x)).ToList();
+                }
+                cloneListOrginal.Take(10).ToList().ForEach(x => Console.WriteLine(x.NKR + " " + x.OdchWProgramie + " " + x.ZgodawProgramie));
+
+                var selectedColumnNamae = labelSelectedColumn.Content;
+                var multiply = dgPorownanie.SelectedItems;
+                var columneName = dgPorownanie.CurrentColumn.Header.ToString();
+                PropertyInfo propertyInfo = typeof(ZsumwaneWartosciZPorownania).GetProperty(columneName);
 
                 foreach (ZsumwaneWartosciZPorownania oneZwzp in multiply)
                 {
-                    if (nameof(ZsumwaneWartosciZPorownania.OdchWProgramie) == selectedValueComboBox)
+                    if (arrayListEdit.Any(x => x == columneName))
                     {
-                        Console.WriteLine("Odchyłka");
-                    }
-                    else if (nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie) == selectedValueComboBox)
-                    {
-                        Console.WriteLine("Zgoda");
-                    }
-                    else if (nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi) == selectedValueComboBox)
-                    {
-                        Console.WriteLine("nie doliczaj");
-                    }
-                    else if (nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed) == selectedValueComboBox)
-                    {
-                        Console.WriteLine("ptr przed");
-                    }
-                    else if (nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty) == selectedValueComboBox)
-                    {
-                        Console.WriteLine("Zeruj");
+                        var result = (bool)propertyInfo.GetValue(oneZwzp) ? false : true;
+                        propertyInfo.SetValue(oneZwzp, result);
+
+
+                        //Console.WriteLine(existOriginal?.NKR + " " + existOriginal?.OdchWProgramie);
+
+                        var isExisting = valToDb.Any(x => x.NKR == oneZwzp.NKR && x.ColumneName == dicColumnDbHeader[columneName]);
+                        if (isExisting)
+                        {
+                            var existElement = valToDb.FirstOrDefault(x => x.NKR == oneZwzp.NKR && x.ColumneName == dicColumnDbHeader[columneName]);
+                            existElement.Value = result;
+
+                            bool idExistOriginal = cloneListOrginal.Any(orginal => orginal.NKR == oneZwzp.NKR && (bool)propertyInfo.GetValue(orginal) == result);
+                            Console.WriteLine("Any" + idExistOriginal);
+                            if (idExistOriginal)
+                            {
+                                valToDb.Remove(existElement);
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            valToDb.Add(new NkrColNameValueDto(oneZwzp.NKR, dicColumnDbHeader[columneName], result));
+                        }
+                        valToDb = valToDb.OrderBy(x => x.NKR).ToList();
                     }
                 }
 
+                Console.WriteLine();
+                Console.WriteLine("_@_@_@_@_@_@_@_@_@_@_@_");
+                Console.WriteLine();
+
+                valToDb.ForEach(x => Console.WriteLine(string.Join(", ", x.NKR, x.ColumneName, x.Value)));
+
                 dgPorownanie.Items.Refresh();
+                textBlockLogInfo.Text = $"Elementów do deycji: {valToDb.Count}";
             }
+        }
+
+        private async void DgPorownanie_CurrentCellChanged(object sender, EventArgs e)
+        {
+            var columnName = dgPorownanie.CurrentColumn?.Header.ToString();
+            var isUserCanEdit = dicColumnDbHeader.ToList().Any(x => x.Key == columnName);
+            if (!isUserCanEdit)
+            {
+                columnName = "Ta kolumna nie podlega edycji";
+            }
+            labelSelectedColumn.Content = await Task.Run(() => columnName);
+        }
+
+        private async void ButtonConfirmChanges_Click(object sender, RoutedEventArgs e)
+        {
+            panelLoadToDatabase.Visibility = Visibility.Visible;
+            dgWprowadzoneZmiany.ItemsSource = await Task.Run(() => valToDb);
+        }
+
+        private void Button_ClickBackToEdit(object sender, RoutedEventArgs e)
+        {
+            panelLoadToDatabase.Visibility = Visibility.Hidden;
+        }
+
+        private async void Button_Click_LoadToDatabase(object sender, RoutedEventArgs e)
+        {
+            if (!valToDb.Any())
+            {
+                Console.WriteLine("Brak Elementów");
+                return;
+            }
+
+            progressLabel.Visibility = Visibility.Visible;
+            var conutElemToDatabase = valToDb.Count();
+            int currentElement = 1;
+
+            aktualizujConnectionStringZPropertis();
+            using (var connection = new FbConnection(connectionString))
+            {
+                connection.Open();
+                FbCommand command = new FbCommand("", connection);
+                foreach (var el in valToDb)
+                {
+                    progressLabel.Content = await Task.Run(() => $"{currentElement++}/{conutElemToDatabase}");
+                    await Task.Delay(1);
+                    command.CommandText = $"update jedn_rej_n set {el.ColumneName} = @value where ijr = @nkr";
+                    Console.WriteLine(command.CommandText);
+                    command.Parameters.Add("@nkr", el.NKR);
+                    command.Parameters.Add("@value", el.Value ? 1 : 0);
+                    //command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                    command.Parameters.Clear();
+                    Console.WriteLine($"Sukces wgrano{el.NKR}");
+                }
+            }
+            valToDb.Clear();
+            dgWprowadzoneZmiany.Items.Refresh();
+
+            for (int i = 3; i >= 0; i--)
+            {
+                progressLabel.Content = await Task.Run(() => $"{currentElement}/{conutElemToDatabase}\nkoniec\n{i}s");
+                await Task.Delay(1000);
+
+            }
+
+            progressLabel.Visibility = Visibility.Hidden;
         }
     }
 }

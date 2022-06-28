@@ -21,7 +21,7 @@
 
         <DockPanel Grid.ColumnSpan="2">
             <Button Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
-                <Image Width="20" Source="Resources/previous.png" ></Image>
+                <Image Width="20" Source="../Resources/previous.png" ></Image>
             </Button>
 
             <TextBlock Margin="0,0,10,0" x:Name="textBlockSciezka"></TextBlock>
@@ -120,7 +120,7 @@
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">PRZYPISZ</Label>
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">WYBRANĄ</Label>
                         <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
-                        <Image x:Name="imageHand" HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="Resources/PenWhite.png"/>
+                        <Image x:Name="imageHand" HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="../Resources/PenWhite.png"/>
 
 
                     </StackPanel>

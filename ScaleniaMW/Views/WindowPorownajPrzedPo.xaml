@@ -17,30 +17,30 @@
 
         <DockPanel Grid.Row="0">
             <Button Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
-                <Image Width="20" Source="Resources/previous.png" ></Image>
+                <Image Width="20" Source="../Resources/previous.png" ></Image>
             </Button>
             <TextBlock Margin="0,0,10,0" x:Name="textBlockSciezka"></TextBlock>
         </DockPanel>
 
-        <Menu Grid.Row="1" Foreground="White" Background="#FF047CF1" >
-                <MenuItem VerticalContentAlignment="Center" VerticalAlignment="Center" x:Name="menuItemPlik" Header="Plik">
-                    <MenuItem Header="Otwórz okno startowe" x:Name="otworzOknoStartowe" Click="otworzOknoPoczatkowe_Click"  Foreground="Black"/>
-                    <Separator></Separator>
+        <Menu Grid.Row="1" Foreground="White" Background="#047CF1" >
+            <MenuItem VerticalContentAlignment="Center" VerticalAlignment="Center" x:Name="menuItemPlik" Header="Plik">
+                <MenuItem Header="Otwórz okno startowe" x:Name="otworzOknoStartowe" Click="otworzOknoPoczatkowe_Click"  Foreground="Black"/>
+                <Separator></Separator>
                 <MenuItem Header="Zamknij" Click="zamknijProgram_Click"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"/>
-                </MenuItem>
+            </MenuItem>
             <MenuItem Header="Opcje">
                 <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxZawszeNaWierzchu_Unchecked" Checked="CheckBoxZawszeNaWierzchu_Checked"></CheckBox>
             </MenuItem>
             <MenuItem Header="Ustawienia FDB" Foreground="White">
                 <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>
                 <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>
-                    <!--<WrapPanel ToolTip="Opcja po scaleniu w przygotowaniu">
+                <!--<WrapPanel ToolTip="Opcja po scaleniu w przygotowaniu">
                         <Label>Stan:</Label>
                         <RadioButton VerticalContentAlignment="Center" IsChecked="True">Przed scaleniem</RadioButton>
                         <Label></Label>
                         <RadioButton VerticalContentAlignment="Center"  IsEnabled="False">Po scaleniu</RadioButton>
                     </WrapPanel>-->
-                </MenuItem>
+            </MenuItem>
             <MenuItem Background="{Binding ElementName=itemPolaczZBaza, Path=Background}"  Header="Baza FDB"  Foreground="White">
                 <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza" Foreground="Black"/>
                 <Separator></Separator>
@@ -50,30 +50,49 @@
                 <MenuItem Header="Ustaw ''Odchyłkę techniczną'' wszystkim jednostkom" Foreground="DarkGreen" Click="MenuItem_Click_ustawoOdchylkeWszystkim" />
                 <MenuItem Header="Ustaw ''Zgodę na powiekszenie gospodarstwa'' wszystkim jednostkom" Foreground="DarkGreen" Click="MenuItem_ClickUstawZgodeNaPowGospWszystkim" />
                 <Separator></Separator>
-                <MenuItem Header="Usuń wszystkim jednostkom zaznaczenie ''Odchyłka techniczna'' "  Foreground="Red" Click="MenuItem_ClickUsunWszystkieOchylkiTechniczne" />
+                <MenuItem Header="Usuń wszystkim jednostkom zaznaczenie ''Odchyłka techniczna''"  Foreground="Red" Click="MenuItem_ClickUsunWszystkieOchylkiTechniczne" />
                 <MenuItem Header="Usuń wszystkim jednostkom zaznaczenie ''Zgoda na powiększenie gospodarstwa''"  Foreground="Red" Click="MenuItem_ClickUsunWszystkieZgody" />
             </MenuItem>
             <DockPanel Margin="100,0,0,0">
-                <Label Padding="0" Margin="0" Foreground="White">Edytowana kolumna</Label>
-                <ComboBox x:Name="comboBoxEditColumn" Padding="5,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" SelectedIndex="0" >
-                </ComboBox>
-                
+                <Label Padding="0" Margin="0" Foreground="Wheat">Edytowana kolumna:</Label>
+                <!--<ComboBox x:Name="comboBoxEditColumn" IsEnabled="False" MinWidth="80" Padding="5,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" SelectedIndex="0" > </ComboBox> -->
+
+                <Label Padding="10,0" x:Name="labelSelectedColumn" Foreground="White" FontStyle="Italic" >Wybrana kolumna do edycji</Label>
+                <Button x:Name="buttonConfirmChanges" Content="Zatwierdź zmiany" Padding="5,0" Click="ButtonConfirmChanges_Click" Background="#84b591"/>
             </DockPanel>
         </Menu>
 
         <StackPanel Grid.Row="2" x:Name="panelLogowania" Visibility="Hidden">
             <Label>Login:</Label>
-                <TextBox x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
-                <Label>Hasło:</Label>
-                <PasswordBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
+            <TextBox x:Name="textBoxLogin" Margin="10,0" Width="125" HorizontalAlignment="Left"></TextBox>
+            <Label>Hasło:</Label>
+            <PasswordBox x:Name="textBoxHaslo" Margin="10,0" Width="125" HorizontalAlignment="Left"></PasswordBox>
 
-                <WrapPanel>
-                    <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo">Zapisz</Button>
-                    <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj">Anuluj</Button>
-                </WrapPanel>
-            </StackPanel>
-        <DataGrid Grid.Row="2" x:Name="dgPorownanie"  IsReadOnly="True" MaxColumnWidth="600" KeyDown="DgPorownanie_KeyDown"/>
-
+            <WrapPanel>
+                <Button Margin="10,10,5,10" Width="60" HorizontalAlignment="Left" Click="ButtonZapiszLogIHaslo">Zapisz</Button>
+                <Button Margin="0,10" Width="60" HorizontalAlignment="Left" Click="Button_Anuluj">Anuluj</Button>
+            </WrapPanel>
+        </StackPanel>
+        <DataGrid Grid.Row="2" x:Name="dgPorownanie" CurrentCellChanged="DgPorownanie_CurrentCellChanged" IsReadOnly="True" MaxColumnWidth="600" KeyDown="DgPorownanie_KeyDown"/>
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Text="" Margin="2" x:Name="textBlockLogInfo"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
+
+        <Grid Grid.Row="2" x:Name="panelLoadToDatabase" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".3*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.ColumnSpan="2" Grid.Row="0" x:Name="dgWprowadzoneZmiany"  Background="LightGray" 
+                      CurrentCellChanged="DgPorownanie_CurrentCellChanged" IsReadOnly="True" MaxColumnWidth="600" KeyDown="DgPorownanie_KeyDown"/>
+            <Button Grid.Row="1" Grid.Column="0" Background="#bd6359" Foreground="White" Content="Powrót" FontWeight="Bold" Click="Button_ClickBackToEdit"/>
+            <Button Grid.Row="1" Grid.Column="1" Background="#84b591" Content="Załaduj do bazy" FontWeight="Bold" Click="Button_Click_LoadToDatabase"/>
+        </Grid>
+
+        <Label Visibility="Hidden" Grid.ColumnSpan="100" Width="100" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.RowSpan="100" Background="LightGray" 
+                   BorderBrush="DarkGray" Padding="20"  BorderThickness="4" VerticalAlignment="Center"  HorizontalAlignment="Center" 
+                   x:Name="progressLabel"/>
     </Grid>
 </Window>

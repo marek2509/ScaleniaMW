@@ -142,6 +142,7 @@
     <Compile Include="HtmlDokumentWykazWydzEkwiwalentow.cs" />
     <Compile Include="HTMLDokWykazEkwPotracenia.cs" />
     <Compile Include="IHTMLDokument.cs" />
+    <Compile Include="Models\NkrColNameValueDto.cs" />
     <Compile Include="Views\KontrolaBazy.xaml.cs">
       <DependentUpon>KontrolaBazy.xaml</DependentUpon>
     </Compile>

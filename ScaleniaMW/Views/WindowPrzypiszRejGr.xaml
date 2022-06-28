@@ -18,7 +18,7 @@
         
         <DockPanel >
             <Button Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
-                <Image Width="20" Source="Resources/previous.png" ></Image>
+                <Image Width="20" Source="../Resources/previous.png" ></Image>
             </Button>
 
             <TextBlock Margin="0,0,10,0" x:Name="textBlockSciezka"></TextBlock>
@@ -150,7 +150,7 @@
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">PRZYPISZ</Label>
                         <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">WYBRANĄ</Label>
                         <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
-                        <Image  x:Name="imageHand" HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="Resources/PenWhite.png"/>
+                        <Image  x:Name="imageHand" HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="../Resources/PenWhite.png"/>
                     </StackPanel>
                 </Button>
                 <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#2676d0" FontWeight="Heavy">NJR</Label>
@@ -171,7 +171,8 @@
         </DockPanel>
 
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" x:Name="textBlockLogInfo" Text="{Binding ElementName=textBlockLogInfo, Path=Text}" Margin="2"  ToolTip="{Binding ElementName=textBlockLogInfo, Path=Text}"></TextBlock>
-        <Image Panel.ZIndex="-1" x:Name="ingCoZrobic" IsEnabled="False" Grid.Row="2"   Height="350" Margin="0,20,90,20" HorizontalAlignment="Right" VerticalAlignment="Stretch" Source="Resources/pencil-2.png"  />
+        <Image Panel.ZIndex="-1" x:Name="ingCoZrobic" IsEnabled="False" Grid.Row="2"   Height="350" Margin="0,20,90,20" HorizontalAlignment="Right" 
+               VerticalAlignment="Stretch" Source="../Resources/pencil-2.png"  />
 
     </Grid>
 

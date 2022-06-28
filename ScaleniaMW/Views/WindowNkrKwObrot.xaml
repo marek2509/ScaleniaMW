@@ -22,7 +22,7 @@
             </Grid.RowDefinitions>
             <DockPanel>
                 <Button Background="white" BorderBrush="White" Click="otworzOknoPoczatkowe_Click" ToolTip="Powrót do okna głównego">
-                    <Image Width="20" Source="Resources/previous.png" ></Image>
+                    <Image Width="20" Source="../Resources/previous.png" ></Image>
                 </Button>
 
                 <TextBlock Margin="0,0,10,0" x:Name="textBlockSciezka"></TextBlock>
@@ -111,7 +111,8 @@
                 <DataGrid Grid.Column="0" ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
                 CanUserResizeRows="False" Visibility="Visible" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgDzialkiEdz"   VerticalGridLinesBrush="#FF292929" SelectedIndex="0" BorderThickness="2" Grid.ColumnSpan="3"/>
 
-                <Image Panel.ZIndex="0" x:Name="ingCoZrobic" IsEnabled="False" Grid.Column="2" Margin="60,60,60,49" Height="400"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Resources/pencil-2.png"  />
+                <Image Panel.ZIndex="0" x:Name="ingCoZrobic" IsEnabled="False" Grid.Column="2" Margin="60,60,60,49" Height="400"  HorizontalAlignment="Stretch" 
+                       VerticalAlignment="Stretch" Source="../Resources/pencil-2.png"  />
 
                 <DataGrid Panel.ZIndex="1" Opacity="0.9" Grid.Column="2" HorizontalAlignment="Stretch"  ItemsSource="{Binding}"  IsReadOnly="False" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="True" 
                     CanUserResizeRows="False" Visibility="Visible" AutoGenerateColumns="False" CanUserSortColumns="True" Margin="1,0,1,1" x:Name="dgNkrFDB" VerticalGridLinesBrush="#FF202929" SelectedIndex="0" BorderThickness="2">

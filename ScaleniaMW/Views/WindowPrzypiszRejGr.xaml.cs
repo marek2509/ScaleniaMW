@@ -751,8 +751,6 @@ namespace ScaleniaMW
                 MessageBox.Show("Coś poszło nie tak", "Smuteczek!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-
         //koniec klasy
     }
 }
