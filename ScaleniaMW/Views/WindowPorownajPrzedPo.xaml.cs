@@ -487,7 +487,6 @@ namespace ScaleniaMW
                         //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
                         progresBar.Value = 0;
                         progresBar.Visibility = Visibility.Visible;
-                        Console.WriteLine(zsumwaneWartosciStanPO.Count + "COUNT ZSUMOWANE");
                         foreach (var item in zsumwaneWartosciStanPO)
                         {
                             item.wypiszWConsoli();
@@ -506,13 +505,11 @@ namespace ScaleniaMW
                                     if (item.CzyDopOdch__3__proc.ToUpper() == "NIE" && item.Roznice != 0)
                                     {
                                         writeCommand.Parameters.Add("@zgoda01", 1);
-                                        Console.WriteLine("1  IdPo:" + item.IdPo + " NKR:" + item.NKR);
                                     }
                                     else
                                     {
                                         int zero = 0;
                                         writeCommand.Parameters.Add("@zgoda01", zero);
-                                        Console.WriteLine("0  IdPo:" + item.IdPo + " NKR:" + item.NKR);
                                     }
 
                                     writeCommand.ExecuteNonQuery();
@@ -618,13 +615,8 @@ namespace ScaleniaMW
         List<ZsumwaneWartosciZPorownania> cloneListOrginal = null;
         private void DgPorownanie_KeyDown(object sender, KeyEventArgs e)
         {
-
             if (e.Key == Key.Space)
             {
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine();
-
                 if (cloneListOrginal is null)
                 {
                     cloneListOrginal = zsumwaneWartosciStanPO.Select(x => new ZsumwaneWartosciZPorownania(x)).ToList();
@@ -643,9 +635,6 @@ namespace ScaleniaMW
                         var result = (bool)propertyInfo.GetValue(oneZwzp) ? false : true;
                         propertyInfo.SetValue(oneZwzp, result);
 
-
-                        //Console.WriteLine(existOriginal?.NKR + " " + existOriginal?.OdchWProgramie);
-
                         var isExisting = valToDb.Any(x => x.NKR == oneZwzp.NKR && x.ColumneName == dicColumnDbHeader[columneName]);
                         if (isExisting)
                         {
@@ -653,7 +642,6 @@ namespace ScaleniaMW
                             existElement.Value = result;
 
                             bool idExistOriginal = cloneListOrginal.Any(orginal => orginal.NKR == oneZwzp.NKR && (bool)propertyInfo.GetValue(orginal) == result);
-                            Console.WriteLine("Any" + idExistOriginal);
                             if (idExistOriginal)
                             {
                                 valToDb.Remove(existElement);
@@ -667,13 +655,6 @@ namespace ScaleniaMW
                         valToDb = valToDb.OrderBy(x => x.NKR).ToList();
                     }
                 }
-
-                Console.WriteLine();
-                Console.WriteLine("_@_@_@_@_@_@_@_@_@_@_@_");
-                Console.WriteLine();
-
-                valToDb.ForEach(x => Console.WriteLine(string.Join(", ", x.NKR, x.ColumneName, x.Value)));
-
                 dgPorownanie.Items.Refresh();
                 textBlockLogInfo.Text = $"Elementów do deycji: {valToDb.Count}";
             }
@@ -694,6 +675,7 @@ namespace ScaleniaMW
         {
             panelLoadToDatabase.Visibility = Visibility.Visible;
             dgWprowadzoneZmiany.ItemsSource = await Task.Run(() => valToDb);
+            dgWprowadzoneZmiany.Items.Refresh();
         }
 
         private void Button_ClickBackToEdit(object sender, RoutedEventArgs e)
@@ -711,7 +693,7 @@ namespace ScaleniaMW
 
             progressLabel.Visibility = Visibility.Visible;
             var conutElemToDatabase = valToDb.Count();
-            int currentElement = 1;
+            int currentElement = 0;
 
             aktualizujConnectionStringZPropertis();
             using (var connection = new FbConnection(connectionString))
@@ -720,16 +702,13 @@ namespace ScaleniaMW
                 FbCommand command = new FbCommand("", connection);
                 foreach (var el in valToDb)
                 {
-                    progressLabel.Content = await Task.Run(() => $"{currentElement++}/{conutElemToDatabase}");
+                    progressLabel.Content = await Task.Run(() => $"{++currentElement}/{conutElemToDatabase}");
                     await Task.Delay(1);
                     command.CommandText = $"update jedn_rej_n set {el.ColumneName} = @value where ijr = @nkr";
-                    Console.WriteLine(command.CommandText);
                     command.Parameters.Add("@nkr", el.NKR);
                     command.Parameters.Add("@value", el.Value ? 1 : 0);
-                    //command.ExecuteNonQuery();
                     command.ExecuteNonQuery();
                     command.Parameters.Clear();
-                    Console.WriteLine($"Sukces wgrano{el.NKR}");
                 }
             }
             valToDb.Clear();
@@ -739,9 +718,7 @@ namespace ScaleniaMW
             {
                 progressLabel.Content = await Task.Run(() => $"{currentElement}/{conutElemToDatabase}\nkoniec\n{i}s");
                 await Task.Delay(1000);
-
             }
-
             progressLabel.Visibility = Visibility.Hidden;
         }
     }

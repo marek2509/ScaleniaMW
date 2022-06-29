@@ -23,16 +23,19 @@ namespace ScaleniaMW
         {
             InitializeComponent();
         }
-
-
+       
         private void openFile_Click(object sender, RoutedEventArgs e)
         {
-          var lista =  EWOPIS.Infrstruktura.Plik.OtworzPlik();
+            var lista = EWOPIS.Infrstruktura.Plik.OtworzPlik();
             GMLRepair.FindObreb(lista);
             Plik.ZapiszDoPlikuTXT(GMLRepair.WstawTagWDzialki(lista));
-    
+        }
 
-
+        private void Button_ClickPreviousMainWindow(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            windowGmlRepair.Close();
+            mainWindow.Show();
         }
     }
 }

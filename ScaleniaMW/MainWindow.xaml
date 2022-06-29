@@ -23,11 +23,12 @@
 
                 <StackPanel Grid.ColumnSpan="2"  Background="#1e304f"  >
                     <DockPanel>
-                        <Button Width="auto" Height="43" x:Name="Ewopis" HorizontalAlignment="Left" Padding="20 10" Click="Ewopis_Click">EWOPIS</Button>
-                        <Button Width="auto" Height="43" x:Name="btn_GML_Repair" HorizontalAlignment="Left" Padding="2 0" Click="Gml_repair_Click">
+                        <Button Width="auto" Height="43" Background="#214b75" Foreground="White" x:Name="Ewopis" HorizontalAlignment="Left" Padding="20 10" Click="Ewopis_Click">EWOPIS</Button>
+                        <Button Width="auto" Height="43"  Background="{Binding ElementName=Ewopis, Path=Background}" 
+                                x:Name="btn_GML_Repair" HorizontalAlignment="Left" Padding="2 0" Click="Gml_repair_Click">
                             <StackPanel Margin="4 1">
-                                <Label Padding="0" Margin="0">Napraw GML'a</Label>
-                                <Label Padding="0" Margin="0">Siemiatyckiego</Label>
+                                <Label Padding="0" Margin="0" Foreground="{Binding ElementName=Ewopis, Path=Foreground}">Napraw GML'a</Label>
+                            <Label Padding="0" Margin="0" Foreground="{Binding ElementName=Ewopis, Path=Foreground}">Siemiatyckiego</Label>
                             </StackPanel>         
                         </Button>
                     </DockPanel>

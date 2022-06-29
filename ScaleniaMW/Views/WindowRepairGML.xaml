@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW"
         mc:Ignorable="d"
-        Title="WindowRepairGML" Height="450" Width="800">
+        Title="WindowRepairGML" Height="450" Width="800"
+        x:Name="windowGmlRepair">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
@@ -15,8 +16,10 @@
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
 
-
-        <Menu Grid.Row="1" Foreground="White" Background="DarkGray" >
+        <Button Grid.Row="0" Width="25" HorizontalAlignment="Left" Click="Button_ClickPreviousMainWindow">
+            <Image Source="../Resources/previous.png"/>
+        </Button>
+        <Menu Grid.Row="1" Foreground="White" Background="DodgerBlue" >
             <MenuItem VerticalContentAlignment="Center" VerticalAlignment="Center" x:Name="menuItemPlik" Header="Plik">
                 <MenuItem x:Name="openFile" Header="_Otwórz GML" Click="openFile_Click" Foreground="Black"></MenuItem>
             </MenuItem>

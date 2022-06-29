@@ -60,6 +60,7 @@
                 <Label Padding="10,0" x:Name="labelSelectedColumn" Foreground="White" FontStyle="Italic" >Wybrana kolumna do edycji</Label>
                 <Button x:Name="buttonConfirmChanges" Content="Zatwierdź zmiany" Padding="5,0" Click="ButtonConfirmChanges_Click" Background="#84b591"/>
             </DockPanel>
+            
         </Menu>
 
         <StackPanel Grid.Row="2" x:Name="panelLogowania" Visibility="Hidden">
