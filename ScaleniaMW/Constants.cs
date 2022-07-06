@@ -29,5 +29,7 @@ namespace ScaleniaMW
 
         public const string SQLInsertDzialka0 = @"insert into DZIALKI_N ( id_id, idobr, idd, rjdr, id_rd, sidd, pew, v) values ( (select gen_id(ID_DZIALKI_N, 1)from rdb$database), 1, 0,(select id_id from jedn_rej_n where ijr = @NKR), 1, (select gen_id(ID_DZIALKI_N, 0)from rdb$database), 0, 0)";
         public const string SQLDeleteAllDzialki0 = @"delete from dzialki_n where id_id like sidd";
+
+        public const string SQLAfterStateToCompare = @"select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where (jn.id_sti <> 1 or jn.id_sti is null) and (d.id_sti <> 1 or d.id_sti is null)  order by idgrp";
     }
 }
