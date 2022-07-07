@@ -38,7 +38,7 @@
                     <MenuItem Header="Dla wszystkich" Click="ButtonPotraceniaWszytkieDoWWE_Click"/>
                     <MenuItem  x:Name="buttonPotraceniaWWEDlaWybranego" Header="Dla wybranego" Click="ButtonPotraceniaWWEDlaWybranego_Click" />
                 </MenuItem>
-
+                <MenuItem Foreground="Black" Header="Generuj tekstowy wykaz jednostek" Click="MenuItem_ClickGenerujTekstowyWykazJedn"/>
                 <Separator></Separator>
                 <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="otworzOknoPoczatkowe_Click"></MenuItem>
                 <Separator></Separator>

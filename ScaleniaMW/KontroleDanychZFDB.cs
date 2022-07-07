@@ -259,8 +259,9 @@ namespace ScaleniaMW
                     string adres = WlascicielePO.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][4].ToString();
                     int idMalzenstwa = WlascicielePO.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePO.Rows[i][5]);
                     string symbolWl = WlascicielePO.Rows[i][6].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][6].ToString();
+                    string rodzice = WlascicielePO.Rows[i][7].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][7].ToString();
 
-                    Wlasciciel wlasciciel = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWl);
+                    Wlasciciel wlasciciel = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWl, rodzice);
                     JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN).DodajWlasciciela(wlasciciel);
                 }
 
@@ -338,9 +339,9 @@ namespace ScaleniaMW
                     string adres = WlascicielePrzed.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][4].ToString();
                     int idMalzenstwa = WlascicielePrzed.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][5]);
                     string symbolWlad = WlascicielePrzed.Rows[i][6].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][6].ToString();
-
+                    
                     // Wlasciciel wlascicielPrzed = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa);
-                    WlascicielePrzedTMP.Add(new WlascicielStanPrzed(idJednS, udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWlad));
+                    WlascicielePrzedTMP.Add(new WlascicielStanPrzed(idJednS, udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWlad, ""));
                 }
 
                 foreach (var JN in JednostkiRejestroweNowe.Jedn_REJ_N)

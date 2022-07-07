@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -41,7 +42,7 @@ namespace ScaleniaMW.Views
 
         string usunOd = "kontury";
         string usunDo = "bilans";
-        private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
+        private async void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
@@ -412,8 +413,9 @@ namespace ScaleniaMW.Views
                     string adres = WlascicielePO.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][4].ToString();
                     int idMalzenstwa = WlascicielePO.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePO.Rows[i][5]);
                     string symbolWl = WlascicielePO.Rows[i][6].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][6].ToString();
+                    string rodzice = WlascicielePO.Rows[i][9].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][9].ToString();
 
-                    Wlasciciel wlasciciel = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWl);
+                    Wlasciciel wlasciciel = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWl, rodzice);
                     JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN).DodajWlasciciela(wlasciciel);
                 }
 
@@ -716,6 +718,22 @@ namespace ScaleniaMW.Views
             IHTMLDokument dokumentWWE = new HTMLDokWykazEkwPotracenia();
             WindowPobierzNKR windowPobierzNKR = new WindowPobierzNKR(dokumentWWE);
             windowPobierzNKR.Show();
+        }
+
+        private async void MenuItem_ClickGenerujTekstowyWykazJedn(object sender, RoutedEventArgs e)
+        {
+
+            var dlaChemika = await Task.Run(() => JednostkiRejestroweNowe.Jedn_REJ_N.Select(jedn => new
+            {
+                podmiot =  string.Join("^", jedn.Wlasciciele.Select(x => x.Udzial + " " + x.Symbol_Wladania + "-" + x.NazwaWlasciciela + "^" + x.Rodzice + "^" + x.Adres)),
+                ijr = jedn.IjrPo,
+                dzialka = string.Join("^", jedn.Dzialki_Nowe.Select(d => d.NrObr + "-" + d.NrDz + " " + d.PowDz)),
+
+
+            }));
+
+            var doWydruku = dlaChemika.ToList().Select(x =>string.Join("\t", x.ijr, x.podmiot, x.dzialka));
+            await Task.Run(() => EWOPIS.Infrstruktura.Plik.Save(string.Join("\n", doWydruku)));
         }
     }
 }

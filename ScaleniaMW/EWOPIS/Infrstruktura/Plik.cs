@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.IO;
 
 namespace ScaleniaMW.EWOPIS.Infrstruktura
 {
@@ -109,5 +110,19 @@ namespace ScaleniaMW.EWOPIS.Infrstruktura
             return modelDzialkiParametries;
         }
         //koniec class
+
+        public static void Save(string contentToWrite)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                DefaultExt = "txt",
+                Filter = "TXT (*.txt)|*.txt|All files (*.*)|*.*"
+            };
+
+            if ((bool)sfd.ShowDialog())
+            {
+                File.WriteAllText(sfd.FileName, contentToWrite, Encoding.Default);
+            }
+        }
     }
 }
