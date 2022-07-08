@@ -163,9 +163,9 @@ namespace ScaleniaMW
             if (wlasciciel.IdMalzenstwa > 0)
             {
                 Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania,
-                    wlasciciel.Rodzice.Remove(wlasciciel.Rodzice.IndexOf("Ż:")).Replace("M:", "")));
+                    wlasciciel.Rodzice.Remove(wlasciciel.Rodzice.IndexOf("Ż:")).Replace("M:", ""),"M:"));
                 Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania,
-                    wlasciciel.Rodzice.Remove(1, wlasciciel.Rodzice.IndexOf("Ż:")).Replace("M:", "")));
+                    wlasciciel.Rodzice.Remove(1, wlasciciel.Rodzice.IndexOf("Ż:")).Replace("M:", ""),"Ż:"));
             }
             else
             {
@@ -234,6 +234,20 @@ namespace ScaleniaMW
         {
             string x = a.Symbol_Wladania;
             string y = b.Symbol_Wladania;
+
+
+            if (a.IdMalzenstwa > 0 && b.IdMalzenstwa > 0 && a.IdMalzenstwa == b.IdMalzenstwa)
+            {
+                if (a.MazCzyZona.Contains("M"))
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+
 
             if (x == null)
             {
@@ -327,7 +341,7 @@ namespace ScaleniaMW
 
     public class Wlasciciel
     {
-        public Wlasciciel(string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa, string symbolWladania, string rodzice)
+        public Wlasciciel(string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa, string symbolWladania, string rodzice, string mazCzyZona = null)
         {
             Udzial = udzial;
             Udzial_NR = udzial_NR;
@@ -336,6 +350,7 @@ namespace ScaleniaMW
             IdMalzenstwa = idMalzenstwa;
             Symbol_Wladania = symbolWladania;
             Rodzice = rodzice;
+            MazCzyZona = mazCzyZona;
         }
 
         public string Udzial { get; set; }
@@ -345,6 +360,7 @@ namespace ScaleniaMW
         public int IdMalzenstwa { get; set; }
         public string Symbol_Wladania { get; set; }
         public string Rodzice { get; set; }
+        public string MazCzyZona { get; set; }
 
         public void WypiszWKoncoli()
         {
@@ -355,7 +371,7 @@ namespace ScaleniaMW
     public class WlascicielStanPrzed : Wlasciciel
     {
         public int IdJednPrzed { get; set; }
-        public WlascicielStanPrzed(int idJednPrzed, string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa, string symbolWladania, string rodzice ="") : base(udzial, udzial_NR, nazwaWlasciciela, adres, idMalzenstwa, symbolWladania, rodzice)
+        public WlascicielStanPrzed(int idJednPrzed, string udzial, double udzial_NR, string nazwaWlasciciela, string adres, int idMalzenstwa, string symbolWladania, string rodzice ="", string mazCzyZona = null) : base(udzial, udzial_NR, nazwaWlasciciela, adres, idMalzenstwa, symbolWladania, rodzice, mazCzyZona)
         {
             IdJednPrzed = idJednPrzed;
         }
@@ -418,8 +434,8 @@ namespace ScaleniaMW
         {
             if (wlasciciel.IdMalzenstwa > 0)
             {
-                Wlasciciele.Add(new WlascicielStanPrzed(wlasciciel.IdJednPrzed, wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania, wlasciciel.Rodzice));
-                Wlasciciele.Add(new WlascicielStanPrzed(wlasciciel.IdJednPrzed, wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania, wlasciciel.Rodzice));
+                Wlasciciele.Add(new WlascicielStanPrzed(wlasciciel.IdJednPrzed, wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania, wlasciciel.Rodzice, "M:"));
+                Wlasciciele.Add(new WlascicielStanPrzed(wlasciciel.IdJednPrzed, wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania, wlasciciel.Rodzice, "Ż:"));
             }
             else
             {

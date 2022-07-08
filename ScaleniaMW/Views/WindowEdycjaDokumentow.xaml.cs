@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -509,6 +510,7 @@ namespace ScaleniaMW.Views
 
                 // sortowanie właścicieli
                 JednostkiRejestroweNowe.Jedn_REJ_N.ForEach(x => x.Wlasciciele.Sort(JR_Nowa.CompareStringRodzWlada));
+
                 JednostkiRejestroweNowe.Jedn_REJ_N.ForEach(x => x.zJednRejStarej.ForEach(y => y.Wlasciciele.Sort(JR_Nowa.CompareStringRodzWlada)));
 
             }
@@ -722,12 +724,36 @@ namespace ScaleniaMW.Views
 
         private async void MenuItem_ClickGenerujTekstowyWykazJedn(object sender, RoutedEventArgs e)
         {
+            int idMalz = 0;
+
+            string piszMalzenstwo(int idMalzenstwa)
+            {
+                if (idMalzenstwa > 0)
+                {
+                    if(idMalz == idMalzenstwa) // drugi małżonek nie wymaga opisu małżeństwo
+                    {
+                   
+                        return "";
+                    }
+                    idMalz = idMalzenstwa;
+                    return "(małżeństwo)^";
+                }
+                return "";
+            }
 
             var dlaChemika = await Task.Run(() => JednostkiRejestroweNowe.Jedn_REJ_N.Select(jedn => new
             {
-                podmiot =  string.Join("^", jedn.Wlasciciele.Select(x => x.Udzial + " " + x.Symbol_Wladania + "-" + x.NazwaWlasciciela + "^" + x.Rodzice + "^" + x.Adres)),
+                //podmiot =  string.Join("^", jedn.Wlasciciele.Select(x => x.Udzial + " " + x.Symbol_Wladania + "-" + x.NazwaWlasciciela + "^" + x.Rodzice + "^" + x.Adres)),
+
+                podmiot = string.Join("^", jedn.Wlasciciele.Select((x) =>
+
+                            piszMalzenstwo(x.IdMalzenstwa) + x.Udzial + " " + x.Symbol_Wladania + "-" + x.MazCzyZona+" "  + x.NazwaWlasciciela + ( x.Rodzice == null || x.Rodzice == "" ? "" : "^" + x.Rodzice) + (x.Adres == null || x.Adres == "" ? "" : "^" + x.Adres)
+
+                   ) ),
+
+
                 ijr = jedn.IjrPo,
-                dzialka = string.Join("^", jedn.Dzialki_Nowe.Select(d => d.NrObr + "-" + d.NrDz + " " + d.PowDz)),
+                dzialka = string.Join("^", jedn.Dzialki_Nowe.Select(d => d.NrObr + "-" + d.NrDz + " " + d.PowDz.ToString("F4", CultureInfo.InvariantCulture) + "ha")),
 
 
             }));
