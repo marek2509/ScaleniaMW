@@ -8,11 +8,12 @@ namespace ScaleniaMW
 {
     class ZsumwaneWartosciZPorownania
     {
+
         public ZsumwaneWartosciZPorownania()
         {
         }
 
-        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0, bool zgoda = false, bool odchWPrgor = false, decimal _WGSPzJednSN = 0, decimal _RozniceWGSPZJEDNiWartPrzed = 0)
+        public ZsumwaneWartosciZPorownania(int nkr, decimal wartPrzed = 0, decimal wartPo = 0, bool zgoda = false, bool odchWPrgor = false, decimal _WGSPzJednSN = 0, decimal _RozniceWGSPZJEDNiWartPrzed = 0, decimal wartPotracenia = 0)
         {
             NKR = nkr;
             WartPrzed = wartPrzed;
@@ -22,6 +23,7 @@ namespace ScaleniaMW
             OdchWProgramie = odchWPrgor;
             WGSPzJednSN = Math.Round(_WGSPzJednSN, 2);
             RozniceWGSPZJednIWartPrzed = _RozniceWGSPZJEDNiWartPrzed;
+            WartoscPotracenia = wartPotracenia;
         }
 
         public ZsumwaneWartosciZPorownania(ZsumwaneWartosciZPorownania zsumwane)
@@ -45,6 +47,7 @@ namespace ScaleniaMW
             _wartPo = zsumwane._wartPo;
             _wartPrzed = zsumwane.WartPrzed;
             IdPo = zsumwane.IdPo;
+            WartoscPotracenia = zsumwane.WartoscPotracenia;
         }
         public int NKR { get; set; }
         public int Nkr_Przed;
@@ -54,8 +57,8 @@ namespace ScaleniaMW
             set
             {
                 _wartPrzed = Decimal.Round(value, 2);
-                Roznice = WartPo - WartPrzed;
-                Odch_3_Proc = Decimal.Round(WartPrzed * 0.03M, 2);
+
+                setEkwiwalentNalezny();
             }
         }
         public decimal WartPo
@@ -86,12 +89,61 @@ namespace ScaleniaMW
             }
         }
 
+        private decimal _wartoscPotracenia;
+        public decimal WartoscPotracenia {
+            get {
+                return _wartoscPotracenia;
+            }
+            set {
+                _wartoscPotracenia = Math.Round(value, 2);
+                setEkwiwalentNalezny();
+            }
+        }
+
+        decimal _ekwiwalentNalezny;
+        public decimal EkwiwalentNalezny
+        {
+            get => _ekwiwalentNalezny;
+            private set
+            {
+
+            }
+        }
+
+        public void setEkwiwalentNalezny()
+        {
+            if (!NieDoliczajDoplatyZaDrogi)
+            {
+                _ekwiwalentNalezny = WartPrzed - WartoscPotracenia;
+
+            }
+            else
+            {
+                _ekwiwalentNalezny = WartPrzed;
+            }
+
+            Roznice = WartPo - _ekwiwalentNalezny;
+            Odch_3_Proc = Decimal.Round(_ekwiwalentNalezny * 0.03M, 2);
+
+        }
+
         public string CzyDopOdch__3__proc { get; set; }
         public bool OdchWProgramie { get; set; }
         public bool ZgodawProgramie { get; set; }
-        public bool NieDoliczajDoplatyZaDrogi { get; set; }
+
+        private bool _nieDoliczajZaDrogi;
+        public bool NieDoliczajDoplatyZaDrogi
+        {
+            get => _nieDoliczajZaDrogi;
+            set
+            {
+                _nieDoliczajZaDrogi = value;
+                setEkwiwalentNalezny();
+            }
+        }
         public bool ZerujDoplaty { get; set; }
         public bool PotraceniaPrzed { get; set; }
+
 
         public decimal WGSPzJednSN { get; set; }
         public decimal RozniceWGSPZJednIWartPrzed { get; set; }
@@ -100,11 +152,7 @@ namespace ScaleniaMW
         decimal _odch_3_proc;
         decimal _wartPo;
         decimal _wartPrzed;
-        public int IdPo;
-
-
-
-        
+        public int IdPo;        
         public void wypiszWConsoli()
         {
             Console.WriteLine(NKR + "<NKR WartPrzed>" + WartPrzed + " " + WartPo + "<wart po ROZNICE>" + Roznice + " idPo:>" + IdPo + "nkrprzed>" + Nkr_Przed+ "czy3%>" + CzyDopOdch__3__proc+ "  WGSPzJednSN " + WGSPzJednSN + "  RozniceWGSPZJednIWartPrzed " + RozniceWGSPZJednIWartPrzed);

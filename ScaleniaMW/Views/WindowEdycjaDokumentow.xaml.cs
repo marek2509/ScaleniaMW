@@ -29,7 +29,8 @@ namespace ScaleniaMW.Views
 
             Console.WriteLine(">>" + Properties.Settings.Default.czyWziacNrJednRejZNkrPo);
 
-            if (Properties.Settings.Default.czyWziacNrJednRejZNkrPo == true) {
+            if (Properties.Settings.Default.czyWziacNrJednRejZNkrPo == true)
+            {
                 checkBoxWezZNKR.IsChecked = true;
                 checkBoxWezZUwagi.IsChecked = false;
             }
@@ -123,7 +124,7 @@ namespace ScaleniaMW.Views
                 }
                 catch (Exception esa)
                 {
-                    Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz "+ esa);
+                    Console.WriteLine("Nieprawidłowy format ciągu wejściowego. Wybierz " + esa);
                 }
 
                 if (checkBoxUsunKontury.IsChecked == true)
@@ -154,15 +155,15 @@ namespace ScaleniaMW.Views
 
             foreach (var item in tmpSplitString) // assign value and reject wrong value (whitespace)
             {
-                if(item != "")
+                if (item != "")
                 {
                     splitedString.Add(item);
                 }
             }
-             
-            if(splitedString.Count != 3)
+
+            if (splitedString.Count != 3)
             {
-                sbPuste.AppendLine("ERROR: " +liniaZTektowki);
+                sbPuste.AppendLine("ERROR: " + liniaZTektowki);
                 return liniaZTektowki;
             }
             else
@@ -172,7 +173,7 @@ namespace ScaleniaMW.Views
                 var wartoscKontury = tmpLandUseContour.Remove(0, tmpLandUseContour.LastIndexOf('-') + 1);
 
                 if (usunWartosc) // warunek dla opcji czy usuwać wartość!!!
-                {                 
+                {
                     // jeśli nie posiada wartości to nie usuwaj
                     if (!regex.IsMatch(wartoscKontury))
                     {
@@ -183,7 +184,7 @@ namespace ScaleniaMW.Views
                         //usunięcie wartości z konturu
                         splitedString[1] = tmpLandUseContour.Remove(tmpLandUseContour.LastIndexOf('-'));
                     }
-              
+
                 }
 
 
@@ -201,7 +202,7 @@ namespace ScaleniaMW.Views
                     sb.Append(tmpArray[1].Replace("-", "/"));
                     splitedString[1] = sb.ToString();
                 }
-                else if(tmpArray.Length == 1)
+                else if (tmpArray.Length == 1)
                 {
                     splitedString[1] = tmpArray[0].Replace("-", "/");
                 }
@@ -215,13 +216,13 @@ namespace ScaleniaMW.Views
                 // merge  text line
                 StringBuilder processedValue = new StringBuilder();
                 processedValue.Append(splitedString[0]);
-                 while(processedValue.Length < 25)
+                while (processedValue.Length < 25)
                 {
                     processedValue.Append(" ");
                 }
 
                 processedValue.Append(splitedString[1]);
-                while(processedValue.Length < 67 - splitedString[2].Length)
+                while (processedValue.Length < 67 - splitedString[2].Length)
                 {
                     processedValue.Append(" ");
                 }
@@ -232,12 +233,12 @@ namespace ScaleniaMW.Views
 
                 if (regex.IsMatch(wartoscKontury))
                 {
-                
+
                     if (!usunWartosc)
                     {
                         var tmpString = processedValue.ToString();
                         var startString = tmpString.Remove(tmpString.LastIndexOf('/'));
-                        var endString = tmpString.Remove(0, tmpString.LastIndexOf('/')+1);
+                        var endString = tmpString.Remove(0, tmpString.LastIndexOf('/') + 1);
                         processedValue.Clear();
                         processedValue.Append(startString);
                         processedValue.Append("-");
@@ -248,7 +249,7 @@ namespace ScaleniaMW.Views
             }
         }
 
-      
+
         public void zapisDoPliku(string tekstDoZapisu, string format = ".rtf", string nazwaPliku = "")
         {
             SaveFileDialog svd = new SaveFileDialog();
@@ -557,12 +558,12 @@ namespace ScaleniaMW.Views
             panelLogowania.Visibility = Visibility.Hidden;
         }
 
-  
 
 
 
 
-      
+
+
 
         private void ButtonUproszczonyWszytkieDoWWE_Click(object sender, RoutedEventArgs e)
         {
@@ -611,7 +612,7 @@ namespace ScaleniaMW.Views
             listNKR = new List<ModelNKR>();
             // powinna być jedna kolumna z nr NKR(jedn_rej_n.ijr) dla których brak stanu po scaleniu
             StringBuilder plikPoprawDane = new StringBuilder();
-         
+
             for (int i = 0; i < jednostkiBezDzialekPoScaleniu.Rows.Count; i++)
             {
                 for (int j = 0; j < jednostkiBezDzialekPoScaleniu.Columns.Count; j++)
@@ -644,7 +645,7 @@ namespace ScaleniaMW.Views
             {
                 connection.Open();
                 FbCommand wstawDzialkeZero = new FbCommand(Constants.SQLInsertDzialka0, connection);
-               
+
                 foreach (var nkr in listNKR)
                 {
                     wstawDzialkeZero.Parameters.Add("@NKR", nkr.NKR);
@@ -730,9 +731,8 @@ namespace ScaleniaMW.Views
             {
                 if (idMalzenstwa > 0)
                 {
-                    if(idMalz == idMalzenstwa) // drugi małżonek nie wymaga opisu małżeństwo
+                    if (idMalz == idMalzenstwa) // drugi małżonek nie wymaga opisu małżeństwo
                     {
-                   
                         return "";
                     }
                     idMalz = idMalzenstwa;
@@ -743,22 +743,16 @@ namespace ScaleniaMW.Views
 
             var dlaChemika = await Task.Run(() => JednostkiRejestroweNowe.Jedn_REJ_N.Select(jedn => new
             {
-                //podmiot =  string.Join("^", jedn.Wlasciciele.Select(x => x.Udzial + " " + x.Symbol_Wladania + "-" + x.NazwaWlasciciela + "^" + x.Rodzice + "^" + x.Adres)),
 
                 podmiot = string.Join("^", jedn.Wlasciciele.Select((x) =>
 
-                            piszMalzenstwo(x.IdMalzenstwa) + x.Udzial + " " + x.Symbol_Wladania + "-" + x.MazCzyZona+" "  + x.NazwaWlasciciela + ( x.Rodzice == null || x.Rodzice == "" ? "" : "^" + x.Rodzice) + (x.Adres == null || x.Adres == "" ? "" : "^" + x.Adres)
-
-                   ) ),
-
-
+                            piszMalzenstwo(x.IdMalzenstwa) + x.Udzial + " " + x.Symbol_Wladania + "-" + x.MazCzyZona + " " + x.NazwaWlasciciela + (x.Rodzice == null || x.Rodzice == "" ? "" : "^" + x.Rodzice) + (x.Adres == null || x.Adres == "" ? "" : "^" + x.Adres)
+                   )),
                 ijr = jedn.IjrPo,
                 dzialka = string.Join("^", jedn.Dzialki_Nowe.Select(d => d.NrObr + "-" + d.NrDz + " " + d.PowDz.ToString("F4", CultureInfo.InvariantCulture) + "ha")),
-
-
             }));
 
-            var doWydruku = dlaChemika.ToList().Select(x =>string.Join("\t", x.ijr, x.podmiot, x.dzialka));
+            var doWydruku = dlaChemika.ToList().Select(x => string.Join("\t", x.ijr, x.podmiot, x.dzialka));
             await Task.Run(() => EWOPIS.Infrstruktura.Plik.Save(string.Join("\n", doWydruku)));
         }
     }

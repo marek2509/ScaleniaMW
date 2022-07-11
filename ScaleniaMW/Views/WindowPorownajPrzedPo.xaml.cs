@@ -346,6 +346,11 @@ namespace ScaleniaMW
                         tmp.NazwaWlasnosci = dt.Rows[i][1].ToString();
                     }
                 }
+
+                var potracenie = (decimal)new Potracenie().WartoscPotracenia;
+
+                zsumwaneWartosciStanPO.ForEach(x => x.WartoscPotracenia = x.WartPrzed * potracenie);
+
                 try
                 {
                     dgPorownanie.Visibility = Visibility.Visible;
