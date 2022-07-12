@@ -159,10 +159,6 @@ namespace ScaleniaMW
 
                     command.Connection = connection;
                     command.Transaction = transaction;
-                    /*   command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr, dn.idd, dn.id_id, dn.rjdrprzed, " +
-                       "js.NKR stary_nkr,  dn.pew/10000, dn.ww from JEDN_SN sn " +
-                       "join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";*/
-
 
                     command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr, dn.idd, dn.id_id, dn.rjdrprzed, " +
                                             "js.NKR stary_nkr, dn.pew / 10000, dn.ww, case when o.id is null then om.id else o.id end ID" +
@@ -170,9 +166,11 @@ namespace ScaleniaMW
                                             "join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn " +
                                             "join dzialki_n dn on dn.rjdr = jn.id_id " +
                                             "left join obreby o on o.id_id = jn.id_obr " +
-                                            "left join obreby om on om.id_id = js.id_obr "+
+                                            "left join obreby om on om.id_id = js.id_obr " +
 
                                             "order by id_jednn";
+
+                    //command.CommandText = @"select sn.id_jednn, sn.id_jedns, o.id || '-' || js.ijr stara_jedn_ewop, jn.ijr nowy_nkr, o.id|| '-' ||dn.idd dzialka, dn.id_id, dn.rjdrprzed, js.NKR stary_nkr, dn.pew / 10000, dn.ww, case when o.id is null then om.id else o.id end ID from  JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id left join obreby o on o.id_id = jn.id_obr left join obreby om on om.id_id = js.id_obr order by id_jednn";
                     FbDataAdapter adapter = new FbDataAdapter(command);
                     dt = new DataTable();
 

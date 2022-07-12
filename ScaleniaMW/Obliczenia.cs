@@ -359,7 +359,7 @@ namespace ScaleniaMW
         public class IdJednSiNRRej
         {
             public int iddJednSt { get; set; }
-            public int NrRejGr { get; set; }
+            public string NrRejGr { get; set; }
         }
         public class IddzKwPrzed
         {
@@ -452,8 +452,15 @@ namespace ScaleniaMW
                     listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
                     List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
 
-                    List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezJednRejNRDZ.GroupBy(a => new { a.NrDzialki, a.IdDz }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDz, Nrdz = x.Key.NrDzialki }).ToList();
+
+
+
+                    List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezJednRejNRDZ.GroupBy(a => new { a.NrDzialki, a.IdDz, a.NrObr }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDz, Nrdz = $"{x.Key.NrObr}-{x.Key.NrDzialki}" }).ToList();
                     NowyNrDz = iDDZiNRDZ.Select(x => x.Nrdz).ToList();
+
+
+
+
                     //foreach (var item in iDDZiNRDZ)
                     //{
                     //    NowyNrDz.Add(item.Nrdz);
@@ -461,10 +468,10 @@ namespace ScaleniaMW
                     listBoxNoweDzialki.ItemsSource = NowyNrDz;
 
 
-                    List<int> NrRejGr = new List<int>();
+                    List<string> NrRejGr = new List<string>();
                     listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
                     List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
-                    List<IdJednSiNRRej> listidJednSiNRRejs = tmpListGrRej.GroupBy(x => new { x.NrJednEwopis, x.IdJednS }).Select(x => new IdJednSiNRRej { iddJednSt = x.Key.IdJednS, NrRejGr = x.Key.NrJednEwopis }).ToList();
+                    List<IdJednSiNRRej> listidJednSiNRRejs = tmpListGrRej.GroupBy(x => new { x.NrJednEwopis, x.IdJednS, x.NrObr }).Select(x => new IdJednSiNRRej { iddJednSt = x.Key.IdJednS, NrRejGr = x.Key.NrObr + "-" + x.Key.NrJednEwopis }).ToList();
                     NrRejGr = listidJednSiNRRejs.Select(x => x.NrRejGr).ToList();
                     listBoxNrRej.ItemsSource = NrRejGr;
 
