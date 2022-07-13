@@ -452,21 +452,10 @@ namespace ScaleniaMW
                     listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
                     List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
 
-
-
-
                     List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezJednRejNRDZ.GroupBy(a => new { a.NrDzialki, a.IdDz, a.NrObr }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDz, Nrdz = $"{x.Key.NrObr}-{x.Key.NrDzialki}" }).ToList();
                     NowyNrDz = iDDZiNRDZ.Select(x => x.Nrdz).ToList();
 
-
-
-
-                    //foreach (var item in iDDZiNRDZ)
-                    //{
-                    //    NowyNrDz.Add(item.Nrdz);
-                    //}
                     listBoxNoweDzialki.ItemsSource = NowyNrDz;
-
 
                     List<string> NrRejGr = new List<string>();
                     listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;

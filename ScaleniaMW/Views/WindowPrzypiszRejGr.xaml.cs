@@ -115,6 +115,14 @@ namespace ScaleniaMW
         }
 
 
+        public void RefresUI()
+        {
+            listBoxDzialkiNowe.Items.Refresh();
+            listBoxNkr.Items.Refresh();
+            listBoxNrRej.Items.Refresh();
+            dgNiedopJednostki.Items.Refresh();
+        }
+
         List<DopasowanieJednostek> listaDopasowJednos = new List<DopasowanieJednostek>();
         List<DopasowanieJednostek> listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
         bool czyPolaczonoZBaza = false;
@@ -123,10 +131,7 @@ namespace ScaleniaMW
 
             try
             {
-                listBoxDzialkiNowe.Items.Refresh();
-                listBoxNkr.Items.Refresh();
-                listBoxNrRej.Items.Refresh();
-                dgNiedopJednostki.Items.Refresh();
+                RefresUI();
                 aktualizujSciezkeZPropertis();
                 using (var connection = new FbConnection(connectionString))
                 {
@@ -143,10 +148,7 @@ namespace ScaleniaMW
                             listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
                             listaDopasowJednos = new List<DopasowanieJednostek>();
 
-                            listBoxDzialkiNowe.Items.Refresh();
-                            listBoxNkr.Items.Refresh();
-                            listBoxNrRej.Items.Refresh();
-                            dgNiedopJednostki.Items.Refresh();
+                            RefresUI();
                         }
 
                     }
@@ -191,14 +193,8 @@ namespace ScaleniaMW
                     }
                     try
                     {
-                        //dataGrid.ItemsSource = dt.AsDataView();
-                        //dataGrid.Visibility = Visibility.Visible;
-                        //dataGrid.Items.Refresh();
-                        //dgNkrFDB.ItemsSource = dt.AsDataView();
-
                         dgNiedopJednostki.ItemsSource = listaDopasowJednos;
                         dgNiedopJednostki.Items.Refresh();
-
                         Console.WriteLine("ustawiam SOURCE");
                     }
                     catch (Exception excp)
