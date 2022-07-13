@@ -267,6 +267,7 @@ namespace ScaleniaMW
             }
         }
 
+
         private void Button_ZaladujDoBazy(object sender, RoutedEventArgs e)
         {
             if (czyPolaczonoZBaza)
