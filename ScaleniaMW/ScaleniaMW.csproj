@@ -370,6 +370,8 @@
     <Resource Include="EWOPIS\img\LOGO_DUŻY8.png" />
     <Resource Include="EWOPIS\img\LOGO_DUŻY9.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Entities\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

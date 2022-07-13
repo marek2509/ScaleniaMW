@@ -93,10 +93,7 @@ namespace ScaleniaMW
                     listBoxNkr.ItemsSource = null;
                     listBoxNrRej.ItemsSource = null;
 
-                    listBoxDzialkiNowe.Items.Refresh();
-                    listBoxNkr.Items.Refresh();
-                    listBoxNrRej.Items.Refresh();
-                    dgNiedopJednostki.Items.Refresh();
+                    RefresUI();
                 }
                 catch (Exception esa)
                 {
