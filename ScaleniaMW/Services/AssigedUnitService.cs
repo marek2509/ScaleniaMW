@@ -57,11 +57,9 @@ namespace ScaleniaMW.Services
             return JednoskiRejstroweNoweDto;
         }
 
-
         public int lastSelectedIndexNkr = 0;
         public int lastSelectedIndexDz = 0;
         public int lastSelectedIndexIJR = 0;
-
 
         internal void FillUI(WindowPrzypiszRejGr window)
         {
@@ -100,9 +98,6 @@ namespace ScaleniaMW.Services
             var numberParcelToAssigne = JednoskiRejstroweNoweDto.Sum(x => x.Dzialki.Where(d => d.RjdrPrzed is null).Count());
             window.labelAllParcelToAssige.Content = numberParcelToAssigne;  
         }
-
-
-
 
         void ControlIndexScope(ref int lastSelectedIndex, ref int selIdx, ListBox listbox)
         {
@@ -165,10 +160,19 @@ namespace ScaleniaMW.Services
             var selectedIjrPrzed = windowPrzypiszRejGr.listBoxNrRej.SelectedValue;
             if (selectedIjrPrzed == null) return;
 
-            var selectedParcel = windowPrzypiszRejGr.listBoxDzialkiNowe.SelectedValue.ToString();
+            //var selectedParcel = windowPrzypiszRejGr.listBoxDzialkiNowe.SelectedValue.ToString();
+
             var nkrToEdit = JednoskiRejstroweNoweDto.FirstOrDefault(n => n.Ijr == (int)selectedNKR);
             var rjdrPrzed = nkrToEdit.JednostkiPrzed.FirstOrDefault(j => (j.ObrNr + "-" + j.Ijr) == selectedIjrPrzed.ToString()).Id_id;
-            nkrToEdit.Dzialki.FirstOrDefault(d => (d.ObrNr + "-" + d.Idd) == selectedParcel).RjdrPrzed = rjdrPrzed;
+
+            var multiSelectedParcel = windowPrzypiszRejGr.listBoxDzialkiNowe.SelectedItems;
+            foreach (var parcel in multiSelectedParcel)
+            {
+                nkrToEdit.Dzialki.FirstOrDefault(d => (d.ObrNr + "-" + d.Idd) == parcel.ToString()).RjdrPrzed = rjdrPrzed;
+            }
+
+           
+
 
             lastSelectedIndexNkr = windowPrzypiszRejGr.listBoxNkr.SelectedIndex;
             lastSelectedIndexDz = windowPrzypiszRejGr.listBoxDzialkiNowe.SelectedIndex;

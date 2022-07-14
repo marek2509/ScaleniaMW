@@ -293,7 +293,6 @@ namespace ScaleniaMW
                     {
                         connection.Open();
                         FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = null", connection);
-                        //writeCommand.ExecuteNonQuery();
                         writeCommand.ExecuteNonQueryAsync();
                         connection.Close();
                         MessageBox.Show("Jednostki usunięto pomyślnie.", "SUKCES!", MessageBoxButton.OK);
