@@ -367,142 +367,142 @@ namespace ScaleniaMW
             public string KwPrzed { get; set; }
         }
 
-        public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, string sender = "", int? ParametrUzytyprzyTworzeniuNKR = null)
-        {
-            if (listaJednostekZSQL.Count > 0)
-            {
+        //public static void DopasujNrRejDoNowychDzialek(ref List<DopasowanieJednostek> listaJednostekZSQL, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrRej, string sender = "", int? ParametrUzytyprzyTworzeniuNKR = null)
+        //{
+        //    if (listaJednostekZSQL.Count > 0)
+        //    {
 
 
-                if (sender.Equals("AutoPrzypiszJednostki"))
-                {
-                    for (int i = listaJednostekZSQL[0].IdJednN; i <= listaJednostekZSQL[listaJednostekZSQL.Count - 1].IdJednN; i++)
-                    {
-                        List<DopasowanieJednostek> tmpListaJednostek = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(i));
+        //        if (sender.Equals("AutoPrzypiszJednostki"))
+        //        {
+        //            for (int i = listaJednostekZSQL[0].IdJednN; i <= listaJednostekZSQL[listaJednostekZSQL.Count - 1].IdJednN; i++)
+        //            {
+        //                List<DopasowanieJednostek> tmpListaJednostek = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(i));
 
 
-                        if (tmpListaJednostek.Count == tmpListaJednostek.FindAll(x => x.IdJednS.Equals(tmpListaJednostek[0].IdJednS)).Count)
-                        {
-                            foreach (var item in tmpListaJednostek)
-                            {
-                                if (item.PrzypisanyNrRej.Equals(null))
-                                {
-                                    item.PrzypisanyNrRej = item.IdJednS;
-                                }
-                            }
-                        }
-                    }
-                }
+        //                if (tmpListaJednostek.Count == tmpListaJednostek.FindAll(x => x.IdJednS.Equals(tmpListaJednostek[0].IdJednS)).Count)
+        //                {
+        //                    foreach (var item in tmpListaJednostek)
+        //                    {
+        //                        if (item.PrzypisanyNrRej.Equals(null))
+        //                        {
+        //                            item.PrzypisanyNrRej = item.IdJednS;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
 
 
-                if (sender.Equals("AutoPrzypiszJednostkiZDoborem"))
-                {
-                    foreach (var pojedyncza in listaJednostekZSQL)
-                    {
-                        int jednostkaDoPorownania = pojedyncza.NowyNKR - pojedyncza.NrObr * (int)ParametrUzytyprzyTworzeniuNKR;
-                     //   Console.WriteLine("nowy nkr: " + x.NowyNKR + "== " + pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania);
-                        if (listaJednostekZSQL.Exists(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania))
-                        {
-                            // Console.WriteLine("Nowy NKR " + pojedyncza.NowyNKR + " idjednStarej: " + pojedyncza.NrJednEwopis + "  " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
-                            /*
-                             if (pojedyncza.PrzypisanyNrRej.Equals(null))
-                             {
-                                 pojedyncza.PrzypisanyNrRej = listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).IdJednS;
+        //        if (sender.Equals("AutoPrzypiszJednostkiZDoborem"))
+        //        {
+        //            foreach (var pojedyncza in listaJednostekZSQL)
+        //            {
+        //                int jednostkaDoPorownania = pojedyncza.NowyNKR - pojedyncza.NrObr * (int)ParametrUzytyprzyTworzeniuNKR;
+        //             //   Console.WriteLine("nowy nkr: " + x.NowyNKR + "== " + pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania);
+        //                if (listaJednostekZSQL.Exists(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania))
+        //                {
+        //                    // Console.WriteLine("Nowy NKR " + pojedyncza.NowyNKR + " idjednStarej: " + pojedyncza.NrJednEwopis + "  " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
+        //                    /*
+        //                     if (pojedyncza.PrzypisanyNrRej.Equals(null))
+        //                     {
+        //                         pojedyncza.PrzypisanyNrRej = listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).IdJednS;
 
 
-                                 Console.WriteLine("nkr: " + pojedyncza.NowyNKR + " XX " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
+        //                         Console.WriteLine("nkr: " + pojedyncza.NowyNKR + " XX " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
 
-                             }*/
+        //                     }*/
 
-                            if (pojedyncza.PrzypisanyNrRej.Equals(null))
-                            {
-                                pojedyncza.PrzypisanyNrRej = listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).IdJednS;
+        //                    if (pojedyncza.PrzypisanyNrRej.Equals(null))
+        //                    {
+        //                        pojedyncza.PrzypisanyNrRej = listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).IdJednS;
 
 
-                                Console.WriteLine("nkr: " + pojedyncza.NowyNKR + " XX " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
+        //                        Console.WriteLine("nkr: " + pojedyncza.NowyNKR + " XX " + listaJednostekZSQL.Find(x => x.NowyNKR == pojedyncza.NowyNKR && x.NrJednEwopis == jednostkaDoPorownania).NrJednEwopis);
 
-                            }
+        //                    }
                             
 
-                        }
-                    }
-                }
+        //                }
+        //            }
+        //        }
 
-                if (listaJednostekZSQL.Exists(x => x.PrzypisanyNrRej.Equals(null)))
-                {
+        //        if (listaJednostekZSQL.Exists(x => x.PrzypisanyNrRej.Equals(null)))
+        //        {
 
-                    List<int> NowyNkr = new List<int>();
-                    List<DopasowanieJednostek> tmpListNKRbezJednRej = listaJednostekZSQL.FindAll(x => x.PrzypisanyNrRej.Equals(null));
-                    /*
-                    foreach (var item in tmpListNKRbezJednRej.GroupBy(x => x.NowyNKR))
-                    {
-                        NowyNkr.Add(item.Key);
-                    }
-                    listBoxNkr.ItemsSource = NowyNkr;
-                    ////////////*/
-                    List<IDiNKR> lisIDnkr_NKR = tmpListNKRbezJednRej.GroupBy(x => new { x.NowyNKR, x.IdJednN }).Select(x => new IDiNKR { IdJednN = x.Key.IdJednN, NKR = x.Key.NowyNKR }).ToList();
-                    //foreach (var item in lisIDnkr_NKR)
-                    //{ 
-                    //    NowyNkr.Add(item.NKR);
-                    //}
-                    NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
-                    listBoxNkr.ItemsSource = NowyNkr;
-                    ///////////////////
-                    List<string> NowyNrDz = new List<string>();
-                    // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
-                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
-                    List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
+        //            List<int> NowyNkr = new List<int>();
+        //            List<DopasowanieJednostek> tmpListNKRbezJednRej = listaJednostekZSQL.FindAll(x => x.PrzypisanyNrRej.Equals(null));
+        //            /*
+        //            foreach (var item in tmpListNKRbezJednRej.GroupBy(x => x.NowyNKR))
+        //            {
+        //                NowyNkr.Add(item.Key);
+        //            }
+        //            listBoxNkr.ItemsSource = NowyNkr;
+        //            ////////////*/
+        //            List<IDiNKR> lisIDnkr_NKR = tmpListNKRbezJednRej.GroupBy(x => new { x.NowyNKR, x.IdJednN }).Select(x => new IDiNKR { IdJednN = x.Key.IdJednN, NKR = x.Key.NowyNKR }).ToList();
+        //            //foreach (var item in lisIDnkr_NKR)
+        //            //{ 
+        //            //    NowyNkr.Add(item.NKR);
+        //            //}
+        //            NowyNkr = lisIDnkr_NKR.Select(x => x.NKR).ToList();
+        //            listBoxNkr.ItemsSource = NowyNkr;
+        //            ///////////////////
+        //            List<string> NowyNrDz = new List<string>();
+        //            // List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.NowyNKR.Equals(NowyNkr[listBoxNkr.SelectedIndex]));
+        //            listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+        //            List<DopasowanieJednostek> tmpListNKRbezJednRejNRDZ = tmpListNKRbezJednRej.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
 
-                    List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezJednRejNRDZ.GroupBy(a => new { a.NrDzialki, a.IdDz, a.NrObr }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDz, Nrdz = $"{x.Key.NrObr}-{x.Key.NrDzialki}" }).ToList();
-                    NowyNrDz = iDDZiNRDZ.Select(x => x.Nrdz).ToList();
+        //            List<IDDZiNRDZ> iDDZiNRDZ = tmpListNKRbezJednRejNRDZ.GroupBy(a => new { a.NrDzialki, a.IdDz, a.NrObr }).Select(x => new IDDZiNRDZ { iddz = x.Key.IdDz, Nrdz = $"{x.Key.NrObr}-{x.Key.NrDzialki}" }).ToList();
+        //            NowyNrDz = iDDZiNRDZ.Select(x => x.Nrdz).ToList();
 
-                    listBoxNoweDzialki.ItemsSource = NowyNrDz;
+        //            listBoxNoweDzialki.ItemsSource = NowyNrDz;
 
-                    List<string> NrRejGr = new List<string>();
-                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
-                    List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
-                    List<IdJednSiNRRej> listidJednSiNRRejs = tmpListGrRej.GroupBy(x => new { x.NrJednEwopis, x.IdJednS, x.NrObr }).Select(x => new IdJednSiNRRej { iddJednSt = x.Key.IdJednS, NrRejGr = x.Key.NrObr + "-" + x.Key.NrJednEwopis }).ToList();
-                    NrRejGr = listidJednSiNRRejs.Select(x => x.NrRejGr).ToList();
-                    listBoxNrRej.ItemsSource = NrRejGr;
+        //            List<string> NrRejGr = new List<string>();
+        //            listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
+        //            List<DopasowanieJednostek> tmpListGrRej = listaJednostekZSQL.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
+        //            List<IdJednSiNRRej> listidJednSiNRRejs = tmpListGrRej.GroupBy(x => new { x.NrJednEwopis, x.IdJednS, x.NrObr }).Select(x => new IdJednSiNRRej { iddJednSt = x.Key.IdJednS, NrRejGr = x.Key.NrObr + "-" + x.Key.NrJednEwopis }).ToList();
+        //            NrRejGr = listidJednSiNRRejs.Select(x => x.NrRejGr).ToList();
+        //            listBoxNrRej.ItemsSource = NrRejGr;
 
-                    listBoxNrRej.SelectedIndex = listBoxNrRej.SelectedIndex >= 0 && listBoxNrRej.SelectedIndex < listBoxNrRej.Items.Count ? listBoxNrRej.SelectedIndex : 0;
-                    listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 && listBoxNkr.SelectedIndex < listBoxNkr.Items.Count ? listBoxNkr.SelectedIndex : 0;
+        //            listBoxNrRej.SelectedIndex = listBoxNrRej.SelectedIndex >= 0 && listBoxNrRej.SelectedIndex < listBoxNrRej.Items.Count ? listBoxNrRej.SelectedIndex : 0;
+        //            listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 && listBoxNkr.SelectedIndex < listBoxNkr.Items.Count ? listBoxNkr.SelectedIndex : 0;
 
-                    if (sender.Equals("PrzypiszZaznJedn"))
-                    {
-                        foreach (var item in listaJednostekZSQL)
-                        {
-                            //if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
-                            //{
-                            //    Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
-                            //    item.wypiszWConsoli();
-                            //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
-                            //}
+        //            if (sender.Equals("PrzypiszZaznJedn"))
+        //            {
+        //                foreach (var item in listaJednostekZSQL)
+        //                {
+        //                    //if (item.NowyNKR.Equals(listBoxNkr.SelectedValue) && item.NrDzialki.Equals(listBoxNoweDzialki.SelectedValue))
+        //                    //{
+        //                    //    Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
+        //                    //    item.wypiszWConsoli();
+        //                    //    item.PrzypisanyNrRej = (int)listBoxNrRej.SelectedValue;
+        //                    //}
 
-                            if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDz.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
-                            {
-                                Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
-                                item.wypiszWConsoli();
-                                item.PrzypisanyNrRej = listidJednSiNRRejs[listBoxNrRej.SelectedIndex].iddJednSt;
-                            }
-                        }
+        //                    if (item.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN) && item.IdDz.Equals(iDDZiNRDZ[listBoxNoweDzialki.SelectedIndex].iddz))
+        //                    {
+        //                        Console.WriteLine(item.NowyNKR + " rowne " + listBoxNkr.SelectedValue + " " + item.NrDzialki + " " + listBoxNoweDzialki.SelectedValue + " " + item.NrJednEwopis + " " + listBoxNrRej.SelectedValue + " id" + item.IdJednS);
+        //                        item.wypiszWConsoli();
+        //                        item.PrzypisanyNrRej = listidJednSiNRRejs[listBoxNrRej.SelectedIndex].iddJednSt;
+        //                    }
+        //                }
 
-                        Obliczenia.DopasujNrRejDoNowychDzialek(ref listaJednostekZSQL, listBoxNkr, listBoxNoweDzialki, listBoxNrRej);
-                        listBoxNrRej.SelectedIndex = listBoxNrRej.SelectedIndex >= 0 && listBoxNrRej.SelectedIndex < listBoxNrRej.Items.Count ? listBoxNrRej.SelectedIndex : 0;
-                        Console.WriteLine(listBoxNrRej.SelectedIndex + " SELECTED INDEX NRREJ " + listBoxNrRej.Items.Count);
-                        listBoxNoweDzialki.SelectedIndex = listBoxNoweDzialki.SelectedIndex >= 0 && listBoxNoweDzialki.SelectedIndex < listBoxNoweDzialki.Items.Count ? listBoxNoweDzialki.SelectedIndex : 0;
-                    }
-                }
-                else
-                {
-                    List<string> lll = new List<string>();
-                    lll.Add("WSZYSTKIE DOPASOWANO");
-                    listBoxNrRej.ItemsSource = lll;
-                    listBoxNoweDzialki.ItemsSource = lll;
-                    listBoxNkr.ItemsSource = lll;
-                }
+        //                Obliczenia.DopasujNrRejDoNowychDzialek(ref listaJednostekZSQL, listBoxNkr, listBoxNoweDzialki, listBoxNrRej);
+        //                listBoxNrRej.SelectedIndex = listBoxNrRej.SelectedIndex >= 0 && listBoxNrRej.SelectedIndex < listBoxNrRej.Items.Count ? listBoxNrRej.SelectedIndex : 0;
+        //                Console.WriteLine(listBoxNrRej.SelectedIndex + " SELECTED INDEX NRREJ " + listBoxNrRej.Items.Count);
+        //                listBoxNoweDzialki.SelectedIndex = listBoxNoweDzialki.SelectedIndex >= 0 && listBoxNoweDzialki.SelectedIndex < listBoxNoweDzialki.Items.Count ? listBoxNoweDzialki.SelectedIndex : 0;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            List<string> lll = new List<string>();
+        //            lll.Add("WSZYSTKIE DOPASOWANO");
+        //            listBoxNrRej.ItemsSource = lll;
+        //            listBoxNoweDzialki.ItemsSource = lll;
+        //            listBoxNkr.ItemsSource = lll;
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
         // funkcja dla KW 
         public static void DopasujNrKWDoNowychDzialek(ref List<DopasowanieKW> listaKWdlaNowychDzialek, ListBox listBoxNkr, ListBox listBoxNoweDzialki, ListBox listBoxNrKW, string sender = "")

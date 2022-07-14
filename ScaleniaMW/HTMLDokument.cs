@@ -10,30 +10,64 @@ namespace ScaleniaMW
     public abstract class HtmlDokument
     {
         // MOJE KLASY CSS
-        static (string nameClass, string value) Css_tabelaCzarna = ("tabelaCzarna", "{width: 100%; border: 1px solid black; border-collapse: collapse; font-size: 9pt;}");
-        static (string nameClass, string value) Css_borderBl = ("borderBl", "{border: 1px solid black;  text-align: center;}");
-        static (string nameClass, string value) CSS_borderBl_redText = ("borderBl_redText", "{border: 1px solid black; text-align: center; color:red;}");
-        static (string nameClass, string value) Css_greenText = ("greenText", "{color: green;}");
-        static (string nameClass, string value) Css_borderBl_ml5 = ("borderBl_ml5", "{border: 1px solid black; margin-left: 5px;}");
-        static (string nameClass, string value) Css_borderBl_mr5 = ("borderBl_mr5", "{border: 1px solid black; margin-right: 5px; text-align: right;}");
-        static (string nameClass, string value) Css_borderBl_ml5_greenText = ("borderBl_ml5_greenText", "{border: 1px solid black; margin-left: 5px; color: green;}");
-        static (string nameClass, string value) Css_borderBl_mr5_greenText = ("borderBl_mr5_greenText", "{border: 1px solid black; margin-right: 5px; text-align: right; color: green;}");
-        static (string nameClass, string value) Css_borderBl_ml5_redText = ("borderBl_ml5_redText", "{border: 1px solid black; margin-left: 5px; color: red;}");
-        static (string nameClass, string value) Css_borderBl_mr5_redText = ("borderBl_mr5_redText", "{border: 1px solid black; margin-right: 5px; text-align: right; color: red;}");
+        //static (string nameClass, string value) Css_tabelaCzarna = ("tabelaCzarna", "{width: 100%; border: 1px solid black; border-collapse: collapse; font-size: 9pt;}");
+        //static (string nameClass, string value) Css_borderBl = ("borderBl", "{border: 1px solid black;  text-align: center;}");
+        //static (string nameClass, string value) CSS_borderBl_redText = ("borderBl_redText", "{border: 1px solid black; text-align: center; color:red;}");
+        //static (string nameClass, string value) Css_greenText = ("greenText", "{color: green;}");
+        //static (string nameClass, string value) Css_borderBl_ml5 = ("borderBl_ml5", "{border: 1px solid black; margin-left: 5px;}");
+        //static (string nameClass, string value) Css_borderBl_mr5 = ("borderBl_mr5", "{border: 1px solid black; margin-right: 5px; text-align: right;}");
 
-        static (string nameClass, string value) Css_tabelaCzerwona = ("tabelaCzerwona", "{width: 100%; border: 2px solid red; border-collapse: collapse; font-size: 9pt;}");
-        static (string nameClass, string value) Css_borderRed = ("borderRed", "{border: 1px solid red;  text-align: center;}");
-        static (string nameClass, string value) Css_borderRedTxtGreen = ("borderRedTxtGreen", "{border: 1px solid red;  text-align: center; color: green;}");
-        static (string nameClass, string value) Css_TabelkaPodBilansem = ("TabelkaPodBilansem", "{border: 1px solid black; border-collapse: collapse; font-size: 9pt; width: 288}");
+        //static (string nameClass, string value) Css_borderBl_ml5_greenText = ("borderBl_ml5_greenText", "{border: 1px solid black; margin-left: 5px; color: green;}");
+        //static (string nameClass, string value) Css_borderBl_mr5_greenText = ("borderBl_mr5_greenText", "{border: 1px solid black; margin-right: 5px; text-align: right; color: green;}");
+        //static (string nameClass, string value) Css_borderBl_ml5_redText = ("borderBl_ml5_redText", "{border: 1px solid black; margin-left: 5px; color: red;}");
+        //static (string nameClass, string value) Css_borderBl_mr5_redText = ("borderBl_mr5_redText", "{border: 1px solid black; margin-right: 5px; text-align: right; color: red;}");
+
+        //static (string nameClass, string value) Css_tabelaCzerwona = ("tabelaCzerwona", "{width: 100%; border: 2px solid red; border-collapse: collapse; font-size: 9pt;}");
+        //static (string nameClass, string value) Css_borderRed = ("borderRed", "{border: 1px solid red;  text-align: center;}");
+        //static (string nameClass, string value) Css_borderRedTxtGreen = ("borderRedTxtGreen", "{border: 1px solid red;  text-align: center; color: green;}");
+        //static (string nameClass, string value) Css_TabelkaPodBilansem = ("TabelkaPodBilansem", "{border: 1px solid black; border-collapse: collapse; font-size: 9pt; width: 288}");
+
+        static Dictionary<string, string> cssClassesDictionary = new Dictionary<string, string>
+       {
+           {"Css_tabelaCzarna", "{width: 100%; border: 1px solid black; border-collapse: collapse; font-size: 9pt;}" },
+           {"Css_borderBl", "{border: 1px solid black;  text-align: center;}" },
+           {"CSS_borderBl_redText", "{border: 1px solid black; text-align: center; color:red;}" },
+           {"Css_greenText", "{color: green;}" },
+           {"Css_borderBl_ml5", "{border: 1px solid black; margin-left: 5px;}" },
+           {"Css_borderBl_mr5", "{border: 1px solid black; margin-right: 5px; text-align: right;}" },
+  
+           {"Css_borderBl_ml5_greenText", "{border: 1px solid black; margin-left: 5px; color: green;}"},
+           {"Css_borderBl_mr5_greenText", "{border: 1px solid black; margin-right: 5px; text-align: right; color: green;}"},
+           {"Css_borderBl_ml5_redText", "{border: 1px solid black; margin-left: 5px; color: red;}"},
+           {"Css_borderBl_mr5_redText", "{border: 1px solid black; margin-right: 5px; text-align: right; color: red;}"},
+
+           {"Css_tabelaCzerwona", "{width: 100%; border: 2px solid red; border-collapse: collapse; font-size: 9pt;}"},
+           {"Css_borderRed", "{border: 1px solid red;  text-align: center;}"},
+           {"Css_borderRedTxtGreen", "{border: 1px solid red;  text-align: center; color: green;}"},
+           {"Css_TabelkaPodBilansem", "{border: 1px solid black; border-collapse: collapse; font-size: 9pt; width: 288}"},
+
+       };
 
 
-        public static string GetClassesNameAndContent(params (string nameClass, string value)[] krotka)
+
+        //public static string GetClassesNameAndContent(params (string nameClass, string value)[] krotka)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    for (int i = 0; i < krotka.Length; i++)
+        //    {
+        //        sb.AppendLine("." + krotka[i].nameClass + " " + krotka[i].value);
+        //    }
+        //    return sb.ToString();
+        //}
+
+        public static string GetClassesNameAndContent( Dictionary<string, string> dictionary)
         {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < krotka.Length; i++)
+            foreach (var item in dictionary)
             {
-                sb.AppendLine("." + krotka[i].nameClass + " " + krotka[i].value);
+                sb.AppendLine( "." + item.Key + " " + item.Value);
             }
+               
             return sb.ToString();
         }
 
@@ -49,9 +83,11 @@ namespace ScaleniaMW
             sb.AppendLine("<meta name=Generator content=\"Microsoft Word 12 (filtered)\"> ");
             sb.AppendLine("<style> ");
             sb.AppendLine("body { font-family: \"Arial Narrow\", Arial, sans-serif; font-style: italic; font-size: 11pt;} ");
-            sb.AppendLine(GetClassesNameAndContent(Css_tabelaCzarna, Css_borderBl, CSS_borderBl_redText, Css_greenText, Css_borderBl_ml5, Css_borderBl_mr5,
-                            Css_borderBl_ml5_greenText, Css_borderBl_mr5_greenText, Css_borderBl_ml5_redText, Css_borderBl_mr5_redText, Css_tabelaCzerwona, 
-                            Css_borderRed, Css_borderRedTxtGreen, Css_TabelkaPodBilansem));
+            //sb.AppendLine(GetClassesNameAndContent(Css_tabelaCzarna, Css_borderBl, CSS_borderBl_redText, Css_greenText, Css_borderBl_ml5, Css_borderBl_mr5,
+            //                Css_borderBl_ml5_greenText, Css_borderBl_mr5_greenText, Css_borderBl_ml5_redText, Css_borderBl_mr5_redText, Css_tabelaCzerwona, 
+            //                Css_borderRed, Css_borderRedTxtGreen, Css_TabelkaPodBilansem));
+
+            sb.AppendLine(GetClassesNameAndContent(cssClassesDictionary));
             sb.AppendLine("</style> ");
             sb.AppendLine("</head> ");
             sb.AppendLine("<body>");
@@ -201,33 +237,33 @@ namespace ScaleniaMW
         public static string HTML_TabelaEkwiwalentuNaleznego(JR_Nowa JednoskaRejNowa)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<table class=\"tabelaCzarna\">");
+            sb.AppendLine("<table class=\"Css_tabelaCzarna\">");
             sb.AppendLine("<tr>" +
-                            "<th class=\"borderBl\"> Obręb </th>" +
-                            "<th class=\"borderBl\"> Nazwa obrębu </th>" +
-                            "<th class=\"borderBl\"> Nr jednostki </th>" +
-                            "<th class=\"borderBl\"> Udział </th>" +
-                            "<th class=\"borderBl\"> Powierzchnia </th>" +
-                            "<th class=\"greenText borderBl\"> Należność </th> " +
+                            "<th class=\"Css_borderBl\"> Obręb </th>" +
+                            "<th class=\"Css_borderBl\"> Nazwa obrębu </th>" +
+                            "<th class=\"Css_borderBl\"> Nr jednostki </th>" +
+                            "<th class=\"Css_borderBl\"> Udział </th>" +
+                            "<th class=\"Css_borderBl\"> Powierzchnia </th>" +
+                            "<th class=\"Css_greenText Css_borderBl\"> Należność </th> " +
                           "</tr>");
 
             foreach (var zeStarejJedn in JednoskaRejNowa.zJednRejStarej)
             {
                 sb.AppendLine("<tr> " +
-                                "<td class=\"borderBl_ml5\">" + zeStarejJedn.NrObr + "</td>" +
-                                "<td class=\"borderBl_ml5\">" + zeStarejJedn.NazwaObrebu + "</td>" +
-                                "<td class=\"borderBl_ml5\">" + zeStarejJedn.Ijr_Przed + "</td>" +
-                                "<td class=\"borderBl_ml5\">" + zeStarejJedn.Ud_Z_Jrs + "</td>" +
-                                "<td class=\"borderBl_mr5\">" + zeStarejJedn.Pow_Przed.ToString("F4", CultureInfo.InvariantCulture) + "</td>" +
-                                "<td class=\"borderBl_mr5 greenText\">" + zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture) + "</td> " +
+                                "<td class=\"Css_borderBl\">" + zeStarejJedn.NrObr + "</td>" +
+                                "<td class=\"Css_borderBl\">" + zeStarejJedn.NazwaObrebu + "</td>" +
+                                "<td class=\"Css_borderBl\">" + zeStarejJedn.Ijr_Przed + "</td>" +
+                                "<td class=\"Css_borderBl\">" + zeStarejJedn.Ud_Z_Jrs + "</td>" +
+                                "<td class=\"Css_borderBl\">" + zeStarejJedn.Pow_Przed.ToString("F4", CultureInfo.InvariantCulture) + "</td>" +
+                                "<td class=\"Css_borderBl Css_greenText\">" + zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture) + "</td> " +
                               "</tr>");
             }
 
             //podsumowanie tabeli udzialow ze starych jednostek
             sb.AppendLine("<td colspan=\"4\" style=\"text-align: right; border: none;  margin-right:2px; \">" +
-                                 "<span>Powierzchnia/</span><span class=\"greenText\">Wartość przed scaleniem:</span></td>" +
-                             "<td class=\"borderBl_mr5\"><b>" + JednoskaRejNowa.SumaPowJednostekPrzed().ToString("F4", CultureInfo.InvariantCulture) + "</b></td>" +
-                             "<td class=\"borderBl_mr5_greenText\"><b>" + JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture) + "</b></td>");
+                                 "<span>Powierzchnia/</span><span class=\"Css_greenText\">Wartość przed scaleniem:</span></td>" +
+                             "<td class=\"Css_borderBl_mr5\"><b>" + JednoskaRejNowa.SumaPowJednostekPrzed().ToString("F4", CultureInfo.InvariantCulture) + "</b></td>" +
+                             "<td class=\"Css_borderBl_mr5_greenText\"><b>" + JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture) + "</b></td>");
             sb.AppendLine("</table>");
             return sb.ToString();
         }
@@ -235,7 +271,7 @@ namespace ScaleniaMW
         static string HTML_TabelaEkwiwalentuNaleznegoBezPEW(JR_Nowa JednoskaRejNowa)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<table class=\"tabelaCzarna\">");
+            sb.AppendLine("<table class=\"Css_tabelaCzarna\">");
             //"<th class=\"borderBl\"> Obręb </th>" +
             //"<th class=\"borderBl\"> Nazwa obrębu </th>" +
             //"<th class=\"borderBl\"> Nr jednostki </th>" +
@@ -263,20 +299,20 @@ namespace ScaleniaMW
                 sb.AppendLine(Tbl_td(zeStarejJedn.NazwaObrebu.ToString()));
                 sb.AppendLine(Tbl_td(zeStarejJedn.Ijr_Przed.ToString()));
                 sb.AppendLine(Tbl_td(zeStarejJedn.Ud_Z_Jrs.ToString()));
-                sb.AppendLine(Tbl_td(zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass));
+                sb.AppendLine(Tbl_td(zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
                 sb.AppendLine("</tr>");
             }
 
             //podsumowanie tabeli udzialow ze starych jednostek
-            sb.AppendLine("<td colspan=\"4\" class=\"greenText\" style=\"text-align: right; border: none;  margin-right:2px; \"><b>Ekwiwalent należny:</b></td>" +
-                             "<td class=\"borderBl_mr5_greenText\"><b>" + JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture) + "</b></td>");
+            sb.AppendLine("<td colspan=\"4\" class=\"Css_greenText\" style=\"text-align: right; border: none;  margin-right:2px; \"><b>Ekwiwalent należny:</b></td>" +
+                             "<td class=\"Css_borderBl_mr5_greenText\"><b>" + JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture) + "</b></td>");
             sb.AppendLine("</table>");
             return sb.ToString();
         }
         static string HTML_TabelaEkwiwalentuNaleznegoBezPEWPotracenie(JR_Nowa JednoskaRejNowa)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<table class=\"tabelaCzarna\">");
+            sb.AppendLine("<table class=\"Css_tabelaCzarna\">");
 
             sb.AppendLine("<tr>");
             sb.AppendLine(Tbl_th("Obręb"));
@@ -296,17 +332,17 @@ namespace ScaleniaMW
                 sb.AppendLine(Tbl_td(zeStarejJedn.NazwaObrebu.ToString()));
                 sb.AppendLine(Tbl_td(zeStarejJedn.Ijr_Przed.ToString()));
                 sb.AppendLine(Tbl_td(zeStarejJedn.Ud_Z_Jrs.ToString()));
-                sb.AppendLine(Tbl_td(zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass));
-                sb.AppendLine(Tbl_td(zeStarejJedn.PotrWart.ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass));
-                sb.AppendLine(Tbl_td((zeStarejJedn.WrtJednPrzed - zeStarejJedn.PotrWart).ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass));
+                sb.AppendLine(Tbl_td(zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
+                sb.AppendLine(Tbl_td(zeStarejJedn.PotrWart.ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
+                sb.AppendLine(Tbl_td((zeStarejJedn.WrtJednPrzed - zeStarejJedn.PotrWart).ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
                 sb.AppendLine("</tr>");
             }
 
             //podsumowanie tabeli udzialow ze starych jednostek
-            sb.AppendLine("<td colspan =\"4\" class=\"greenText\" style=\"text-align: right; border: none;  margin-right:2px; \"><b>Suma wartości:</b></td>");
-            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass));
-            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartosciPotracen().ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass));
-            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu().ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass));
+            sb.AppendLine("<td colspan =\"4\" class=\"Css_greenText\" style=\"text-align: right; border: none;  margin-right:2px; \"><b>Suma wartości:</b></td>");
+            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
+            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartosciPotracen().ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
+            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu().ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
             sb.AppendLine("</table>");
             return sb.ToString();
         }
@@ -323,14 +359,14 @@ namespace ScaleniaMW
             }
         }
 
-        static string Tbl_th(string tytul, int? colspan = null, string style = null, string classCss = "borderBl")
+        static string Tbl_th(string tytul, int? colspan = null, string style = null, string classCss = "Css_borderBl")
         {
             string styleCss = style != null ? " style=\"" + style + "\" " : null;
             string columnSpan = colspan > 0 ? " colspan =\"" + colspan + "\"" : null;
             return "<th class=\"" + classCss + "\"" + styleCss + columnSpan + "><b>" + tytul + " </b></th>";
         }
 
-        static string Tbl_td(string content, int? colspan = null, string style = null, string classCss = "borderBl")
+        static string Tbl_td(string content, int? colspan = null, string style = null, string classCss = "Css_borderBl")
         {
             string styleCss = style != null ? " style=\"" + style + "\" " : null;
             string columnSpan = colspan > 0 ? " colspan =\"" + colspan + "\"" : null;
@@ -341,7 +377,7 @@ namespace ScaleniaMW
         static string Tbl_PodsumowanieWDzialkachStarych(ZJednRejStarej jednostkaStara)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(Tbl_td("Razem:", classCss: Css_borderBl_mr5.nameClass, style: "font-weight: bold;"));
+            sb.AppendLine(Tbl_td("Razem:", classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
             if (jednostkaStara == null)
             {
                 sb.AppendLine(Tbl_td("-.----"));
@@ -350,8 +386,8 @@ namespace ScaleniaMW
             else
             {
 
-                sb.AppendLine(Tbl_td(jednostkaStara.SumaPowierzchniDzialek(), classCss: Css_borderBl_mr5.nameClass, style: "font-weight: bold;"));
-                sb.AppendLine(Tbl_td(jednostkaStara.SumaWartosciDzialek(), classCss: Css_borderBl_mr5_greenText.nameClass, style: "font-weight: bold;"));
+                sb.AppendLine(Tbl_td(jednostkaStara.SumaPowierzchniDzialek(), classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
+                sb.AppendLine(Tbl_td(jednostkaStara.SumaWartosciDzialek(), classCss: "Css_borderBl_mr5_greenText", style: "font-weight: bold;"));
             }
             sb.AppendLine(Tbl_td(""));
             return sb.ToString();
@@ -361,7 +397,7 @@ namespace ScaleniaMW
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine(Tbl_td("Razem:", classCss: Css_borderBl_mr5.nameClass, style: "font-weight: bold;"));
+            sb.AppendLine(Tbl_td("Razem:", classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
             if (jednoskaRejNowa == null)
             {
                 sb.AppendLine(Tbl_td("-.----"));
@@ -369,8 +405,8 @@ namespace ScaleniaMW
             }
             else
             {
-                sb.AppendLine(Tbl_td(jednoskaRejNowa.SumaPowierzchniDzialekNowych(), classCss: Css_borderBl_mr5.nameClass, style: "font-weight: bold;"));
-                sb.AppendLine(Tbl_td(jednoskaRejNowa.SumaWartosciDzialekNowych(), classCss: Css_borderBl_mr5_greenText.nameClass, style: "font-weight: bold;"));
+                sb.AppendLine(Tbl_td(jednoskaRejNowa.SumaPowierzchniDzialekNowych(), classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
+                sb.AppendLine(Tbl_td(jednoskaRejNowa.SumaWartosciDzialekNowych(), classCss: "Css_borderBl_mr5_greenText", style: "font-weight: bold;"));
             }
             sb.AppendLine(Tbl_td(""));
             return sb.ToString();
@@ -408,10 +444,10 @@ namespace ScaleniaMW
                 kwPrzed = "";
             }
 
-            sb.AppendLine(Tbl_td(nrdzPrzed, classCss: Css_borderBl.nameClass));
-            sb.AppendLine(Tbl_td(pewDzialki, classCss: Css_borderBl_mr5.nameClass));
-            sb.AppendLine(Tbl_td(wartPrzed, classCss: Css_borderBl_mr5_greenText.nameClass));
-            sb.AppendLine(Tbl_td(kwPrzed, classCss: Css_borderBl.nameClass));
+            sb.AppendLine(Tbl_td(nrdzPrzed, classCss: "Css_borderBl"));
+            sb.AppendLine(Tbl_td(pewDzialki, classCss: "Css_borderBl_mr5"));
+            sb.AppendLine(Tbl_td(wartPrzed, classCss: "Css_borderBl_mr5_greenText"));
+            sb.AppendLine(Tbl_td(kwPrzed, classCss: "Css_borderBl"));
 
             return sb.ToString();
         }
@@ -440,10 +476,10 @@ namespace ScaleniaMW
                 kwPo = "";
             }
 
-            sb.AppendLine(Tbl_td(nrdzPo, classCss: CSS_borderBl_redText.nameClass));
-            sb.AppendLine(Tbl_td(powDzialkiPo, classCss: Css_borderBl_mr5.nameClass));
-            sb.AppendLine(Tbl_td(wartPo, classCss: Css_borderBl_mr5_greenText.nameClass));
-            sb.AppendLine(Tbl_td(kwPo, classCss: Css_borderBl.nameClass));
+            sb.AppendLine(Tbl_td(nrdzPo, classCss: "CSS_borderBl_redText"));
+            sb.AppendLine(Tbl_td(powDzialkiPo, classCss: "Css_borderBl_mr5"));
+            sb.AppendLine(Tbl_td(wartPo, classCss: "Css_borderBl_mr5_greenText"));
+            sb.AppendLine(Tbl_td(kwPo, classCss: "Css_borderBl"));
 
             return sb.ToString();
         }
@@ -472,7 +508,7 @@ namespace ScaleniaMW
             StringBuilder sb = new StringBuilder();
 
             // tabela Ekwiwalentów nagłówki
-            sb.AppendLine("<table class=\"tabelaCzarna\">");
+            sb.AppendLine("<table class=\"Css_tabelaCzarna\">");
 
             sb.AppendLine("<tr>");
             sb.AppendLine(Tbl_th("Ekwiwalenty", 8));
@@ -536,10 +572,10 @@ namespace ScaleniaMW
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("<table class=\"tabelaCzarna\">");
+            sb.AppendLine("<table class=\"Css_tabelaCzarna\">");
             sb.AppendLine("<tr>");
-            sb.AppendLine(Tbl_th("Potrącenie pod drogi", 2, classCss: Css_borderBl_mr5.nameClass, style: "width: 24%"));
-            sb.AppendLine(Tbl_th(jednostkaStara.PotrWart.ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass, style: "width: 12%"));
+            sb.AppendLine(Tbl_th("Potrącenie pod drogi", 2, classCss: "Css_borderBl_mr5", style: "width: 24%"));
+            sb.AppendLine(Tbl_th(jednostkaStara.PotrWart.ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText", style: "width: 12%"));
             sb.AppendLine(Tbl_th("", style: "width: 14%"));
             sb.AppendLine(Tbl_th("", style: "width: 12%"));
             sb.AppendLine(Tbl_th("", style: "width: 12%"));
@@ -547,8 +583,8 @@ namespace ScaleniaMW
             sb.AppendLine(Tbl_th("", style: "width: 14%"));
             sb.AppendLine("</tr>");
             sb.AppendLine("<tr>");
-            sb.AppendLine(Tbl_th("Ekwiwalent należny", 2, classCss: Css_borderBl_mr5.nameClass, style: "width: 24%"));
-            sb.AppendLine(Tbl_th((jednostkaStara.WrtJednPrzed - jednostkaStara.PotrWart).ToString("F2", CultureInfo.InvariantCulture), classCss: Css_borderBl_mr5_greenText.nameClass, style: "width: 12%"));
+            sb.AppendLine(Tbl_th("Ekwiwalent należny", 2, classCss: "Css_borderBl_mr5", style: "width: 24%"));
+            sb.AppendLine(Tbl_th((jednostkaStara.WrtJednPrzed - jednostkaStara.PotrWart).ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText", style: "width: 12%"));
             sb.AppendLine(Tbl_th("", style: "width: 14%"));
             sb.AppendLine(Tbl_th("", style: "width: 12%"));
             sb.AppendLine(Tbl_th("", style: "width: 12%"));
@@ -574,28 +610,28 @@ namespace ScaleniaMW
             string SumaWartosciPo = jednoskaRejNowa.SumaWartosciDzialekNowych();
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<table class=\"" + Css_tabelaCzerwona.nameClass + "\">");
+            sb.AppendLine("<table class=\"" + "Css_tabelaCzerwona" + "\">");
 
             sb.AppendLine("<tr>");
-            sb.AppendLine(Tbl_th("", classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th("Należny", classCss: Css_borderRed.nameClass, colspan: 2));
-            sb.AppendLine(Tbl_th("Zaprojektowany", classCss: Css_borderRed.nameClass, colspan: 2));
+            sb.AppendLine(Tbl_th("", classCss: "Css_borderRed"));
+            sb.AppendLine(Tbl_th("Należny", classCss: "Css_borderRed", colspan: 2));
+            sb.AppendLine(Tbl_th("Zaprojektowany", classCss: "Css_borderRed", colspan: 2));
             sb.AppendLine("</tr>");
 
             sb.AppendLine("<tr>");
-            sb.AppendLine(Tbl_th("", classCss: Css_borderRed.nameClass, style: "width: 14%"));
-            sb.AppendLine(Tbl_th("Pow. ewid.", classCss: Css_borderRed.nameClass, style: "width: 22%"));
-            sb.AppendLine(Tbl_th("Wartość", classCss: Css_borderRed.nameClass, style: "width: 23%; color: green;"));
-            sb.AppendLine(Tbl_th("Powierzchnia", classCss: Css_borderRed.nameClass, style: "width: 22%"));
-            sb.AppendLine(Tbl_th("Wartość", classCss: Css_borderRed.nameClass, style: "width: 23%; color: green;"));
+            sb.AppendLine(Tbl_th("", classCss: "Css_borderRed", style: "width: 14%"));
+            sb.AppendLine(Tbl_th("Pow. ewid.", classCss: "Css_borderRed", style: "width: 22%"));
+            sb.AppendLine(Tbl_th("Wartość", classCss: "Css_borderRed", style: "width: 23%; color: green;"));
+            sb.AppendLine(Tbl_th("Powierzchnia", classCss: "Css_borderRed", style: "width: 22%"));
+            sb.AppendLine(Tbl_th("Wartość", classCss: "Css_borderRed", style: "width: 23%; color: green;"));
             sb.AppendLine("</tr>");
 
             sb.AppendLine("<tr>");
-            sb.AppendLine(Tbl_th("RAZEM GOSP.:", classCss: Css_borderRed.nameClass, style: "color: red;"));
-            sb.AppendLine(Tbl_th(sumaPowierzchniDzialekPrzedScaleniem, classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th(SumaWartosciPrzed, classCss: Css_borderRed.nameClass, style: "color: green;"));
-            sb.AppendLine(Tbl_th(sumaPowierzchniDzialekNowych, classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th(SumaWartosciPo, classCss: Css_borderRed.nameClass, style: "color: green;"));
+            sb.AppendLine(Tbl_th("RAZEM GOSP.:", classCss:  "Css_borderRed", style: "color: red;"));
+            sb.AppendLine(Tbl_th(sumaPowierzchniDzialekPrzedScaleniem, classCss:  "Css_borderRed"));
+            sb.AppendLine(Tbl_th(SumaWartosciPrzed, classCss:  "Css_borderRed", style: "color: green;"));
+            sb.AppendLine(Tbl_th(sumaPowierzchniDzialekNowych, classCss:  "Css_borderRed"));
+            sb.AppendLine(Tbl_th(SumaWartosciPo, classCss:  "Css_borderRed", style: "color: green;"));
             sb.AppendLine("</tr>");
             sb.AppendLine("</table>");
 
@@ -612,35 +648,35 @@ namespace ScaleniaMW
             string odchFkt = (jednoskaRejNowa.SumaWartosciDzialekNowychDecimal() - jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu()).ToString("F2", CultureInfo.InvariantCulture);
             string odchDop = Math.Abs((jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu() * 0.03M)).ToString("F2", CultureInfo.InvariantCulture);
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<table class=\"" + Css_tabelaCzerwona.nameClass + "\">");
+            sb.AppendLine("<table class=\"" + "Css_tabelaCzerwona" + "\">");
 
             sb.AppendLine("<tr>");
-            sb.AppendLine(Tbl_th("", classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th("Stan przed scaleniem", classCss: Css_borderRed.nameClass, colspan: 3));
-            sb.AppendLine(Tbl_th("Stan po scaleniu", classCss: Css_borderRed.nameClass, colspan: 2));
-            sb.AppendLine(Tbl_th("", 2, classCss: Css_borderRed.nameClass));
+            sb.AppendLine(Tbl_th("", classCss:  "Css_borderRed"));
+            sb.AppendLine(Tbl_th("Stan przed scaleniem", classCss:  "Css_borderRed", colspan: 3));
+            sb.AppendLine(Tbl_th("Stan po scaleniu", classCss:  "Css_borderRed", colspan: 2));
+            sb.AppendLine(Tbl_th("", 2, classCss:  "Css_borderRed"));
             sb.AppendLine("</tr>");
 
             sb.AppendLine("<tr>");
-            sb.AppendLine(Tbl_th("", classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th("Powierzchnia<br>w ha", classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th("Wartość<br>przed scaleniem", classCss: Css_borderRedTxtGreen.nameClass));
-            sb.AppendLine(Tbl_th("Ekwiwalent<br>należny", classCss: Css_borderRedTxtGreen.nameClass));
-            sb.AppendLine(Tbl_th("Powierzchnia<br>w ha", classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th("Wartość<br>po scaleniu", classCss: Css_borderRedTxtGreen.nameClass));
-            sb.AppendLine(Tbl_th("Odchyłka<br>faktyczna", classCss: Css_borderRedTxtGreen.nameClass));
-            sb.AppendLine(Tbl_th("Odchyłka<br>dopuszczalna ±3%", classCss: Css_borderRedTxtGreen.nameClass));
+            sb.AppendLine(Tbl_th("", classCss:  "Css_borderRed"));
+            sb.AppendLine(Tbl_th("Powierzchnia<br>w ha", classCss:  "Css_borderRed"));
+            sb.AppendLine(Tbl_th("Wartość<br>przed scaleniem", classCss:  "Css_borderRedTxtGreen"));
+            sb.AppendLine(Tbl_th("Ekwiwalent<br>należny", classCss:  "Css_borderRedTxtGreen"));
+            sb.AppendLine(Tbl_th("Powierzchnia<br>w ha", classCss:  "Css_borderRed"));
+            sb.AppendLine(Tbl_th("Wartość<br>po scaleniu", classCss:  "Css_borderRedTxtGreen"));
+            sb.AppendLine(Tbl_th("Odchyłka<br>faktyczna", classCss:  "Css_borderRedTxtGreen"));
+            sb.AppendLine(Tbl_th("Odchyłka<br>dopuszczalna ±3%", classCss:  "Css_borderRedTxtGreen"));
             sb.AppendLine("</tr>");
 
             sb.AppendLine("<tr>");
-            sb.AppendLine(Tbl_th("RAZEM GOSP.:", classCss: Css_borderRed.nameClass, style: "height: 20"));
-            sb.AppendLine(Tbl_th(sumaPowierzchniDzialekPrzedScaleniem, classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th(sumaWartosciPrzed, classCss: Css_borderRedTxtGreen.nameClass));
-            sb.AppendLine(Tbl_th(ekwiwalentNaleznyPopotraceniu, classCss: Css_borderRedTxtGreen.nameClass));
-            sb.AppendLine(Tbl_th(sumaPowierzchniDzialekNowych, classCss: Css_borderRed.nameClass));
-            sb.AppendLine(Tbl_th(sumaWartosciPo, classCss: Css_borderRedTxtGreen.nameClass));
-            sb.AppendLine(Tbl_th(odchFkt, classCss: Css_borderRedTxtGreen.nameClass));
-            sb.AppendLine(Tbl_th(odchDop, classCss: Css_borderRedTxtGreen.nameClass));
+            sb.AppendLine(Tbl_th("RAZEM GOSP.:", classCss:  "Css_borderRed", style: "height: 20"));
+            sb.AppendLine(Tbl_th(sumaPowierzchniDzialekPrzedScaleniem, classCss:  "Css_borderRed"));
+            sb.AppendLine(Tbl_th(sumaWartosciPrzed, classCss:  "Css_borderRedTxtGreen"));
+            sb.AppendLine(Tbl_th(ekwiwalentNaleznyPopotraceniu, classCss:  "Css_borderRedTxtGreen"));
+            sb.AppendLine(Tbl_th(sumaPowierzchniDzialekNowych, classCss:  "Css_borderRed"));
+            sb.AppendLine(Tbl_th(sumaWartosciPo, classCss:  "Css_borderRedTxtGreen"));
+            sb.AppendLine(Tbl_th(odchFkt, classCss:  "Css_borderRedTxtGreen"));
+            sb.AppendLine(Tbl_th(odchDop, classCss:  "Css_borderRedTxtGreen"));
             sb.AppendLine("</tr>");
             sb.AppendLine("</table>");
 
@@ -695,7 +731,7 @@ namespace ScaleniaMW
             decimal sumaDoplat = odchylkaFaktyczna + doplataZaDrogi;
 
 
-            sb.AppendLine("<table class=\"" + Css_TabelkaPodBilansem.nameClass + "\">");
+            sb.AppendLine("<table class=\"" + "Css_TabelkaPodBilansem" + "\">");
 
 
             sb.AppendLine("<tr>");
@@ -761,7 +797,7 @@ namespace ScaleniaMW
             // tabelka oświadczenia uczestnika i omówienie zastrzeżeń
             int wysWierszaTabeliPX = 18;
   
-            sb.AppendLine("<table class=\""+ Css_tabelaCzarna.nameClass + " style=\"font-size: 10px;\">");
+            sb.AppendLine("<table class=\""+ "Css_tabelaCzarna" + " style=\"font-size: 10px;\">");
             sb.AppendLine("<tr>");
             sb.AppendLine("<th style=\"border: 1px solid; width: 50%;\"><i>Oświadczenie uczestnika scalenia w sprawie projektu wstępnego, " +
                 "treść ewentualnych zastrzeżeń, data i podpis uczestnika scalenia.</i></th>");

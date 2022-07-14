@@ -44,10 +44,11 @@
             </MenuItem>
             <MenuItem x:Name="itemImportJednostkiSN"  Header="Baza.fdb">
                 <MenuItem Header="Połącz i pobierz dane do przypisania jednostek(przed) w stanie po scalenu z bazy FDB" Foreground="Black" Click="ItemImportJednostkiSN_Click"/>
-                <MenuItem Header="Automatycznie przypisz jednostki" ToolTip="Przypisz jeśli w stanie ''przed'' była tylko jedna jednostka" Click="MenuItem_AutoPrzypiszJednostki" Foreground="Black"/>
-                <MenuItem Header="Automatycznie przypisz jednostki na podstawie jednostki głównej z grupy" 
+                <MenuItem Header="Automatycznie przypisz jednostki" ToolTip="Przypisz jeśli w stanie ''przed'' była tylko jedna jednostka" 
+                          Click="MenuItem_AutoPrzypiszJednostki" Foreground="Black"/>
+                <!--<MenuItem Header="Automatycznie przypisz jednostki na podstawie jednostki głównej z grupy" 
                           ToolTip="Przypisze NKR'owi jednostkę, która jest w nazwie NKRu np. 4001 -> [obr]4*1000+1[NJR] -> 1" Foreground="Black"
-                          Click="MenuItem_Click_PrzejdzDoWyboryRodzajuNumeracjiNKRu"/>
+                          Click="MenuItem_Click_PrzejdzDoWyboryRodzajuNumeracjiNKRu"/>-->
                 <Separator></Separator>
                 <MenuItem Header="Załaduj przypisane jednostki do bazy FDB" Click="Button_ZaladujDoBazy" Foreground="ForestGreen"/>
                 <Separator></Separator>
@@ -71,7 +72,7 @@
 
         </Menu>
 
-        <StackPanel x:Name="StackPanelWyboruRodzajuNumeracji" Panel.ZIndex="1"  Background="White" Grid.Row="2" Visibility="Hidden">
+        <!--<StackPanel x:Name="StackPanelWyboruRodzajuNumeracji" Panel.ZIndex="1"  Background="White" Grid.Row="2" Visibility="Visible">
             <StackPanel Margin="25">
                 
           
@@ -87,7 +88,7 @@
             </DockPanel>
 
             </StackPanel>
-        </StackPanel>
+        </StackPanel>-->
 
         <StackPanel Grid.Row="2" x:Name="panelLogowania2"  Visibility="Hidden">
             <Label>Login:</Label>
@@ -118,7 +119,7 @@
 
                 <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">NKR</Label>
                 <DockPanel Margin="0,20,0,0" Grid.Column="0">
-                    <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged"/>
+                    <ListBox x:Name="listBoxNkr" MinWidth="100" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged" />
                 </DockPanel>
                 <DockPanel Grid.Column="0">
                     <Label  VerticalAlignment="Bottom" Content="Ilość: "  Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
@@ -127,7 +128,7 @@
 
                 <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI</Label>
                 <DockPanel  Margin="0,20,0,0" Grid.Column="1">
-                    <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxDzialkiNowe_SelectionChanged"/>
+                    <ListBox x:Name="listBoxDzialkiNowe" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left"/>
                 </DockPanel>
                 <DockPanel Grid.Column="1">
                     <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
@@ -154,19 +155,21 @@
                     </StackPanel>
                 </Button>
                 <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#2676d0" FontWeight="Heavy">NJR</Label>
-
+                <Label Margin="5,0" Padding="0">Łącznie działek</Label>
+                    <Label Padding="5,0">do przypisania:</Label>
+                <Label x:Name="labelAllParcelToAssige">0</Label>
             </StackPanel>
 
             <!--<DataGrid Margin="5,0" x:Name="dgNiedopJednostki"  CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding"/>-->
 
-            <DataGrid Margin="5,0" Panel.ZIndex="1" Opacity="0.8" x:Name="dgNiedopJednostki" Style="{DynamicResource DGHeaderStyle}" AutoGenerateColumns="False" CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding">
-                <DataGrid.Columns>
+            <DataGrid Margin="5,0" Panel.ZIndex="1" Opacity="0.8" x:Name="dgNiedopJednostki" Style="{DynamicResource DGHeaderStyle}" AutoGenerateColumns="True"  CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                <!--<DataGrid.Columns>
                     <DataGridTextColumn Header="NR DZIAŁKI" Binding="{Binding NrDzialki, Mode=OneWay}" />
                     <DataGridTextColumn Header="NKR PO SCALENIU" Binding="{Binding NowyNKR, Mode=OneWay}" />
                     <DataGridTextColumn Header="ID JEDN.PRZED" Binding="{Binding IdJednS, Mode=OneWay}" />
                     <DataGridTextColumn Header="JEDN. REJ. PRZED" Binding="{Binding NrJednEwopis, Mode=OneWay}" />
                     <DataGridTextColumn x:Name="kolumnaJednRej" Header="ID JEDN PRZYPISANA" Binding="{Binding PrzypisanyNrRej}" />
-                </DataGrid.Columns>
+                </DataGrid.Columns>-->
             </DataGrid>
         </DockPanel>
 
