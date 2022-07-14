@@ -31,7 +31,7 @@
     <ProductName>SCALENIAMW2</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>56</ApplicationRevision>
+    <ApplicationRevision>57</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -396,7 +396,9 @@
     <Resource Include="EWOPIS\img\LOGO_DUŻY8.png" />
     <Resource Include="EWOPIS\img\LOGO_DUŻY9.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\loading.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -5,6 +5,7 @@ using ScaleniaMW.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -136,20 +137,27 @@ namespace ScaleniaMW
         List<DopasowanieJednostek> listaDopasowJednos = new List<DopasowanieJednostek>();
         List<DopasowanieJednostek> listaDopasowJednos_CzyLadowac = new List<DopasowanieJednostek>();
         bool czyPolaczonoZBaza = false;
-        private void ItemImportJednostkiSN_Click(object sender, RoutedEventArgs e)
+
+        private async void ItemImportJednostkiSN_Click(object sender, RoutedEventArgs e)
         {
+            LoadingLabel(true);
             try
             {
                 aktualizujSciezkeZPropertis();
-                this.dbContext = new MainDbContext(connectionString);
-                assigedUnitService = new AssigedUnitService(dbContext);
+                var resDb = await Task.Run(() => new MainDbContext(connectionString));
+                this.dbContext = resDb;
+
+                var resAssigned = await Task.Run(() => new AssigedUnitService(dbContext));
+                assigedUnitService = resAssigned;
+
                 assigedUnitService.FillUI((WindowPrzypiszRejGr)windowPrzypiszRejGr);
                 SetSelectedIndex0();
-
+                itemImportJednostkiSN.Background = Brushes.Green;
+                LoadingLabel(false);
             }
             catch (Exception ex)
             {
-
+                LoadingLabel(false);
                 itemImportJednostkiSN.Background = Brushes.Red;
                 itemImportJednostkiSN.Header = "Baza.fdb";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
@@ -171,22 +179,38 @@ namespace ScaleniaMW
             }
         }
 
+        public async Task LoadingLabel(bool work)
+        {
+            var isWork = work;
+            loadPanel.Visibility = Visibility.Visible;
+            //mainTabControl.IsEnabled = false;
+            while (isWork)
+            {
+                labelLoad.Dispatcher.Invoke(() => rotateLodingCircle.Angle += 2);
+                await Task.Delay(1);
+            }
+
+
+            if (!isWork)
+            {
+                //mainTabControl.IsEnabled = true;
+                loadPanel.Visibility = Visibility.Hidden;
+            }
+        }
 
         private void Button_ZaladujDoBazy(object sender, RoutedEventArgs e)
         {
             bool connected = dbContext == null ? false : dbContext.Database.Exists();
-
             if (connected)
             {
                 var toDatabase = assigedUnitService.DataToLoadDb();
-
                 foreach (var parcel in toDatabase)
                 {
                     dbContext.Dzialki_nowe.FirstOrDefault(x => x.ID_ID == parcel.id_parcel).RJDRPRZED = parcel.idJednPrzed;
-                    Console.WriteLine(string.Join(", ", parcel.NKR, parcel.Nrdz, parcel.IJR));
+                    progresBar.Value++;
                 }
-
                 dbContext.SaveChanges();
+                MessageBox.Show("Jednostki przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
             }
             else
             {
@@ -317,26 +341,26 @@ namespace ScaleniaMW
             windowPrzypiszRejGr.Topmost = false;
         }
 
-        private void DgNiedopJednostki_CurrentCellChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                //  Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
+        //private void DgNiedopJednostki_CurrentCellChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        //  Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej);
 
-                Console.WriteLine("CHANGED ");
+        //        Console.WriteLine("CHANGED ");
 
-                listBoxNkr.Items.Refresh();
-                listBoxNrRej.Items.Refresh();
-                listBoxDzialkiNowe.Items.Refresh();
-                dgNiedopJednostki.Items.Refresh();
-            }
-            catch (Exception)
-            {
+        //        listBoxNkr.Items.Refresh();
+        //        listBoxNrRej.Items.Refresh();
+        //        listBoxDzialkiNowe.Items.Refresh();
+        //        dgNiedopJednostki.Items.Refresh();
+        //    }
+        //    catch (Exception)
+        //    {
 
-                Console.WriteLine(" catch DgNiedopJednostki_CurrentCellChanged");
-            }
+        //        Console.WriteLine(" catch DgNiedopJednostki_CurrentCellChanged");
+        //    }
 
-        }
+        //}
 
         private void ButtonPrzypisz_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -379,7 +403,8 @@ namespace ScaleniaMW
                     //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
                     // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
                     // command.CommandText = "select  j.id_id from jedn_rej_N j join obreby o on o.id_ID = j.id_obr join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
-                    command.CommandText = "select distinct j.id_id from jedn_rej_N j left join dzialki_n dn on dn.rjdr = j.iD_ID left join obreby o on o.id_ID = j.id_obr left join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by j.ijr";
+                    //command.CommandText = "select distinct j.id_id from jedn_rej_N j left join dzialki_n dn on dn.rjdr = j.iD_ID left join obreby o on o.id_ID = j.id_obr left join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by j.ijr";
+                    command.CommandText = "select distinct j.id_id from jedn_rej_N j left join dzialki_n dn on dn.rjdr = j.iD_ID left join obreby o on o.id_ID = j.id_obr left join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
                     FbDataAdapter adapter = new FbDataAdapter(command);
                     dt = new DataTable();
 
