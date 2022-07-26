@@ -384,6 +384,7 @@ namespace ScaleniaMW.Views
                 itemPolaczZBaza.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
 
                 DataTable obreby = odczytajZSql(Constants.SQL_Obreby);
+
                 for (int i = 0; i < obreby.Rows.Count; i++)
                 {
                     ListaObrebow.DodajObreb(Convert.ToInt32(obreby.Rows[i][0]), Convert.ToInt32(obreby.Rows[i][1]), obreby.Rows[i][2].ToString());
@@ -452,8 +453,7 @@ namespace ScaleniaMW.Views
                     decimal Wartosc = Dzialki_nowe.Rows[i][7].Equals(DBNull.Value) ? 0 : Convert.ToDecimal(Dzialki_nowe.Rows[i][7]);
 
                     Dzialka_N dzialka = new Dzialka_N(Id_dz, Id_obr, NrDz, PowDz, Rjdr, RjdrPrzed, KW, Wartosc);
-                    JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == Rjdr).DodajDzialke(dzialka);
-
+                    JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == Rjdr)?.DodajDzialke(dzialka);
                 }
 
                 DataTable Dzialki_przed = odczytajZSql(Constants.SQL_Dzialka);
