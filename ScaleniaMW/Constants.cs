@@ -34,5 +34,10 @@ namespace ScaleniaMW
         public const string SQLDeleteAllDzialki0 = @"delete from dzialki_n where id_id like sidd";
 
         public const string SQLAfterStateToCompare = @"select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where (jn.id_sti <> 1 or jn.id_sti is null) and (d.id_sti <> 1 or d.id_sti is null)  order by idgrp";
+
+
+        // window nkrKwObrot            
+        public const string SQLPaginationUnit = "update jedn_rej j set uwagi = (select count(ijr) from jedn_rej where ijr <= j.ijr and id_obr = j.id_obr)";
+        public const string SQLPaginationUnitWithGrouping = "update jedn_rej j set uwagi = case when idgrp is null or idgrp = id_id or idgrp = 0 then(select count(ijr) from jedn_rej where ijr <= j.ijr and id_obr = j.id_obr and (idgrp is null or idgrp = id_id or idgrp = 0)) else (select count(ijr) from jedn_rej where ijr <= (select ijr from jedn_rej where j.idgrp = idgrp and idgrp = id_id) and id_obr = j.id_obr and(idgrp is null or idgrp = id_id or idgrp = 0)) end";
     }
 }

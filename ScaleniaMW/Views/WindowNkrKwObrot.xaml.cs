@@ -508,7 +508,7 @@ namespace ScaleniaMW
         {
             try
             {
-                BazaFB.Execute_SQL("update jedn_rej upd set uwagi = case when idgrp is null or idgrp = 0 or idgrp = id_id then (select count(nkr) from jedn_rej j2 where (j2.idgrp is null or j2.idgrp = 0 or j2.idgrp = j2.id_id ) and j2.nkr <= upd.nkr) else null end");
+                BazaFB.Execute_SQL(Constants.SQLPaginationUnit);
                 MessageBox.Show("Sukces!");
             }
             catch (Exception c)
@@ -516,5 +516,19 @@ namespace ScaleniaMW
                 MessageBox.Show(c.Message);
             }
         }
+
+        private void ItemPrzypiszLpWUwgGrupy_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                BazaFB.Execute_SQL(Constants.SQLPaginationUnitWithGrouping);
+                MessageBox.Show("Sukces!");
+            }
+            catch (Exception c)
+            {
+                MessageBox.Show(c.Message);
+            }
+        }
+
     }
 }
