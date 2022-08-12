@@ -11,7 +11,7 @@ namespace ScaleniaMW.Models
         public int NKR { get; set; }
         public string Nrdz { get; set; }
         public string IJR { get; set; }
-        public int idJednPrzed;
+        public int? idJednPrzed;
         public int id_parcel;
     }
 }

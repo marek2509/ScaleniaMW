@@ -143,17 +143,19 @@ namespace ScaleniaMW
             LoadingLabel(true);
             try
             {
+                Console.WriteLine("START IMPORT");
                 aktualizujSciezkeZPropertis();
                 var resDb = await Task.Run(() => new MainDbContext(connectionString));
                 this.dbContext = resDb;
 
                 var resAssigned = await Task.Run(() => new AssigedUnitService(dbContext));
                 assigedUnitService = resAssigned;
-
+                Console.WriteLine("middle IMPORT");
                 assigedUnitService.FillUI((WindowPrzypiszRejGr)windowPrzypiszRejGr);
                 SetSelectedIndex0();
                 itemImportJednostkiSN.Background = Brushes.Green;
                 LoadingLabel(false);
+                Console.WriteLine("end IMPORT");
             }
             catch (Exception ex)
             {
@@ -390,81 +392,22 @@ namespace ScaleniaMW
         {
             try
             {
+
                 aktualizujSciezkeZPropertis();
                 using (var connection = new FbConnection(connectionString))
                 {
                     connection.Open();
-                    FbCommand command = new FbCommand();
-                    FbTransaction transaction = connection.BeginTransaction();
+                    FbCommand writeCommand = new FbCommand(" update jedn_rej_n j set NKR = (select count(ijr) from jedn_rej_n where ijr <= j.ijr and (id_sti = 0 or id_sti is null)) ", connection);
+                    //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
 
-                    command.Connection = connection;
-                    command.Transaction = transaction;
-                    // działające zapytanie na nrobr-nrdz NKR 
-                    //  command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case WHEN JEDN_REJ.nkr is null then obreby.id * 1000 + JEDN_REJ.grp else JEDN_REJ.nkr end as NKR_Z_GRUPAMI from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                    // command.CommandText = "select sn.id_jednn, sn.id_jedns, js.ijr stara_jedn_ewop, jn.ijr nowy_nkr from JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn order by id_jednn";
-                    // command.CommandText = "select  j.id_id from jedn_rej_N j join obreby o on o.id_ID = j.id_obr join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
-                    //command.CommandText = "select distinct j.id_id from jedn_rej_N j left join dzialki_n dn on dn.rjdr = j.iD_ID left join obreby o on o.id_ID = j.id_obr left join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by j.ijr";
-                    command.CommandText = "select distinct j.id_id from jedn_rej_N j left join dzialki_n dn on dn.rjdr = j.iD_ID left join obreby o on o.id_ID = j.id_obr left join gminy g on g.id_id = j.id_gm where j.id_sti <> 1 or j.id_sti is null order by g.teryt, o.id, j.ijr";
-                    FbDataAdapter adapter = new FbDataAdapter(command);
-                    dt = new DataTable();
+                    writeCommand.ExecuteNonQuery();
+                    writeCommand.Parameters.Clear();
 
-                    adapter.Fill(dt);
-
-                    Console.WriteLine("row count:" + dt.Rows.Count);
-                    Console.WriteLine("column count:" + dt.Columns.Count);
-
-                    if (0 == dt.Rows.Count)
-                    {
-                        textBlockLogInfo.Text = "Brak danych";
-                    }
-
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        Console.WriteLine(dt.Rows[i][0]);
-                    }
-
-                    connection.Close();
-                    itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
-                    itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
-                    dgNiedopJednostki.Items.Refresh();
-                    czyPolaczonoZBaza = true;
+                    MessageBox.Show("NKR przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
+                    progresBar.Visibility = Visibility.Hidden;
                 }
-                try
-                {
-                    aktualizujSciezkeZPropertis();
-                    using (var connection = new FbConnection(connectionString))
-                    {
-                        connection.Open();
-                        FbCommand writeCommand = new FbCommand("UPDATE JEDN_REJ_N SET nkr= @NKR where Id_Id IN(@IDID)", connection);
-                        //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
 
-                        progresBar.Value = 0;
-                        progresBar.Visibility = Visibility.Visible;
-                        progresBar.Maximum = dt.Rows.Count;
-                        for (int i = 0; i < dt.Rows.Count; i++)
-                        {
 
-                            Console.WriteLine(dt.Rows[i][0]);
-
-                        }
-
-                        for (int i = 0; i < dt.Rows.Count; i++)
-                        {
-                            writeCommand.Parameters.Add("@NKR", i + 1);
-                            writeCommand.Parameters.Add("@IDID", dt.Rows[i][0]);
-                            writeCommand.ExecuteNonQuery();
-                            writeCommand.Parameters.Clear();
-                            progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
-                        }
-                        connection.Close();
-                        MessageBox.Show("NKR przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
-                        progresBar.Visibility = Visibility.Hidden;
-                    }
-                }
-                catch
-                {
-
-                }
             }
             catch (Exception ex)
             {
