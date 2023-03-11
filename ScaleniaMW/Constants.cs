@@ -38,6 +38,7 @@ namespace ScaleniaMW
 
         // window nkrKwObrot            
         public const string SQLPaginationUnit = "update jedn_rej j set uwagi = (select count(ijr) from jedn_rej where ijr <= j.ijr and id_obr = j.id_obr)";
-        public const string SQLPaginationUnitWithGrouping = "update jedn_rej j set uwagi = case when idgrp is null or idgrp = id_id or idgrp = 0 then(select count(ijr) from jedn_rej where ijr <= j.ijr and id_obr = j.id_obr and (idgrp is null or idgrp = id_id or idgrp = 0)) else (select count(ijr) from jedn_rej where ijr <= (select ijr from jedn_rej where j.idgrp = idgrp and idgrp = id_id) and id_obr = j.id_obr and(idgrp is null or idgrp = id_id or idgrp = 0)) end";
+        public const string SQLPaginationUnitWithGroupingToObreb = "update jedn_rej j set uwagi = case when idgrp is null or idgrp = id_id or idgrp = 0 then(select count(ijr) from jedn_rej where ijr <= j.ijr and id_obr = j.id_obr and (idgrp is null or idgrp = id_id or idgrp = 0)) else (select count(ijr) from jedn_rej where ijr <= (select ijr from jedn_rej where j.idgrp = id_id) and id_obr = (select id_obr from jedn_rej where j.idgrp = id_id) and(idgrp is null or idgrp = id_id or idgrp = 0)) end";
+        public const string SQLPaginationUnitWithGroupingToGmina = "update jedn_rej j set uwagi = case when idgrp is null or idgrp = id_id or idgrp = 0 then(select count(ijr) from jedn_rej where ((ijr <= j.ijr and id_obr = j.id_obr) or id_obr in (select id_id from obreby where id<(select id from obreby where id_id = j.id_obr))) and (idgrp is null or idgrp = id_id or idgrp = 0) and id_gm = j.id_gm) else 0 end";
     }
 }
