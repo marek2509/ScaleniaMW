@@ -71,6 +71,9 @@
                 </DockPanel>-->
                 <CheckBox x:Name="CheckBoxIsSemicolon" Checked="CheckBoxIsSemicolon_Checked" Unchecked="CheckBoxIsSemicolon_Unchecked">Przecinek zamiast kropki w WWE</CheckBox>
             </MenuItem>
+            <MenuItem Header="Wzorzec" Foreground="White" Click="MenuItemWzorzec_Click"/>
+
+
             <MenuItem Header="Ustawienia FDB" Foreground="White">
                 <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>
                 <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>

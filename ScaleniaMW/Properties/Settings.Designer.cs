@@ -286,5 +286,65 @@ namespace ScaleniaMW.Properties {
                 this["przecinekWWWe"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool radioTabZyczenDomyslne {
+            get {
+                return ((bool)(this["radioTabZyczenDomyslne"]));
+            }
+            set {
+                this["radioTabZyczenDomyslne"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool radioTabZyczenWlasne {
+            get {
+                return ((bool)(this["radioTabZyczenWlasne"]));
+            }
+            set {
+                this["radioTabZyczenWlasne"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool radioTabZyczenWylacz {
+            get {
+                return ((bool)(this["radioTabZyczenWylacz"]));
+            }
+            set {
+                this["radioTabZyczenWylacz"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBoxWzorzec_naglowekOswiadczenUczestnika {
+            get {
+                return ((string)(this["textBoxWzorzec_naglowekOswiadczenUczestnika"]));
+            }
+            set {
+                this["textBoxWzorzec_naglowekOswiadczenUczestnika"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBoxWzorzec_naglowekOmowienieZastrzezen {
+            get {
+                return ((string)(this["textBoxWzorzec_naglowekOmowienieZastrzezen"]));
+            }
+            set {
+                this["textBoxWzorzec_naglowekOmowienieZastrzezen"] = value;
+            }
+        }
     }
 }

@@ -209,6 +209,9 @@
     <Compile Include="Views\WindowRepairGML.xaml.cs">
       <DependentUpon>WindowRepairGML.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WindowWzorzec.xaml.cs">
+      <DependentUpon>WindowWzorzec.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wspolnota.cs" />
     <Compile Include="ZsumwaneWartosciZPorownania.cs" />
     <Page Include="EWOPIS\EwopisMainWindow.xaml">
@@ -276,6 +279,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WindowRepairGML.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WindowWzorzec.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -775,5 +775,11 @@ namespace ScaleniaMW.Views
             Console.WriteLine(Properties.Settings.Default.przecinekWWWe);
             Helpers.ExtensionsClass.IsSemicolon = false;
         }
+
+        private void MenuItemWzorzec_Click(object sender, RoutedEventArgs e)
+        {
+            WindowWzorzec windowWzorzec = new WindowWzorzec();
+            windowWzorzec.Show();
+        }
     }
 }

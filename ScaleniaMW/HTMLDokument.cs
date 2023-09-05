@@ -794,17 +794,33 @@ namespace ScaleniaMW
 
         public static string HTML_TabelaOswiadczenia()
         {
+            var isDefaultValue = Properties.Settings.Default.radioTabZyczenDomyslne;
+            var isMyText = Properties.Settings.Default.radioTabZyczenWlasne;
+            var isNotTable = Properties.Settings.Default.radioTabZyczenWylacz;
+
+            if (isNotTable)
+            {
+                return "";
+            }
+
+            var textLeftHeader = "Oświadczenie uczestnika scalenia w sprawie projektu wstępnego, treść ewentualnych zastrzeżeń, data i podpis uczestnika scalenia.";
+            var textRightHeader = "Omówienie zastrzeżeń, proponowane zmiany<br>data i podpis geodety.";
+           
+            if (isMyText)
+            {
+                textLeftHeader = Properties.Settings.Default.textBoxWzorzec_naglowekOswiadczenUczestnika;
+                textRightHeader = Properties.Settings.Default.textBoxWzorzec_naglowekOmowienieZastrzezen;
+            }
+
             StringBuilder sb = new StringBuilder();
             // tabelka oświadczenia uczestnika i omówienie zastrzeżeń
             int wysWierszaTabeliPX = 18;
   
             sb.AppendLine("<table class=\""+ "Css_tabelaCzarna" + " style=\"font-size: 10px;\">");
             sb.AppendLine("<tr>");
-            sb.AppendLine("<th style=\"border: 1px solid; width: 50%;\"><i>Oświadczenie uczestnika scalenia w sprawie projektu wstępnego, " +
-                "treść ewentualnych zastrzeżeń, data i podpis uczestnika scalenia.</i></th>");
-            sb.AppendLine("<th style=\"border: 1px solid; width: 50%;\"><i><b>Omówienie zastrzeżeń, proponowane zmiany <br> data i podpis geodety.</b></i></th>");
+            sb.AppendLine("<th style=\"border: 1px solid; width: 50%;\"><i>" + textLeftHeader + "</i></th>");
+            sb.AppendLine("<th style=\"border: 1px solid; width: 50%;\"><i><b>" + textRightHeader + "</b></i></th>");
             sb.AppendLine("</tr>");
-
 
             //generowanie pustych wierszy w tabeli
             for (int i = 0; i < 9; i++)
