@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScaleniaMW.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -254,16 +255,16 @@ namespace ScaleniaMW
                                 "<td class=\"Css_borderBl\">" + zeStarejJedn.NazwaObrebu + "</td>" +
                                 "<td class=\"Css_borderBl\">" + zeStarejJedn.Ijr_Przed + "</td>" +
                                 "<td class=\"Css_borderBl\">" + zeStarejJedn.Ud_Z_Jrs + "</td>" +
-                                "<td class=\"Css_borderBl\">" + zeStarejJedn.Pow_Przed.ToString("F4", CultureInfo.InvariantCulture) + "</td>" +
-                                "<td class=\"Css_borderBl Css_greenText\">" + zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture) + "</td> " +
+                                "<td class=\"Css_borderBl\">" + zeStarejJedn.Pow_Przed.ToString("F4", CultureInfo.InvariantCulture).ToSemicolon() + "</td>" +
+                                "<td class=\"Css_borderBl Css_greenText\">" + zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</td> " +
                               "</tr>");
             }
 
             //podsumowanie tabeli udzialow ze starych jednostek
             sb.AppendLine("<td colspan=\"4\" style=\"text-align: right; border: none;  margin-right:2px; \">" +
                                  "<span>Powierzchnia/</span><span class=\"Css_greenText\">Wartość przed scaleniem:</span></td>" +
-                             "<td class=\"Css_borderBl_mr5\"><b>" + JednoskaRejNowa.SumaPowJednostekPrzed().ToString("F4", CultureInfo.InvariantCulture) + "</b></td>" +
-                             "<td class=\"Css_borderBl_mr5_greenText\"><b>" + JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture) + "</b></td>");
+                             "<td class=\"Css_borderBl_mr5\"><b>" + JednoskaRejNowa.SumaPowJednostekPrzed().ToString("F4", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td>" +
+                             "<td class=\"Css_borderBl_mr5_greenText\"><b>" + JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td>");
             sb.AppendLine("</table>");
             return sb.ToString();
         }
@@ -299,13 +300,13 @@ namespace ScaleniaMW
                 sb.AppendLine(Tbl_td(zeStarejJedn.NazwaObrebu.ToString()));
                 sb.AppendLine(Tbl_td(zeStarejJedn.Ijr_Przed.ToString()));
                 sb.AppendLine(Tbl_td(zeStarejJedn.Ud_Z_Jrs.ToString()));
-                sb.AppendLine(Tbl_td(zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
+                sb.AppendLine(Tbl_td(zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText"));
                 sb.AppendLine("</tr>");
             }
 
             //podsumowanie tabeli udzialow ze starych jednostek
             sb.AppendLine("<td colspan=\"4\" class=\"Css_greenText\" style=\"text-align: right; border: none;  margin-right:2px; \"><b>Ekwiwalent należny:</b></td>" +
-                             "<td class=\"Css_borderBl_mr5_greenText\"><b>" + JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture) + "</b></td>");
+                             "<td class=\"Css_borderBl_mr5_greenText\"><b>" + JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td>");
             sb.AppendLine("</table>");
             return sb.ToString();
         }
@@ -332,17 +333,17 @@ namespace ScaleniaMW
                 sb.AppendLine(Tbl_td(zeStarejJedn.NazwaObrebu.ToString()));
                 sb.AppendLine(Tbl_td(zeStarejJedn.Ijr_Przed.ToString()));
                 sb.AppendLine(Tbl_td(zeStarejJedn.Ud_Z_Jrs.ToString()));
-                sb.AppendLine(Tbl_td(zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
-                sb.AppendLine(Tbl_td(zeStarejJedn.PotrWart.ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
-                sb.AppendLine(Tbl_td((zeStarejJedn.WrtJednPrzed - zeStarejJedn.PotrWart).ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
+                sb.AppendLine(Tbl_td(zeStarejJedn.WrtJednPrzed.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText"));
+                sb.AppendLine(Tbl_td(zeStarejJedn.PotrWart.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText"));
+                sb.AppendLine(Tbl_td((zeStarejJedn.WrtJednPrzed - zeStarejJedn.PotrWart).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText"));
                 sb.AppendLine("</tr>");
             }
 
             //podsumowanie tabeli udzialow ze starych jednostek
             sb.AppendLine("<td colspan =\"4\" class=\"Css_greenText\" style=\"text-align: right; border: none;  margin-right:2px; \"><b>Suma wartości:</b></td>");
-            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
-            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartosciPotracen().ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
-            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu().ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText"));
+            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText"));
+            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartosciPotracen().ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText"));
+            sb.AppendLine(Tbl_th(JednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu().ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText"));
             sb.AppendLine("</table>");
             return sb.ToString();
         }
@@ -380,14 +381,14 @@ namespace ScaleniaMW
             sb.AppendLine(Tbl_td("Razem:", classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
             if (jednostkaStara == null)
             {
-                sb.AppendLine(Tbl_td("-.----"));
-                sb.AppendLine(Tbl_td("-.--"));
+                sb.AppendLine(Tbl_td("-.----").ToSemicolon());
+                sb.AppendLine(Tbl_td("-.--").ToSemicolon());
             }
             else
             {
 
-                sb.AppendLine(Tbl_td(jednostkaStara.SumaPowierzchniDzialek(), classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
-                sb.AppendLine(Tbl_td(jednostkaStara.SumaWartosciDzialek(), classCss: "Css_borderBl_mr5_greenText", style: "font-weight: bold;"));
+                sb.AppendLine(Tbl_td(jednostkaStara.SumaPowierzchniDzialek().ToSemicolon(), classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
+                sb.AppendLine(Tbl_td(jednostkaStara.SumaWartosciDzialek().ToSemicolon(), classCss: "Css_borderBl_mr5_greenText", style: "font-weight: bold;"));
             }
             sb.AppendLine(Tbl_td(""));
             return sb.ToString();
@@ -400,13 +401,13 @@ namespace ScaleniaMW
             sb.AppendLine(Tbl_td("Razem:", classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
             if (jednoskaRejNowa == null)
             {
-                sb.AppendLine(Tbl_td("-.----"));
-                sb.AppendLine(Tbl_td("-.--"));
+                sb.AppendLine(Tbl_td("-.----").ToSemicolon());
+                sb.AppendLine(Tbl_td("-.--").ToSemicolon());
             }
             else
             {
-                sb.AppendLine(Tbl_td(jednoskaRejNowa.SumaPowierzchniDzialekNowych(), classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
-                sb.AppendLine(Tbl_td(jednoskaRejNowa.SumaWartosciDzialekNowych(), classCss: "Css_borderBl_mr5_greenText", style: "font-weight: bold;"));
+                sb.AppendLine(Tbl_td(jednoskaRejNowa.SumaPowierzchniDzialekNowych().ToSemicolon(), classCss: "Css_borderBl_mr5", style: "font-weight: bold;"));
+                sb.AppendLine(Tbl_td(jednoskaRejNowa.SumaWartosciDzialekNowych().ToSemicolon(), classCss: "Css_borderBl_mr5_greenText", style: "font-weight: bold;"));
             }
             sb.AppendLine(Tbl_td(""));
             return sb.ToString();
@@ -432,8 +433,8 @@ namespace ScaleniaMW
             if (dzialki != null && dzialki.Count > iterator)
             {
                 nrdzPrzed = dzialki[iterator].NrDz;
-                pewDzialki = dzialki[iterator].PowDz.ToString("F4", CultureInfo.InvariantCulture);
-                wartPrzed = dzialki[iterator].Wartosc.ToString("F2", CultureInfo.InvariantCulture);
+                pewDzialki = dzialki[iterator].PowDz.ToString("F4", CultureInfo.InvariantCulture).ToSemicolon();
+                wartPrzed = dzialki[iterator].Wartosc.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon();
                 kwPrzed = dzialki[iterator].KW;
             }
             else
@@ -464,8 +465,8 @@ namespace ScaleniaMW
             if ((dzialki != null) && dzialki.Count > iterator)
             {
                 nrdzPo = dzialki[iterator].NrDz;
-                powDzialkiPo = dzialki[iterator].PowDz.ToString("F4", CultureInfo.InvariantCulture);
-                wartPo = dzialki[iterator].Wartosc.ToString("F2", CultureInfo.InvariantCulture);
+                powDzialkiPo = dzialki[iterator].PowDz.ToString("F4", CultureInfo.InvariantCulture).ToSemicolon();
+                wartPo = dzialki[iterator].Wartosc.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon();
                 kwPo = dzialki[iterator].KW;
             }
             else
@@ -575,7 +576,7 @@ namespace ScaleniaMW
             sb.AppendLine("<table class=\"Css_tabelaCzarna\">");
             sb.AppendLine("<tr>");
             sb.AppendLine(Tbl_th("Potrącenie pod drogi", 2, classCss: "Css_borderBl_mr5", style: "width: 24%"));
-            sb.AppendLine(Tbl_th(jednostkaStara.PotrWart.ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText", style: "width: 12%"));
+            sb.AppendLine(Tbl_th(jednostkaStara.PotrWart.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText", style: "width: 12%"));
             sb.AppendLine(Tbl_th("", style: "width: 14%"));
             sb.AppendLine(Tbl_th("", style: "width: 12%"));
             sb.AppendLine(Tbl_th("", style: "width: 12%"));
@@ -584,7 +585,7 @@ namespace ScaleniaMW
             sb.AppendLine("</tr>");
             sb.AppendLine("<tr>");
             sb.AppendLine(Tbl_th("Ekwiwalent należny", 2, classCss: "Css_borderBl_mr5", style: "width: 24%"));
-            sb.AppendLine(Tbl_th((jednostkaStara.WrtJednPrzed - jednostkaStara.PotrWart).ToString("F2", CultureInfo.InvariantCulture), classCss: "Css_borderBl_mr5_greenText", style: "width: 12%"));
+            sb.AppendLine(Tbl_th((jednostkaStara.WrtJednPrzed - jednostkaStara.PotrWart).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), classCss: "Css_borderBl_mr5_greenText", style: "width: 12%"));
             sb.AppendLine(Tbl_th("", style: "width: 14%"));
             sb.AppendLine(Tbl_th("", style: "width: 12%"));
             sb.AppendLine(Tbl_th("", style: "width: 12%"));
@@ -604,10 +605,10 @@ namespace ScaleniaMW
 
         public static string HTML_CzerwonkaTabelka(JR_Nowa jednoskaRejNowa)
         {
-            string sumaPowierzchniDzialekPrzedScaleniem = jednoskaRejNowa.SumaPowJednostekPrzed().ToString("F4", CultureInfo.InvariantCulture);
-            string SumaWartosciPrzed = jednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture);
-            string sumaPowierzchniDzialekNowych = jednoskaRejNowa.SumaPowierzchniDzialekNowych();
-            string SumaWartosciPo = jednoskaRejNowa.SumaWartosciDzialekNowych();
+            string sumaPowierzchniDzialekPrzedScaleniem = jednoskaRejNowa.SumaPowJednostekPrzed().ToString("F4", CultureInfo.InvariantCulture).ToSemicolon();
+            string SumaWartosciPrzed = jednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture).ToSemicolon();
+            string sumaPowierzchniDzialekNowych = jednoskaRejNowa.SumaPowierzchniDzialekNowych().ToSemicolon();
+            string SumaWartosciPo = jednoskaRejNowa.SumaWartosciDzialekNowych().ToSemicolon();
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<table class=\"" + "Css_tabelaCzerwona" + "\">");
@@ -640,13 +641,13 @@ namespace ScaleniaMW
 
         public static string HTML_CzerwonkaTabelkaPotracenia(JR_Nowa jednoskaRejNowa)
         {
-            string sumaPowierzchniDzialekPrzedScaleniem = jednoskaRejNowa.SumaPowJednostekPrzed().ToString("F4", CultureInfo.InvariantCulture);
-            string sumaWartosciPrzed = jednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture);
-            string sumaPowierzchniDzialekNowych = jednoskaRejNowa.SumaPowierzchniDzialekNowych();
-            string sumaWartosciPo = jednoskaRejNowa.SumaWartosciDzialekNowych();
-            string ekwiwalentNaleznyPopotraceniu = jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu().ToString("F2", CultureInfo.InvariantCulture);
-            string odchFkt = (jednoskaRejNowa.SumaWartosciDzialekNowychDecimal() - jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu()).ToString("F2", CultureInfo.InvariantCulture);
-            string odchDop = Math.Abs((jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu() * 0.03M)).ToString("F2", CultureInfo.InvariantCulture);
+            string sumaPowierzchniDzialekPrzedScaleniem = jednoskaRejNowa.SumaPowJednostekPrzed().ToString("F4", CultureInfo.InvariantCulture).ToSemicolon();
+            string sumaWartosciPrzed = jednoskaRejNowa.SumaWartJednostekPrzed().ToString("F2", CultureInfo.InvariantCulture).ToSemicolon();
+            string sumaPowierzchniDzialekNowych = jednoskaRejNowa.SumaPowierzchniDzialekNowych().ToSemicolon();
+            string sumaWartosciPo = jednoskaRejNowa.SumaWartosciDzialekNowych().ToSemicolon();
+            string ekwiwalentNaleznyPopotraceniu = jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu().ToString("F2", CultureInfo.InvariantCulture).ToSemicolon();
+            string odchFkt = (jednoskaRejNowa.SumaWartosciDzialekNowychDecimal() - jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu()).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon();
+            string odchDop = Math.Abs((jednoskaRejNowa.SumaWartoJednPrzedPoPotraceinu() * 0.03M)).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon();
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<table class=\"" + "Css_tabelaCzerwona" + "\">");
 
@@ -695,19 +696,19 @@ namespace ScaleniaMW
             string szerTabPodBilansem = jednoskaRejNowa.Odcht == true ? "288" : "0.36%";
             // Tabelka czarna pod bilansem
             sb.AppendLine("<table width = " + szerTabPodBilansem + " style =\"border: 1px solid black; border-collapse: collapse; font-size: 9pt; \">");
-            sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka dopuszczalna 3%:</b></td><td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + Decimal.Round(sumaWartosciPrzed * 0.03M, 2).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
-            sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka faktyczna:</b></td><td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
+            sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka dopuszczalna 3%:</b></td><td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + Decimal.Round(sumaWartosciPrzed * 0.03M, 2).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td></tr>");
+            sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka faktyczna:</b></td><td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td></tr>");
 
 
             if (jednoskaRejNowa.Odcht == false)
             {
                 if (odchylkaFaktyczna < 0)
                 {
-                    sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Winien otrzymać: </b></td><td style =\"border: 1px solid black; text-align: center; color: green;\" width=33.34%><b>" + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
+                    sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Winien otrzymać: </b></td><td style =\"border: 1px solid black; text-align: center; color: green;\" width=33.34%><b>" + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td></tr>");
                 }
                 else
                 {
-                    sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Winien zapłacić: </b></td><td style =\"border: 1px solid black; text-align: center; color: red;\" width=33.34%><b>" + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture) + "</b></td></tr>");
+                    sb.AppendLine("<tr><td style =\"border: 1px solid black;\" width=66.66%><b>Winien zapłacić: </b></td><td style =\"border: 1px solid black; text-align: center; color: red;\" width=33.34%><b>" + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td></tr>");
                 }
             }
             else
@@ -742,7 +743,7 @@ namespace ScaleniaMW
 
             sb.AppendLine("<tr>");
             sb.Append(Tbl_th("Dopłata za drogi"));
-            sb.Append(Tbl_th(doplataZaDrogi.ToString("F2", CultureInfo.InvariantCulture), style: "color: blue;"));
+            sb.Append(Tbl_th(doplataZaDrogi.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), style: "color: blue;"));
             sb.AppendLine("</tr>");
 
             //sb.AppendLine("<tr>" +
@@ -752,7 +753,7 @@ namespace ScaleniaMW
 
             sb.AppendLine("<tr>");
             sb.Append(Tbl_th((odchylkaFaktyczna >= 0 ? "Dopłata" : "Spłata") + " za ekwiwalent"));
-            sb.Append(Tbl_th(odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture), style: "color: " + (odchylkaFaktyczna >= 0  ?  "blue;" : "red;")));
+            sb.Append(Tbl_th(odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), style: "color: " + (odchylkaFaktyczna >= 0  ?  "blue;" : "red;")));
             sb.AppendLine("</tr>");
 
 
@@ -760,7 +761,7 @@ namespace ScaleniaMW
 
             //sb.AppendLine("<tr>" +
             //    "<td style =\"border: 1px solid black;\" width=66.66%><b>Odchyłka faktyczna:</b></td>" +
-            //    "<td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture) + "</b></td>" +
+            //    "<td style =\"border: 1px solid black; text-align: center;\" width=33.34%><b>" + odchylkaFaktyczna.ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td>" +
             //    "</tr>");
 
             //jednoskaRejNowa.DoplZaDrNieNaliczaj
@@ -773,14 +774,14 @@ namespace ScaleniaMW
 
                 sb.AppendLine(Tbl_th("Łącznie winien " + ( sumaDoplat >= 0 ? "otrzymać: " : "zapłacić")));
 
-                sb.Append(Tbl_th(Math.Abs(sumaDoplat).ToString("F2", CultureInfo.InvariantCulture), style: "color: " + (sumaDoplat >= 0 ? "blue;" : "red;")));
+                sb.Append(Tbl_th(Math.Abs(sumaDoplat).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon(), style: "color: " + (sumaDoplat >= 0 ? "blue;" : "red;")));
 
                 sb.AppendLine("</tr>");
 
                 //sb.AppendLine("<tr>" +
                 //    "<td style =\"border: 1px solid black;\" width=66.66%><b>Łącznie winien otrzymać: </b></td>" +
                 //    "<td style =\"border: 1px solid black; text-align: center; color: green;\" width=33.34%><b>"
-                //    + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture) + "</b></td>" +
+                //    + Math.Abs(odchylkaFaktyczna).ToString("F2", CultureInfo.InvariantCulture).ToSemicolon() + "</b></td>" +
                 //    "</tr>");
 
 

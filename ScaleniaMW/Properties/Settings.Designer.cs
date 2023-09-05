@@ -274,5 +274,17 @@ namespace ScaleniaMW.Properties {
                 this["czyWziacNrJednRejZNkrPo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool przecinekWWWe {
+            get {
+                return ((bool)(this["przecinekWWWe"]));
+            }
+            set {
+                this["przecinekWWWe"] = value;
+            }
+        }
     }
 }

@@ -39,7 +39,11 @@ namespace ScaleniaMW.Views
                 checkBoxWezZNKR.IsChecked = false;
                 checkBoxWezZUwagi.IsChecked = true;
             }
+
+            Helpers.ExtensionsClass.IsSemicolon =  Properties.Settings.Default.przecinekWWWe;
+            CheckBoxIsSemicolon.IsChecked = Properties.Settings.Default.przecinekWWWe;
             // odczytUstawien();        
+            Console.WriteLine("IsSemicolon: " + Helpers.ExtensionsClass.IsSemicolon);
         }
 
         string usunOd = "kontury";
@@ -754,6 +758,22 @@ namespace ScaleniaMW.Views
 
             var doWydruku = dlaChemika.ToList().Select(x => string.Join("\t", x.ijr, x.podmiot, x.dzialka));
             await Task.Run(() => EWOPIS.Infrstruktura.Plik.Save(string.Join("\n", doWydruku)));
+        }
+
+        private void CheckBoxIsSemicolon_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.przecinekWWWe = true;
+            Properties.Settings.Default.Save();
+            Console.WriteLine(Properties.Settings.Default.przecinekWWWe);
+            Helpers.ExtensionsClass.IsSemicolon = true;
+        }
+
+        private void CheckBoxIsSemicolon_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.przecinekWWWe = false;
+            Properties.Settings.Default.Save();
+            Console.WriteLine(Properties.Settings.Default.przecinekWWWe);
+            Helpers.ExtensionsClass.IsSemicolon = false;
         }
     }
 }

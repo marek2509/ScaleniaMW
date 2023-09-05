@@ -69,6 +69,7 @@
                     </RadioButton>
                     <TextBox x:Name="textBoxZastapNaSekcjeNieparzysta" VerticalAlignment="Top" Margin="5" MinWidth="20">!@#$</TextBox>
                 </DockPanel>-->
+                <CheckBox x:Name="CheckBoxIsSemicolon" Checked="CheckBoxIsSemicolon_Checked" Unchecked="CheckBoxIsSemicolon_Unchecked">Przecinek zamiast kropki w WWE</CheckBox>
             </MenuItem>
             <MenuItem Header="Ustawienia FDB" Foreground="White">
                 <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>

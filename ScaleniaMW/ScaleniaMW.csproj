@@ -31,7 +31,7 @@
     <ProductName>SCALENIAMW2</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>60</ApplicationRevision>
+    <ApplicationRevision>63</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -157,6 +157,7 @@
       <DependentUpon>WindowLogowanieDoFDB.xaml</DependentUpon>
     </Compile>
     <Compile Include="GMLRepair.cs" />
+    <Compile Include="Helpers\ExtensionsClass.cs" />
     <Compile Include="HTMLDokument.cs" />
     <Compile Include="HtmlDokumentUproszczonyWykazWydzEkwiwalentow.cs" />
     <Compile Include="HtmlDokumentWykazWydzEkwiwalentow.cs" />
