@@ -1,6 +1,7 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Win32;
 using ScaleniaMW.Entities;
+using ScaleniaMW.Models;
 using ScaleniaMW.Services;
 using System;
 using System.Collections.Generic;
@@ -205,7 +206,7 @@ namespace ScaleniaMW
             bool connected = dbContext == null ? false : dbContext.Database.Exists();
             if (connected)
             {
-                var toDatabase = assigedUnitService.DataToLoadDb();
+                var toDatabase = assigedUnitService.DataToLoadDbWithNull();
                 foreach (var parcel in toDatabase)
                 {
                     dbContext.Dzialki_nowe.FirstOrDefault(x => x.ID_ID == parcel.id_parcel).RJDRPRZED = parcel.idJednPrzed;
@@ -227,7 +228,7 @@ namespace ScaleniaMW
             if (connected)
             {
                 assigedUnitService.AutoAssignment();
-                assigedUnitService.FillUI(windowPrzypiszRejGr);
+                assigedUnitService.FillUI((WindowPrzypiszRejGr)windowPrzypiszRejGr);
                 RefresUI();
             }
         }
@@ -392,7 +393,6 @@ namespace ScaleniaMW
         {
             try
             {
-
                 aktualizujSciezkeZPropertis();
                 using (var connection = new FbConnection(connectionString))
                 {
@@ -406,8 +406,6 @@ namespace ScaleniaMW
                     MessageBox.Show("NKR przypisano pomyślnie.", "SUKCES!", MessageBoxButton.OK);
                     progresBar.Visibility = Visibility.Hidden;
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -539,9 +537,30 @@ namespace ScaleniaMW
         private void ListBoxNkr_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            assigedUnitService.FillUI(windowPrzypiszRejGr);
+            assigedUnitService.FillUI((WindowPrzypiszRejGr)windowPrzypiszRejGr);
             listBoxNrRej.SelectedIndex = 0;
             listBoxDzialkiNowe.SelectedIndex = 0;
+        }
+
+        //private void DgNiedopJednostki_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        //{
+        //    //assigedUnitService.FillUI((WindowPrzypiszRejGr)windowPrzypiszRejGr);
+        //}
+
+        private void ButtonCofnijPrzypisana_Click(object sender, RoutedEventArgs e)
+        {
+            var multiply = dgNiedopJednostki.SelectedItems; // nkr
+            List<AssignedUnitInParcelToDatabase> listToDelete = new List<AssignedUnitInParcelToDatabase>();
+            for (int i = 0; i < dgNiedopJednostki.SelectedItems.Count; i++)
+            {
+                var itemToDel = (AssignedUnitInParcelToDatabase)dgNiedopJednostki.SelectedItems[i];
+                assigedUnitService.JednoskiRejstroweNoweDto.FirstOrDefault(x => itemToDel.NKR == x.Ijr)
+                    .Dzialki.FirstOrDefault(d => (d.ObrNr + "-" + d.Idd) == itemToDel.Nrdz && d.RjdrPrzed == itemToDel.idJednPrzed).RjdrPrzed = null;
+            }
+
+            assigedUnitService.FillUI(windowPrzypiszRejGr);
+            RefresUI();
+
         }
         //koniec klasy
     }

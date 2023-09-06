@@ -154,6 +154,14 @@
                         <Image  x:Name="imageHand" HorizontalAlignment="Stretch" Width="40" VerticalAlignment="Stretch" Source="../Resources/PenWhite.png"/>
                     </StackPanel>
                 </Button>
+                <Button Height="62" Width="120" HorizontalAlignment="Left" x:Name="buttonCofnijPrzypisana" VerticalAlignment="Top" Margin="0,20" Click="ButtonCofnijPrzypisana_Click" Background="#d02626" FontWeight="Bold" Foreground="White" >
+                    <StackPanel HorizontalAlignment="Center">
+                        <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
+                        <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">USUŃ</Label>
+                        <Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">WYBRANE</Label>
+                        <!--<Label HorizontalAlignment="Center" Foreground="{Binding ElementName=buttonPrzypisz, Path=Foreground}">-> -> -> -></Label>-->
+                    </StackPanel>
+                </Button>
                 <Label FontFamily="Times" FontSize="55" HorizontalAlignment="Center" Foreground="#2676d0" FontWeight="Heavy">NJR</Label>
                 <Label Margin="5,0" Padding="0">Łącznie działek</Label>
                     <Label Padding="5,0">do przypisania:</Label>
@@ -162,12 +170,19 @@
 
             <!--<DataGrid Margin="5,0" x:Name="dgNiedopJednostki"  CurrentCellChanged="DgNiedopJednostki_CurrentCellChanged" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CellEditEnding="DgNiedopJednostki_CellEditEnding"/>-->
 
-            <DataGrid Margin="5,0" Panel.ZIndex="1" Opacity="0.8" x:Name="dgNiedopJednostki" Style="{DynamicResource DGHeaderStyle}" AutoGenerateColumns="True"  CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
-                <!--<DataGrid.Columns>
+            <DataGrid Margin="5,0" Panel.ZIndex="1" Opacity="0.8" x:Name="dgNiedopJednostki" Style="{DynamicResource DGHeaderStyle}" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" >
+                <!--SelectedCellsChanged="DgNiedopJednostki_SelectedCellsChanged"-->
+            <!--<DataGrid Margin="5,0" Panel.ZIndex="1" Opacity="0.8" x:Name="dgNiedopJednostki" Style="{DynamicResource DGHeaderStyle}" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="True">-->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="NKR" Binding="{Binding NKR, Mode=OneWay}" />
+                    <DataGridTextColumn Header="Nrdz" Binding="{Binding Nrdz, Mode=OneWay}" />
+                    <DataGridTextColumn Header="IJR" Binding="{Binding IJR, Mode=OneWay}" />
+                </DataGrid.Columns>
+                        <!--<DataGrid.Columns>
                     <DataGridTextColumn Header="NR DZIAŁKI" Binding="{Binding NrDzialki, Mode=OneWay}" />
                     <DataGridTextColumn Header="NKR PO SCALENIU" Binding="{Binding NowyNKR, Mode=OneWay}" />
                     <DataGridTextColumn Header="ID JEDN.PRZED" Binding="{Binding IdJednS, Mode=OneWay}" />
-                    <DataGridTextColumn Header="JEDN. REJ. PRZED" Binding="{Binding NrJednEwopis, Mode=OneWay}" />
+                    <DataGridTextColumn Header="ID JEDN.PRZED" Binding="{Binding IdJednS, Mode=OneWay}" />
                     <DataGridTextColumn x:Name="kolumnaJednRej" Header="ID JEDN PRZYPISANA" Binding="{Binding PrzypisanyNrRej}" />
                 </DataGrid.Columns>-->
             </DataGrid>
