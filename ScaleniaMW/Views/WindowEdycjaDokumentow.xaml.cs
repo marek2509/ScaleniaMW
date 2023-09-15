@@ -781,5 +781,24 @@ namespace ScaleniaMW.Views
             WindowWzorzec windowWzorzec = new WindowWzorzec();
             windowWzorzec.Show();
         }
+
+        private void ItemGenerujPlikPoprawDane_DodajDzialki_0_tez_dla_usunietych_Click(object sender, RoutedEventArgs e)
+        {
+            DataTable jednostkiBezDzialekPoScaleniu = odczytajZSql(Constants.SQLIJRGdzieBrakStanuPoScaleniuRowniezWUsunietych);
+            listNKR = new List<ModelNKR>();
+            // powinna być jedna kolumna z nr NKR(jedn_rej_n.ijr) dla których brak stanu po scaleniu
+            StringBuilder plikPoprawDane = new StringBuilder();
+
+            for (int i = 0; i < jednostkiBezDzialekPoScaleniu.Rows.Count; i++)
+            {
+                for (int j = 0; j < jednostkiBezDzialekPoScaleniu.Columns.Count; j++)
+                {
+                    int nkr = Convert.ToInt32(jednostkiBezDzialekPoScaleniu.Rows[i][j]);
+                    listNKR.Add(new ModelNKR(nkr));
+                }
+            }
+            dataGridNkrBezDzialekPo.ItemsSource = listNKR;
+            pokazPanelLadowaniaDzialek_0();
+        }
     }
 }
