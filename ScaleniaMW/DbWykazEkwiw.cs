@@ -16,9 +16,7 @@ namespace ScaleniaMW
         {
             DataTable dataTable = BazaFB.Get_DataTable("select replace( substring(konfig from POSITION('PROCENT=' in upper( konfig))+8 for (POSITION('GRCENNE' in upper(konfig)) - 10 - POSITION('PROCENT=' in upper(konfig)))), '.', ',') from SYSTEM ");
             double _wartoscPotracenia;
-            Console.WriteLine("potracenie: " + dataTable.Rows[0][0].ToString());
             bool convertSucces = double.TryParse(dataTable.Rows[0][0].ToString(), out _wartoscPotracenia);
-            Console.WriteLine(_wartoscPotracenia);
             if (convertSucces)
             {
                 WartoscPotracenia = _wartoscPotracenia / 100;
@@ -162,10 +160,13 @@ namespace ScaleniaMW
         {
             if (wlasciciel.IdMalzenstwa > 0)
             {
+
+                Console.WriteLine(wlasciciel.Rodzice.Remove(wlasciciel.Rodzice.IndexOf("Ż:") >= 0 ? wlasciciel.Rodzice.IndexOf("Ż:") : 0).Replace("M:", ""));
+                Console.WriteLine(wlasciciel.Rodzice.Remove(1, wlasciciel.Rodzice.IndexOf("Ż:") >= 0 ? wlasciciel.Rodzice.IndexOf("Ż:") : 0).Replace("M:", ""));
                 Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania,
-                    wlasciciel.Rodzice.Remove(wlasciciel.Rodzice.IndexOf("Ż:")).Replace("M:", ""),"M:"));
+                    wlasciciel.Rodzice.Remove(wlasciciel.Rodzice.IndexOf("Ż:") >= 0 ? wlasciciel.Rodzice.IndexOf("Ż:") : 0).Replace("M:", ""),"M:"));
                 Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania,
-                    wlasciciel.Rodzice.Remove(1, wlasciciel.Rodzice.IndexOf("Ż:")).Replace("M:", ""),"Ż:"));
+                    wlasciciel.Rodzice.Remove(1, wlasciciel.Rodzice.IndexOf("Ż:") >= 0 ? wlasciciel.Rodzice.IndexOf("Ż:") : 0).Replace("M:", ""),"Ż:"));
             }
             else
             {

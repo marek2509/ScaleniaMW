@@ -16,7 +16,7 @@ namespace ScaleniaMW
         static readonly string SQLNKRzNieprzypisanymIjr = "select distinct jn.id_id ID,  jn.ijr nowy__nkr, dn.idd nr__dz from  JEDN_SN sn join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id where dn.rjdrprzed is null or dn.rjdrprzed like '' order by id_jednn";
         static readonly string SQLNKRzPodejrzanymNrIjr = "select  js.ijr stara_jedn_ewop, js.id_id staraId, jn.ijr nowy_nkr, id_jednn, dn.idd, dn.rjdrprzed , (select ijr from jedn_rej where dn.rjdrprzed = id_id ) Przypisany_IJR from  JEDN_SN sn  join JEDN_REJ js on js.ID_ID = sn.id_jedns join JEDN_REJ_N jn on jn.ID_ID = sn.id_jednn join dzialki_n dn on dn.rjdr = jn.id_id order by id_jednn";
         static readonly string SQLUdzialyJednPrzedWStaniePo = @"select sum(ud_nr) SUMA__UDZIALU , js.ijr, o.naz obreb from jedn_sn jsn join jedn_rej js on js.Id_id = jsn.id_jedns join obreby o on o.id_id = js.id_obr group by id_jedns, js.ijr, o.naz HAVING sum(ud_nr)  <> 1 order by SUMA__UDZIALU";
-        static readonly string SQLsprawdzenieSumWartosciZDzialekIZJednRej = @"select ijr, (select sum(round(wwgsp,2)) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) sumA_z_GOSPODARSTW ,(select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) suma_Z_DZIALEK, round((select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) - (select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null )group by jsn.id_jednn) ,2) roznica from jedn_rej_n j2 where id_sti <> 1 or id_sti is null order by roznica, ijr";
+        static readonly string SQLsprawdzenieSumWartosciZDzialekIZJednRej = @"select ijr, (select sum(round(wwgsp,2)) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) sumA_z_GOSPODARSTW , (select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null) and (d.id_sti = 0 OR d.id_sti is null) group by jsn.id_jednn) suma_Z_DZIALEK, round((select  sum(wwgsp) from jedn_sn  where id_jednn = j2.id_id group by  id_jednn) - (select sum(d.ww*jsn.ud_nr) from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where j2.id_id = jn.id_id and (jn.id_sti <> 1 or jn.id_sti is null) and (d.id_sti = 0 OR d.id_sti is null)  group by jsn.id_jednn) ,2) roznica from jedn_rej_n j2 where id_sti <> 1 or id_sti is null order by roznica, ijr";
         static readonly string SQLbrakGrupyRejestrowejDlaJednostkiIWlascPrzed = @"select ijr, nkr, grj GRUPA_WLASC, gr grupa_JEDNOSTKI from udzialy  u join jedn_rej j on j.id_id = u.id_jedn where grj is null or grj like '' or gr is null or gr like '' group by ijr, nkr, grj, gr order by NKR";
         static readonly string SQLbrakGrupyRejestrowejDlaJednostkiIWLASCPo = @"select ijr, nkr, grj GRUPA_WLASC, gr grupa_JEDNOSTKI from udzialy_n  u join jedn_rej_n j on j.id_id = u.id_jedn where grj is null or grj like '' or gr is null or gr like '' group by ijr, nkr, grj, gr order by NKR";
         //static readonly string SQLPrzedJednoskiZUdzialamiRoznymiOd1 = @"select o.id obreb, j.ijr, sum( u.ud_nr) from jedn_rej j join udzialy u on u.id_jedn = j.id_id left join obreby o on o.id_id = j.id_obr group by j.id_id, ijr, o.id having sum(u.ud_nr) <> 1";
@@ -207,7 +207,7 @@ namespace ScaleniaMW
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-               
+
                 listaWarosci.Add(new ModelSWartosciZDzialekIZjednRej
                 {
                     NKR = Convert.ToInt32(dt.Rows[i][0].Equals(DBNull.Value) ? 0 : dt.Rows[i][0]),
@@ -259,10 +259,10 @@ namespace ScaleniaMW
                     string adres = WlascicielePO.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][4].ToString();
                     int idMalzenstwa = WlascicielePO.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePO.Rows[i][5]);
                     string symbolWl = WlascicielePO.Rows[i][6].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][6].ToString();
-                    string rodzice = WlascicielePO.Rows[i][7].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][7].ToString();
+                    string rodzice = WlascicielePO.Rows[i][7].ToString().Equals(DBNull.Value) ? "" : WlascicielePO.Rows[i][9].ToString();
 
                     Wlasciciel wlasciciel = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWl, rodzice);
-                    JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN).DodajWlasciciela(wlasciciel);
+                    JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == idJednN)?.DodajWlasciciela(wlasciciel);
                 }
 
                 DataTable Jedn_SN = BazaFB.Get_DataTable(Constants.SQLJedn_SN);
@@ -286,7 +286,6 @@ namespace ScaleniaMW
                 DataTable Dzialki_nowe = BazaFB.Get_DataTable(Constants.SQL_Dzialki_N);
                 for (int i = 0; i < Dzialki_nowe.Rows.Count; i++)
                 {
-
                     int Id_dz = Dzialki_nowe.Rows[i][0].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_nowe.Rows[i][0]);
                     int Id_obr = Dzialki_nowe.Rows[i][1].Equals(DBNull.Value) ? 0 : Convert.ToInt32(Dzialki_nowe.Rows[i][1]);
                     string NrDz = Dzialki_nowe.Rows[i][2].ToString().Equals(DBNull.Value) ? "" : Dzialki_nowe.Rows[i][2].ToString();
@@ -297,7 +296,7 @@ namespace ScaleniaMW
                     decimal Wartosc = Dzialki_nowe.Rows[i][7].Equals(DBNull.Value) ? 0 : Convert.ToDecimal(Dzialki_nowe.Rows[i][7]);
 
                     Dzialka_N dzialka = new Dzialka_N(Id_dz, Id_obr, NrDz, PowDz, Rjdr, RjdrPrzed, KW, Wartosc);
-                    JednostkiRejestroweNowe.Jedn_REJ_N.Find(x => x.IdJednRejN == Rjdr).DodajDzialke(dzialka);
+                    JednostkiRejestroweNowe.Jedn_REJ_N.FirstOrDefault(x => x.IdJednRejN == Rjdr)?.DodajDzialke(dzialka);
 
                 }
 
@@ -339,7 +338,7 @@ namespace ScaleniaMW
                     string adres = WlascicielePrzed.Rows[i][4].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][4].ToString();
                     int idMalzenstwa = WlascicielePrzed.Rows[i][5].Equals(DBNull.Value) ? 0 : Convert.ToInt32(WlascicielePrzed.Rows[i][5]);
                     string symbolWlad = WlascicielePrzed.Rows[i][6].ToString().Equals(DBNull.Value) ? "" : WlascicielePrzed.Rows[i][6].ToString();
-                    
+
                     // Wlasciciel wlascicielPrzed = new Wlasciciel(udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa);
                     WlascicielePrzedTMP.Add(new WlascicielStanPrzed(idJednS, udzial, udzial_NR, nazwaWlasciciela.ToUpper(), adres.ToUpper(), idMalzenstwa, symbolWlad, ""));
                 }
@@ -420,12 +419,12 @@ namespace ScaleniaMW
             {
                 if (idNkrZeZmiana.Exists(x => x == Convert.ToInt32(resultQuerySql.Rows[i][0])))
                 {
-                    listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Insert(0, "Id: " + resultQuerySql.Rows[i][0] + " NKR: " +  resultQuerySql.Rows[i][1]);
+                    listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Insert(0, "Id: " + resultQuerySql.Rows[i][0] + " NKR: " + resultQuerySql.Rows[i][1]);
                 }
             }
 
             sb.Insert(0, "____________________________________________________________________________________________\n");
-            listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Distinct().ToList().ForEach(x => sb.Insert(0,x+"\n"));
+            listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Distinct().ToList().ForEach(x => sb.Insert(0, x + "\n"));
             if (listaJednZeZmianamyWlasnosciIzmianaWStaniePrzed.Count > 0)
             {
                 sb.Insert(0, "Jednostki na które zwrócić szczególną uwagę, ponieważ były edytowane w stanie przed:\n");
