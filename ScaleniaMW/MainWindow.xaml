@@ -31,6 +31,8 @@
                             <Label Padding="0" Margin="0" Foreground="{Binding ElementName=Ewopis, Path=Foreground}">Siemiatyckiego</Label>
                             </StackPanel>         
                         </Button>
+                        <Button Width="auto" Height="43" Background="#214b75" Foreground="White" x:Name="btnWZDE" HorizontalAlignment="Left" Padding="20 10" Click="BtnWZDE_Click">WZDE</Button>
+
                     </DockPanel>
                 </StackPanel>
                 <Label FontWeight="Bold"  Background="#1e304f" Foreground="White" Grid.Column="2" HorizontalContentAlignment="Center" FontSize="25" >Wybierz co chcesz zrobić</Label>

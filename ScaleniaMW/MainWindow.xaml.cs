@@ -502,5 +502,11 @@ namespace ScaleniaMW
             windowRepairGML.Show();
             windowScaleniaMW.Close();
         }
+
+        private void BtnWZDE_Click(object sender, RoutedEventArgs e)
+        {
+            WindowWZDE windowWZDE = new WindowWZDE();
+            windowWZDE.Show();
+        }
     }
 }
