@@ -158,6 +158,7 @@
       <DependentUpon>WindowLogowanieDoFDB.xaml</DependentUpon>
     </Compile>
     <Compile Include="GMLRepair.cs" />
+    <Compile Include="Helpers\ConnectionHelper.cs" />
     <Compile Include="Helpers\ExtensionsClass.cs" />
     <Compile Include="HTMLDokument.cs" />
     <Compile Include="HtmlDokumentUproszczonyWykazWydzEkwiwalentow.cs" />
@@ -168,8 +169,14 @@
     <Compile Include="Models\DzialkaDto.cs" />
     <Compile Include="Models\JednRejDto.cs" />
     <Compile Include="Models\NkrColNameValueDto.cs" />
+    <Compile Include="Repositories\Dzialki_NRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IDzialki_NRepository.cs" />
+    <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Services\AssigedUnitService.cs" />
     <Compile Include="Models\JednRejNDto.cs" />
+    <Compile Include="Services\Dzialki_NService.cs" />
+    <Compile Include="Services\Interfaces\IDzialki_NService.cs" />
     <Compile Include="Views\KontrolaBazy.xaml.cs">
       <DependentUpon>KontrolaBazy.xaml</DependentUpon>
     </Compile>
@@ -209,6 +216,9 @@
     </Compile>
     <Compile Include="Views\WindowRepairGML.xaml.cs">
       <DependentUpon>WindowRepairGML.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WindowWZDE.xaml.cs">
+      <DependentUpon>WindowWZDE.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WindowWzorzec.xaml.cs">
       <DependentUpon>WindowWzorzec.xaml</DependentUpon>
@@ -280,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WindowRepairGML.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WindowWZDE.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -408,6 +422,7 @@
   <ItemGroup>
     <Resource Include="Resources\loading.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
