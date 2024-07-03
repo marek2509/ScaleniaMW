@@ -639,7 +639,7 @@ namespace ScaleniaMW
                     // listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
                     listBoxNkr.SelectedIndex = listBoxNkr.SelectedIndex >= 0 ? listBoxNkr.SelectedIndex : 0;
 
-                    List<DopasowanieKW> tmpListKW = listaKWdlaNowychDzialek.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex].IdJednN));
+                    List<DopasowanieKW> tmpListKW = lisIDnkr_NKR.Count > 0 ? listaKWdlaNowychDzialek.FindAll(x => x.IdJednN.Equals(lisIDnkr_NKR[listBoxNkr.SelectedIndex]?.IdJednN)) : new List<DopasowanieKW>();
                     // List<IddzKwPrzed> listIddzKWPrzed = tmpListKW.GroupBy(x => new { x.IdJednN, x.KWprzed }).Select(x => new IddzKwPrzed { Iddz = x.Key.IdJednN, KwPrzed = x.Key.KWprzed }).ToList();
                     List<IddzKwPrzed> listIddzKWPrzed;
                     if (tmpListKW.GroupBy(x => new { x.IdJednN, x.KWprzed }).Select(x => new IddzKwPrzed { Iddz = x.Key.IdJednN, KwPrzed = x.Key.KWprzed }).ToList().Count > 1)

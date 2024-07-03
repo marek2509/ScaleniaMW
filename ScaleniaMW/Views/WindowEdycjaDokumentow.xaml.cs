@@ -39,7 +39,11 @@ namespace ScaleniaMW.Views
                 checkBoxWezZNKR.IsChecked = false;
                 checkBoxWezZUwagi.IsChecked = true;
             }
+
+            Helpers.ExtensionsClass.IsSemicolon =  Properties.Settings.Default.przecinekWWWe;
+            CheckBoxIsSemicolon.IsChecked = Properties.Settings.Default.przecinekWWWe;
             // odczytUstawien();        
+            Console.WriteLine("IsSemicolon: " + Helpers.ExtensionsClass.IsSemicolon);
         }
 
         string usunOd = "kontury";
@@ -754,6 +758,47 @@ namespace ScaleniaMW.Views
 
             var doWydruku = dlaChemika.ToList().Select(x => string.Join("\t", x.ijr, x.podmiot, x.dzialka));
             await Task.Run(() => EWOPIS.Infrstruktura.Plik.Save(string.Join("\n", doWydruku)));
+        }
+
+        private void CheckBoxIsSemicolon_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.przecinekWWWe = true;
+            Properties.Settings.Default.Save();
+            Console.WriteLine(Properties.Settings.Default.przecinekWWWe);
+            Helpers.ExtensionsClass.IsSemicolon = true;
+        }
+
+        private void CheckBoxIsSemicolon_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.przecinekWWWe = false;
+            Properties.Settings.Default.Save();
+            Console.WriteLine(Properties.Settings.Default.przecinekWWWe);
+            Helpers.ExtensionsClass.IsSemicolon = false;
+        }
+
+        private void MenuItemWzorzec_Click(object sender, RoutedEventArgs e)
+        {
+            WindowWzorzec windowWzorzec = new WindowWzorzec();
+            windowWzorzec.Show();
+        }
+
+        private void ItemGenerujPlikPoprawDane_DodajDzialki_0_tez_dla_usunietych_Click(object sender, RoutedEventArgs e)
+        {
+            DataTable jednostkiBezDzialekPoScaleniu = odczytajZSql(Constants.SQLIJRGdzieBrakStanuPoScaleniuRowniezWUsunietych);
+            listNKR = new List<ModelNKR>();
+            // powinna być jedna kolumna z nr NKR(jedn_rej_n.ijr) dla których brak stanu po scaleniu
+            StringBuilder plikPoprawDane = new StringBuilder();
+
+            for (int i = 0; i < jednostkiBezDzialekPoScaleniu.Rows.Count; i++)
+            {
+                for (int j = 0; j < jednostkiBezDzialekPoScaleniu.Columns.Count; j++)
+                {
+                    int nkr = Convert.ToInt32(jednostkiBezDzialekPoScaleniu.Rows[i][j]);
+                    listNKR.Add(new ModelNKR(nkr));
+                }
+            }
+            dataGridNkrBezDzialekPo.ItemsSource = listNKR;
+            pokazPanelLadowaniaDzialek_0();
         }
     }
 }

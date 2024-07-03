@@ -1,0 +1,31 @@
+﻿<Window x:Class="ScaleniaMW.Views.WindowWzorzec"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScaleniaMW.Views"
+        mc:Ignorable="d"
+        Title="WindowWzorzec" Height="450" Width="800">
+
+    <StackPanel>
+        <DockPanel>
+            <RadioButton x:Name="radioTabZyczenDomyslne" GroupName="radioTabZyczen" Checked="RadioTabZyczen_Checked">Domyślne</RadioButton>
+            <RadioButton x:Name="radioTabZyczenWlasne" GroupName="radioTabZyczen" Checked="RadioTabZyczen_Checked">Własne z tekstu poniżej</RadioButton>
+            <RadioButton x:Name="radioTabZyczenWylacz" GroupName="radioTabZyczen" Checked="RadioTabZyczen_Checked">Nie pokazuj tabel w dokumencie</RadioButton>
+        </DockPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.5*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Width="Auto">
+                <Label>Nagłówek Oświadczenie uczestnika:</Label>
+                <TextBox x:Name="textBoxWzorzec_naglowekOswiadczenUczestnika" TextChanged="TextBoxWzorzec_naglowekOswiadczenUczestnika_TextChanged" Margin="2" MinHeight="100" Width="Auto" BorderBrush="Gray" BorderThickness="2"></TextBox>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Width="Auto">
+                <Label>Nagłówek Omówienie zastrzeżeń:</Label>
+                <TextBox x:Name="textBoxWzorzec_naglowekOmowienieZastrzezen" TextChanged="TextBoxWzorzec_naglowekOmowienieZastrzezen_TextChanged" Margin="2"  MinHeight="100" BorderBrush="Gray" BorderThickness="2"></TextBox>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</Window>

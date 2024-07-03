@@ -70,7 +70,8 @@ namespace ScaleniaMW
 
                 // działające zapytanie na nrobr-nrdz NKR 
                 //command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, JEDN_REJ.nkr NKR_Z_GRUPAMI, kw, JEDN_REJ.idgrp from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ on dzialka.rjdr = JEDN_REJ.id_id order by NKR_Z_GRUPAMI";
-                command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case when (select first 1 nkr from jedn_rej where idgrp = j1.idgrp and idgrp>0  and nkr > 0 order by nkr asc) > 0 then (select first 1 nkr from jedn_rej where idgrp = j1.idgrp and idgrp>0  and nkr > 0 order by nkr asc) else j1.nkr end NKR_Zgupowany, kw, j1.idgrp from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ j1 on dzialka.rjdr = j1.id_id order by NKR_Zgupowany";
+               // command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case when (select first 1 nkr from jedn_rej where idgrp = j1.idgrp and idgrp>0  and nkr > 0 order by nkr asc) > 0 then (select first 1 nkr from jedn_rej where idgrp = j1.idgrp and idgrp>0  and nkr > 0 order by nkr asc) else j1.nkr end NKR_Zgupowany, kw, j1.idgrp from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ j1 on dzialka.rjdr = j1.id_id order by NKR_Zgupowany";
+                command.CommandText = "select obreby.id || '-' || dzialka.idd as NR_DZ, case when idgrp > 0 then (select nkr from jedn_rej where id_id = j1.idgrp) else j1.nkr end NKR_Zgupowany, kw, j1.idgrp from DZIALKA left outer join OBREBY on dzialka.idobr = OBREBY.id_id left outer join JEDN_REJ j1 on dzialka.rjdr = j1.id_id order by NKR_Zgupowany";
 
               FbDataAdapter adapter = new FbDataAdapter(command);
                 dt = new DataTable();
@@ -521,7 +522,7 @@ namespace ScaleniaMW
         {
             try
             {
-                BazaFB.Execute_SQL(Constants.SQLPaginationUnitWithGrouping);
+                BazaFB.Execute_SQL(Constants.SQLPaginationUnitWithGroupingToObreb);
                 MessageBox.Show("Sukces!");
             }
             catch (Exception c)
@@ -530,5 +531,17 @@ namespace ScaleniaMW
             }
         }
 
+        private void ItemPrzypiszLpWUwgGrupyDoGminy_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                BazaFB.Execute_SQL(Constants.SQLPaginationUnitWithGroupingToGmina);
+                MessageBox.Show("Sukces!");
+            }
+            catch (Exception c)
+            {
+                MessageBox.Show(c.Message);
+            }
+        }
     }
 }

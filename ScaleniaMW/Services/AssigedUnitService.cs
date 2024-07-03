@@ -89,28 +89,28 @@ namespace ScaleniaMW.Services
             window.listBoxDzialkiNowe.ItemsSource = dzialkiToList;
             window.listBoxNrRej.ItemsSource = wybranaJednostka?.JednostkiPrzed.Select(j => j.ObrNr + "-" + j.Ijr);
 
-            Console.WriteLine("FillUI 4");
+            //Console.WriteLine("FillUI 4");
 
-            Console.WriteLine(DataToLoadDb().Equals(DBNull.Value));
-            for (int i = 0; i < DataToLoadDb().Count(); i++)
-            {
-                Console.WriteLine(i);
-                var item = DataToLoadDb().ElementAt(i);
-                Console.Write(item.idJednPrzed);
-                Console.Write(", ");
-                Console.Write(item.id_parcel);
-                Console.Write(", ");
-                Console.Write(item.IJR);
-                Console.Write(", ");
-                Console.Write(item.NKR);
-                Console.Write(", ");
-                Console.Write(item.Nrdz);
-                Console.Write(", ");
-                Console.WriteLine();
-            }
-            Console.WriteLine("fill 4,5");
-            window.dgNiedopJednostki.ItemsSource = DataToLoadDb();
-            Console.WriteLine("FillUI 5");
+            //Console.WriteLine(DataToLoadDb().Equals(DBNull.Value));
+            //for (int i = 0; i < DataToLoadDb().Count(); i++)
+            //{
+                //Console.WriteLine(i);
+                //var item = DataToLoadDb().ElementAt(i);
+                //Console.Write(item.idJednPrzed);
+                //Console.Write(", ");
+                //Console.Write(item.id_parcel);
+                //Console.Write(", ");
+                //Console.Write(item.IJR);
+                //Console.Write(", ");
+                //Console.Write(item.NKR);
+                //Console.Write(", ");
+                //Console.Write(item.Nrdz);
+                //Console.Write(", ");
+                //Console.WriteLine();
+            //}
+            //Console.WriteLine("fill 4,5");
+            window.dgNiedopJednostki.ItemsSource = DataToLoadDb().ToList();
+            //Console.WriteLine("FillUI 5");
 
             var selIdxDz = window.listBoxDzialkiNowe.SelectedIndex;
             ControlIndexScope(ref lastSelectedIndexDz, ref selIdxDz, window.listBoxDzialkiNowe);
@@ -160,7 +160,7 @@ namespace ScaleniaMW.Services
 
         }
 
-        public IEnumerable<AssignedUnitInParcelToDatabase> DataToLoadDb()
+        public List<AssignedUnitInParcelToDatabase> DataToLoadDb()
         {
             //foreach (var item in JednoskiRejstroweNoweDto)
             //{
@@ -217,7 +217,7 @@ namespace ScaleniaMW.Services
                     idJednPrzed = n.jednN.JednostkiPrzed.FirstOrDefault(c => c.Id_id == n.dzialki.RjdrPrzed)?.Id_id ?? null,
                     id_parcel = n.dzialki.Id_Id,
 
-                });
+                }).ToList();
 
 
             //Console.WriteLine("last " +toDataGrid.LastOrDefault().NKR);
@@ -229,6 +229,25 @@ namespace ScaleniaMW.Services
             //Console.WriteLine("Koniec");
             return toDataGrid;
         }
+
+        public List<AssignedUnitInParcelToDatabase> DataToLoadDbWithNull()
+        {
+
+            var toDataGrid = JednoskiRejstroweNoweDto.SelectMany(jn => jn.Dzialki, (jednN, dzialki) => new { jednN, dzialki })
+                .Select(n => new AssignedUnitInParcelToDatabase
+                {
+                    NKR = n.jednN.Ijr,
+                    Nrdz = n.dzialki.ObrNr + "-" + n.dzialki.Idd,
+                    IJR = (n.jednN.JednostkiPrzed.FirstOrDefault(c => c.Id_id == n.dzialki.RjdrPrzed)?.ObrNr + "-" + n.jednN.JednostkiPrzed.FirstOrDefault(c => c.Id_id == n.dzialki.RjdrPrzed)?.Ijr) == "-" ? "Brak JR przed"
+                    : (n.jednN.JednostkiPrzed.FirstOrDefault(c => c.Id_id == n.dzialki.RjdrPrzed)?.ObrNr + "-" + n.jednN.JednostkiPrzed.FirstOrDefault(c => c.Id_id == n.dzialki.RjdrPrzed)?.Ijr),
+                    idJednPrzed = n.jednN.JednostkiPrzed.FirstOrDefault(c => c.Id_id == n.dzialki.RjdrPrzed)?.Id_id ?? null,
+                    id_parcel = n.dzialki.Id_Id,
+
+                }).ToList();
+
+            return toDataGrid;
+        }
+
 
         internal void AssignedSelected(WindowPrzypiszRejGr windowPrzypiszRejGr)
         {
@@ -250,8 +269,6 @@ namespace ScaleniaMW.Services
             {
                 nkrToEdit.Dzialki.FirstOrDefault(d => (d.ObrNr + "-" + d.Idd) == parcel.ToString()).RjdrPrzed = rjdrPrzed;
             }
-
-
 
 
             lastSelectedIndexNkr = windowPrzypiszRejGr.listBoxNkr.SelectedIndex;

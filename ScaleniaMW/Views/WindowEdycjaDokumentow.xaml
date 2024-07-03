@@ -69,7 +69,11 @@
                     </RadioButton>
                     <TextBox x:Name="textBoxZastapNaSekcjeNieparzysta" VerticalAlignment="Top" Margin="5" MinWidth="20">!@#$</TextBox>
                 </DockPanel>-->
+                <CheckBox x:Name="CheckBoxIsSemicolon" Checked="CheckBoxIsSemicolon_Checked" Unchecked="CheckBoxIsSemicolon_Unchecked">Przecinek zamiast kropki w WWE</CheckBox>
             </MenuItem>
+            <MenuItem Header="Wzorzec" Foreground="White" Click="MenuItemWzorzec_Click"/>
+
+
             <MenuItem Header="Ustawienia FDB" Foreground="White">
                 <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Click="ustawSciezkeFDB"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>
                 <MenuItem Header="Ustaw Login i Hasło" Click="UstawLoginIHaslo"  Foreground="{Binding ElementName=otworzOknoStartowe, Path=Foreground}"></MenuItem>
@@ -84,6 +88,7 @@
                 <MenuItem x:Name="itemPolaczZBaza"  Header="Połącz z bazą" Click="PolaczZBaza" Foreground="Black"/>
                 <Separator  Height="2"></Separator>
                 <MenuItem x:Name="itemGenerujPlikPoprawDane_DodajDzialki_0"  Header="Dodaj dzialki 0 w przypadku braku stanu po scaleniu" Click="ItemGenerujPlikPoprawDane_DodajDzialki_0_Click" Foreground="Green"/>
+                <MenuItem x:Name="itemGenerujPlikPoprawDane_DodajDzialki_0_tez_dla_usunietych"  Header="Dodaj dzialki 0 w przypadku braku stanu po scaleniu tez dla usuniętych jednostek" Click="ItemGenerujPlikPoprawDane_DodajDzialki_0_tez_dla_usunietych_Click" Foreground="Green"/>
                 <MenuItem x:Name="itemUsunDzialki_0"  Header="Usuń wszystkie dodane wcześniej działki 0" Click="ItemUsunDzialki_0_Click" Foreground="Red"/>
             </MenuItem>
         </Menu>

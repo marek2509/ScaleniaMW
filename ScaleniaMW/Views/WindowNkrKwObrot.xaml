@@ -62,6 +62,7 @@
                     <Separator></Separator>
                     <MenuItem x:Name="itemPrzypiszLpWUwg"  Header="Wpisz Lp do UWG stan przed - do obrębu" Click="ItemPrzypiszLpWUwg_Click"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
                     <MenuItem x:Name="itemPrzypiszLpWUwgGrupy"  Header="Wpisz Lp do UWG stan przed - do obrębu uwzględniając grupy" Click="ItemPrzypiszLpWUwgGrupy_Click"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
+                    <MenuItem x:Name="itemPrzypiszLpWUwgGrupyDoGminy"  Header="Wpisz Lp do UWG stan przed - do gminy uwzględniając grupy" Click="ItemPrzypiszLpWUwgGrupyDoGminy_Click"  Foreground="{Binding ElementName=otworzDzialkiEDZ, Path=Foreground}"/>
               
                 </MenuItem>
                 <MenuItem x:Name="logBledowKW" HorizontalAlignment="Right" Header="Błędy KW" Foreground="White" Background="Red" Visibility="Hidden" Click="LogBledowKW_Click"></MenuItem>

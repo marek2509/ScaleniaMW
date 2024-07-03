@@ -21,14 +21,27 @@ namespace ScaleniaMW
             nameof(ZsumwaneWartosciZPorownania.OdchWProgramie),
             nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie),
             nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi),
-            nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty)};
+            nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),
+            nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed)
+        };
 
         Dictionary<string, string> dicColumnDbHeader = new Dictionary<string, string>()
         {
             {nameof(ZsumwaneWartosciZPorownania.OdchWProgramie), "ODCHT" },
             {nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie), "ZGODA" },
             {nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi), "DPLDR" },
-            {nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),"PTR" }
+            {nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),"PTR" },
+            {nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed),"PTR" }
+        };
+
+
+        Dictionary<string, string> dicColumnTableDbHeader = new Dictionary<string, string>()
+        {
+            {nameof(ZsumwaneWartosciZPorownania.OdchWProgramie), "JEDN_REJN" },
+            {nameof(ZsumwaneWartosciZPorownania.ZgodawProgramie), "JEDN_REJ_N" },
+            {nameof(ZsumwaneWartosciZPorownania.NieDoliczajDoplatyZaDrogi), "JEDN_REJ_N" },
+            {nameof(ZsumwaneWartosciZPorownania.ZerujDoplaty),"JEDN_REJ_N" },
+            {nameof(ZsumwaneWartosciZPorownania.PotraceniaPrzed),"JEDN_REJ" }
         };
 
         public WindowPorownajPrzedPo()
@@ -231,10 +244,7 @@ namespace ScaleniaMW
                         ));
                 }
 
-
-
                 // stan przed 
-
                 //command.CommandText = "select replace(d.ww,'.',','), j.ijr, j.nkr, j.idgrp, jsn.id_jednn, replace(jsn.ud_nr,'.',',') from dzialka d join jedn_rej j on j.ID_ID = d.rjdr join jedn_sn jsn on jsn.id_jedns=j.id_id join jedn_rej_n jn on jn.id_id = jsn.id_jednn where jn.id_sti <> 1 or jn.id_sti is null order by idgrp";
                 command.CommandText = Constants.SQLAfterStateToCompare;
 
@@ -264,21 +274,11 @@ namespace ScaleniaMW
                                              WartPrzed = cl.Sum(c => (c.Wartosc * (decimal)c.udzialPrzed))
                                          }).ToList();
 
-                Console.WriteLine("punkt kontrolny 2");
-
-
-                Console.WriteLine("________________________________________");
-                // resultPorownanie.ForEach(x => x.wypiszWConsoli());
-                Console.WriteLine("________________________________________");
-
-
                 foreach (var item in resultPorownanie)
                 {
-
                     if (zsumwaneWartosciStanPO.Exists(x => x.IdPo == item.IdPo))
                     {
                         // Console.WriteLine("if "+ item.IdPo + " " + item.NKR + "<Przed Po>"+ zsumwaneWartosciStanPO.Find((x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej)).NKR);
-
                         zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).WartPrzed += item.WartPrzed;
                         if (zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).NKR == 0)
                         {
@@ -640,10 +640,12 @@ namespace ScaleniaMW
                         var result = (bool)propertyInfo.GetValue(oneZwzp) ? false : true;
                         propertyInfo.SetValue(oneZwzp, result);
 
-                        var isExisting = valToDb.Any(x => x.NKR == oneZwzp.NKR && x.ColumneName == dicColumnDbHeader[columneName]);
+                        var isExisting = valToDb.Any(x => x.NKR == oneZwzp.NKR && x.ColumneName == dicColumnDbHeader[columneName]
+                                                                            && x.TableName == dicColumnTableDbHeader[columneName]);
                         if (isExisting)
                         {
-                            var existElement = valToDb.FirstOrDefault(x => x.NKR == oneZwzp.NKR && x.ColumneName == dicColumnDbHeader[columneName]);
+                            var existElement = valToDb.FirstOrDefault(x => x.NKR == oneZwzp.NKR && x.ColumneName == dicColumnDbHeader[columneName]
+                                                                            && x.TableName == dicColumnTableDbHeader[columneName]);
                             existElement.Value = result;
 
                             bool idExistOriginal = cloneListOrginal.Any(orginal => orginal.NKR == oneZwzp.NKR && (bool)propertyInfo.GetValue(orginal) == result);
@@ -655,7 +657,7 @@ namespace ScaleniaMW
                         }
                         else
                         {
-                            valToDb.Add(new NkrColNameValueDto(oneZwzp.NKR, dicColumnDbHeader[columneName], result));
+                            valToDb.Add(new NkrColNameValueDto(oneZwzp.NKR, dicColumnDbHeader[columneName], result, dicColumnTableDbHeader[columneName]));
                         }
                         valToDb = valToDb.OrderBy(x => x.NKR).ToList();
                     }
@@ -709,7 +711,18 @@ namespace ScaleniaMW
                 {
                     progressLabel.Content = await Task.Run(() => $"{++currentElement}/{conutElemToDatabase}");
                     await Task.Delay(1);
-                    command.CommandText = $"update jedn_rej_n set {el.ColumneName} = @value where ijr = @nkr";
+                    if (el.ColumneName == "PTR" && el.TableName == "JEDN_REJ")
+                    {
+                        command.CommandText = $"UPDATE JEDN_REJ " +
+                            $"SET PTR = @value " +
+                            $"WHERE NKR = @nkr " +
+                            $"  OR IDGRP IN(SELECT ID_ID FROM JEDN_REJ WHERE NKR = @nkr)";
+                    }
+                    else
+                    {
+                        command.CommandText = $"update jedn_rej_n set {el.ColumneName} = @value where ijr = @nkr";
+                    }
+
                     command.Parameters.Add("@nkr", el.NKR);
                     command.Parameters.Add("@value", el.Value ? 1 : 0);
                     command.ExecuteNonQuery();
