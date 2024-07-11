@@ -16,9 +16,16 @@ namespace ScaleniaMW.Views
         public WindowWZDE()
         {
             InitializeComponent();
-            dbContext = new MainDbContext(ConnectionHelper.GetConnectionString());
+            Properties.Settings.Default.Login = "SYSDBA";
+            Properties.Settings.Default.Haslo = "masterkey";
+            Properties.Settings.Default.Save();
 
-            _dzialki_NService =  new Dzialki_NService(dbContext);
+            Helpers.ConnectionHelper.SetConnectionStringByFileDialog();
+            dbContext = new MainDbContext(ConnectionHelper.GetConnectionString());
+            if (dbContext != null)
+            {
+                _dzialki_NService = new Dzialki_NService(dbContext);
+            }
 
 
             tbxWZDE.Text = string.Join(", ", _dzialki_NService.GetAll().Select(x => x.IDD));

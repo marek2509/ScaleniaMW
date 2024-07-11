@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="WindowWZDE" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="tbxWZDE" Height="200" Background="AliceBlue"> text</TextBox>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="143*"/>
+            <ColumnDefinition Width="657*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="tbxWZDE" Height="200" Background="AliceBlue" Grid.ColumnSpan="2" Margin="0,117,0,117">text</TextBox>
     </Grid>
 </Window>

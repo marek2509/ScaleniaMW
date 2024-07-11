@@ -18,7 +18,7 @@ namespace ScaleniaMW.Repositories
 
         protected RepositoryBase(MainDbContext mainDbContext)
         {
-            DbContext = DbContext;
+            DbContext = mainDbContext;
             dbSet = DbContext.Set<TEntity>();
         }
 
