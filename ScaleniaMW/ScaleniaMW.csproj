@@ -136,6 +136,7 @@
     <Compile Include="DopasowanieKW.cs" />
     <Compile Include="DzialkaNkrZSQL.cs" />
     <Compile Include="DzNkrKWzSQLProponow.cs" />
+    <Compile Include="Entities\Dzialka.cs" />
     <Compile Include="Entities\Dzialki_n.cs" />
     <Compile Include="Entities\Jedn_rej_n.cs" />
     <Compile Include="Entities\Jedn_rej.cs" />
@@ -169,14 +170,16 @@
     <Compile Include="Models\DzialkaDto.cs" />
     <Compile Include="Models\JednRejDto.cs" />
     <Compile Include="Models\NkrColNameValueDto.cs" />
+    <Compile Include="Repositories\DzialkaRepository.cs" />
     <Compile Include="Repositories\Dzialki_NRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IDzialkaRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
     <Compile Include="Repositories\Interfaces\IDzialki_NRepository.cs" />
+    <Compile Include="Repositories\Jedn_rejRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Services\AssigedUnitService.cs" />
     <Compile Include="Models\JednRejNDto.cs" />
-    <Compile Include="Services\Dzialki_NService.cs" />
-    <Compile Include="Services\Interfaces\IDzialki_NService.cs" />
+    <Compile Include="Services\WZDEService.cs" />
     <Compile Include="Views\KontrolaBazy.xaml.cs">
       <DependentUpon>KontrolaBazy.xaml</DependentUpon>
     </Compile>
@@ -422,7 +425,10 @@
   <ItemGroup>
     <Resource Include="Resources\loading.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\WZDE\" />
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

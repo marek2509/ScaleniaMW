@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace ScaleniaMW.Repositories
 {
-    public class Dzialki_NRepository : RepositoryBase<Dzialki_n, long>
+    public class DzialkaRepository : RepositoryBase<Dzialka, long>
     {
-        public Dzialki_NRepository(MainDbContext mainDbContext) : base(mainDbContext)
+        public DzialkaRepository(MainDbContext mainDbContext) : base(mainDbContext)
         {
-            
+
         }
 
-        public override IEnumerable<Dzialki_n> GetAll(Expression<Func<Dzialki_n, bool>> where)
+        public override IEnumerable<Dzialka> GetAll(Expression<Func<Dzialka, bool>> where)
         {
             try
             {
-                return base.GetAll(where).Where(x => x.ID_RD != 0);
+                return base.GetAll(where).Where(x => x.ID_STI != 1);
             }
             catch (Exception ex)
             {

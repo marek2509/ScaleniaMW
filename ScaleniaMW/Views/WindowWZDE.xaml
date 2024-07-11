@@ -5,12 +5,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScaleniaMW.Views"
         mc:Ignorable="d"
+        x:Name="windowWZDE"
         Title="WindowWZDE" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="143*"/>
-            <ColumnDefinition Width="657*"/>
-        </Grid.ColumnDefinitions>
-        <TextBox x:Name="tbxWZDE" Height="200" Background="AliceBlue" Grid.ColumnSpan="2" Margin="0,117,0,117">text</TextBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" Background="#2676d0" Foreground="White">
+            <MenuItem Header="Plik" >
+                <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="OpenMainWindow_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Zamknij" Foreground="Black" Click="Shutdown_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Opcje">
+                <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxTopmost_Unchecked" Checked="CheckBoxTopmost_Checked"></CheckBox>
+            </MenuItem>
+            <MenuItem Header="Ustawienia FDB">
+                <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Foreground="Black" Click="SetConnectionString_Click"></MenuItem>
+                <MenuItem Header="Ustaw Login i Hasło" Foreground="Black" Click="SetLoginAndPassword_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">KW Przed i Po</Label>
+            <DockPanel Margin="0,20,0,0" Grid.Column="0">
+                <ListBox x:Name="listBoxKW" MinWidth="130" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged" />
+            </DockPanel>
+            <DockPanel Grid.Column="0">
+                <Label  VerticalAlignment="Bottom" Content="Ilość: "  Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNkr, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+            </DockPanel>
+
+            <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI</Label>
+            <DockPanel  Margin="0,20,0,0" Grid.Column="1">
+                <ListBox x:Name="listBoxDzialki" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended"/>
+            </DockPanel>
+            <DockPanel Grid.Column="1">
+                <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialki, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+            </DockPanel>
+
+            <Label Grid.Column="2" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI PO</Label>
+            <DockPanel  Margin="0,20,0,0" Grid.Column="2">
+                <ListBox x:Name="listBoxDzialkiN" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended"/>
+            </DockPanel>
+            <DockPanel Grid.Column="2">
+                <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialki, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+            </DockPanel>
+        </Grid>
     </Grid>
 </Window>

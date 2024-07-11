@@ -15,9 +15,14 @@ namespace ScaleniaMW.Entities
         public int ID_ID { get; set; }
         public int IJR { get; set; }
         public int NKR { get; set; }
+        public int? ID_STI { get; set; }
 
         [ForeignKey("Obreb")]
         public int ID_OBR { get; set; }
         public virtual Obreby Obreb { get; set; }
+
+
+        public virtual List<Dzialka> Dzialki { get; set; }
+
     }
 }

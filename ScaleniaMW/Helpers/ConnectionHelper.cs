@@ -51,5 +51,11 @@ namespace ScaleniaMW.Helpers
                 return (false, null);
             }
         }
+
+        public static void SetLoginAndPassword() 
+        {
+                WindowLogowanie windowLogowanie = new WindowLogowanie();
+                windowLogowanie.Show();
+        }
     }
 }

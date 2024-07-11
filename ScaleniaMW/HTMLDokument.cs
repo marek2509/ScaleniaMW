@@ -423,7 +423,7 @@ namespace ScaleniaMW
             return sb.ToString();
         }
 
-        static string Tbl_DzialkaStara(List<Dzialka> dzialki, int iterator)
+        static string Tbl_DzialkaStara(List<DzialkaWykEkwiw> dzialki, int iterator)
         {
             StringBuilder sb = new StringBuilder();
             string nrdzPrzed;
@@ -485,7 +485,7 @@ namespace ScaleniaMW
             return sb.ToString();
         }
 
-        static string Tbl_DzialkaStara_Nowa(List<Dzialka> dzialkiStare, List<Dzialka_N> dzialkiNowe)
+        static string Tbl_DzialkaStara_Nowa(List<DzialkaWykEkwiw> dzialkiStare, List<Dzialka_N> dzialkiNowe)
         {
             int iloscDzialekPrzed = dzialkiStare == null ? 0 : dzialkiStare.Count;
             int iloscDzialekPo = dzialkiNowe == null ? 0 : dzialkiNowe.Count;

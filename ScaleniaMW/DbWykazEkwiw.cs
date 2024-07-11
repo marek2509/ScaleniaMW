@@ -389,7 +389,7 @@ namespace ScaleniaMW
         public double PotrPow { get; set; }
         public bool PotracenieCzyStosowac { get; set; }
 
-        public List<Dzialka> Dzialki = new List<Dzialka>();
+        public List<DzialkaWykEkwiw> Dzialki = new List<DzialkaWykEkwiw>();
         public List<WlascicielStanPrzed> Wlasciciele = new List<WlascicielStanPrzed>();
         public string NazwaObrebu
         {
@@ -444,7 +444,7 @@ namespace ScaleniaMW
             }
         }
 
-        public void DodajDzialkePrzed(Dzialka dzialka)
+        public void DodajDzialkePrzed(DzialkaWykEkwiw dzialka)
         {
             Dzialki.Add(dzialka);
         }
@@ -465,7 +465,7 @@ namespace ScaleniaMW
         }
     }
 
-    public class Dzialka
+    public class DzialkaWykEkwiw
     {
         public int Id_dz { get; set; }
         public int Id_obr { get; set; }
@@ -493,7 +493,7 @@ namespace ScaleniaMW
             }
         }
 
-        public Dzialka(int Id_dz, int Id_obr, string NrDz, double PowDz, int Rjdr, string KW, decimal Wartosc)
+        public DzialkaWykEkwiw(int Id_dz, int Id_obr, string NrDz, double PowDz, int Rjdr, string KW, decimal Wartosc)
         {
             this.Id_dz = Id_dz;
             this.Id_obr = Id_obr;
@@ -506,7 +506,7 @@ namespace ScaleniaMW
         }
     }
 
-    public class Dzialka_N : Dzialka
+    public class Dzialka_N : DzialkaWykEkwiw
     {
 
         public int RjdrPrzed { get; set; }

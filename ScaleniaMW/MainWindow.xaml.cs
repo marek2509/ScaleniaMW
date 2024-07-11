@@ -507,6 +507,7 @@ namespace ScaleniaMW
         {
             WindowWZDE windowWZDE = new WindowWZDE();
             windowWZDE.Show();
+            windowScaleniaMW.Close();
         }
     }
 }

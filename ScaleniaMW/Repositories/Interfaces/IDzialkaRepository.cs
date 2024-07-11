@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScaleniaMW.Services.Interfaces
+namespace ScaleniaMW.Repositories.Interfaces
 {
-    public interface IDzialki_NService
+    public interface IDzialkaRepository : IRepository<Dzialka, long>
     {
-        List<Dzialki_n> GetAll();
+
     }
 }

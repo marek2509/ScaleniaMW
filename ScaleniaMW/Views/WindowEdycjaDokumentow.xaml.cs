@@ -461,7 +461,7 @@ namespace ScaleniaMW.Views
                 }
 
                 DataTable Dzialki_przed = odczytajZSql(Constants.SQL_Dzialka);
-                List<Dzialka> DzialkaStaraTMP = new List<Dzialka>();
+                List<DzialkaWykEkwiw> DzialkaStaraTMP = new List<DzialkaWykEkwiw>();
                 for (int i = 0; i < Dzialki_przed.Rows.Count; i++)
                 {
 
@@ -473,7 +473,7 @@ namespace ScaleniaMW.Views
                     string KW = Dzialki_przed.Rows[i][5].ToString().Equals(DBNull.Value) ? "" : Dzialki_przed.Rows[i][5].ToString();
                     decimal Wartosc = Dzialki_przed.Rows[i][6].Equals(DBNull.Value) ? 0 : Convert.ToDecimal(Dzialki_przed.Rows[i][6]);
 
-                    DzialkaStaraTMP.Add(new Dzialka(Id_dz, Id_obr, NrDz, PowDz, Rjdr, KW, Wartosc));
+                    DzialkaStaraTMP.Add(new DzialkaWykEkwiw(Id_dz, Id_obr, NrDz, PowDz, Rjdr, KW, Wartosc));
                 }
 
                 foreach (var JN in JednostkiRejestroweNowe.Jedn_REJ_N)
