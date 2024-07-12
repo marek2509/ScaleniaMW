@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScaleniaMW
 {
-     public class DopasowanieKW
+    public class DopasowanieKW
     {
         public int IdDzN { get; private set; }
         public string NrDZ { get; private set; }
@@ -21,7 +21,7 @@ namespace ScaleniaMW
 
         }
 
-        public DopasowanieKW(int idDzN, string nrDz, object kwPrzed, object kwPoDopas, int nkrN, int idJednN, int idJednS )
+        public DopasowanieKW(int idDzN, string nrDz, object kwPrzed, object kwPoDopas, int nkrN, int idJednN, int idJednS)
         {
             IdDzN = idDzN;
             NrDZ = nrDz;
@@ -46,11 +46,6 @@ namespace ScaleniaMW
             {
                 KWPoDopasowane = kwPoDopas.ToString();
             }
-        }
-
-        public void wypiszDaneDoKonsoli()
-        {
-            Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", IdDzN, NrDZ, KWprzed, KWPoDopasowane, NKRn, IdJednN, IdJednS);
         }
     }
 }

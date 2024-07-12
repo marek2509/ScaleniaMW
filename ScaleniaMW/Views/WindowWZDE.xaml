@@ -31,6 +31,8 @@
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">KW Przed i Po</Label>
@@ -39,7 +41,7 @@
             </DockPanel>
             <DockPanel Grid.Column="0">
                 <Label  VerticalAlignment="Bottom" Content="Ilość: "  Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxNkr, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxKW, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
             </DockPanel>
 
             <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI</Label>
@@ -57,7 +59,16 @@
             </DockPanel>
             <DockPanel Grid.Column="2">
                 <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialki, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiN, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+            </DockPanel>
+
+            <Label Grid.Column="3" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">DZ. NIE UJAWNIONE</Label>
+            <DockPanel  Margin="0,20,0,0" Grid.Column="3">
+                <ListBox x:Name="listBoxDzialkiNieUjawnione" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended"/>
+            </DockPanel>
+            <DockPanel Grid.Column="3">
+                <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNieUjawnione, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
             </DockPanel>
         </Grid>
     </Grid>

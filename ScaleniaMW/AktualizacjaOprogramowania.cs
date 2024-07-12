@@ -25,7 +25,7 @@ namespace ScaleniaMW
             WebClient request = new WebClient();
 
             // This example assumes the FTP site uses anonymous logon.
-            request.Credentials = new NetworkCredential("marek2509@generator-raportow.cba.pl", "Generator@2509");
+            request.Credentials = new NetworkCredential("marek2509@generator-raportow.cba.pl", "");
             try
             {
                 byte[] newFileData = request.DownloadData(serverUri.ToString());
@@ -42,12 +42,12 @@ namespace ScaleniaMW
         public static bool? CzyBlokowacProgram(string FTPstring = @"ftp://generator-raportow.cba.pl/SCALENIAMWCZYBLOKOWACTAKNIE")
         {
             string tekstCzyBlokowacProgram = StringFileFromServer(FTPstring);
-            Console.WriteLine("czy blokowac: " + tekstCzyBlokowacProgram);
-           if(tekstCzyBlokowacProgram.ToUpper().Equals("TAK"))
+            //Console.WriteLine("czy blokowac: " + tekstCzyBlokowacProgram);
+            if (tekstCzyBlokowacProgram.ToUpper().Equals("TAK"))
             {
                 return true;
             }
-            else if(tekstCzyBlokowacProgram.ToUpper().Equals("NIE"))
+            else if (tekstCzyBlokowacProgram.ToUpper().Equals("NIE"))
             {
                 return false;
             }
@@ -55,11 +55,9 @@ namespace ScaleniaMW
             {
                 return null;
             }
-
-       
         }
 
-            public static bool czyJestNowszaWersja(string FTPstring = @"ftp://generator-raportow.cba.pl/SCALENIAMW2Version")
+        public static bool czyJestNowszaWersja(string FTPstring = @"ftp://generator-raportow.cba.pl/SCALENIAMW2Version")
         {
             string wersjaZFtp = StringFileFromServer(FTPstring);
 
@@ -91,14 +89,9 @@ namespace ScaleniaMW
                     if (resul == MessageBoxResult.Yes)
                     {
                         MessageBox.Show("Odinstaluj istniejącą wersję programu, aby zainstalować nową.", "Aktualizacja", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        Console.WriteLine("jes");
                         return true;
                     }
-                    else if (resul == MessageBoxResult.No)
-                    {
-                        Console.WriteLine("noł");
-                    }
+                    
                     return false;
                 }
                 else

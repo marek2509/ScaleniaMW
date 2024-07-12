@@ -108,10 +108,6 @@ namespace ScaleniaMW
                     {
                         Application.Current.Shutdown();
                     }
-
-                    Console.WriteLine(esa + "Błędny format importu działek");
-
-
                 }
             }
         }
@@ -144,19 +140,15 @@ namespace ScaleniaMW
             LoadingLabel(true);
             try
             {
-                Console.WriteLine("START IMPORT");
                 aktualizujSciezkeZPropertis();
                 var resDb = await Task.Run(() => new MainDbContext(connectionString));
                 this.dbContext = resDb;
-
                 var resAssigned = await Task.Run(() => new AssigedUnitService(dbContext));
                 assigedUnitService = resAssigned;
-                Console.WriteLine("middle IMPORT");
                 assigedUnitService.FillUI((WindowPrzypiszRejGr)windowPrzypiszRejGr);
                 SetSelectedIndex0();
                 itemImportJednostkiSN.Background = Brushes.Green;
                 LoadingLabel(false);
-                Console.WriteLine("end IMPORT");
             }
             catch (Exception ex)
             {
@@ -164,7 +156,6 @@ namespace ScaleniaMW
                 itemImportJednostkiSN.Background = Brushes.Red;
                 itemImportJednostkiSN.Header = "Baza.fdb";
                 textBlockLogInfo.Text = "Problem z połączeniem z bazą FDB " + ex.Message;
-                Console.WriteLine(ex);
                 if (ex.Message.ToLower().Contains("password"))
                 {
                     UstawLoginIHaslo();
@@ -440,49 +431,6 @@ namespace ScaleniaMW
 
             }
         }
-
-        //private void MenuItem_Click_PrzejdzDoWyboryRodzajuNumeracjiNKRu(object sender, RoutedEventArgs e)
-        //{
-        //    StackPanelWyboruRodzajuNumeracji.Visibility = Visibility.Visible;
-        //}
-
-        //private void Button_Click_AnulujAutonumeracje(object sender, RoutedEventArgs e)
-        //{
-        //    StackPanelWyboruRodzajuNumeracji.Visibility = Visibility.Hidden;
-        //}
-
-        //private void Button_Click_KontynuujAutonumerowanie(object sender, RoutedEventArgs e)
-        //{
-        //    int? constDoWyciagnieciaNrRej = null;
-        //    StackPanelWyboruRodzajuNumeracji.Visibility = Visibility.Hidden;
-        //    if ((bool)radioButtonNRJ.IsChecked)
-        //    {
-        //        constDoWyciagnieciaNrRej = 0;
-        //    }
-        //    else if ((bool)radioButton1000_NRJ.IsChecked)
-        //    {
-        //        constDoWyciagnieciaNrRej = 1000;
-        //    }
-        //    else if ((bool)radioButton10000_NRJ.IsChecked)
-        //    {
-        //        constDoWyciagnieciaNrRej = 10000;
-        //    }
-        //    else if ((bool)radioButton100000_NRJ.IsChecked)
-        //    {
-        //        constDoWyciagnieciaNrRej = 100000;
-        //    }
-
-        //    if (czyPolaczonoZBaza)
-        //    {
-        //        Console.WriteLine(sender.GetHashCode());
-        //        Obliczenia.DopasujNrRejDoNowychDzialek(ref listaDopasowJednos, listBoxNkr, listBoxDzialkiNowe, listBoxNrRej, "AutoPrzypiszJednostkiZDoborem", constDoWyciagnieciaNrRej);
-        //        dgNiedopJednostki.Items.Refresh();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Najpierw połącz z bazą!", "UWAGA!", MessageBoxButton.OK);
-        //    }
-        //}
 
         private void MenuItem_ClickPrzypiszDoNKRPoIjrPrzed(object sender, RoutedEventArgs e)
         {

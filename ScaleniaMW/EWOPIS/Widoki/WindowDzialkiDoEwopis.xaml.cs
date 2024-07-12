@@ -25,7 +25,7 @@ namespace ScaleniaMW.EWOPIS.Widoki
         public WindowDzialkiDoEwopis()
         {
             InitializeComponent();
-           Infrstruktura.Plik.windowDzialkiDoEwopis = windowDzialkiDoEwopis;
+            Infrstruktura.Plik.windowDzialkiDoEwopis = windowDzialkiDoEwopis;
             Infrstruktura.Plik.OdswierzScierzkeWPasku();
 
             if (Properties.Settings.Default.EwopisPort3050 == true)
@@ -117,9 +117,9 @@ namespace ScaleniaMW.EWOPIS.Widoki
             {
                 List<int> jakichObrebowNieMaWBazie = new List<int>();
                 connection.Open();
-                  
+
                 //UPDATE DZIALKI_N SET KW = CASE Id_Id  WHEN 660 THEN 'BI100000' else KW END where Id_Id IN(660)
-                                   // FbCommand writeCommand = new FbCommand("INSERT INTO DZIALKA(rjdr, uid, id, idd, idobr, sidd, teryt, CTRL, status, osou, wrt, m2, dtu) VALUES((select id from jedn_rej jr where jr.ijr =@NrjednRej and ID_OBR =@nrObr), (select gen_id(UID_DZIALKA_G, 1)from rdb$database), (select gen_id(DZIALKI_G, 1)from rdb$database), @NrDz , @nrObr, '      .   ' || @NrDz || '/      ;      ', @TERYT, @NrDz, 0, 1, 0, 1, (select cast('NOW' as timestamp) from rdb$database ))", connection);
+                // FbCommand writeCommand = new FbCommand("INSERT INTO DZIALKA(rjdr, uid, id, idd, idobr, sidd, teryt, CTRL, status, osou, wrt, m2, dtu) VALUES((select id from jedn_rej jr where jr.ijr =@NrjednRej and ID_OBR =@nrObr), (select gen_id(UID_DZIALKA_G, 1)from rdb$database), (select gen_id(DZIALKI_G, 1)from rdb$database), @NrDz , @nrObr, '      .   ' || @NrDz || '/      ;      ', @TERYT, @NrDz, 0, 1, 0, 1, (select cast('NOW' as timestamp) from rdb$database ))", connection);
                 FbCommand writeCommand = new FbCommand("INSERT INTO DZIALKA(rjdr,uid,id, idd, idobr, sidd, teryt, CTRL, STATUS, dtu, wrt, m2, DOWU, ZMA) VALUES((select first 1 id from jedn_rej jr where jr.ijr= @rjdr and ID_OBR= @idobr and (sti =0 or sti = 2)), (select gen_id(UID_DZIALKA_G, 1)from rdb$database), (select gen_id(DZIALKI_G, 1)from rdb$database), @idd, @idobr, @sidd, @teryt, @CTRL, @STATUS, (select cast('NOW' as timestamp) from rdb$database), @wrt, @m2, @DOWUZMA, @DOWUZMA)", connection);
                 writeCommand.CommandType = CommandType.Text;
                 int ileDzialekWczytano = 0;
@@ -135,11 +135,12 @@ namespace ScaleniaMW.EWOPIS.Widoki
 
                         if (obrebyZBazy.Exists(obreb => obreb.Idobr == nrObrebu))
                         {
-                         teryt = obrebyZBazy.Find(obreb => obreb.Idobr == nrObrebu).Teryt;
+                            teryt = obrebyZBazy.Find(obreb => obreb.Idobr == nrObrebu).Teryt;
                         }
                         else
                         {
-                            if(!jakichObrebowNieMaWBazie.Exists(x => x == nrJednRej)){
+                            if (!jakichObrebowNieMaWBazie.Exists(x => x == nrJednRej))
+                            {
                                 jakichObrebowNieMaWBazie.Add(nrObrebu);
                                 MessageBox.Show("Brak w bazie obrebu nr " + nrObrebu.ToString());
                             }
@@ -178,12 +179,8 @@ namespace ScaleniaMW.EWOPIS.Widoki
                 }
                 catch (Exception s)
                 {
-
-                    Console.WriteLine("excep S");
                     MessageBox.Show(s.Message);
                 }
-
-
             }
         }
 
@@ -195,11 +192,8 @@ namespace ScaleniaMW.EWOPIS.Widoki
             {
                 DataTable dt = Infrstruktura.BazaFB.Get_DataTable("select id, lp || '/' || rok || ' ' || sygn  from ZMIANY where zam  is null or zam = ''");
 
-               
-
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    Console.WriteLine("ZMIANY : " + i + " " + dt.Rows[i][0] + "<>" + dt.Rows[i][1]);
                     listaModelZmian.Add(new Modele.ModelZmiana() { idZmiany = Convert.ToInt32(dt.Rows[i][0]), NazwaZmiany = dt.Rows[i][1].ToString() });
                 }
                 listboxZmiany.ItemsSource = listaModelZmian.Select(x => x.PobierzDoListy());
@@ -208,11 +202,11 @@ namespace ScaleniaMW.EWOPIS.Widoki
                     MessageBox.Show("Brak niezatwierdzonych zmian w programie EWOPIS.", "UWAGA!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     checkBoxZmiana.IsChecked = false;
                 }
-               Infrstruktura.BazaFB.Close_DB_Connection();
+                Infrstruktura.BazaFB.Close_DB_Connection();
             }
             catch (Exception exs)
             {
-                Console.WriteLine( "zmiany: " + exs.Message);
+                Console.WriteLine("zmiany: " + exs.Message);
             }
         }
 
@@ -224,12 +218,11 @@ namespace ScaleniaMW.EWOPIS.Widoki
         private void CheckBoxZmiana_Checked(object sender, RoutedEventArgs e)
         {
             ButtonPobierzZmiany_Click(sender, e);
-            Console.WriteLine("checkbox");
         }
 
         private void MenuItem_ClicUstawLoginIHaslok(object sender, RoutedEventArgs e)
         {
-          Infrstruktura.BazaFB.przejdzDoUstawLoginIHaslo();
+            Infrstruktura.BazaFB.przejdzDoUstawLoginIHaslo();
         }
     }
 }

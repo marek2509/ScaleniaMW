@@ -8,35 +8,21 @@ namespace ScaleniaMW
 {
     public class DzialkaEDZ
     {
-        public string Nr_Dz { get; set; } 
-       
+        public string Nr_Dz { get; set; }
+
         public double DzX1;
         public double DzY1;
         public double DzX2;
         public double DzY2;
         public int ilePktow;
 
-        public void wypiszWszytko()
-        {
-            Console.WriteLine( Nr_Dz + " " + DzX1 + " " + DzY1+ " " + DzX2 + " " + DzY2 + " " + ilePktow);
-            foreach (var item in listaWspPktu)
-            {
-                Console.WriteLine(item.NR + " " + item.X + " " + item.Y);
-            }
-            
-        }
-
         public List<WspPktu> listaWspPktu = new List<WspPktu>();
-
-
         public class WspPktu
         {
             public string NR;
             public double X;
             public double Y;
-
         }
-
 
         double dlZeWsp(double x1, double y1, double x2, double y2)
         {
@@ -74,7 +60,7 @@ namespace ScaleniaMW
             {
                 katObrotu = katObrotu - 400;
             }
-            return katObrotu*180/200;
+            return katObrotu * 180 / 200;
         }
 
         double oblAzymut(double x1, double y1, double x2, double y2)

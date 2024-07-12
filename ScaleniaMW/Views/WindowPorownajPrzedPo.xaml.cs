@@ -114,8 +114,6 @@ namespace ScaleniaMW
                     {
                         Application.Current.Shutdown();
                     }
-
-                    Console.WriteLine(esa + "Błędny format importu działek");
                 }
             }
         }
@@ -197,9 +195,7 @@ namespace ScaleniaMW
         public void odczytajZSql()
         {
             stanPrzedWartoscis = new List<StanPrzedWartosci>();
-            //  listaDzNkrzSQL = new List<DzialkaNkrZSQL>();
             aktualizujConnectionStringZPropertis();
-            Console.WriteLine(connectionString);
             using (var connection = new FbConnection(connectionString))
             {
                 //connection.OpenAsync();
@@ -278,7 +274,6 @@ namespace ScaleniaMW
                 {
                     if (zsumwaneWartosciStanPO.Exists(x => x.IdPo == item.IdPo))
                     {
-                        // Console.WriteLine("if "+ item.IdPo + " " + item.NKR + "<Przed Po>"+ zsumwaneWartosciStanPO.Find((x => x.NKR == idJrNowejNKRJeNowej.Find(xa => xa.idJednNowej == item.IdPo).NKRJednNowej)).NKR);
                         zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).WartPrzed += item.WartPrzed;
                         if (zsumwaneWartosciStanPO.Find(x => x.IdPo == item.IdPo).NKR == 0)
                         {
@@ -322,7 +317,6 @@ namespace ScaleniaMW
                 adapter = new FbDataAdapter(command);
                 dt = new DataTable();
                 adapter.Fill(dt);
-                Console.WriteLine("PRZED WEJSCIEM DO PETLI");
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     var tmp = zsumwaneWartosciStanPO.Find(x => x.NKR == Convert.ToInt32(dt.Rows[i][0].Equals(System.DBNull.Value) ? null : dt.Rows[i][0]));
@@ -392,14 +386,9 @@ namespace ScaleniaMW
                     {
                         connection.Open();
                         FbCommand writeCommand = new FbCommand("UPDATE JEDN_REJ_N SET ODCHT = @wart01 where ID_ID IN(@ID_ID)", connection);
-                        //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
                         progresBar.Value = 0;
                         progresBar.Visibility = Visibility.Visible;
-                        Console.WriteLine(zsumwaneWartosciStanPO.Count + "COUNT ZSUMOWANE");
-                        foreach (var item in zsumwaneWartosciStanPO)
-                        {
-                            item.wypiszWConsoli();
-                        }
+
                         if (!zsumwaneWartosciStanPO.Equals(null))
                         {
 
@@ -422,12 +411,10 @@ namespace ScaleniaMW
                                     {
                                         int zero = 0;
                                         writeCommand.Parameters.Add("@wart01", zero);
-                                        Console.WriteLine("0  IdPo:" + item.IdPo + " NKR:" + item.NKR);
                                     }
                                     else
                                     {
                                         writeCommand.Parameters.Add("@wart01", 1);
-                                        Console.WriteLine("1  IdPo:" + item.IdPo + " NKR:" + item.NKR);
                                     }
                                     writeCommand.ExecuteNonQuery();
                                     writeCommand.Parameters.Clear();
@@ -492,10 +479,7 @@ namespace ScaleniaMW
                         //FbCommand writeCommand = new FbCommand("UPDATE DZIALKI_N SET RJDRPRZED = CASE ID_ID WHEN @IDDZ THEN @RJDRPRZED END WHERE ID_ID = @IDDZ2", connection);
                         progresBar.Value = 0;
                         progresBar.Visibility = Visibility.Visible;
-                        foreach (var item in zsumwaneWartosciStanPO)
-                        {
-                            item.wypiszWConsoli();
-                        }
+
                         if (!zsumwaneWartosciStanPO.Equals(null))
                         {
                             int ilePrzypisacOchTechn = zsumwaneWartosciStanPO.Count;
@@ -626,7 +610,6 @@ namespace ScaleniaMW
                 {
                     cloneListOrginal = zsumwaneWartosciStanPO.Select(x => new ZsumwaneWartosciZPorownania(x)).ToList();
                 }
-                cloneListOrginal.Take(10).ToList().ForEach(x => Console.WriteLine(x.NKR + " " + x.OdchWProgramie + " " + x.ZgodawProgramie));
 
                 var selectedColumnNamae = labelSelectedColumn.Content;
                 var multiply = dgPorownanie.SelectedItems;

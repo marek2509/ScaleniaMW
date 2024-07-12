@@ -25,7 +25,7 @@ namespace ScaleniaMW
         public int? PrzypisanyNrRej { get; set; }
         public int NrObr { get; private set; }
 
-        public DopasowanieJednostek(int idjednn, int idjedns, int nrjednewop, int nowynkr, string nrdz, int iddz, object njdrprzed, int nrObr=0)
+        public DopasowanieJednostek(int idjednn, int idjedns, int nrjednewop, int nowynkr, string nrdz, int iddz, object njdrprzed, int nrObr = 0)
         {
             IdJednN = idjednn;
             IdJednS = idjedns;
@@ -38,7 +38,8 @@ namespace ScaleniaMW
             if (njdrprzed.Equals(System.DBNull.Value))
             {
                 PrzypisanyNrRej = null;
-            }else if (njdrprzed.Equals(0))
+            }
+            else if (njdrprzed.Equals(0))
             {
                 PrzypisanyNrRej = null;
             }
@@ -47,11 +48,5 @@ namespace ScaleniaMW
                 PrzypisanyNrRej = (int?)njdrprzed;
             }
         }
-            public void wypiszWConsoli(String wlasnytxt = "")
-            {
-                Console.WriteLine("{6} {0} {1} {2} {3} {4} {5} {7}", IdJednN, IdJednS, NrJednEwopis, NowyNKR, NrDzialki, IdDz, wlasnytxt, PrzypisanyNrRej.Equals(null) ? "pusto" : PrzypisanyNrRej.ToString());
-            }
-
-
-        }
     }
+}

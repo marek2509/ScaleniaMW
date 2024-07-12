@@ -36,7 +36,6 @@ namespace ScaleniaMW.EWOPIS.Infrstruktura
             FbConnection cn_connection = new FbConnection(cn_String);
 
             if (cn_connection.State != ConnectionState.Open) cn_connection.Open();
-            Console.WriteLine("state " + cn_connection.State);
             return cn_connection;
         }
 

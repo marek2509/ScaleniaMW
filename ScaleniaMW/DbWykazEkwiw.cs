@@ -160,9 +160,6 @@ namespace ScaleniaMW
         {
             if (wlasciciel.IdMalzenstwa > 0)
             {
-
-                Console.WriteLine(wlasciciel.Rodzice.Remove(wlasciciel.Rodzice.IndexOf("Ż:") >= 0 ? wlasciciel.Rodzice.IndexOf("Ż:") : 0).Replace("M:", ""));
-                Console.WriteLine(wlasciciel.Rodzice.Remove(1, wlasciciel.Rodzice.IndexOf("Ż:") >= 0 ? wlasciciel.Rodzice.IndexOf("Ż:") : 0).Replace("M:", ""));
                 Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania,
                     wlasciciel.Rodzice.Remove(wlasciciel.Rodzice.IndexOf("Ż:") >= 0 ? wlasciciel.Rodzice.IndexOf("Ż:") : 0).Replace("M:", ""),"M:"));
                 Wlasciciele.Add(new Wlasciciel(wlasciciel.Udzial, wlasciciel.Udzial_NR, wlasciciel.NazwaWlasciciela.Remove(1, wlasciciel.NazwaWlasciciela.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.Adres.Remove(1, wlasciciel.Adres.IndexOf("Ż:")).Replace("M:", ""), wlasciciel.IdMalzenstwa, wlasciciel.Symbol_Wladania,
@@ -182,11 +179,6 @@ namespace ScaleniaMW
         public void DodajDzialke(Dzialka_N dzialka)
         {
             Dzialki_Nowe.Add(dzialka);
-        }
-
-        public void Wypisz()
-        {
-            Console.WriteLine(IdJednRejN + " " + IjrPo + " " + Nkr + " " + Odcht + " " + Zgoda + " " + Uwaga + " OBR:" + NazwaObrebu);
         }
 
         public decimal SumaWartJednostekPrzed()
@@ -320,14 +312,6 @@ namespace ScaleniaMW
             Jedn_REJ_N = new List<JR_Nowa>();
         }
 
-        public static void Wypisz()
-        {
-            foreach (var item in Jedn_REJ_N)
-            {
-                item.Wypisz();
-            }
-        }
-
         public static string KontrolaPrzypisaniaDoRjdr()
         {
             StringBuilder sb = new StringBuilder();
@@ -362,11 +346,6 @@ namespace ScaleniaMW
         public string Symbol_Wladania { get; set; }
         public string Rodzice { get; set; }
         public string MazCzyZona { get; set; }
-
-        public void WypiszWKoncoli()
-        {
-            Console.WriteLine(Udzial + " " + NazwaWlasciciela + " " + Adres);
-        }
     }
 
     public class WlascicielStanPrzed : Wlasciciel

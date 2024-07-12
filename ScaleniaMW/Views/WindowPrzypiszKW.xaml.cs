@@ -210,7 +210,6 @@ namespace ScaleniaMW
                         //dataGrid.Visibility = Visibility.Visible;
                         //dataGrid.Items.Refresh();
                         //dgNkrFDB.ItemsSource = dt.AsDataView();
-                        Console.WriteLine(listaDopasowKW.Count);
                         dgNrKwZSQL.ItemsSource = listaDopasowKW;
                         dgNrKwZSQL.Items.Refresh();
                     }
@@ -223,9 +222,7 @@ namespace ScaleniaMW
                     {
                         textBlockLogInfo.Text = "Brak danych";
                     }
-                    Console.WriteLine("x1q");
                     Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
-                    Console.WriteLine("x2q");
                     connection.Close();
                     itemImportJednostkiSN.Background = Brushes.LightSeaGreen;
                     itemImportJednostkiSN.Header = "Połączono z " + Properties.Settings.Default.PathFDB.Substring(Properties.Settings.Default.PathFDB.LastIndexOf('\\') + 1);
@@ -254,7 +251,7 @@ namespace ScaleniaMW
                             kwObrDzPrzypisanaWStaniePosLista.Add(new KwObrDzPrzypisanaWStaniePo
                             {
                                 KW = dt2.Rows[i][2].ToString(),
-                                IdObr = Convert.ToInt32( dt2.Rows[i][0]),
+                                IdObr = Convert.ToInt32(dt2.Rows[i][0]),
                                 NrDz = dt2.Rows[i][1].ToString()
                             });
                         }
@@ -381,13 +378,9 @@ namespace ScaleniaMW
                         tmpListaIdDz = listaDopasowKW.GroupBy(g => g.IdDzN).Select(x => x.Key).ToList();
 
                         tmpListaIdDz.Sort();
-                        // Console.WriteLine(tmpListaIdDz.Count + "count ");
                         progresBar.Value = 0;
                         progresBar.Visibility = Visibility.Visible;
 
-                        //Console.WriteLine(listaDopasowKW.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count);
-
-                        // Console.WriteLine(listaDopasowKW_CzyLadowac.FindAll(x => x.KWPoDopasowane != null).GroupBy(x => x.IdDzN).ToList().Count);
                         progresBar.Maximum = 0;
                         for (int i = 0; i <= tmpListaIdDz.Count - 1; i++)
                         {
@@ -401,16 +394,12 @@ namespace ScaleniaMW
                         Console.WriteLine("progres max " + progresBar.Maximum);
                         for (int i = 0; i <= tmpListaIdDz.Count - 1; i++)
                         {
-                            // Console.WriteLine("sss " + listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane);
-                            // if (listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null && listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane != null)
-
                             if (listaDopasowKW_CzyLadowac.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane != listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane)
                             {
                                 if (BadanieKsiagWieczystych.SprawdzCyfreKontrolnaBool(listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane) || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "")
                                 {
                                     if (listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == null || listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane == "")
                                     {
-                                        Console.WriteLine("puste badziewie");
                                         writeCommand.Parameters.Add("@IDDZ", tmpListaIdDz[i]);
                                         writeCommand.Parameters.Add("@KW", null);
                                     }
@@ -422,7 +411,6 @@ namespace ScaleniaMW
 
                                     writeCommand.ExecuteNonQuery();
                                     writeCommand.Parameters.Clear();
-                                    Console.WriteLine(i + " " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).KWPoDopasowane + " " + listaDopasowKW.Find(x => x.IdDzN.Equals(tmpListaIdDz[i])).NrDZ);
                                     progresBar.Dispatcher.Invoke(new ProgressBarDelegate(UpdateProgress), DispatcherPriority.Background);
                                 }
                                 else
@@ -481,13 +469,9 @@ namespace ScaleniaMW
             foreach (var item in NKRktorymUsunacKW)
             {
                 listaDopasowKW.FindAll(x => x.NKRn == item).ForEach(x => x.KWPoDopasowane = null);
-                // listaDopasowKW.RemoveAll(x => x.NKRn == item);
-
-                Console.WriteLine("ktowym usunac " + item);
             }
 
             textBlockLogInfo.Text = sbWspolneKW.ToString().TrimEnd();
-
         }
 
         void odsiewrzlistyNkrDzialkiKw()
@@ -515,10 +499,7 @@ namespace ScaleniaMW
         {
             if (czyPolaczonoZBaza)
             {
-                Console.WriteLine(sender.GetHashCode());
                 Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW, "AutoPrzypiszKWPrzyblizony");
-                Console.WriteLine(listaDopasowKW.Count);
-
                 usunMozliwoscPrzypisaniaKwBedacegoWKilkuJednostkach();
                 odsiewrzlistyNkrDzialkiKw();
                 dgNrKwZSQL.Items.Refresh();
@@ -595,7 +576,7 @@ namespace ScaleniaMW
             //dataGrid.Visibility = Visibility.Visible;
             tabControl2.Visibility = Visibility.Visible;
         }
-        
+
         private void otworzOknoPoczatkowe_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
@@ -649,7 +630,6 @@ namespace ScaleniaMW
         private void DgNrKwZSQL_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
 
-            //  Console.WriteLine(((TextBox)e.EditingElement).Text + " @ " + e.EditAction + " @ " +e.Column.DisplayIndex +" displIdx @ local enum " + e.Row.GetLocalValueEnumerator().Current);
             if (e.EditAction.Equals(DataGridEditAction.Commit))
             {
                 czybylaZmiana = e.EditAction.Equals(DataGridEditAction.Commit);
@@ -664,17 +644,15 @@ namespace ScaleniaMW
                 }
 
                 Obliczenia.DopasujNrKWDoNowychDzialek(ref listaDopasowKW, listBoxNkr, listBoxDzialkiNowe, listBoxNrKW);
-                Console.WriteLine("edit action: " + e.EditAction + " " + e.Cancel);
             }
         }
 
         private void DgNrKwZSQL_CurrentCellChanged(object sender, EventArgs e)
         {
-          
+
             if (czybylaZmiana)
             {
                 czybylaZmiana = false;
-                Console.WriteLine("hajfajf");
                 try
                 {
                     listBoxNkr.Items.Refresh();
@@ -809,32 +787,23 @@ namespace ScaleniaMW
                     sBListaKwNieprzypisana.Append(Nkr + ",");
                 }
 
-                if( kwDzialkaPrzed.Exists(x => x.KW == KWNiedopasow))
+                if (kwDzialkaPrzed.Exists(x => x.KW == KWNiedopasow))
                 {
                     sBListaKwNieprzypisana = sBListaKwNieprzypisana.Replace(",", ";Nr DZ:", sBListaKwNieprzypisana.Length - 1, 1);
 
 
                     foreach (var dzPrzed in kwDzialkaPrzed.FindAll(x => x.KW == KWNiedopasow).OrderBy(x => x.Dzialka))
-                {
+                    {
 
                         sBListaKwNieprzypisana.Append(dzPrzed.Dzialka + ", ");
-                }
+                    }
 
                 }
                 sBListaKwNieprzypisana.AppendLine();
             }
             // sort po NKR
 
-            for (int i = 0; i < sBListaKwNieprzypisana.Length; i++)
-            {
-                Console.WriteLine("SPRAWDZ LINIE NR " + i + " " + sBListaKwNieprzypisana[i]);
-            }
- 
-
-            
-
-
-                SaveFileDialog svd = new SaveFileDialog();
+            SaveFileDialog svd = new SaveFileDialog();
             svd.DefaultExt = ".txt";
             svd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             if (svd.ShowDialog() == true)
@@ -845,7 +814,7 @@ namespace ScaleniaMW
                     {
                         try
                         {
-                           sw.Write(sBListaKwNieprzypisana);
+                            sw.Write(sBListaKwNieprzypisana);
 
                             sw.Close();
                         }

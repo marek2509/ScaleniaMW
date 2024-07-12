@@ -80,7 +80,6 @@ namespace ScaleniaMW.EWOPIS.Infrstruktura
             }
             catch (Exception e)
             {
-                Console.WriteLine("Do dupy: {0}", e.Message);
                 MessageBox.Show("Błąd odcztu pliku txt lub csv.\nUpewnij się, że plik, \nktóry chcesz otworzyć jest zamknięty!", "ERROR", MessageBoxButton.OK);
             }
             return all;

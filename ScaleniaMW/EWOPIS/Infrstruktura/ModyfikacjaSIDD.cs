@@ -12,8 +12,6 @@ namespace EWOPISMW.Infrstruktura
         {
             string[] dzialka;
             dzialka = NrDzialki.Split('/', '.');
-            Console.WriteLine();
-            Console.WriteLine(dzialka.Length);
             StringBuilder SIDD = new StringBuilder();
 
             int jesliJestArkuszTo1 = 0;
@@ -52,7 +50,6 @@ namespace EWOPISMW.Infrstruktura
                 }
                 else if (i == 1 + jesliJestArkuszTo1)
                 {
-                    Console.WriteLine(dzialka[1 + jesliJestArkuszTo1] + " " + dzialka[1 + jesliJestArkuszTo1].Length);
                     string spacje = "      "; // 6 spacji
                     spacje = spacje.Remove(0, dzialka[1 + jesliJestArkuszTo1].Length);
 
@@ -61,7 +58,6 @@ namespace EWOPISMW.Infrstruktura
                     SIDD.Append(";      ");
                 }
             }
-            Console.WriteLine(">" + SIDD.ToString() + "<");
             return SIDD.ToString();
         }
     }

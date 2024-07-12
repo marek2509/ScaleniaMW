@@ -28,7 +28,6 @@ namespace ScaleniaMW.Views
             {
                 _WzdeService = new WZDEService(dbContext);
                 _dzialkaRepository = new DzialkaRepository(dbContext);
-                _dzialkaRepository = new DzialkaRepository(dbContext);
                 _dzialki_NRepository = new Dzialki_NRepository(dbContext);
 
                 List<Dzialka> currentParcelBefor = _dzialkaRepository.GetAll().ToList();
@@ -42,8 +41,7 @@ namespace ScaleniaMW.Views
                     listBoxKW.SelectedIndex = 0;
                 }
 
-                //listBoxDzialki.ItemsSource = _dzialkaRepository.GetAll(x => x.KW == currentParcel[listBoxNkr.SelectedIndex].KW).Select(x => $"{x.Obreb.ID}-{x.IDD}");
-
+                listBoxDzialkiNieUjawnione.ItemsSource = currentParcelBefor.Where(x => string.IsNullOrWhiteSpace(x.KW)).Select(x => $"{x?.Obreb.ID}-{x.IDD}").ToList();
             }
         }
 
