@@ -11,11 +11,11 @@ namespace ScaleniaMW
 {
     public static class Plik
     {
-        public static void ZapiszDoPlikuTXT(string tekstDoZapisu)
+        public static void ZapiszDoPlikuTXT(string tekstDoZapisu, string format = null)
         {
             SaveFileDialog svd = new SaveFileDialog();
-            svd.DefaultExt = ".gml";
-            svd.Filter = "GML (*.gml)|*.gml|All files (*.*)|*.*";
+            svd.DefaultExt = $".{format ?? "gml"}";
+            svd.Filter = $"{format ?? "gml"} (*.{format ?? "gml"})|*.{format ?? "gml"}|All files (*.*)|*.*";
             if (svd.ShowDialog() == true)
             {
                 using (Stream s = File.Open(svd.FileName, FileMode.Create))

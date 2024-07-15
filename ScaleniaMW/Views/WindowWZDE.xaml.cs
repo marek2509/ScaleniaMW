@@ -5,6 +5,7 @@ using ScaleniaMW.Repositories.Interfaces;
 using ScaleniaMW.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace ScaleniaMW.Views
@@ -19,6 +20,7 @@ namespace ScaleniaMW.Views
         List<string> KWList = new List<string>();
         DzialkaRepository _dzialkaRepository;
         Dzialki_NRepository _dzialki_NRepository;
+        string currentDocumentToDownload = string.Empty;
         public WindowWZDE()
         {
             InitializeComponent();
@@ -87,7 +89,33 @@ namespace ScaleniaMW.Views
 
                 var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == currentKW);
                 listBoxDzialkiN.ItemsSource = allParcelForKWAfter.Select(x => $"{x.Obreb?.ID}-{x.IDD}").ToList();
+
+
+                HTMLGenerator.WzdeStep1TrDzialkiNieUjawnione(allParcelForKW.ToList());
+
+                var zmapowaneDzialkiPo = allParcelForKWAfter.Select(x => new Dzialka { Obreb = x.Obreb, IDD = x.IDD, PEW = x.PEW, KW = x.KW});
+
+
+                HTMLGenerator.WzdeStep2TrKW(zmapowaneDzialkiPo.ToList());
+                var leftTable = HTMLGenerator.WzdeStep3GetTable();
+
+                HTMLGenerator.WzdeStep1TrDzialkiNieUjawnione(allParcelForKW.ToList());
+                HTMLGenerator.WzdeStep2TrKW(zmapowaneDzialkiPo.Take(2).ToList());
+                var rightTable = HTMLGenerator.WzdeStep3GetTable();
+                var table = HTMLGenerator.WzdeStep4InsertTablesIntoPage(leftTable, rightTable);
+                currentDocumentToDownload = table;
+
+                table = table.Replace("font-size: 13", "font-size: 18");
+                table = table.Replace("font-size: 16", "font-size: 22");
+                table = table.Replace("windows-1250", "UTF-8");
+                webBrowser.NavigateToString(table);
+
             }
+        }
+
+        private void ButtonDownloadCurrentDocument_Click(object sender, RoutedEventArgs e)
+        {
+            Plik.ZapiszDoPlikuTXT(currentDocumentToDownload, "doc");
         }
     }
 }

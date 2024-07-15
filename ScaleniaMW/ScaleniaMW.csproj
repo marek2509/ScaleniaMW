@@ -161,6 +161,7 @@
     <Compile Include="GMLRepair.cs" />
     <Compile Include="Helpers\ConnectionHelper.cs" />
     <Compile Include="Helpers\ExtensionsClass.cs" />
+    <Compile Include="Helpers\HTMLGenerator.cs" />
     <Compile Include="HTMLDokument.cs" />
     <Compile Include="HtmlDokumentUproszczonyWykazWydzEkwiwalentow.cs" />
     <Compile Include="HtmlDokumentWykazWydzEkwiwalentow.cs" />

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ScaleniaMW.Views"
         mc:Ignorable="d"
         x:Name="windowWZDE"
-        Title="WindowWZDE" Height="450" Width="800">
+        Title="WindowWZDE" Height="450" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="23"/>
@@ -32,8 +32,7 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">KW Przed i Po</Label>
             <DockPanel Margin="0,20,0,0" Grid.Column="0">
@@ -70,6 +69,18 @@
                 <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                 <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNieUjawnione, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
             </DockPanel>
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Button Width="100" Click="ButtonDownloadCurrentDocument_Click">Pobierz wybrany</Button>
+                
+                <WebBrowser Grid.Row="1"  x:Name="webBrowser" MaxWidth="820"/>
+            </Grid>
+
+
         </Grid>
     </Grid>
 </Window>
