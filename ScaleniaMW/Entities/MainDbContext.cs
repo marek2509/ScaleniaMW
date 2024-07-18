@@ -17,6 +17,8 @@ namespace ScaleniaMW.Entities
         public DbSet<Jedn_sn> Jednostki_sn { get; set; }
         public DbSet<Jedn_rej> Jednostki_rej { get; set; }
         public DbSet<Dzialki_n> Dzialki_nowe { get; set; }
+        public DbSet<WZDEDzKW> WZDEDZKW { get; set; }
+        public DbSet<Dzialka> Dzialka { get; set; }
 
     }
 }

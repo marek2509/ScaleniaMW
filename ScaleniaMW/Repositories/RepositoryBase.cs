@@ -2,8 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +46,42 @@ namespace ScaleniaMW.Repositories
         public virtual IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> where)
         {
             return dbSet.Where(where).ToList();
+        }
+
+        public static long ToLong(object obj)
+        {
+            if (obj == null) { return 0; }
+
+            long val;
+            if (long.TryParse(obj.ToString(), out val))
+            {
+                return val;
+            }
+            return 0;
+        }
+
+        public virtual bool Save(TEntity entity)
+        {
+            //using (IDBEntities context = DBContext)
+            //{
+            try
+            {
+                dbSet.AddOrUpdate(entity);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                //EntityValidationHelper.Log(dbEx);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                //LogHelper.Log.Error(ex);
+                return false;
+            }
+
+            //}
         }
     }
 }

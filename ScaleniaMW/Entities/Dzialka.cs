@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ScaleniaMW.Entities
 {
     [Table("DZIALKA")]
-    public partial class Dzialka
+    public class Dzialka
     {
         [Key]
         public int ID_ID { get; set; }

@@ -18,6 +18,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,13 +32,12 @@
     <ProductName>SCALENIAMW2</ProductName>
     <PublisherName>Marek Wojciechowicz</PublisherName>
     <SuiteName>Marek Wojciechowicz</SuiteName>
-    <ApplicationRevision>68</ApplicationRevision>
+    <ApplicationRevision>69</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -143,6 +143,7 @@
     <Compile Include="Entities\Jedn_sn.cs" />
     <Compile Include="Entities\MainDbContext.cs" />
     <Compile Include="Entities\Obreby.cs" />
+    <Compile Include="Entities\WZDEDzKW.cs" />
     <Compile Include="EWOPIS\Infrstruktura\BazaFB.cs" />
     <Compile Include="EWOPIS\Infrstruktura\ModyfikacjaSIDD.cs" />
     <Compile Include="EWOPIS\Infrstruktura\Plik.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Repositories\Interfaces\IDzialki_NRepository.cs" />
     <Compile Include="Repositories\Jedn_rejRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\WZDEDzKWRepository.cs" />
     <Compile Include="Services\AssigedUnitService.cs" />
     <Compile Include="Models\JednRejNDto.cs" />
     <Compile Include="Services\WZDEService.cs" />

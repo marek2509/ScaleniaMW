@@ -54,10 +54,16 @@ namespace ScaleniaMW
 
         public static void Execute_SQL(string SQL_command_execute)
         {
-            FbConnection cn_connection = Get_DB_Connection();
-
-            FbCommand cmd_Command = new FbCommand(SQL_command_execute, cn_connection);
-            cmd_Command.ExecuteNonQuery();
+            try
+            {
+                FbConnection cn_connection = Get_DB_Connection();
+                FbCommand cmd_Command = new FbCommand(SQL_command_execute, cn_connection);
+                cmd_Command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                przejdzDoOknaLogowania(e.Message);
+            }
         }
 
         public static void Close_DB_Connection()

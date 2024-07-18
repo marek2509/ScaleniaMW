@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:ScaleniaMW.Views"
         mc:Ignorable="d"
         x:Name="windowWZDE"
-        Title="WindowWZDE" Height="450" Width="1000">
+        Title="WindowWZDE" Height="600" Width="1200" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="23"/>
+            <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Background="#2676d0" Foreground="White">
@@ -22,65 +22,85 @@
                 <CheckBox Content="Zawsze na wierzchu" IsChecked="{Binding ElementName=checkBoxCzyNaWierzchu, Path=IsChecked}" Unchecked="CheckBoxTopmost_Unchecked" Checked="CheckBoxTopmost_Checked"></CheckBox>
             </MenuItem>
             <MenuItem Header="Ustawienia FDB">
+                <MenuItem Header="Połącz" Foreground="Black" Click="ConnectDb_Click"></MenuItem>
                 <MenuItem Header="Ustaw ścieżkę do pliku SCALENIA.FDB" Foreground="Black" Click="SetConnectionString_Click"></MenuItem>
                 <MenuItem Header="Ustaw Login i Hasło" Foreground="Black" Click="SetLoginAndPassword_Click"></MenuItem>
             </MenuItem>
+            <Label x:Name="labelConnection" Background="AliceBlue" FontWeight="ExtraBold"></Label>
         </Menu>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">KW Przed i Po</Label>
-            <DockPanel Margin="0,20,0,0" Grid.Column="0">
-                <ListBox x:Name="listBoxKW" MinWidth="130" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged" />
-            </DockPanel>
-            <DockPanel Grid.Column="0">
-                <Label  VerticalAlignment="Bottom" Content="Ilość: "  Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxKW, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-            </DockPanel>
-
-            <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI</Label>
-            <DockPanel  Margin="0,20,0,0" Grid.Column="1">
-                <ListBox x:Name="listBoxDzialki" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended"/>
-            </DockPanel>
-            <DockPanel Grid.Column="1">
-                <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialki, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-            </DockPanel>
-
-            <Label Grid.Column="2" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI PO</Label>
-            <DockPanel  Margin="0,20,0,0" Grid.Column="2">
-                <ListBox x:Name="listBoxDzialkiN" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended"/>
-            </DockPanel>
-            <DockPanel Grid.Column="2">
-                <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiN, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-            </DockPanel>
-
-            <Label Grid.Column="3" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">DZ. NIE UJAWNIONE</Label>
-            <DockPanel  Margin="0,20,0,0" Grid.Column="3">
-                <ListBox x:Name="listBoxDzialkiNieUjawnione" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended"/>
-            </DockPanel>
-            <DockPanel Grid.Column="3">
-                <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-                <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNieUjawnione, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
-            </DockPanel>
-            <Grid Grid.Column="4">
+        <DockPanel Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">KW Przed i Po</Label>
+                <DockPanel Margin="0,20,0,0" Grid.Column="0">
+                    <ListBox FontSize="14" x:Name="listBoxKW" MinWidth="160" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged" />
+                </DockPanel>
+                <DockPanel Grid.Column="0">
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: "  Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxKW, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                </DockPanel>
 
-                <Button Width="100" Click="ButtonDownloadCurrentDocument_Click">Pobierz wybrany</Button>
-                
-                <WebBrowser Grid.Row="1"  x:Name="webBrowser" MaxWidth="820"/>
+                <!--<Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI</Label>
+                <DockPanel  Margin="0,20,0,0" Grid.Column="1">
+                    <ListBox x:Name="listBoxDzialki" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended"/>
+                </DockPanel>
+                <DockPanel Grid.Column="1">
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialki, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                </DockPanel>
+
+                <Label Grid.Column="2" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">NR DZIAŁKI PO</Label>
+                <DockPanel  Margin="0,20,0,0" Grid.Column="2">
+                    <ListBox x:Name="listBoxDzialkiN" MinWidth="100"  SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended"/>
+                </DockPanel>
+                <DockPanel Grid.Column="2">
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiN, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                </DockPanel>-->
+
+                <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">DZ. NIE UJAWNIONE</Label>
+                <DockPanel  Margin="0,20,0,0" Grid.Column="1">
+                    <ListBox  FontSize="{Binding ElementName=listBoxKW, Path=FontSize}" x:Name="listBoxDzialkiNieUjawnione" MinWidth="150" 
+                              SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended" SelectionChanged="listBoxDzialkiNieUjawnione_SelectionChanged"/>
+                </DockPanel>
+                <DockPanel Grid.Column="1">
+                    <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                    <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNieUjawnione, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
+                </DockPanel>
+
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="4">
+                    <Label FontSize="30" Foreground="MediumVioletRed">WERSJA ROBOCZA!!!</Label>
+                    <Button Click="PrzypiszDzialke_Click" Width="100" Height="30">Przypisz działkę</Button>
+                </StackPanel>
             </Grid>
 
+            <DockPanel>
+                <Grid Grid.Column="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-        </Grid>
+                    <Button Width="100" Click="ButtonDownloadCurrentDocument_Click">Pobierz wybrany</Button>
+
+                    <WebBrowser Grid.Row="1"  x:Name="webBrowser"/>
+                </Grid>
+            </DockPanel>
+
+        </DockPanel>
+
+           
+
+
     </Grid>
 </Window>
