@@ -12,10 +12,12 @@ namespace ScaleniaMW.Entities
     public class WZDEDzKW
     {
         [Key]
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public string KW { get; set; }
         [ForeignKey("Dzialka")]
         public int DZIALKAID_ID { get; set; }
+        [Column("ISDELETED")]
+        public bool IsDeleted { get; set; }
 
         public virtual Dzialka Dzialka { get; set; }
     }

@@ -62,13 +62,13 @@ namespace ScaleniaMW.Helpers
             }
         }
 
-        public static string WzdeStep3GetTable()
+        public static string WzdeStep3GetTable(bool poScaleniu = false)
         {
 
             var nieujawnioneKWTitle = IsNieujawnioneKW ? "<tr>\r\n\t\t\t<th colspan=\"3\">Działki nie ujawnione w KW</th>\r\n\t\t</tr>" : "";
 
             TBody += string.Format("\t\t<tr wiersz razem>\r\n\t\t\t<td colspan=\"2\" class=\"right bold\">RAZEM:</td>\r\n\t\t\t<td class=\"bold\">{0}</td>\r\n\t\t</tr>", (PewSum / 10000d).ToString("F4"));
-            var table = $"\r\n<table class=\"myTable\">\r\n\t\r\n\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th colspan=\"3\">Stan przed scaleniem</th>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th class=\"widthObr\">Obręb</th>\r\n\t\t\t<th class=\"widthDz\">Nr działki</th>\r\n\t\t\t<th>Pow.[Ha]</th>\r\n\t\t</tr>\r\n\t\t" +
+            var table = $"\r\n<table class=\"myTable\">\r\n\t\r\n\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th colspan=\"3\">{(poScaleniu ? "Stan po scaleniem" : "Stan przed scaleniem")}</th>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<th class=\"widthObr\">Obręb</th>\r\n\t\t\t<th class=\"widthDz\">Nr działki</th>\r\n\t\t\t<th>Pow.[Ha]</th>\r\n\t\t</tr>\r\n\t\t" +
                 nieujawnioneKWTitle +
                 "\r\n\t</thead>\r\n\t<tbody>\r\n\t\t" + TBody + "\r\n\t</tbody>\r\n</table>";
             TBody = string.Empty;
