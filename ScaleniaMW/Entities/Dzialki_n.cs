@@ -27,7 +27,7 @@ namespace ScaleniaMW.Entities
 
         [ForeignKey("JednRejN")]
         public int RJDR { get; set; }
-        public Jedn_rej_n JednRejN { get; set; }
+        public virtual Jedn_rej_n JednRejN { get; set; }
 
     }
 }

@@ -180,6 +180,7 @@
     <Compile Include="Repositories\Interfaces\IDzialki_NRepository.cs" />
     <Compile Include="Repositories\Jedn_rejRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\Results\GetOwnersForJRResult.cs" />
     <Compile Include="Repositories\WZDEDzKWRepository.cs" />
     <Compile Include="Services\AssigedUnitService.cs" />
     <Compile Include="Models\JednRejNDto.cs" />

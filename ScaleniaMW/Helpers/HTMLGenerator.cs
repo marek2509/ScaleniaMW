@@ -1,11 +1,13 @@
 ﻿using FirebirdSql.Data.Services;
 using ScaleniaMW.Entities;
+using ScaleniaMW.Repositories.Results;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace ScaleniaMW.Helpers
 {
@@ -95,6 +97,25 @@ namespace ScaleniaMW.Helpers
                 $"</style>" +
                 $"\r\n</head>\r\n<body>\r\n\r\n\t<p class=\"tytul\">Wykaz zmian danych ewidencyjnych<br>\r\n\t{CurrentKW}\t\r\n\t</p>\r\n\t<div>\r\n\t\t" +
                 $"<table class=\"container b-none\" >\r\n\t\t\t<tr class=\"b-none\">\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{leftTable}\t\t\t\t</td>\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{rightTable}</td>\r\n\t\t\t</tr>\r\n\t\t</table>\r\n\t</div>\r\n</body>\r\n</html>";
+        }
+
+
+        public static string KWInfoData(Dzialka dzialka, List<GetOwnersForJRResult> owners)
+        {
+            StringBuilder sbWlasciciele = new StringBuilder();
+            foreach (var owner in owners)
+            {
+                sbWlasciciele.AppendLine($"<span>{owner.SYMBOL} {owner.UD} - {owner.WLASCICIELE}</span><br>");
+            }
+
+
+            return $"<html lang=\"pl\">\r\n<head>\r\n<meta charset=\"UTF-8\"></head><body>" +
+                $"<span><b>Obr:</b> {dzialka.Obreb.ID} {dzialka.Obreb.NAZ}</span><br>" +
+                $"<span><b>JR:</b> {dzialka.JednRej.IJR}</span><br>" +
+                $"<span><b>Dz. z jedn.:</b> {string.Join(", ", dzialka.JednRej.Dzialki.Select(x => $"{x.Obreb.ID}-{x.IDD}"))}</span><br>" +
+                "<b>Właściciele:</b><br>" +
+                sbWlasciciele.ToString() +
+                $"</body></html>";
         }
     }
 }

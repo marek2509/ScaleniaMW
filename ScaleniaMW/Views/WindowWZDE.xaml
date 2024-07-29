@@ -44,7 +44,7 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Foreground="#2676d0" x:Name="labelNKR">KW Przed i Po</Label>
                 <DockPanel Margin="0,20,0,0" Grid.Column="0">
-                    <ListBox FontSize="14" x:Name="listBoxKW" MinWidth="160" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxNkr_SelectionChanged" />
+                    <ListBox FontSize="14" x:Name="listBoxKW" MinWidth="160" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxKW_SelectionChanged" />
                 </DockPanel>
                 <DockPanel Grid.Column="0">
                     <Label  VerticalAlignment="Bottom" Content="Ilość: "  Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
@@ -68,12 +68,13 @@
                     <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                     <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiN, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                 </DockPanel>-->
-
-                <Label Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">DZ. NIE UJAWNIONE</Label>
-                <DockPanel  Margin="0,20,0,0" Grid.Column="1">
+                <CheckBox Grid.Column="1" x:Name="cbxDzZJrWybranejKW" IsChecked="True" Checked="cbxDzZJrWybranejKW_Checked" Unchecked="cbxDzZJrWybranejKW_Unchecked">Dzialki z JR wybranej KW</CheckBox>
+                <Label  Margin="0,20,0,0" Grid.Column="1" Foreground="{Binding ElementName=labelNKR, Path=Foreground}">DZ. NIE UJAWNIONE</Label>
+                <DockPanel  Margin="0,40,0,0" Grid.Column="1">
                     <ListBox  FontSize="{Binding ElementName=listBoxKW, Path=FontSize}" x:Name="listBoxDzialkiNieUjawnione" MinWidth="150" 
                               SelectedIndex="0" Margin=" 5,0,0,25" HorizontalAlignment="Left" SelectionMode="Extended" SelectionChanged="listBoxDzialkiNieUjawnione_SelectionChanged"/>
                 </DockPanel>
+
                 <DockPanel Grid.Column="1">
                     <Label  VerticalAlignment="Bottom" Content="Ilość: " Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
                     <Label  VerticalAlignment="Bottom" Content="{Binding ElementName=listBoxDzialkiNieUjawnione, Path=Items.Count}" Foreground="{Binding ElementName=labelNKR, Path=Foreground}"></Label>
@@ -86,17 +87,24 @@
                 <StackPanel Grid.Row="1" Grid.ColumnSpan="3">
                     <Label x:Name="labelCurrentKW" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </StackPanel>
-                <Label  Grid.Row="2">Przypisane działki nieujawnione:</Label>
+                <Label FontSize="14"  Grid.Row="2">Przypisane dz. nieujawnione:</Label>
                 <StackPanel Grid.Row="3" Margin="0" x:Name="containerScroll">
                         <ScrollViewer MaxHeight="{Binding ElementName=containerScroll, Path=ActualHeight }">
-                            <StackPanel x:Name="containerDzialkieNieprzypisane">
+                            <StackPanel x:Name="containerDzialkieNieprzypisane" Margin="10,0,0,0">
                             </StackPanel>
                         </ScrollViewer>
+                </StackPanel>
+
+                <Label Grid.Row="2" Grid.Column="1" FontSize="14">Info o KW ze stanu przed:</Label>
+                <StackPanel Background="Aquamarine" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0" x:Name="containerScroll2">
+                    <WebBrowser x:Name="webBrowserInfKW" Height="{Binding ElementName=containerScroll2, Path=ActualHeight }"/>
+
+
                 </StackPanel>
             </Grid>
 
             <DockPanel>
-                <Grid Grid.Column="3">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
                         <RowDefinition/>
