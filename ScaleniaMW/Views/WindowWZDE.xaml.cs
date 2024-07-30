@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Serialization;
 
 namespace ScaleniaMW.Views
 {
@@ -75,7 +76,7 @@ namespace ScaleniaMW.Views
                 List<Dzialki_n> currentParcelAfter = _dzialki_NRepository.GetAll().ToList();
                 if (loadKW)
                 {
-
+                    KWList = new List<string>();
                     KWList.AddRange(currentParcelBefor.Where(x => !string.IsNullOrWhiteSpace(x.KW)).Select(x => x.KW.Trim()).ToList());
                     KWList.AddRange(currentParcelAfter.Where(x => !string.IsNullOrWhiteSpace(x.KW)).Select(x => x.KW.Trim()).ToList());
                     KWList = KWList.Distinct().OrderBy(x => x).ToList();
@@ -144,6 +145,41 @@ namespace ScaleniaMW.Views
             }
         }
 
+        // KW z jednostek które maja nieujawnione działki
+        private void FilterKWByCheckBox(bool kWTylkoZJednostekZNieprzypisanymiDzialkami)
+        {
+            List<Dzialka> currentParcelBefor = _dzialkaRepository.GetAll().ToList();
+            KWList = new List<string>();
+            if (kWTylkoZJednostekZNieprzypisanymiDzialkami)
+            {
+                var dzNieUjawnionePrzpypisane = _WZDEDzKWRepository.GetAll();
+                var jrZDzialkamiNieujawnionymi = currentParcelBefor.Where(x => string.IsNullOrWhiteSpace(x.KW) && !dzNieUjawnionePrzpypisane.Any(y => y.DZIALKAID_ID == x.ID_ID)).Select(x => x.RJDR).ToList();
+                KWList.AddRange(currentParcelBefor.Where(x => jrZDzialkamiNieujawnionymi.Contains(x.RJDR) && !string.IsNullOrWhiteSpace(x.KW)).Select(x => x.KW.Trim()).ToList());
+            }
+            else
+            {
+                List<Dzialki_n> currentParcelAfter = _dzialki_NRepository.GetAll().ToList();
+                KWList.AddRange(currentParcelAfter.Where(x => !string.IsNullOrWhiteSpace(x.KW)).Select(x => x.KW.Trim()).ToList());
+                KWList.AddRange(currentParcelBefor.Where(x => !string.IsNullOrWhiteSpace(x.KW)).Select(x => x.KW.Trim()).ToList());
+            }
+
+
+            KWList = KWList.Distinct().OrderBy(x => x).ToList();
+            listBoxKW.ItemsSource = KWList;
+
+            if (listBoxKW.Items.Count > 0)
+            {
+                if (listBoxKW.SelectedIndex > 0 && listBoxKW.SelectedIndex < listBoxKW.Items.Count)
+                {
+                    // zostaje obecny index
+                }
+                else
+                {
+                    listBoxKW.SelectedIndex = 0;
+                }
+            }
+        }
+
         private void SetConnectionString_Click(object sender, RoutedEventArgs e)
         {
             Helpers.ConnectionHelper.SetConnectionStringByFileDialog();
@@ -180,7 +216,7 @@ namespace ScaleniaMW.Views
         {
             if (KWList.Any())
             {
-                currentKW = KWList[listBoxKW.SelectedIndex];
+                currentKW = KWList[listBoxKW.SelectedIndex < 0 ? 0 : listBoxKW.SelectedIndex];
                 var allParcelForKW = _dzialkaRepository.GetAll(x => x.KW.Trim() == currentKW);
 
                 var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == currentKW);
@@ -228,6 +264,17 @@ namespace ScaleniaMW.Views
                 webBrowserInfKW.NavigateToString(sbKWAdditioinaInfo.ToString());
 
                 ReloadDzialkiNieujwnione();
+
+                if (dzialkiNieUjawnione.Count > 0)
+                {
+                    dzialkiNieUjawnioneCurrentIdx = dzialkiNieUjawnioneCurrentIdx < 0 ? 0 : dzialkiNieUjawnioneCurrentIdx;
+                    listBoxDzialkiNieUjawnione.SelectedIndex = dzialkiNieUjawnioneCurrentIdx;
+                    var kwListPowiazaneZDzialkamiNieujawnionymi = dzialkiNieUjawnione[dzialkiNieUjawnioneCurrentIdx]?.JednRej?.Dzialki?.Select(x => x.KW)?.Distinct()?.ToList();
+                    if (kwListPowiazaneZDzialkamiNieujawnionymi.Any())
+                    {
+                        webBrowserPowiazaneKW.NavigateToString(HTMLGenerator.KWLista(kwListPowiazaneZDzialkamiNieujawnionymi));
+                    }
+                }
             }
         }
 
@@ -274,6 +321,16 @@ namespace ScaleniaMW.Views
         private void cbxDzZJrWybranejKW_Unchecked(object sender, RoutedEventArgs e)
         {
             ReloadDzialkiNieujwnione();
+        }
+
+        private void cbxKwKtoreMajaDzialki_Checked(object sender, RoutedEventArgs e)
+        {
+            FilterKWByCheckBox(true);
+        }
+
+        private void cbxKwKtoreMajaDzialki_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FilterKWByCheckBox(false);
         }
     }
 }

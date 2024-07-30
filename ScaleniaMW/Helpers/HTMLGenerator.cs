@@ -117,5 +117,18 @@ namespace ScaleniaMW.Helpers
                 sbWlasciciele.ToString() +
                 $"</body></html>";
         }
+
+        public static string KWLista(List<string> kwList)
+        {
+            StringBuilder sbWlasciciele = new StringBuilder();
+            foreach (var kw in kwList)
+            {
+                sbWlasciciele.AppendLine($"<span>{kw}</span>");
+            }
+
+            return $"<html lang=\"pl\">\r\n<head>\r\n<meta charset=\"UTF-8\"></head><body>" +
+                sbWlasciciele.ToString() +
+                $"</body></html>";
+        }
     }
 }
