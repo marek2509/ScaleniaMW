@@ -111,7 +111,7 @@
                 </DockPanel>-->
 
                 <StackPanel  Grid.Row="1" Grid.RowSpan="2" Margin="0" >
-                    <Label FontSize="14">Proponowane Księgi </Label>
+                    <Label FontSize="14">Proponowane Księgi</Label>
                     <Label FontSize="14">dla wybranej działki:</Label>
                 </StackPanel>
                 <DockPanel  Grid.Row="3" Margin="0" x:Name="containerScroll3">
@@ -127,11 +127,25 @@
             <DockPanel>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="60"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
+                    <DockPanel>
+                        <StackPanel Margin="0,0,10,0">
+                        <Label>Starosta:</Label>
+                        <TextBox Height="25" Width="150" x:Name="txtStarosta" TextChanged="txtStarosta_TextChanged"  ToolTip="Starosta">Kubusia Puchatka :)</TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,0">
+                            <Label>Decyzja nr:</Label>
+                            <TextBox Height="25" Width="150" x:Name="txtDecyzja" TextChanged="txtStarosta_TextChanged" ToolTip="Numer decyzji">100/2024</TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,0">
+                            <Label>Data decyzji:</Label>
+                            <TextBox Height="25" Width="150" x:Name="txtDataDecyzji" TextChanged="txtStarosta_TextChanged" ToolTip="data decyzji">31.07.2024r.</TextBox>
+                        </StackPanel>
+                        <Button Height="30" Width="150" Click="ButtonDownloadCurrentDocument_Click">Pobierz wybrany dokument</Button>
+                    </DockPanel>
 
-                    <Button Width="100" Click="ButtonDownloadCurrentDocument_Click">Pobierz wybrany</Button>
 
                     <WebBrowser Grid.Row="1"  x:Name="webBrowser"/>
                 </Grid>

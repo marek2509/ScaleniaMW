@@ -3,6 +3,7 @@ using ScaleniaMW.Entities;
 using ScaleniaMW.Repositories.Results;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,11 @@ namespace ScaleniaMW.Helpers
         static string TBody { get; set; } = string.Empty;
         static bool IsNieujawnioneKW { get; set; }
         static string CurrentKW { get; set; }
+        static string EkwiwalenZamiennyCz1DzialkiPO { get; set; }
 
         public static void WzdeStep1TrDzialkiNieUjawnione(List<Dzialka> dzialki)
         {
+
             if (dzialki.Any())
             {
                 StringBuilder sb = new StringBuilder();
@@ -79,8 +82,112 @@ namespace ScaleniaMW.Helpers
             return table;
         }
 
+        public static string WzdeStep4Description(List<Dzialka> dzialkiPrzed, List<Dzialka> dzialkiNieujawnione, List<Dzialki_n> dzialkiPo,string txtStarosta, string txtDecyzja, string txtDataDecyzji)
+        {
+            StringBuilder stringBuilderDescription = new StringBuilder();
+            stringBuilderDescription.Append("<div>");
+            stringBuilderDescription.Append("<p>Uwagi:</p>");
+            stringBuilderDescription.Append("<p>");
+            if (dzialkiPo.Any())
+            {
+                var firstLoop = true;
 
-        public static string WzdeStep4InsertTablesIntoPage(string leftTable, string rightTable)
+                var obrebyDzialekPo = dzialkiPo.Select(x => x.IDOBR).Distinct().ToList();
+
+                foreach (var idobr in obrebyDzialekPo)
+                {
+                    var dzialkiWObrebie = dzialkiPo.Where(x => x.IDOBR == idobr).ToList();
+                    if (firstLoop)
+                    {
+                        firstLoop = false;
+                        stringBuilderDescription.Append($"Działk{(dzialkiWObrebie.Count > 1 ? "i" : "a")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "a")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                    else
+                    {
+                        stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "a")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "a")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                }
+                stringBuilderDescription.Append($" o łącznej powierzchni {(dzialkiPo.Sum(x => x.PEW) / 10000d).ToString("F4")} ha stanowi{(dzialkiPo.Count > 1 ? "ą" : "")} ekwiwalent zamienny za:");
+            }
+            else
+            {
+                stringBuilderDescription.Append("Brak działek po scaleniu.");
+            }
+
+            if (dzialkiPrzed.Any())
+            {
+                var firstLoop = true;
+
+                var obrebyDzialekPrzed = dzialkiPrzed.Select(x => x.IDOBR).Distinct().ToList();
+
+                foreach (var idobr in obrebyDzialekPrzed)
+                {
+                    var dzialkiWObrebie = dzialkiPrzed.Where(x => x.IDOBR == idobr).ToList();
+
+
+                    if (firstLoop)
+                    {
+                        firstLoop = false;
+                        stringBuilderDescription.Append($" działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                    else
+                    {
+                        stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                }
+                stringBuilderDescription.Append($" o łącznej powierzchni {(dzialkiPrzed.Sum(x => x.PEW) / 10000d).ToString("F4")} ha opisan{(dzialkiPrzed.Count > 1 ? "e" : "ą")} w ");
+                stringBuilderDescription.Append($"{dzialkiPrzed.FirstOrDefault().KW}");
+            }
+
+
+            if (dzialkiNieujawnione.Any())
+            {
+                var firstLoop = true;
+
+                var obrebyDzialekPrzed = dzialkiNieujawnione.Select(x => x.IDOBR).Distinct().ToList();
+
+                foreach (var idobr in obrebyDzialekPrzed)
+                {
+                    var dzialkiWObrebie = dzialkiNieujawnione.Where(x => x.IDOBR == idobr).ToList();
+                    if (firstLoop)
+                    {
+                        firstLoop = false;
+                        stringBuilderDescription.Append($" oraz działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                    else
+                    {
+                        stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                }
+                stringBuilderDescription.Append($" o łącznej powierzchni {(dzialkiNieujawnione.Sum(x => x.PEW) / 10000d).ToString("F4")} ha - brak KW");
+            }
+
+            stringBuilderDescription.Append(".</p><p>");
+            stringBuilderDescription.Append("Zmiana numeracji i powierzchni działek nastąpiła w wyniku scalenia gruntów zatwierdzonego<br>decyzją ");
+            stringBuilderDescription.Append(string.IsNullOrWhiteSpace(txtStarosta) ? "............................................." : txtStarosta); // dodać zmienną na staroste
+            stringBuilderDescription.Append(" Nr "); // dodać zmienną na nr decyzji
+            stringBuilderDescription.Append(string.IsNullOrWhiteSpace(txtDecyzja) ? "............................." : txtDecyzja);
+            stringBuilderDescription.Append(" z dnia ");
+            stringBuilderDescription.Append(string.IsNullOrWhiteSpace(txtDataDecyzji) ? "............................." : txtDataDecyzji);
+            stringBuilderDescription.Append("</p>");
+            stringBuilderDescription.Append("</div>");
+
+            return stringBuilderDescription.ToString();
+        }
+
+        public static string WzdeStep5InsertTablesIntoPage(string leftTable, string rightTable, string description)
         {
             return $"<html lang=\"pl\">\r\n<head>\r\n<meta charset=\"windows-1250\">\r\n<meta http-equiv=Content-Type content=\"text/html;>\r\n<meta name=Generator content=\"Microsoft Word 12 (filtered)\"\r\nmlns:v=\"urn:schemas-microsoft-com:vml\"\r\nxmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\nxmlns:w=\"urn:schemas-microsoft-com:office:word\"\r\nxmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\"\r\nxmlns=\"http://www.w3.org/TR/REC-html40\"\r\n>\r\n\t" +
                 $"<style>\r\n\t\tbody{{\r\n\t\t\tfont-family: \"Arial Narrow\";\r\n\t\t    font-style: italic;\r\n\t\t\twidth: 620;\r\n\t\t}}\r\n\t\t\r\n\t\t" +
@@ -96,7 +203,8 @@ namespace ScaleniaMW.Helpers
                 $".w-50{{width: 50%;}} " +
                 $"</style>" +
                 $"\r\n</head>\r\n<body>\r\n\r\n\t<p class=\"tytul\">Wykaz zmian danych ewidencyjnych<br>\r\n\t{CurrentKW}\t\r\n\t</p>\r\n\t<div>\r\n\t\t" +
-                $"<table class=\"container b-none\" >\r\n\t\t\t<tr class=\"b-none\">\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{leftTable}\t\t\t\t</td>\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{rightTable}</td>\r\n\t\t\t</tr>\r\n\t\t</table>\r\n\t</div>\r\n</body>\r\n</html>";
+                $"<table class=\"container b-none\" >\r\n\t\t\t<tr class=\"b-none\">\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{leftTable}\t\t\t\t</td>\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{rightTable}</td>\r\n\t\t\t</tr>\r\n\t\t</table>\r\n\t</div>\r\n" +
+                $"{description}</body>\r\n</html>";
         }
 
 

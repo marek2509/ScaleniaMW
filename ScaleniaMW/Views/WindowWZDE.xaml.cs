@@ -217,9 +217,9 @@ namespace ScaleniaMW.Views
             if (KWList.Any())
             {
                 currentKW = KWList[listBoxKW.SelectedIndex < 0 ? 0 : listBoxKW.SelectedIndex];
-                var allParcelForKW = _dzialkaRepository.GetAll(x => x.KW.Trim() == currentKW);
+                var allParcelForKW = _dzialkaRepository.GetAll(x => x.KW.Trim() == currentKW).ToList();
 
-                var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == currentKW);
+                var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == currentKW).ToList();
                 var nieujawnionePrzypisanDzialka = _WZDEDzKWRepository.GetAll(x => x.KW.Trim() == (currentKW)).ToList();
                 var nieujawnionePrzypisanDzialkaID_ID = nieujawnionePrzypisanDzialka.Select(x => x.DZIALKAID_ID).ToList();
                 var dzialkiNieUjawnioneRaport = _dzialkaRepository.GetAll(x => nieujawnionePrzypisanDzialkaID_ID.Contains(x.ID_ID)).ToList();
@@ -231,8 +231,8 @@ namespace ScaleniaMW.Views
                 var zmapowaneDzialkiPo = allParcelForKWAfter.Select(x => new Dzialka { Obreb = x.Obreb, IDD = x.IDD, PEW = x.PEW, KW = x.KW, SIDD = x.SIDD });
                 HTMLGenerator.WzdeStep2TrKW(zmapowaneDzialkiPo.ToList());
                 var rightTable = HTMLGenerator.WzdeStep3GetTable(true);
-
-                var table = HTMLGenerator.WzdeStep4InsertTablesIntoPage(leftTable, rightTable);
+                var description = HTMLGenerator.WzdeStep4Description(allParcelForKW, dzialkiNieUjawnioneRaport, allParcelForKWAfter, txtStarosta.Text, txtDecyzja.Text, txtDataDecyzji.Text);
+                var table = HTMLGenerator.WzdeStep5InsertTablesIntoPage(leftTable, rightTable, description);
                 currentDocumentToDownload = table;
 
                 table = table.Replace("font-size: 13", "font-size: 18");
@@ -331,6 +331,11 @@ namespace ScaleniaMW.Views
         private void cbxKwKtoreMajaDzialki_Unchecked(object sender, RoutedEventArgs e)
         {
             FilterKWByCheckBox(false);
+        }
+
+        private void txtStarosta_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ListBoxKW_SelectionChanged(null, null);
         }
     }
 }
