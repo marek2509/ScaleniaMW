@@ -15,6 +15,7 @@
         <Menu Grid.Row="0" Background="#2676d0" Foreground="White">
             <MenuItem Header="Plik" >
                 <MenuItem Header="Otwórz okno startowe" Foreground="Black" Click="OpenMainWindow_Click"></MenuItem>
+                <MenuItem Header="Pobierz wszystkie dokumenty" Foreground="Black" Click="DownloadAllWzdeDocuments_Click"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Zamknij" Foreground="Black" Click="Shutdown_Click"></MenuItem>
             </MenuItem>

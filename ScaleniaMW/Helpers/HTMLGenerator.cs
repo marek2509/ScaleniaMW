@@ -101,13 +101,13 @@ namespace ScaleniaMW.Helpers
                     {
                         firstLoop = false;
                         stringBuilderDescription.Append($"Działk{(dzialkiWObrebie.Count > 1 ? "i" : "a")} nr: ");
-                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
                         stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "a")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
                     }
                     else
                     {
                         stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "a")} nr: ");
-                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
                         stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "a")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
                     }
                 }
@@ -133,13 +133,13 @@ namespace ScaleniaMW.Helpers
                     {
                         firstLoop = false;
                         stringBuilderDescription.Append($" działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
-                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
                         stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
                     }
                     else
                     {
                         stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
-                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
                         stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
                     }
                 }
@@ -161,13 +161,13 @@ namespace ScaleniaMW.Helpers
                     {
                         firstLoop = false;
                         stringBuilderDescription.Append($" oraz działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
-                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
                         stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
                     }
                     else
                     {
                         stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
-                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
                         stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
                     }
                 }

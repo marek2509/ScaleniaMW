@@ -190,6 +190,9 @@
     </Compile>
     <Compile Include="KontroleDanychZFDB.cs" />
     <Compile Include="Plik.cs" />
+    <Compile Include="Views\WindowLoader.xaml.cs">
+      <DependentUpon>WindowLoader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WindowEdycjaDokumentow.xaml.cs">
       <DependentUpon>WindowEdycjaDokumentow.xaml</DependentUpon>
     </Compile>
@@ -246,6 +249,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\KontrolaBazy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WindowLoader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

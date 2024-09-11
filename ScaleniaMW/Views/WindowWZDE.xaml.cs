@@ -1,13 +1,19 @@
-﻿using ScaleniaMW.Entities;
+﻿using Microsoft.SqlServer.Server;
+using Microsoft.Win32;
+using ScaleniaMW.Entities;
 using ScaleniaMW.Helpers;
 using ScaleniaMW.Repositories;
 using ScaleniaMW.Repositories.Interfaces;
 using ScaleniaMW.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -214,28 +220,38 @@ namespace ScaleniaMW.Views
 
         private void ListBoxKW_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            FillAllData();
+        }
+
+        public (List<WZDEDzKW> nieujawnionePrzypisanDzialka, List<Dzialka> allParcelForKW) GenerateDocument(int idxListBoxKW)
+        {
+            currentKW = KWList[idxListBoxKW];
+            var allParcelForKW = _dzialkaRepository.GetAll(x => x.KW.Trim() == currentKW).ToList();
+
+            var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == currentKW).ToList();
+            var nieujawnionePrzypisanDzialka = _WZDEDzKWRepository.GetAll(x => x.KW.Trim() == (currentKW)).ToList();
+            var nieujawnionePrzypisanDzialkaID_ID = nieujawnionePrzypisanDzialka.Select(x => x.DZIALKAID_ID).ToList();
+            var dzialkiNieUjawnioneRaport = _dzialkaRepository.GetAll(x => nieujawnionePrzypisanDzialkaID_ID.Contains(x.ID_ID)).ToList();
+            HTMLGenerator.WzdeStep1TrDzialkiNieUjawnione(dzialkiNieUjawnioneRaport);
+            HTMLGenerator.WzdeStep2TrKW(allParcelForKW.ToList());
+            var leftTable = HTMLGenerator.WzdeStep3GetTable();
+
+            // tabela prawa nie będzie miała nie ujawnionych działek
+            var zmapowaneDzialkiPo = allParcelForKWAfter.Select(x => new Dzialka { Obreb = x.Obreb, IDD = x.IDD, PEW = x.PEW, KW = x.KW, SIDD = x.SIDD });
+            HTMLGenerator.WzdeStep2TrKW(zmapowaneDzialkiPo.ToList());
+            var rightTable = HTMLGenerator.WzdeStep3GetTable(true);
+            var description = HTMLGenerator.WzdeStep4Description(allParcelForKW, dzialkiNieUjawnioneRaport, allParcelForKWAfter, txtStarosta.Text, txtDecyzja.Text, txtDataDecyzji.Text);
+            var table = HTMLGenerator.WzdeStep5InsertTablesIntoPage(leftTable, rightTable, description);
+            currentDocumentToDownload = table;
+            return (nieujawnionePrzypisanDzialka, allParcelForKW);
+        }
+
+        private void FillAllData() // idx jest po to aby wygenerować po iteraci ale żeby nie przeładowywać widoku
+        {
             if (KWList.Any())
             {
-                currentKW = KWList[listBoxKW.SelectedIndex < 0 ? 0 : listBoxKW.SelectedIndex];
-                var allParcelForKW = _dzialkaRepository.GetAll(x => x.KW.Trim() == currentKW).ToList();
-
-                var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == currentKW).ToList();
-                var nieujawnionePrzypisanDzialka = _WZDEDzKWRepository.GetAll(x => x.KW.Trim() == (currentKW)).ToList();
-                var nieujawnionePrzypisanDzialkaID_ID = nieujawnionePrzypisanDzialka.Select(x => x.DZIALKAID_ID).ToList();
-                var dzialkiNieUjawnioneRaport = _dzialkaRepository.GetAll(x => nieujawnionePrzypisanDzialkaID_ID.Contains(x.ID_ID)).ToList();
-                HTMLGenerator.WzdeStep1TrDzialkiNieUjawnione(dzialkiNieUjawnioneRaport);
-                HTMLGenerator.WzdeStep2TrKW(allParcelForKW.ToList());
-                var leftTable = HTMLGenerator.WzdeStep3GetTable();
-
-                // tabela prawa nie będzie miała nie ujawnionych działek
-                var zmapowaneDzialkiPo = allParcelForKWAfter.Select(x => new Dzialka { Obreb = x.Obreb, IDD = x.IDD, PEW = x.PEW, KW = x.KW, SIDD = x.SIDD });
-                HTMLGenerator.WzdeStep2TrKW(zmapowaneDzialkiPo.ToList());
-                var rightTable = HTMLGenerator.WzdeStep3GetTable(true);
-                var description = HTMLGenerator.WzdeStep4Description(allParcelForKW, dzialkiNieUjawnioneRaport, allParcelForKWAfter, txtStarosta.Text, txtDecyzja.Text, txtDataDecyzji.Text);
-                var table = HTMLGenerator.WzdeStep5InsertTablesIntoPage(leftTable, rightTable, description);
-                currentDocumentToDownload = table;
-
-                table = table.Replace("font-size: 13", "font-size: 18");
+                var (nieujawnionePrzypisanDzialka, allParcelForKW) = GenerateDocument(listBoxKW.SelectedIndex < 0 ? 0 : listBoxKW.SelectedIndex);
+                var table = currentDocumentToDownload.Replace("font-size: 13", "font-size: 18");
                 table = table.Replace("font-size: 16", "font-size: 22");
                 table = table.Replace("windows-1250", "UTF-8");
                 webBrowser.NavigateToString(table);
@@ -247,7 +263,7 @@ namespace ScaleniaMW.Views
                 RoutedEventHandler routedEventHandler = (s, es) =>
                 {
                     //ResetDbData();
-                    ListBoxKW_SelectionChanged(s, e);
+                    ListBoxKW_SelectionChanged(s, null);
                 };
                 foreach (var item in nieujawnionePrzypisanDzialka.OrderBy(x => x.Dzialka.Obreb.ID).ThenBy(x => x.Dzialka.SIDD))
                 {
@@ -336,6 +352,62 @@ namespace ScaleniaMW.Views
         private void txtStarosta_TextChanged(object sender, TextChangedEventArgs e)
         {
             ListBoxKW_SelectionChanged(null, null);
+        }
+
+        private async void DownloadAllWzdeDocuments_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBoxKW?.Items?.Count > 0)
+            {
+
+                var countAllItems = listBoxKW.Items.Count;
+                WindowLoader loader = new WindowLoader(countAllItems);
+                loader.UpdateValue(await Task.Run(() => 1));
+                loader.Show();
+                windowWZDE.IsEnabled = false;
+
+                var format = "doc";
+                SaveFileDialog svd = new SaveFileDialog();
+                svd.DefaultExt = $".{format}";
+                svd.Filter = $"{format} (*.{format})|*.{format}|All files (*.*)|*.*";
+
+                if (svd.ShowDialog() == true)
+                {
+                    for (int i = 0; i < countAllItems; i++)
+                    {
+                        var numberOfElement = i + 1;
+                        loader.UpdateValue(await Task.Run(() => numberOfElement));
+                        GenerateDocument(i);
+
+                        using (Stream s = File.Open(svd.FileName.Replace($".{format}", $"_{currentKW.Replace("/", "_")}.{format}"), FileMode.Create))
+                        {
+                            using (StreamWriter sw = new StreamWriter(s, Encoding.Default))
+                            {
+                                try
+                                {
+                                    try
+                                    {
+                                        sw.Write(currentDocumentToDownload);
+                                        sw.Close();
+                                    }
+                                    catch (Exception exc)
+                                    {
+                                        MessageBox.Show(exc.ToString() + "  problem z plikiem");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    var resultat = MessageBox.Show(ex.ToString() + " Przerwać?", "ERROR", MessageBoxButton.YesNo);
+                                }
+                            }
+                        }
+                    }
+                }
+                loader.Close();
+                windowWZDE.IsEnabled = true;
+                listBoxKW.SelectedIndex = 0;
+
+                MessageBox.Show($"Wygenerowano plików: {countAllItems}.");
+            }
         }
     }
 }
