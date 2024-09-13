@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using ScaleniaMW.Entities;
 using ScaleniaMW.Helpers;
+using ScaleniaMW.Properties;
 using ScaleniaMW.Repositories;
 using ScaleniaMW.Repositories.Interfaces;
 using ScaleniaMW.Services;
@@ -43,7 +44,7 @@ namespace ScaleniaMW.Views
         {
             InitializeComponent();
             init();
-
+            ReadResources();
         }
 
         private void init()
@@ -208,11 +209,13 @@ namespace ScaleniaMW.Views
 
         private void Shutdown_Click(object sender, RoutedEventArgs e)
         {
+            SaveResources();
             Application.Current.Shutdown();
         }
 
         private void OpenMainWindow_Click(object sender, RoutedEventArgs e)
         {
+            SaveResources();
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             windowWZDE.Close();
@@ -241,7 +244,7 @@ namespace ScaleniaMW.Views
             HTMLGenerator.WzdeStep2TrKW(zmapowaneDzialkiPo.ToList());
             var rightTable = HTMLGenerator.WzdeStep3GetTable(true);
             var description = HTMLGenerator.WzdeStep4Description(allParcelForKW, dzialkiNieUjawnioneRaport, allParcelForKWAfter, txtStarosta.Text, txtDecyzja.Text, txtDataDecyzji.Text);
-            var table = HTMLGenerator.WzdeStep5InsertTablesIntoPage(leftTable, rightTable, description);
+            var table = HTMLGenerator.WzdeStep5InsertTablesIntoPage(leftTable, rightTable, description, txtZgloszenie.Text, txtPowiat.Text, txtJednEwid.Text, txtObiekt.Text, txtTytul.Text);
             currentDocumentToDownload = table;
             return (nieujawnionePrzypisanDzialka, allParcelForKW);
         }
@@ -408,6 +411,62 @@ namespace ScaleniaMW.Views
 
                 MessageBox.Show($"Wygenerowano plików: {countAllItems}.");
             }
+        }
+
+        private void SaveResources()
+        {
+            if (txtDataDecyzji != null && txtDecyzja != null && txtDecyzja != null && txtJednEwid != null
+                && txtObiekt != null && txtPowiat != null && txtStarosta != null && txtZgloszenie != null && txtTytul != null)
+            {
+                Settings.Default.txtDataDecyzji = txtDataDecyzji.Text;
+                Settings.Default.txtDecyzja = txtDecyzja.Text;
+                Settings.Default.txtJednEwid = txtJednEwid.Text;
+                Settings.Default.txtObiekt = txtObiekt.Text;
+                Settings.Default.txtPowiat = txtPowiat.Text;
+                Settings.Default.txtStarosta = txtStarosta.Text;
+                Settings.Default.txtZgloszenie = txtZgloszenie.Text;
+                Settings.Default.txtTytul = txtTytul.Text;
+                Settings.Default.Save();
+            }
+        }
+
+        private void ReadResources()
+        {
+            if (txtDataDecyzji != null && txtDecyzja != null && txtDecyzja != null && txtJednEwid != null
+                && txtObiekt != null && txtPowiat != null && txtStarosta != null && txtZgloszenie != null && txtTytul != null)
+            {
+                txtDataDecyzji.Text = Settings.Default.txtDataDecyzji;
+                txtDecyzja.Text = Settings.Default.txtDecyzja;
+                txtJednEwid.Text = Settings.Default.txtJednEwid;
+                txtObiekt.Text = Settings.Default.txtObiekt;
+                txtPowiat.Text = Settings.Default.txtPowiat;
+                txtStarosta.Text = Settings.Default.txtStarosta;
+                txtZgloszenie.Text = Settings.Default.txtZgloszenie;
+                txtTytul.Text = Settings.Default.txtTytul;
+            }
+        }
+
+        private void cbxTrybJR_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sekcjaJR != null && sekcjaKW != null)
+            {
+                sekcjaJR.Visibility = Visibility.Visible;
+                sekcjaKW.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void cbxTrybKW_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sekcjaJR != null && sekcjaKW != null)
+            {
+                sekcjaJR.Visibility = Visibility.Collapsed;
+                sekcjaKW.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void windowWZDE_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveResources();
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ScaleniaMW.Views"
         mc:Ignorable="d"
         x:Name="windowWZDE"
-        Title="WindowWZDE" Height="600" Width="1200" WindowState="Maximized">
+        Title="WindowWZDE" Height="600" Width="1200" WindowState="Maximized" Closing="windowWZDE_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -28,9 +28,24 @@
                 <MenuItem Header="Ustaw Login i Hasło" Foreground="Black" Click="SetLoginAndPassword_Click"></MenuItem>
             </MenuItem>
             <Label x:Name="labelConnection" Background="AliceBlue" FontWeight="ExtraBold"></Label>
+            <GroupBox Margin="100,0,0,0" BorderThickness="0.3" >
+                <DockPanel Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                    <Label Foreground="White"  FontSize="16" FontWeight="Bold" Padding="10,0,10,0">Tryb pracy:</Label>
+                    <RadioButton x:Name="cbxTrybKW" Foreground="White" IsChecked="True" FontSize="16" VerticalContentAlignment="Center" Checked="cbxTrybKW_Checked">KW</RadioButton>
+                    <RadioButton x:Name="cbxTrybJR" Checked="cbxTrybJR_Checked" Foreground="White" FontSize="16" Margin="15,0" VerticalContentAlignment="Center">JR</RadioButton>
+                </DockPanel>
+            </GroupBox>
         </Menu>
         <DockPanel Grid.Row="1">
-            <Grid Margin="10">
+            <Grid x:Name="sekcjaJR" Margin="20,0" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label >JR</Label>
+                <ListBox Grid.Row="1" FontSize="14" x:Name="listBoxJR" MinWidth="160" SelectedIndex="0" Margin="5,0,0,25" HorizontalAlignment="Left" SelectionChanged="ListBoxKW_SelectionChanged" />
+            </Grid>
+            <Grid Margin="10" x:Name="sekcjaKW">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="200"/>
@@ -128,34 +143,68 @@
             <DockPanel>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="60"/>
+                        <!--<RowDefinition Height="120"/>-->
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <DockPanel>
-                        <StackPanel Margin="0,0,10,0">
-                        <Label>Starosta:</Label>
-                        <TextBox Height="25" Width="150" x:Name="txtStarosta" TextChanged="txtStarosta_TextChanged"  ToolTip="Starosta">Kubusia Puchatka :)</TextBox>
-                        </StackPanel>
-                        <StackPanel Margin="0,0,10,0">
-                            <Label>Decyzja nr:</Label>
-                            <TextBox Height="25" Width="150" x:Name="txtDecyzja" TextChanged="txtStarosta_TextChanged" ToolTip="Numer decyzji">100/2024</TextBox>
-                        </StackPanel>
-                        <StackPanel Margin="0,0,10,0">
-                            <Label>Data decyzji:</Label>
-                            <TextBox Height="25" Width="150" x:Name="txtDataDecyzji" TextChanged="txtStarosta_TextChanged" ToolTip="data decyzji">31.07.2024r.</TextBox>
-                        </StackPanel>
-                        <Button Height="30" Width="150" Click="ButtonDownloadCurrentDocument_Click">Pobierz wybrany dokument</Button>
-                    </DockPanel>
-
-
-                    <WebBrowser Grid.Row="1"  x:Name="webBrowser"/>
+                    <TabControl>
+                        <TabItem Header="Podgląd dokumentu">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Button Height="30" Width="150" Click="ButtonDownloadCurrentDocument_Click">Pobierz wybrany dokument</Button>
+                                <WebBrowser Grid.Row="1"  x:Name="webBrowser"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Parametry">
+                            <StackPanel>
+                                <DockPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <Label>Starosta:</Label>
+                                        <TextBox Height="25" Width="150" x:Name="txtStarosta" TextChanged="txtStarosta_TextChanged"  ToolTip="Starosta">Kubusia Puchatka :)</TextBox>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <Label>Decyzja nr:</Label>
+                                        <TextBox Height="25" Width="150" x:Name="txtDecyzja" TextChanged="txtStarosta_TextChanged" ToolTip="Numer decyzji">100/2024</TextBox>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <Label>Data decyzji:</Label>
+                                        <TextBox Height="25" Width="150" x:Name="txtDataDecyzji" TextChanged="txtStarosta_TextChanged" ToolTip="data decyzji">30.09.2024r.</TextBox>
+                                    </StackPanel>
+                                    <StackPanel></StackPanel>
+                                </DockPanel>
+                                <DockPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <Label>nr zgł.:</Label>
+                                        <TextBox Height="25" Width="200" x:Name="txtZgloszenie" TextChanged="txtStarosta_TextChanged"  ToolTip="Starosta">Id.zgł ASDA!@/12313/12023</TextBox>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <Label>Powiat:</Label>
+                                        <TextBox Height="25" Width="150" x:Name="txtPowiat" TextChanged="txtStarosta_TextChanged" ToolTip="Numer decyzji">siemiatycki</TextBox>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <Label>Jedn: ewid.:</Label>
+                                        <TextBox Height="25" Width="150" x:Name="txtJednEwid" TextChanged="txtStarosta_TextChanged" ToolTip="data decyzji">201006_2 MILEJCZYCE</TextBox>
+                                    </StackPanel>
+                                    <StackPanel></StackPanel>
+                                </DockPanel>
+                                <DockPanel>
+                                    <StackPanel Width="150" Margin="0,0,10,0">
+                                        <Label>Obiekt:</Label>
+                                        <TextBox Height="25" Width="150" x:Name="txtObiekt" TextChanged="txtStarosta_TextChanged" ToolTip="data decyzji">Milejczyce i inne</TextBox>
+                                    </StackPanel>
+                                    <StackPanel Width="300" Margin="0,0,10,0">
+                                        <Label>Tytuł dokumentu:</Label>
+                                        <TextBox Height="25" x:Name="txtTytul" TextChanged="txtStarosta_TextChanged" ToolTip="data decyzji">Wykaz synchronizacyjny</TextBox>
+                                    </StackPanel>
+                                    <StackPanel></StackPanel>
+                                </DockPanel>
+                            </StackPanel>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </DockPanel>
-
         </DockPanel>
-
-
-
-
     </Grid>
 </Window>

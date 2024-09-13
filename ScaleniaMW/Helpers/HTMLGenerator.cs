@@ -187,7 +187,7 @@ namespace ScaleniaMW.Helpers
             return stringBuilderDescription.ToString();
         }
 
-        public static string WzdeStep5InsertTablesIntoPage(string leftTable, string rightTable, string description)
+        public static string WzdeStep5InsertTablesIntoPage(string leftTable, string rightTable, string description, string txtZglodzenie, string txtPowiat, string txtJednEwid, string txtObiekt, string txtTytul)
         {
             return $"<html lang=\"pl\">\r\n<head>\r\n<meta charset=\"windows-1250\">\r\n<meta http-equiv=Content-Type content=\"text/html;>\r\n<meta name=Generator content=\"Microsoft Word 12 (filtered)\"\r\nmlns:v=\"urn:schemas-microsoft-com:vml\"\r\nxmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\nxmlns:w=\"urn:schemas-microsoft-com:office:word\"\r\nxmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\"\r\nxmlns=\"http://www.w3.org/TR/REC-html40\"\r\n>\r\n\t" +
                 $"<style>\r\n\t\tbody{{\r\n\t\t\tfont-family: \"Arial Narrow\";\r\n\t\t    font-style: italic;\r\n\t\t\twidth: 620;\r\n\t\t}}\r\n\t\t\r\n\t\t" +
@@ -201,8 +201,11 @@ namespace ScaleniaMW.Helpers
                 $".widthObr{{width: 48%;}} " +
                 $".widthDz{{width: 26%;}} " +
                 $".w-50{{width: 50%;}} " +
+                $"\t\t.pieczec{{\r\n\t\t\ttext-align: center;\r\n\t\t\tcolor: red;\r\n\t\t\tfont-weight: bold;\r\n\t\t\tfont-size: 14;\r\n\t\t\tmargin-right: auto; \r\n\t\t\twidth: fit-content;\r\n\t\t}}\r\n\t\t.containerPieczatki{{\r\n\t\t\twidth: 100%;\r\n\t\t}}\r\n\t\t.opisObiektu{{\r\n\t\t\tfont-size: 14;\r\n\t\t\tmargin-top: 30px;\r\n\t\t\tmargin-left: auto; \r\n\t\t\twidth: fit-content;\r\n\t\t}}\r\n\t\t.blackFont{{\r\n\t\t\tcolor: black;\r\n\t\t}}" +
                 $"</style>" +
-                $"\r\n</head>\r\n<body>\r\n\r\n\t<p class=\"tytul\">Wykaz zmian danych ewidencyjnych<br>\r\n\t{CurrentKW}\t\r\n\t</p>\r\n\t<div>\r\n\t\t" +
+                $"\r\n</head>\r\n<body>\r\n\r\n\t" +
+                $"\t<table class=\"container b-none\" >\r\n\t\t<tr class=\"b-none\">\r\n\t\t\t<td class=\"b-none\">\r\n\t\t\t<div class=\"pieczec\">\r\n\t\t\t<p>WOJEWÓDZKIE BIURO GEODEZJI<br>\r\n\t\t\t\tW BIAŁYMSTOKU<br>\r\n\t\t\t\tul. gen. George'a Smitha Pattona 8, 15-688 Białystok<br>\r\n\t\t\t\t<span class=\"blackFont\">{txtZglodzenie}</span>\r\n\t\t\t</p>\r\n\t\t</div>\r\n\t\t\t</td>\r\n\t\t\t<td class=\"b-none\">\r\n\t\t\t\t\t<div class=\"opisObiektu\">\r\n\t\t\t<p>Województwo: podlaskie<br>\r\n\t\t\t\tPowiat: {txtPowiat}<br>\r\n\t\t\t\tJedn. ewid.: {txtJednEwid}<br>\r\n\t\t\t\tObiekt: {txtObiekt}\r\n\t\t\t</p>\r\n\t\t</div>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>" +
+                $"<p class=\"tytul\">{txtTytul}<br>\r\n\t{CurrentKW}\t\r\n\t</p>\r\n\t<div>\r\n\t\t" +
                 $"<table class=\"container b-none\" >\r\n\t\t\t<tr class=\"b-none\">\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{leftTable}\t\t\t\t</td>\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{rightTable}</td>\r\n\t\t\t</tr>\r\n\t\t</table>\r\n\t</div>\r\n" +
                 $"{description}</body>\r\n</html>";
         }

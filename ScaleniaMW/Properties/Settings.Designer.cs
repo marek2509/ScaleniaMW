@@ -12,7 +12,7 @@ namespace ScaleniaMW.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -344,6 +344,102 @@ namespace ScaleniaMW.Properties {
             }
             set {
                 this["textBoxWzorzec_naglowekOmowienieZastrzezen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30.09.2024r.")]
+        public string txtDataDecyzji {
+            get {
+                return ((string)(this["txtDataDecyzji"]));
+            }
+            set {
+                this["txtDataDecyzji"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100/2024")]
+        public string txtDecyzja {
+            get {
+                return ((string)(this["txtDecyzja"]));
+            }
+            set {
+                this["txtDecyzja"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("201006_2 MILEJCZYCE")]
+        public string txtJednEwid {
+            get {
+                return ((string)(this["txtJednEwid"]));
+            }
+            set {
+                this["txtJednEwid"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Milejczyce i inne")]
+        public string txtObiekt {
+            get {
+                return ((string)(this["txtObiekt"]));
+            }
+            set {
+                this["txtObiekt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("siemiatycki")]
+        public string txtPowiat {
+            get {
+                return ((string)(this["txtPowiat"]));
+            }
+            set {
+                this["txtPowiat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("starosta siemiatycki")]
+        public string txtStarosta {
+            get {
+                return ((string)(this["txtStarosta"]));
+            }
+            set {
+                this["txtStarosta"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("WYKAZ SYNCHRONIZACYJNY")]
+        public string txtTytul {
+            get {
+                return ((string)(this["txtTytul"]));
+            }
+            set {
+                this["txtTytul"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Id zgł. 30/09/2024")]
+        public string txtZgloszenie {
+            get {
+                return ((string)(this["txtZgloszenie"]));
+            }
+            set {
+                this["txtZgloszenie"] = value;
             }
         }
     }

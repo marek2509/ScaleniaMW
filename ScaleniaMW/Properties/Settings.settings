@@ -83,5 +83,29 @@
     <Setting Name="textBoxWzorzec_naglowekOmowienieZastrzezen" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="txtDataDecyzji" Type="System.String" Scope="User">
+      <Value Profile="(Default)">30.09.2024r.</Value>
+    </Setting>
+    <Setting Name="txtDecyzja" Type="System.String" Scope="User">
+      <Value Profile="(Default)">100/2024</Value>
+    </Setting>
+    <Setting Name="txtJednEwid" Type="System.String" Scope="User">
+      <Value Profile="(Default)">201006_2 MILEJCZYCE</Value>
+    </Setting>
+    <Setting Name="txtObiekt" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Milejczyce i inne</Value>
+    </Setting>
+    <Setting Name="txtPowiat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">siemiatycki</Value>
+    </Setting>
+    <Setting Name="txtStarosta" Type="System.String" Scope="User">
+      <Value Profile="(Default)">starosta siemiatycki</Value>
+    </Setting>
+    <Setting Name="txtTytul" Type="System.String" Scope="User">
+      <Value Profile="(Default)">WYKAZ SYNCHRONIZACYJNY</Value>
+    </Setting>
+    <Setting Name="txtZgloszenie" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Id zgł. 30/09/2024</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
