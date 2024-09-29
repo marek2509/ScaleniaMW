@@ -33,6 +33,7 @@ namespace ScaleniaMW.Views
         Dzialki_NRepository _dzialki_NRepository;
         WZDEDzKWRepository _WZDEDzKWRepository;
         Jedn_rejRepository _jedn_RejRepository;
+        Jedn_rejNRepository _jedn_RejNRepository;
         List<string> KWList = new List<string>();
         string currentDocumentToDownload = string.Empty;
         string currentKW = string.Empty;
@@ -63,8 +64,8 @@ namespace ScaleniaMW.Views
                 _dzialki_NRepository = new Dzialki_NRepository(dbContext);
                 _WZDEDzKWRepository = new WZDEDzKWRepository(dbContext);
                 _jedn_RejRepository = new Jedn_rejRepository(dbContext);
+                _jedn_RejNRepository = new Jedn_rejNRepository(dbContext);
                 ResetDbData();
-
                 labelConnection.Content = "Połączono";
                 labelConnection.Foreground = Brushes.ForestGreen;
             }
@@ -114,6 +115,7 @@ namespace ScaleniaMW.Views
                 }
                 listBoxDzialkiNieUjawnione.ItemsSource = dzialkiNieUjawnione.Select(x => $"{x?.Obreb.ID}-{x.IDD}").ToList();
                 listBoxDzialkiNieUjawnione.SelectedIndex = dzialkiNieUjawnioneCurrentIdx;
+
             }
             catch (Exception e)
             {
@@ -249,15 +251,117 @@ namespace ScaleniaMW.Views
             return (nieujawnionePrzypisanDzialka, allParcelForKW);
         }
 
-        private void FillAllData() // idx jest po to aby wygenerować po iteraci ale żeby nie przeładowywać widoku
+        public void GenerateDocumentByJR(int ijr, int nrObrebu)
+        {
+            var jednPrzed = _jedn_RejRepository.GetOne(x => x.IJR == ijr && x.Obreb.ID == nrObrebu);
+            var allKwForDocument = new List<string>();
+            var kwDlaIjrPrzedWStaniePo = _dzialki_NRepository.GetAll(x => x.RJDRPRZED == jednPrzed.ID_ID && !string.IsNullOrWhiteSpace(x.KW))
+                ?.Select(x => x.KW.Trim())?.ToList();
+            if (kwDlaIjrPrzedWStaniePo?.Count > 0)
+            {
+                allKwForDocument.AddRange(kwDlaIjrPrzedWStaniePo);
+            }
+
+            var kwWStaniePrzed = jednPrzed.Dzialki.Where(d => !string.IsNullOrWhiteSpace(d.KW)).Select(x => x.KW.Trim()).ToList();
+            if (kwWStaniePrzed?.Count > 0)
+            {
+                allKwForDocument.AddRange(kwWStaniePrzed);
+            }
+
+            if (allKwForDocument.Any())
+            {
+                allKwForDocument = allKwForDocument.Distinct().OrderBy(x => x).ToList();
+
+                string leftTable = "";
+                string rightTable = "";
+                string description = "";
+                var nieujawnionePrzypisanDzialka = _WZDEDzKWRepository.GetAll(x => allKwForDocument.Contains(x.KW.Trim())).ToList();
+                var nieujawnionePrzypisanDzialkaID_ID = nieujawnionePrzypisanDzialka.Select(x => x.DZIALKAID_ID).ToList();
+                var dzialkiNieUjawnioneRaport = _dzialkaRepository.GetAll(x => nieujawnionePrzypisanDzialkaID_ID.Contains(x.ID_ID)).ToList();
+                HTMLGenerator.WzdeStep1TrDzialkiNieUjawnione(dzialkiNieUjawnioneRaport);
+                bool addEmptyWhenNieujawnione = true;
+                for (int i = 0; i < 2; i++)
+                {
+                    // BI3P/00028376/4  BI3P/00032314/3
+                    foreach (var kw in allKwForDocument)
+                    {
+                        var allParcelForKW = _dzialkaRepository.GetAll(x => x.KW.Trim() == kw /* tuta filtr na obręb z którego jest jednostka ?? dopytać Kisia*/).ToList();
+                        var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == kw).ToList();
+
+
+                        if (i == 0) // create left table
+                        {
+                            HTMLGenerator.WzdeStep2TrKW(allParcelForKW.ToList(), allParcelForKWAfter.Count - allParcelForKW.Count);
+
+                            if (allParcelForKW == null || !allParcelForKW.Any())
+                            {
+                                for (int k = 0; k < 2 + allParcelForKWAfter.Count; k++)
+                                {
+                                    HTMLGenerator.AppendEpmtyLine();
+                                }
+                            }
+                        }
+                        else // create right table
+                        {
+                            if (addEmptyWhenNieujawnione && dzialkiNieUjawnioneRaport?.Count > 0)
+                            {
+                                addEmptyWhenNieujawnione = false;
+                                for (int j = 0; j < 3 + dzialkiNieUjawnioneRaport.Count; j++)
+                                {
+                                    HTMLGenerator.AppendEpmtyLine();
+                                }
+                            }
+
+                            // tabela prawa nie będzie miała nie ujawnionych działek
+                            var zmapowaneDzialkiPo = allParcelForKWAfter.Select(x => new Dzialka { Obreb = x.Obreb, IDD = x.IDD, PEW = x.PEW, KW = x.KW, SIDD = x.SIDD });
+                            HTMLGenerator.WzdeStep2TrKW(zmapowaneDzialkiPo.ToList(), allParcelForKW.Count - allParcelForKWAfter.Count);
+
+                            if (allParcelForKWAfter == null || !allParcelForKWAfter.Any())
+                            {
+                                for (int k = 0; k < 2 + allParcelForKW.Count; k++)
+                                {
+                                    HTMLGenerator.AppendEpmtyLine();
+                                }
+                            }
+                        }
+
+
+
+
+                    }
+
+                    if (i == 0) // create left table
+                    {
+                        leftTable = HTMLGenerator.WzdeStep3GetTable();
+                    }
+                    else // create right table
+                    {
+                        rightTable = HTMLGenerator.WzdeStep3GetTable(true);
+                    }
+                }
+
+                //var description = HTMLGenerator.WzdeStep4Description(allParcelForKW, dzialkiNieUjawnioneRaport, allParcelForKWAfter, txtStarosta.Text, txtDecyzja.Text, txtDataDecyzji.Text);
+                var table = HTMLGenerator.WzdeStep5InsertTablesIntoPage(leftTable, rightTable, description, txtZgloszenie.Text, txtPowiat.Text, txtJednEwid.Text, txtObiekt.Text, txtTytul.Text, allKwForDocument, jednPrzed);
+                currentDocumentToDownload = table;
+                DisplayTableInBrowser();
+            }
+        }
+
+        private void DisplayTableInBrowser()
+        {
+            var table = currentDocumentToDownload.Replace("font-size: 13", "font-size: 18");
+            table = table.Replace("font-size: 16", "font-size: 22");
+            table = table.Replace("font-size: 14", "font-size: 20");
+            table = table.Replace("windows-1250", "UTF-8");
+            webBrowser.NavigateToString(table);
+        }
+
+        private void FillAllData() // idx jest po to aby wygenerować po iteracji ale żeby nie przeładowywać widoku
         {
             if (KWList.Any())
             {
                 var (nieujawnionePrzypisanDzialka, allParcelForKW) = GenerateDocument(listBoxKW.SelectedIndex < 0 ? 0 : listBoxKW.SelectedIndex);
-                var table = currentDocumentToDownload.Replace("font-size: 13", "font-size: 18");
-                table = table.Replace("font-size: 16", "font-size: 22");
-                table = table.Replace("windows-1250", "UTF-8");
-                webBrowser.NavigateToString(table);
+                DisplayTableInBrowser();
 
                 labelCurrentKW.Content = currentKW;
 
@@ -452,6 +556,8 @@ namespace ScaleniaMW.Views
             {
                 sekcjaJR.Visibility = Visibility.Visible;
                 sekcjaKW.Visibility = Visibility.Collapsed;
+
+                listBoxJR.ItemsSource = _jedn_RejRepository.GetAll(x => x.Dzialki.Any(d => KWList.Contains(d.KW))).OrderBy(x => x.Obreb.ID).ThenBy(x => x.IJR).Select(x => $"{x.Obreb.ID}-{x.IJR}");
             }
         }
 
@@ -467,6 +573,14 @@ namespace ScaleniaMW.Views
         private void windowWZDE_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveResources();
+        }
+
+        private void listBoxJR_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var wybranaJr = listBoxJR.SelectedValue;
+            int.TryParse(wybranaJr.ToString().Split('-')[0], out int nrObrebu);
+            int.TryParse(wybranaJr.ToString().Split('-')[1], out int ijr);
+            GenerateDocumentByJR(ijr, nrObrebu);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace ScaleniaMW.Helpers
             }
         }
 
-        public static void WzdeStep2TrKW(List<Dzialka> dzialkiZTymSamymKW)
+        public static void WzdeStep2TrKW(List<Dzialka> dzialkiZTymSamymKW, int appendLineCount = 0)
         {
             if (dzialkiZTymSamymKW.Any())
             {
@@ -60,11 +60,22 @@ namespace ScaleniaMW.Helpers
                     sb.AppendLine(string.Format("\t\t<tr wierszDzialka>\r\n\t\t\t<td nrobr-obr>{0}</td>\r\n\t\t\t<td nrdz>{1}</td>\r\n\t\t\t<td pow>{2}</td>\r\n\t\t</tr>",
                                 "-", "-", "-"));
                 }
+
+                for (int i = 0; i < appendLineCount; i++)
+                {
+                    sb.AppendLine("<tr><td>&nbsp;</td><td></td><td></td></tr>");
+                }
+
                 var sumaPew = dzialkiZTymSamymKW.Sum(x => x.PEW);
                 PewSum += sumaPew;
                 sb.AppendLine(string.Format("\t\t<tr wierszsuma>\r\n\t\t\t<td colspan=\"2\" class=\"right bold\">SUMA:</td>\r\n\t\t\t<td class=\"bold\">{0}</td>\r\n\t\t</tr>", (sumaPew / 10000d).ToString("F4")));
                 TBody += sb.ToString();
             }
+        }
+
+        public static void AppendEpmtyLine()
+        {
+            TBody += "<tr><td>&nbsp;</td><td></td><td></td></tr>";
         }
 
         public static string WzdeStep3GetTable(bool poScaleniu = false)
@@ -82,7 +93,7 @@ namespace ScaleniaMW.Helpers
             return table;
         }
 
-        public static string WzdeStep4Description(List<Dzialka> dzialkiPrzed, List<Dzialka> dzialkiNieujawnione, List<Dzialki_n> dzialkiPo,string txtStarosta, string txtDecyzja, string txtDataDecyzji)
+        public static string WzdeStep4Description(List<Dzialka> dzialkiPrzed, List<Dzialka> dzialkiNieujawnione, List<Dzialki_n> dzialkiPo, string txtStarosta, string txtDecyzja, string txtDataDecyzji)
         {
             StringBuilder stringBuilderDescription = new StringBuilder();
             stringBuilderDescription.Append("<div>");
@@ -187,8 +198,11 @@ namespace ScaleniaMW.Helpers
             return stringBuilderDescription.ToString();
         }
 
-        public static string WzdeStep5InsertTablesIntoPage(string leftTable, string rightTable, string description, string txtZglodzenie, string txtPowiat, string txtJednEwid, string txtObiekt, string txtTytul)
+        public static string WzdeStep5InsertTablesIntoPage(string leftTable, string rightTable, string description, string txtZglodzenie, string txtPowiat, string txtJednEwid, string txtObiekt, string txtTytul, List<string> kwListForTitle = null, Jedn_rej jedn_Rej = null)
         {
+            var kwTxt = kwListForTitle != null ? string.Join(", ", kwListForTitle) : CurrentKW;
+            var jrInfo = jedn_Rej == null ? "" : $"Jednostka rejestrowa: {jedn_Rej.Obreb.NAZ.FirstLetterInWordUpper()} G.{jedn_Rej.IJR}";
+
             return $"<html lang=\"pl\">\r\n<head>\r\n<meta charset=\"windows-1250\">\r\n<meta http-equiv=Content-Type content=\"text/html;>\r\n<meta name=Generator content=\"Microsoft Word 12 (filtered)\"\r\nmlns:v=\"urn:schemas-microsoft-com:vml\"\r\nxmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\nxmlns:w=\"urn:schemas-microsoft-com:office:word\"\r\nxmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\"\r\nxmlns=\"http://www.w3.org/TR/REC-html40\"\r\n>\r\n\t" +
                 $"<style>\r\n\t\tbody{{\r\n\t\t\tfont-family: \"Arial Narrow\";\r\n\t\t    font-style: italic;\r\n\t\t\twidth: 620;\r\n\t\t}}\r\n\t\t\r\n\t\t" +
                 $".container{{\r\n\t\t\twidth: 100%;\r\n\t\t}}\r\n\t\t\r\n\t\t" +
@@ -197,7 +211,8 @@ namespace ScaleniaMW.Helpers
                 $".right{{\r\n\t\t\ttext-align: right\r\n\t\t}}\r\n\t\t\r\n\t\t" +
                 $".bold{{\r\n\t\t\tfont-weight: bold;\r\n\t\t}}\r\n\t\t\r\n\t\ttd, th {{\r\n\t\t   border: 1px solid black;\r\n\t\t}}\r\n\t\t\r\n\t\t" +
                 $".b-none{{\r\n\t\t\tborder: none;\r\n\t\t}}\r\n\t\t\r\n\t\t" +
-                $".tytul{{\r\n\t\t\tfont-size: 16;\r\n\t\t    text-align: center;\r\n\t\t\tfont-weight: bold;\r\n\t\t   text-decoration: underline;\r\n\t\t}}\r\n\t\t\t" +
+                $".tytul{{\r\n\t\t\tfont-size: 16;\r\n\t\t    text-align: center;\r\n\t\t\tfont-weight: bold;\r\n\t\t }}\r\n\t\t\t" +
+                $".underline{{ text-decoration: underline; }}" +
                 $".widthObr{{width: 48%;}} " +
                 $".widthDz{{width: 26%;}} " +
                 $".w-50{{width: 50%;}} " +
@@ -205,7 +220,8 @@ namespace ScaleniaMW.Helpers
                 $"</style>" +
                 $"\r\n</head>\r\n<body>\r\n\r\n\t" +
                 $"\t<table class=\"container b-none\" >\r\n\t\t<tr class=\"b-none\">\r\n\t\t\t<td class=\"b-none\">\r\n\t\t\t<div class=\"pieczec\">\r\n\t\t\t<p>WOJEWÓDZKIE BIURO GEODEZJI<br>\r\n\t\t\t\tW BIAŁYMSTOKU<br>\r\n\t\t\t\tul. gen. George'a Smitha Pattona 8, 15-688 Białystok<br>\r\n\t\t\t\t<span class=\"blackFont\">{txtZglodzenie}</span>\r\n\t\t\t</p>\r\n\t\t</div>\r\n\t\t\t</td>\r\n\t\t\t<td class=\"b-none\">\r\n\t\t\t\t\t<div class=\"opisObiektu\">\r\n\t\t\t<p>Województwo: podlaskie<br>\r\n\t\t\t\tPowiat: {txtPowiat}<br>\r\n\t\t\t\tJedn. ewid.: {txtJednEwid}<br>\r\n\t\t\t\tObiekt: {txtObiekt}\r\n\t\t\t</p>\r\n\t\t</div>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>" +
-                $"<p class=\"tytul\">{txtTytul}<br>\r\n\t{CurrentKW}\t\r\n\t</p>\r\n\t<div>\r\n\t\t" +
+                $"<p class=\"tytul\"><span class=\"underline\">{txtTytul}<br>\r\n\t{kwTxt}<br></span>\t\r\n\t" +
+                $"<span>\r\n\t{jrInfo}\t\r\n\t</span></p>\r\n\t<div>\r\n\t\t" +
                 $"<table class=\"container b-none\" >\r\n\t\t\t<tr class=\"b-none\">\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{leftTable}\t\t\t\t</td>\r\n\t\t\t\t<td valign=\"top\" class=\"b-none w-50\">{rightTable}</td>\r\n\t\t\t</tr>\r\n\t\t</table>\r\n\t</div>\r\n" +
                 $"{description}</body>\r\n</html>";
         }

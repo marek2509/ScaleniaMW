@@ -178,6 +178,7 @@
     <Compile Include="Repositories\Interfaces\IDzialkaRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
     <Compile Include="Repositories\Interfaces\IDzialki_NRepository.cs" />
+    <Compile Include="Repositories\Jedn_rejNRepository.cs" />
     <Compile Include="Repositories\Jedn_rejRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\Results\GetOwnersForJRResult.cs" />
