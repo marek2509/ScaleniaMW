@@ -23,7 +23,7 @@ namespace ScaleniaMW.Helpers
         public static void WzdeStep1TrDzialkiNieUjawnione(List<Dzialka> dzialki)
         {
 
-            if (dzialki.Any())
+            if (dzialki?.Count > 0)
             {
                 StringBuilder sb = new StringBuilder();
                 foreach (Dzialka d in dzialki.OrderBy(x => x.Obreb.ID).ThenBy(x => x.SIDD))
@@ -42,10 +42,10 @@ namespace ScaleniaMW.Helpers
 
         public static void WzdeStep2TrKW(List<Dzialka> dzialkiZTymSamymKW, int appendLineCount = 0)
         {
-            if (dzialkiZTymSamymKW.Any())
+            if (dzialkiZTymSamymKW?.Count > 0)
             {
                 StringBuilder sb = new StringBuilder();
-                if (dzialkiZTymSamymKW.Any())
+                if (dzialkiZTymSamymKW?.Count > 0)
                 {
                     CurrentKW = dzialkiZTymSamymKW.FirstOrDefault().KW;
                     sb.AppendLine($"\t\t<tr KW>\r\n\t\t\t<td colspan=\"3\" class=\"bold\" KW>{CurrentKW}</td>\r\n\t\t</tr>");
@@ -99,7 +99,7 @@ namespace ScaleniaMW.Helpers
             stringBuilderDescription.Append("<div>");
             stringBuilderDescription.Append("<p>Uwagi:</p>");
             stringBuilderDescription.Append("<p>");
-            if (dzialkiPo.Any())
+            if (dzialkiPo?.Count > 0)
             {
                 var firstLoop = true;
 
@@ -124,12 +124,12 @@ namespace ScaleniaMW.Helpers
                 }
                 stringBuilderDescription.Append($" o łącznej powierzchni {(dzialkiPo.Sum(x => x.PEW) / 10000d).ToString("F4")} ha stanowi{(dzialkiPo.Count > 1 ? "ą" : "")} ekwiwalent zamienny za:");
             }
-            else
-            {
-                stringBuilderDescription.Append("Brak działek po scaleniu.");
-            }
+            //else
+            //{
+            //    stringBuilderDescription.Append("Brak działek po scaleniu.");
+            //}
 
-            if (dzialkiPrzed.Any())
+            if (dzialkiPrzed?.Count > 0)
             {
                 var firstLoop = true;
 
@@ -159,7 +159,7 @@ namespace ScaleniaMW.Helpers
             }
 
 
-            if (dzialkiNieujawnione.Any())
+            if (dzialkiNieujawnione?.Count > 0)
             {
                 var firstLoop = true;
 
@@ -186,6 +186,122 @@ namespace ScaleniaMW.Helpers
             }
 
             stringBuilderDescription.Append(".</p><p>");
+            stringBuilderDescription.Append("Zmiana numeracji i powierzchni działek nastąpiła w wyniku scalenia gruntów zatwierdzonego<br>decyzją ");
+            stringBuilderDescription.Append(string.IsNullOrWhiteSpace(txtStarosta) ? "............................................." : txtStarosta); // dodać zmienną na staroste
+            stringBuilderDescription.Append(" Nr "); // dodać zmienną na nr decyzji
+            stringBuilderDescription.Append(string.IsNullOrWhiteSpace(txtDecyzja) ? "............................." : txtDecyzja);
+            stringBuilderDescription.Append(" z dnia ");
+            stringBuilderDescription.Append(string.IsNullOrWhiteSpace(txtDataDecyzji) ? "............................." : txtDataDecyzji);
+            stringBuilderDescription.Append("</p>");
+            stringBuilderDescription.Append("</div>");
+
+            return stringBuilderDescription.ToString();
+        }
+
+        public static string WzdeStep4DescriptionUwagaDlaJR()
+        {
+            StringBuilder stringBuilderDescription = new StringBuilder();
+            stringBuilderDescription.Append("<div>");
+            stringBuilderDescription.Append("<p>Uwagi:</p>");
+            return stringBuilderDescription.ToString();
+        }
+
+        public static string WzdeStep4DescriptionDlaJR(List<Dzialka> dzialkiPrzed, List<Dzialka> dzialkiNieujawnione, List<Dzialki_n> dzialkiPo)
+        {
+            StringBuilder stringBuilderDescription = new StringBuilder();
+
+            stringBuilderDescription.Append("<p>");
+            if (dzialkiPo?.Count > 0)
+            {
+                var firstLoop = true;
+
+                var obrebyDzialekPo = dzialkiPo.Select(x => x.IDOBR).Distinct().ToList();
+
+                foreach (var idobr in obrebyDzialekPo)
+                {
+                    var dzialkiWObrebie = dzialkiPo.Where(x => x.IDOBR == idobr).ToList();
+                    if (firstLoop)
+                    {
+                        firstLoop = false;
+                        stringBuilderDescription.Append($"Działk{(dzialkiWObrebie.Count > 1 ? "i" : "a")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "a")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                    else
+                    {
+                        stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "a")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "a")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                }
+                stringBuilderDescription.Append($" o łącznej powierzchni {(dzialkiPo.Sum(x => x.PEW) / 10000d).ToString("F4")} ha stanowi{(dzialkiPo.Count > 1 ? "ą" : "")} ekwiwalent zamienny za:");
+            }
+
+            //stringBuilderDescription.Append($" o łącznej powierzchni {(dzialkiPo.Sum(x => x.PEW) / 10000d).ToString("F4")} ha stanowi{(dzialkiPo.Count > 1 ? "ą" : "")} ekwiwalent zamienny za:");
+
+            if (dzialkiPrzed?.Count > 0)
+            {
+                var firstLoop = true;
+
+                var obrebyDzialekPrzed = dzialkiPrzed.Select(x => x.IDOBR).Distinct().ToList();
+
+                foreach (var idobr in obrebyDzialekPrzed)
+                {
+                    var dzialkiWObrebie = dzialkiPrzed.Where(x => x.IDOBR == idobr).ToList();
+
+
+                    if (firstLoop)
+                    {
+                        firstLoop = false;
+                        stringBuilderDescription.Append($" działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                    else
+                    {
+                        stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                }
+                stringBuilderDescription.Append($" o łącznej powierzchni {(dzialkiPrzed.Sum(x => x.PEW) / 10000d).ToString("F4")} ha opisan{(dzialkiPrzed.Count > 1 ? "e" : "ą")} w ");
+                stringBuilderDescription.Append($"{dzialkiPrzed.FirstOrDefault().KW}");
+            }
+
+
+            if (dzialkiNieujawnione?.Count > 0)
+            {
+                var firstLoop = true;
+
+                var obrebyDzialekPrzed = dzialkiNieujawnione.Select(x => x.IDOBR).Distinct().ToList();
+
+                foreach (var idobr in obrebyDzialekPrzed)
+                {
+                    var dzialkiWObrebie = dzialkiNieujawnione.Where(x => x.IDOBR == idobr).ToList();
+                    if (firstLoop)
+                    {
+                        firstLoop = false;
+                        stringBuilderDescription.Append($" oraz działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                    else
+                    {
+                        stringBuilderDescription.Append($", działk{(dzialkiWObrebie.Count > 1 ? "i" : "ę")} nr: ");
+                        stringBuilderDescription.Append(string.Join(", ", dzialkiWObrebie.OrderBy(x => x.SIDD).Select(x => x.IDD).ToList()));
+                        stringBuilderDescription.Append($" położon{(dzialkiWObrebie.Count > 1 ? "e" : "ą")} w obrębie ewidencyjnym {dzialkiWObrebie.FirstOrDefault()?.Obreb?.NAZ?.ToUpper()}");
+                    }
+                }
+                stringBuilderDescription.Append($" o łącznej powierzchni {(dzialkiNieujawnione.Sum(x => x.PEW) / 10000d).ToString("F4")} ha - brak KW");
+            }
+            stringBuilderDescription.Append(".</p>");
+            return stringBuilderDescription.ToString();
+        }
+
+        public static string WzdeStep4DescriptionOStaroscieDlaJR(string txtStarosta, string txtDecyzja, string txtDataDecyzji)
+        {
+            var stringBuilderDescription = new StringBuilder();
+            stringBuilderDescription.Append("<p>");
             stringBuilderDescription.Append("Zmiana numeracji i powierzchni działek nastąpiła w wyniku scalenia gruntów zatwierdzonego<br>decyzją ");
             stringBuilderDescription.Append(string.IsNullOrWhiteSpace(txtStarosta) ? "............................................." : txtStarosta); // dodać zmienną na staroste
             stringBuilderDescription.Append(" Nr "); // dodać zmienną na nr decyzji

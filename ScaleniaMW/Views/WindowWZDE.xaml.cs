@@ -268,26 +268,25 @@ namespace ScaleniaMW.Views
                 allKwForDocument.AddRange(kwWStaniePrzed);
             }
 
-            if (allKwForDocument.Any())
+            if (allKwForDocument?.Count > 0)
             {
                 allKwForDocument = allKwForDocument.Distinct().OrderBy(x => x).ToList();
 
                 string leftTable = "";
                 string rightTable = "";
-                string description = "";
-                var nieujawnionePrzypisanDzialka = _WZDEDzKWRepository.GetAll(x => allKwForDocument.Contains(x.KW.Trim())).ToList();
+                var dzialkiPrzedIds = jednPrzed.Dzialki.Select(x => x.ID_ID).ToList();
+                var nieujawnionePrzypisanDzialka = _WZDEDzKWRepository.GetAll(x => dzialkiPrzedIds.Contains(x.DZIALKAID_ID) && allKwForDocument.Contains(x.KW.Trim())).ToList();
                 var nieujawnionePrzypisanDzialkaID_ID = nieujawnionePrzypisanDzialka.Select(x => x.DZIALKAID_ID).ToList();
                 var dzialkiNieUjawnioneRaport = _dzialkaRepository.GetAll(x => nieujawnionePrzypisanDzialkaID_ID.Contains(x.ID_ID)).ToList();
                 HTMLGenerator.WzdeStep1TrDzialkiNieUjawnione(dzialkiNieUjawnioneRaport);
                 bool addEmptyWhenNieujawnione = true;
-                for (int i = 0; i < 2; i++)
+                var descriptionListByKW = new List<string>() { HTMLGenerator.WzdeStep4DescriptionUwagaDlaJR() };
+                for (int i = 0; i < 2; i++) // 0 - stan przed 1 - stan po 
                 {
-                    // BI3P/00028376/4  BI3P/00032314/3
                     foreach (var kw in allKwForDocument)
                     {
-                        var allParcelForKW = _dzialkaRepository.GetAll(x => x.KW.Trim() == kw /* tuta filtr na obręb z którego jest jednostka ?? dopytać Kisia*/).ToList();
-                        var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == kw).ToList();
-
+                        var allParcelForKW = _dzialkaRepository.GetAll(x => dzialkiPrzedIds.Contains(x.ID_ID) && x.KW.Trim() == kw).ToList();
+                        var allParcelForKWAfter = _dzialki_NRepository.GetAll(x => x.KW.Trim() == kw && x.RJDRPRZED == jednPrzed.ID_ID).ToList();
 
                         if (i == 0) // create left table
                         {
@@ -300,6 +299,15 @@ namespace ScaleniaMW.Views
                                     HTMLGenerator.AppendEpmtyLine();
                                 }
                             }
+
+                            var nieujawnioneDoDescription = nieujawnionePrzypisanDzialka.Where(x => x.KW.Trim() == kw).Select(x => x.DZIALKAID_ID);
+                            descriptionListByKW.Add(
+                                HTMLGenerator.WzdeStep4DescriptionDlaJR(allParcelForKW,
+                               (nieujawnioneDoDescription != null
+                               ? _dzialkaRepository.GetAll(n => nieujawnioneDoDescription.Contains(n.ID_ID)).ToList()
+                               : null)
+                                , allParcelForKWAfter));
+
                         }
                         else // create right table
                         {
@@ -325,9 +333,6 @@ namespace ScaleniaMW.Views
                             }
                         }
 
-
-
-
                     }
 
                     if (i == 0) // create left table
@@ -340,8 +345,12 @@ namespace ScaleniaMW.Views
                     }
                 }
 
-                //var description = HTMLGenerator.WzdeStep4Description(allParcelForKW, dzialkiNieUjawnioneRaport, allParcelForKWAfter, txtStarosta.Text, txtDecyzja.Text, txtDataDecyzji.Text);
-                var table = HTMLGenerator.WzdeStep5InsertTablesIntoPage(leftTable, rightTable, description, txtZgloszenie.Text, txtPowiat.Text, txtJednEwid.Text, txtObiekt.Text, txtTytul.Text, allKwForDocument, jednPrzed);
+                //var dzprzedDoOpisu = _dzialkaRepository.GetAll(x => dzialkiPrzedIds.Contains(x.ID_ID) && x.KW.Trim() == kw).ToList();
+                //var dzialkiPo = _dzialki_NRepository.GetAll(x => x.RJDRPRZED == jednPrzed.ID_ID && allKwForDocument.Contains(x.KW.Trim())).ToList();
+
+                //var description = HTMLGenerator.WzdeStep4Description(jednPrzed.Dzialki, dzialkiNieUjawnioneRaport, dzialkiPo, txtStarosta.Text, txtDecyzja.Text, txtDataDecyzji.Text);
+                descriptionListByKW.Add(HTMLGenerator.WzdeStep4DescriptionOStaroscieDlaJR(txtStarosta.Text, txtDecyzja.Text, txtDataDecyzji.Text));
+                var table = HTMLGenerator.WzdeStep5InsertTablesIntoPage(leftTable, rightTable, string.Join(" ", descriptionListByKW), txtZgloszenie.Text, txtPowiat.Text, txtJednEwid.Text, txtObiekt.Text, txtTytul.Text, allKwForDocument, jednPrzed);
                 currentDocumentToDownload = table;
                 DisplayTableInBrowser();
             }
